@@ -1,0 +1,198 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<title> SQLSession ver.1.1 documentation </title>
+	<link rel="stylesheet" href="info.css" type="text/css">
+</head>
+
+<body bgcolor="#C5CCCD" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<h1>SQLSession ver.1.1 documentation</h1>
+<hr>
+<ul>
+	<li><a href="#_about">About</a>
+	<li><a href="#_install">Install</a>
+	<li><a href="#_download">Download</a>
+	<li><a href="#_usage">ChangeLog</a>
+</ul>
+
+<hr>
+
+<a name="_about"></a><h2>About</h2>
+avSession class ver. 1.1 writen by Nikolajus Krauklis ( <a href="mailto:nikolajus@avc.lt?subject=sqlsession">nikolajus@avc.lt</a> )<br>
+based on Joshua Macadam ( <a href="mailto:josh@qixo.com">josh@qixo.com</a> ) "session" functions ( <a href="http://sinc.onestop.net/sqlsession.html" target=_blank>http://sinc.onestop.net/sqlsession.html</a> )<br>
+thanks to Juozas Salna ( <a href="mailto:juozas@avc.lt">juozas@avc.lt</a> )<br><br>
+	
+All database abstraction rewriten into avDB <br>
+["<a href="http://www.avc.lt">Alternatyvus Valdymas</a>" database abstaction]<br>
+
+
+<a name="_install"></a><h2>Install</h2>
+Create in your MySQL database these tables:
+<div class="example-source"><pre>
+CREATE TABLE u_session (
+  id char(20) NOT NULL default '',
+  LastAction int(10) NOT NULL default '0',
+  ip char(15) NOT NULL default '',
+  userID mediumint(9) default NULL,
+  PRIMARY KEY  (id),
+  KEY id (id)
+) TYPE=MyISAM;
+ 
+CREATE TABLE u_session_vars (
+  name varchar(30) NOT NULL default '',
+  session varchar(20) NOT NULL default '',
+  value varchar(100) default NULL,
+  id mediumint(8) unsigned NOT NULL auto_increment,
+  PRIMARY KEY  (id),
+  UNIQUE KEY id (id),
+  KEY sessionID (session)
+) TYPE=MyISAM;</pre>
+</div>
+Then copy class'es to your dir and try this example:<br><br>
+<div class="listingname">exmaple.php</div>
+<pre class="programlisting">
+&lt;?
+	/*!
+		This is SQLsession example.
+	*/
+
+	include_once("db.class.php");
+	include_once("sqlsession.class.php");
+	
+	$DB_HOST = 'localhost';
+	$DB_USER = 'root';
+	$DB_PASSWD = '';
+	$DB_DBNAME = 'php';
+	
+	$g_db = new Db();
+	$g_sess = new sqlSession();
+
+	if (isset($action)&&$action=="make") {
+		$g_sess -> set_var("username",$user);	
+	}
+	
+	if (isset($action)&&$action=="kill") {
+		$g_sess->logout();
+		header("Location:example.php");	
+	}
+	
+	if (!isset($username)) {
+		echo "&lt;form method=post>";
+		echo "Username: &lt;input type=text name=user value=''>&lt;br>&lt;br>";
+		echo "&lt;input type=hidden name=action value='make'>&lt;br>";
+		echo "&lt;input type=submit value=Submit>";
+		echo "&lt;/form>";
+	} else {
+		
+		echo "Session started&lt;br>";
+		echo "Session ID: ".$g_sess->return_sessionID()."&lt;br>";
+		
+		echo "Your UserName: " . $g_sess->get_var("username");
+		
+		echo "&lt;br>&lt;br>Now session will be alive $g_sess->MAX_UNAUTH_IDLE sec.";
+		
+		/*!
+				or if you set in sqlsession class
+		
+				Load vars from database to GLOBALS or not? 1 = true, 0 = false;
+				var $load_vars = 1;
+				
+				you may just type:
+				
+				echo "Username:" . $username;
+						
+		*/
+		
+		echo "&lt;br>&lt;br>&lt;a href='example.php'>Refresh&lt;/a>";
+		echo "&lt;br>&lt;br>&lt;a href='example.php?action=kill'>Kill session&lt;/a>";
+	}
+	
+	
+?>
+</pre>
+It's only one simple example. Try to go further into the sqlSession class sourc'es and comments to make better expression about features of class.
+
+<a name="_download"></a><h2>Download</h2>
+Try this links: <br>
+<a href="http://www.php.lt/sqlsession/sqlsession.zip">http://www.php.lt/sqlsession/sqlsession.zip</a><br>
+<a href="http://www.php.lt/sqlsession/sqlsession.tar">http://www.php.lt/sqlsession/sqlsession.tar</a><br>
+<a href="http://www.php.lt/sqlsession/sqlsession.class.phps">http://www.php.lt/sqlsession/sqlsession.class.phps</a><br>
+<a href="http://www.php.lt/sqlsession/db.class.phps">http://www.php.lt/sqlsession/db.class.phps</a>
+
+<a name="_changelog"></a><h2>Changelog</h2>
+
+	<b>2001.12.13 - Nikolajus Krauklis</b>
+<ul>		
+		+ added drop_var() function for session variable droping<br>
+		- fixed bug with same variable inserting. (now same variable name is updating)<br>
+</ul>
+	<b>2001.11.05 - Juozas Salna</b>
+<ul>	
+		- users_online('registered') sql bug<br>
+</ul>		
+	<b>2001.09.25 - Juozas Salna, Nikolajus Krauklis</b>
+<ul>	
+		- idle logout bug<br>
+		+ var $userID<br>
+</ul>		
+	<b>2001.09.07 - Juozas Salna</b>
+<ul>	
+		* rename, coding style<br>
+		- droped debug feature, for cleaner code<br>
+</ul>		
+  	<b>2001 08 28 - Juozas Salna</b>
+<ul>  	
+ 		+ class speed improve, deleted unneed DB requests,<br>
+ 		+ updated set_var method last action, updated get_var method<br>
+</ul> 		
+ 	<b>2001 08 24 - Nikolajus Krauklis</b>
+<ul> 	
+ 		+ corrected get_var() function bugs<br>
+</ul> 		
+ 	<b>2001 08 21 - Nikolajus Krauklis</b>
+<ul> 	
+ 		+ function users_online - return how many users online<br>
+</ul> 		
+ 	<b>2001 08 10 - Nikolajus Krauklis </b>
+<ul> 	
+ 		+ convert date structure to unix timestamp, then <br>
+ 		  killold function will work corectly		<br>
+ 		+ after set_vars(); added loadvars function to renew variables<br>
+ 		+ added $load_vars variable. You may not load vars to GLOBALS<br>
+</ul> 		
+ 	<b>2001 08 09 - Nikolajus Krauklis</b>
+<ul> 	
+ 		+ gencode(); correction<br>
+ 		+ Added variables $session_table and $session_var_table for<br>
+ 		  users who wants to have own table name<br>
+ 		+ DB structure corrected. Deleted intval column and<br>
+ 		  renamed other colums in vars table<br>
+</ul>
+
+
+
+
+
+
+
+
+<!--
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<div class="listingname">/core/class.php</div>
+<pre class="programlisting">
+$variable = array (
+	'id' => 3,
+	'info' => 'foo foo'
+	'sub' => array (
+		'id' => 5,
+		'info' => 'sub array'
+	)
+);
+
+$tpl->set_var('var', $variable);
+</pre>
+-->
+</body>
+</html>
