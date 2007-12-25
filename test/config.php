@@ -11,7 +11,8 @@
 	
 	define('DEFAULT_CONTROLLER', 'Index');
 	define('DEFAULT_ACTION', 'Index');
-	
+
+	define('TABLE_PREFIX', '');	define('APPLICATION_PATH', 'app/');	define('VIEW_PATH', APPLICATION_PATH . 'view/');	define('DEFAULT_TPL', VIEW_PATH . 'main.tpl.php');	
 	
 	class FLASH_MSG_TYPES{
 		static public $error 	= 0;
