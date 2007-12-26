@@ -9,6 +9,7 @@
 				'CFlashMessage',
 				'CRouter',
 				'CRightsManager',
+				'CBaseController',
 			);
 			
 			foreach ($managersNames as $managerName){

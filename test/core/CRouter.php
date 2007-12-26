@@ -18,7 +18,7 @@
 
 			$this->controllerName = $this->getControllerName($actionArr);
 			$this->actionName = $this->getActionName($actionArr);
-			$this->params = $this->getParams($actionArr);
+			$this->params = $this->getParams($actionArr, $_POST);
 			
 			$rightsManager = getManager('CRightsManager');
 			if(!$rightsManager->checkAccess($this->controllerName, $this->actionName)){return;}
@@ -29,8 +29,8 @@
 			$controllerName = $this->controllerName . 'Controller';
 			$actionName = $this->actionName.'Action';
 			
-			$controller = new $controllerName();
-			$controller->$actionName($this->params);			
+			$controller = new $controllerName(null, $this->params);
+			$controller->$actionName();			
 		}
 
 		
@@ -69,7 +69,7 @@
 		
 		
 		private function getControllerName($params){
-			if (isset($params[0])){
+			if (isset($params[0]) && strlen(trim($params[0]))){
 				if(file_exists(CONTROLLERS_PATH.ucwords($params[0]).'Controller.php')){
 					require_once(CONTROLLERS_PATH.ucwords($params[0]).'Controller.php');
 					return $params[0];
@@ -107,12 +107,16 @@
 			}
 		}	
 		
-		private function getParams($params){
-			$pars = array_slice($params, 2);
+		private function getParams($getParams, $postParams){
+			$pars = array_slice($getParams, 2);
 			$rez = array();
 			foreach($pars as $par){
 				list($name, $val) = explode(':',$par);
 				$rez[$name] = $val;
+			}
+			
+			foreach($postParams as $name=>$par){
+				$rez[$name] = $par;
 			}
 			return $rez;
 		}
