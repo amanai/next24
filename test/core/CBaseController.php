@@ -7,7 +7,7 @@ class CBaseController
 	*/
 	var $params = array();
 	var $vars = array();
-
+	
 	/*
 	конструктор получает параметры, переменные и представление
 	*/
@@ -28,11 +28,13 @@ class CBaseController
 
 	function getQueryString()
 	{
-		return CSession::set(get_class($this));
+		$session = getManager('CSession');
+		return $session->get_var(get_class($this));
 	}
 	function saveQueryString()
 	{
-		CSession::set(get_class($this), $this->getParamsStr());
+		$session = getManager('CSession');
+		$session->set_var(get_class($this), $this->getParamsStr());
 	}
 	function getParamsStr()
 	{
@@ -43,6 +45,20 @@ class CBaseController
 			$str[] = $value;
 		}
 		return implode("/", $str);
+	}
+	
+	protected function runSubaction($function, $params=array()){
+		$className = get_class($this);
+		$meth = get_class_methods($className);
+		if(!in_array($function, $meth)) {return false;}
+		
+		$actionName = debug_backtrace();
+		$actionName = $actionName[1]['function'];
+
+		$rightsManager = getManager('CRightsManager');
+		if(!$rightsManager->checkAccess($className, $actionName, $function)){return false;}
+		$this->$function();	
+		
 	}
 }
 ?>

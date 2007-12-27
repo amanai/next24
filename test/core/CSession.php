@@ -103,11 +103,8 @@
 */
 
 
-class sqlSession
+class CSession
 {
-
-	/// Database link
-	var $db;
 
 	/// Max unauthorized users can be. After that session and session vars will be deleted
 	var $MAX_UNAUTH_IDLE = 3600;	// 1h
@@ -128,17 +125,14 @@ class sqlSession
 	var $globalID = 0;
 	
 	/// Session table
-	var $session_table = "u_session";
+	var $session_table = "session";
 	
 	/// Session vars table
-	var $session_vars_table = "u_session_vars";
+	var $session_vars_table = "session_vars";
 	
 	/// inner array for variables
 	var $variables;
 	
-	/// db link
-	var $db;
-
 	/// userID
 	var $userID = 0;
 
@@ -149,11 +143,8 @@ class sqlSession
 		From cookies get session id and class variable $session set this ID, after that 
 		proceed demand_session()
 	*/
-	function sqlSession() 
+	function __construct() 
 	{
-		global $g_db; // link to mysql
-		$this->db = & $g_db;
-		
 		if (isset($GLOBALS['session'])) 
 		{ 
 			$this->session = $GLOBALS['session'];
@@ -162,7 +153,6 @@ class sqlSession
 			{
 				$GLOBALS['SID'] = $this->session;
 			}
-			
 		} 
 		else 
 		{

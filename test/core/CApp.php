@@ -1,5 +1,4 @@
 <?php
-	session_start();
 	class CApp {
 		public $manages = array();
 		
@@ -10,7 +9,12 @@
 				'CRouter',
 				'CRightsManager',
 				'CBaseController',
+				'CUser',
 			);
+
+			//static classes
+			require_once(CORE_PATH.'MySql.php');
+			MySql::initDb();
 			
 			foreach ($managersNames as $managerName){
 				if(file_exists(CORE_PATH.$managerName.'.php')){
@@ -27,15 +31,10 @@
 
 		
 		public function run(){
+			$this->manages['CSession']->demand_session();
+			
 			$this->manages['CRouter']->route();
 			$this->manages['CFlashMessage']->displayAll();
-			
-			echo 'url examples - <br/><br/>';
-			echo $this->manages['CRouter']->createUrl() .'<br/>';
-			echo $this->manages['CRouter']->createUrl('contrl') .'<br/>';
-			echo $this->manages['CRouter']->createUrl('contrl', 'action') .'<br/>';
-			echo $this->manages['CRouter']->createUrl('contrl', 'action', "par1").'<br/>';
-			echo $this->manages['CRouter']->createUrl('contrl', 'action', array("par1"=>"aaa")).'<br/>';
 		}
 		
 		/**

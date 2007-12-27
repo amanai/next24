@@ -19,22 +19,22 @@
 			$this->controllerName = $this->getControllerName($actionArr);
 			$this->actionName = $this->getActionName($actionArr);
 			$this->params = $this->getParams($actionArr, $_POST);
-			
+
 			$rightsManager = getManager('CRightsManager');
 			if(!$rightsManager->checkAccess($this->controllerName, $this->actionName)){return;}
 			
 			$session = getManager('CSession');
-			$session->set('LAST_PATH', $_SERVER['REQUEST_URI']);
+			$session->set_var('LAST_PATH', $_SERVER['REQUEST_URI']);
 						
-			$controllerName = $this->controllerName . 'Controller';
-			$actionName = $this->actionName.'Action';
+			$controllerName = $this->controllerName;
+			$actionName = $this->actionName;
 			
 			$controller = new $controllerName(null, $this->params);
 			$controller->$actionName();			
 		}
 
 		
-		public function redirect($path){		
+		public function redirect($path){					
 			header("Location: ".$path);
 			exit();
 		}
@@ -72,38 +72,39 @@
 			if (isset($params[0]) && strlen(trim($params[0]))){
 				if(file_exists(CONTROLLERS_PATH.ucwords($params[0]).'Controller.php')){
 					require_once(CONTROLLERS_PATH.ucwords($params[0]).'Controller.php');
-					return $params[0];
+					return ucwords($params[0]).'Controller';
 				} else {
 					$flashMessage = getManager('CFlashMessage');
 					$session = getManager('CSession');
-					
+
 					$flashMessage->setMessage("Страница не существует", FLASH_MSG_TYPES::$error);
-					if($session->get('LAST_PATH')){
-						$this->redirect($session->get('LAST_PATH'));
+					$lastPath = $session->get_var('LAST_PATH');
+					if($lastPath){
+						$this->redirect($lastPath);
 					} else {
 						require_once(CONTROLLERS_PATH.DEFAULT_CONTROLLER.'Controller.php');
-						return DEFAULT_CONTROLLER;
+						return DEFAULT_CONTROLLER.'Controller';
 					}
 				}
 			} else {
 				require_once(CONTROLLERS_PATH.DEFAULT_CONTROLLER.'Controller.php');
-				return DEFAULT_CONTROLLER;
+				return DEFAULT_CONTROLLER.'Controller';
 			}
 		}
 
 		private function getActionName($params){
 			if(isset($params[1]) && strlen(trim($params[1]))){
 				$actionName = ucwords($params[1]);
-				$meth = get_class_methods($this->controllerName.'Controller');
+				$meth = get_class_methods($this->controllerName);
 				if(in_array($actionName.'Action', $meth)) {
-					return $actionName;
+					return ucwords($actionName).'Action';
 				} else {
 					$flashMessage = getManager('CFlashMessage');
 					$flashMessage->setMessage("Действие не существует", FLASH_MSG_TYPES::$error);
-					return DEFAULT_ACTION;
+					return DEFAULT_ACTION.'Action';
 				}
 			} else {
-				return DEFAULT_ACTION;
+				return DEFAULT_ACTION.'Action';
 			}
 		}	
 		

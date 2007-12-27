@@ -1,5 +1,7 @@
 <?php
-	include 'config.php';
+	if(file_exists('local/config.php')) include 'local/config.php';
+	else include 'config.php';
+
 	include 'core/CApp.php';
 
 	function vdie(){
@@ -14,8 +16,8 @@
 	} 
 
 	global $app;
-	
-	$app = new CApp();
+
+	$app = new CApp();	
 	$app->run();
 		
 	function getManager($name){

@@ -13,9 +13,9 @@
 	define('DEFAULT_ACTION', 'Index');
 
 	define('TABLE_PREFIX', '');	define('APPLICATION_PATH', 'app/');	define('VIEW_PATH', APPLICATION_PATH . 'view/');	define('DEFAULT_TPL', VIEW_PATH . 'main.tpl.php');	
-	define('DB_SERVERNAME', 'next24.ru');
-	define('DB_USERNAME', 'next24');
-	define('DB_PASS', 'kduzo2vfsl4b');
+	define('DB_SERVERNAME', 'localhost');
+	define('DB_USERNAME', 'root');
+	define('DB_PASS', '');
 	define('DB_NAME', 'next24');
 	
 
