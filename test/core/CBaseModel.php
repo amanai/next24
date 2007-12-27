@@ -1,6 +1,7 @@
 <?php
 class CBaseModel
 {
+	var $db;
 	var $id;
 	var $fields = null;
 	var $tableName;
@@ -12,8 +13,9 @@ class CBaseModel
 	имя таблицы берется по имени класса
 	если задать Id при создании инициализирует переменные класса записью из таблицы
 	*/
-	function __construct($id = null)
+	function __construct($id = null, $dblink)
 	{
+		$this->db = $dblink;
 		$this->id = $id;
 		if (!$this->tableName) 
 		{
@@ -32,10 +34,10 @@ class CBaseModel
         if (!is_array($this->fields)) 
 		{
             $sql = "SHOW COLUMNS FROM `" . $this->tableNameDB . "`";
-            $rs = $CDb::execute($sql);
- 			while ($arr = $rs->FetchRow()) 
+            $rs = $CDb::query_array($sql, $this->db);
+			foreach($rs as $item)
 			{ 
-				$this->fields[$arr['Field']] = null;
+				$this->fields[$item['Field']] = null;
         	} 
         }
         return true;
@@ -71,10 +73,10 @@ class CBaseModel
 	function getById($id)
 	{
 		$sql .= "SELECT * FROM " . $this->tableNameDB . " WHERE id = " . $id;
-		$rs = $CDb::execute($sql);
+		$rs = $CDb::query_row($sql, $this->db);
 		if ($rs) 
 		{
-			return $rs->fetchRow();
+			return $rs;
 		}
 		return false;
 	}
@@ -134,8 +136,8 @@ class CBaseModel
 	{
 		$sql = "INSERT INTO `" . $this->tableNameDB . "`
 				SET " . $this->_prepareFields();
-		$CDb::execute($sql);
-		$this->id = $CDb::Insert_ID();
+		$CDb::query($sql, $this->db);
+		$this->id = $CDb::insert_id($this->db);
 		return $this->id;
 	}
 
@@ -147,7 +149,7 @@ class CBaseModel
 		$sql = "UPDATE `" . $this->tableNameDB . "`
 				SET " . $this->_prepareFields() . "
 				WHERE `id` = '" . $this->id . "'";
-		return $CDb::execute($sql);
+		return $CDb::query($sql, $this->db);
 	}
 
 	/*
@@ -157,7 +159,7 @@ class CBaseModel
 	{
 		$sql = "DELETE FROM `" . $this->tableNameDB . "`
 				WHERE id = " . $this->id;
-		return $CDb::execute($sql);
+		return $CDb::query($sql, $this->db);
 	}
 
 	/*
@@ -344,7 +346,7 @@ class CBaseModel
 	function Exec()
 	{
 		$sql = $this->getQueryStr(true);
-		return $CDb::execute($sql);
+		return $CDb::query($sql, $this->db);
 	}
 
 	/*
@@ -353,7 +355,7 @@ class CBaseModel
 	function getOne()
 	{
 		$sql = $this->getQueryStr();
-		return $CDb::getOne($sql);
+		return $CDb::query_row($sql, $this->db);
 	}
 
 	/*
@@ -362,7 +364,7 @@ class CBaseModel
 	function getAll()
 	{
 		$sql = $this->getQueryStr(true);
-		return $CDb::getAll($sql);
+		return $CDb::query_array($sql, $this->db);
 	}
 
 	/*
@@ -373,9 +375,7 @@ class CBaseModel
 		$sql = "REPLACE INTO `" . $this->tableNameDB . "`
 				SET " . $this->_prepareFields() . "
 				WHERE `id` = '" . $this->id . "'";
-		$CDb::execute($sql);
-		$this->id = $CDb::Insert_ID();
-		return $this->id;
+		return $CDb::query($sql, $this->db);
 	}
 }
 
