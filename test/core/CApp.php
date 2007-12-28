@@ -34,7 +34,15 @@
 		public function run(){
 			$this->manages['CLog']->init(BASE_PATH.'log', 'log_', 'LOG', 'oneFile', "counter");
 
-			$this->manages['CSession']->demand_session();
+			$this->manages['CSession']->init();
+			
+			session_set_save_handler(
+				array($this->manages['CSession'], 'demand_session'), 
+				array($this->manages['CSession'], 'close'), 
+				array($this->manages['CSession'], 'get_var'), 
+				array($this->manages['CSession'], 'set_var'), 
+				array($this->manages['CSession'], 'logout'), 
+				array($this->manages['CSession'], 'killold'));
 			
 			$this->manages['CRouter']->route();
 			$this->manages['CFlashMessage']->displayAll();
