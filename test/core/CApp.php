@@ -5,6 +5,7 @@
 		public function __construct(){
 			$managersNames = array(
 				'CLog',
+				'CErrorHandler',
 				'CSession',
 				'CFlashMessage',
 				'CRouter',
