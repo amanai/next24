@@ -1,65 +1,5 @@
 <?
-//!! core lib
-//!  sqlSession class ver. 1.1
-
-/*!
- 	avSession class ver. 1.1 writen by Nikolajus Krauklis ( nikolajus@avc.lt )
- 	based on Joshua Macadam ( josh@qixo.com ) "session" functions ( http://sinc.onestop.net/sqlsession.html )
-	thanks to Juozas Salna ( juozas@avc.lt )
-	
-	All database abstraction rewriten into avDB 
- 	["Alternatyvus Valdymas" database abstaction]
-
-	2001.12.13 - Nikolajus Krauklis
-		
-		+ added drop_var() function for session variable droping
-		- fixed bug with same variable inserting. (now same variable name is updating)
-
-	2001.11.05 - Juozas Salna
-	
-		- users_online('registered') sql bug
-		
-	2001.09.25 - Juozas Salna, Nikolajus Krauklis
-	
-		- idle logout bug
-		+ var $userID
-		
-	2001.09.07 - Juozas Salna
-	
-		* rename, coding style
-		- droped debug feature, for cleaner code
-		
-  	2001 08 28 - Juozas Salna
-  	
- 		+ class speed improve, deleted unneed DB requests,
- 		+ updated set_var method last action, updated get_var method
- 		
- 	2001 08 24 - Nikolajus Krauklis
- 	
- 		+ corrected get_var() function bugs
- 		
- 	2001 08 21 - Nikolajus Krauklis
- 	
- 		+ function users_online - return how many users online
- 		
- 	2001 08 10 - Nikolajus Krauklis 
- 	
- 		+ convert date structure to unix timestamp, then 
- 		  killold function will work corectly		
- 		+ after set_vars(); added loadvars function to renew variables
- 		+ added $load_vars variable. You may not load vars to GLOBALS
- 		
- 	2001 08 09 - Nikolajus Krauklis
- 	
- 		+ gencode(); correction
- 		+ Added variables $session_table and $session_var_table for
- 		  users who wants to have own table name
- 		+ DB structure corrected. Deleted intval column and
- 		  renamed other colums in vars table
- 
- 	TODO: 
-			for this moment no todo.
-
+/*
 	Example of code:	
 \code
 	include_once("SQLsession.class.php");
@@ -143,7 +83,8 @@ class CSession
 		From cookies get session id and class variable $session set this ID, after that 
 		proceed demand_session()
 	*/
-	function __construct() 
+//	function __construct() 
+	function init() 
 	{
 		if (isset($GLOBALS['session'])) 
 		{ 
@@ -408,6 +349,17 @@ class CSession
 		
 		Mysql::query("DELETE FROM " . $this->session_vars_table . " 
 					WHERE session='" . $this->session . "'", $this->db);
+	 	return true;
+	}
+	/*!
+		delete all session vars 
+		Kill session
+	*/
+	function close()
+	{
+		Mysql::query("DELETE FROM " . $this->session_table . " 
+					WHERE id='" . $this->session . "'", $this->db);
+		
 	 	return true;
 	}
 	
