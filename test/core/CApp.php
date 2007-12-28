@@ -4,6 +4,7 @@
 		
 		public function __construct(){
 			$managersNames = array(
+				'CLog',
 				'CSession',
 				'CFlashMessage',
 				'CRouter',
@@ -31,6 +32,8 @@
 
 		
 		public function run(){
+			$this->manages['CLog']->init(BASE_PATH.'log', 'log_', 'LOG', 'oneFile', "counter");
+
 			$this->manages['CSession']->demand_session();
 			
 			$this->manages['CRouter']->route();
