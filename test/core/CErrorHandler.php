@@ -1,20 +1,20 @@
 <?php
 require_once(CORE_PATH.'CMailer.php');
 
-class CErrorHandler 
-{
-	public function __construct() 
-	{
-		$log = getManager('CLog');
-		@set_exception_handler(array($this, 'exception_handler'));
-		@set_error_handler(array($this, 'error_handler'));
-		
+class CErrorHandler extends CBaseManager {
+	
+	public function init(){
+		set_exception_handler(array($this, 'exception_handler'));
+		set_error_handler(array($this, 'error_handler'));
+		parent::init();
 	}
-
+	
+	
 	public function exception_handler($exception) 
 	{
 		$exc = "EXCEPTION. Code: ".$exception->getCode()."; Message: ".$exception->getMessage()."; Script: ".$exception->getFile()."; Line: ".$exception->getLine()."; Trace: ".$exception->getTraceAsString()."; Output: ".$exception->__toString().";";
 		//вывод в протокол
+		$log = getManager('CLog');
 		$log->writeLog($exc);
 		//отправка админу на мыло
         $mail = new CMailer("Server", "Server", "Admin", ADMIN_MAIL, "Exception", $exc, true);
@@ -43,6 +43,7 @@ class CErrorHandler
 	        $err .= " Var dump: " . print_r($vars) . ";";
 	    }
 		//вывод в протокол
+		$log = getManager('CLog');
 		$log->writeLog($err);
 		//отправка админу на мыло
 	    if ($errno == E_USER_ERROR) {

@@ -6,16 +6,18 @@
 		
 		public function setMessage($msg, $type){
 			$session = getManager('CSession');
-			$session->set_var("FLASH_MSG_".$type, $msg);
+			$session->write("FLASH_MSG_".$type, $msg);
 		}
 		
 		public function displayAll(){			
 			$msgTypes = get_class_vars('FLASH_MSG_TYPES');
 			$session = getManager('CSession');
 			foreach($msgTypes as $type){
-				$msg = $session->get_var("FLASH_MSG_".$type);
-				if($msg) $this->renderMsg($msg, $type);
-				$session->drop_var("FLASH_MSG_".$type);
+				if (!is_array($type)){
+					$msg = $session->read("FLASH_MSG_".$type);
+					if($msg) $this->renderMsg($msg, $type);
+					$session->clear("FLASH_MSG_".$type);
+				}
 			}
 		}
 		

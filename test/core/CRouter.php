@@ -9,8 +9,7 @@
 		private $params;
 
 		public function __construct(){
-			$this->path = $_REQUEST['_path']?$_REQUEST['_path']:DEFAULT_CONTROLLER;
-			$rightsManager = new CRightsManager();
+			$this->path = isset($_REQUEST['_path'])?$_REQUEST['_path']:DEFAULT_CONTROLLER;
 		}
 
 		public function route(){
@@ -24,7 +23,7 @@
 			if(!$rightsManager->checkAccess($this->controllerName, $this->actionName)){return;}
 			
 			$session = getManager('CSession');
-			$session->set_var('LAST_PATH', $_SERVER['REQUEST_URI']);
+			$session->write('LAST_PATH', $_SERVER['REQUEST_URI']);
 						
 			$controllerName = $this->controllerName;
 			$actionName = $this->actionName;
@@ -78,7 +77,7 @@
 					$session = getManager('CSession');
 
 					$flashMessage->setMessage("Страница не существует", FLASH_MSG_TYPES::$error);
-					$lastPath = $session->get_var('LAST_PATH');
+					$lastPath = $session->read('LAST_PATH');
 					if($lastPath){
 						$this->redirect($lastPath);
 					} else {
@@ -100,7 +99,14 @@
 					return ucwords($actionName).'Action';
 				} else {
 					$flashMessage = getManager('CFlashMessage');
+					$session = getManager('CSession');
 					$flashMessage->setMessage("Действие не существует", FLASH_MSG_TYPES::$error);
+					$lastPath = $session->read('LAST_PATH');
+					if($lastPath){
+						$this->redirect($lastPath);
+					} else {
+						return DEFAULT_ACTION.'Action';
+					}					
 					return DEFAULT_ACTION.'Action';
 				}
 			} else {

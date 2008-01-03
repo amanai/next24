@@ -13,13 +13,17 @@
 	    	print("</pre>");
 		}
 	    exit();
-	} 
-
+	}
+/*
+$rights = array("IndexController"=>array("IndexAction"=>array("sub2")));
+echo serialize($rights);
+die;
+*/
 	global $app;
-
 	$app = new CApp();	
 	$app->run();
-		
+
+
 	function getManager($name){
 		global $app;
 		return $app->getManager($name);

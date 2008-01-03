@@ -1,28 +1,30 @@
 <?php
 	include CORE_PATH.'action_list.php';
 
-	class CRightsManager {
+	class CRightsManager extends CBaseManager {
 		private $forbiddenName;
-		public function __construct(){
-			
-		}
 		
 		public function checkAccess($controllerName, $actionName, $subactionName=''){
 			$user = getManager('CUser');
-			$userType = $user->userType;
+			$userRights = unserialize($user->getRights());
 			
-			$allowed = true;
-			$allowed &= $this->checkController($controllerName, $userType);
-			($allowed)?$allowed &= $this->checkAction($controllerName, $actionName, $userType):'';
-			
-			if(!$allowed){
+			if(isset($userRights[$controllerName])){				
+				if(isset($userRights[$controllerName][$actionName])){					
+					if(!strlen($subactionName) || in_array($subactionName, $userRights[$controllerName][$actionName])){
+						return true;
+					} else{						
+						return false;
+					}
+				} else {
+					$flashMessage = getManager('CFlashMessage');
+					$flashMessage->setMessage("Доступ запрещен (Екшн ".$actionName.")", FLASH_MSG_TYPES::$error);
+					return false;
+				}
+			} else {
 				$flashMessage = getManager('CFlashMessage');
-				$flashMessage->setMessage("Доступ запрещен (".$this->forbiddenName.")", FLASH_MSG_TYPES::$error);
+				$flashMessage->setMessage("Доступ запрещен (Контроллер ".$controllerName.")", FLASH_MSG_TYPES::$error);
 				return false;
 			}
-			
-			($allowed && $subactionName)?$allowed &= $this->checkSubaction($controllerName, $actionName, $subactionName, $userType):'';
-			return $allowed;
 		}
 		
 		

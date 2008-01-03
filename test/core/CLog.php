@@ -1,6 +1,6 @@
 <?php
 
-class CLog {
+class CLog extends CBaseManager{
 	
 	//globals
 	var $logDir="";
@@ -70,6 +70,8 @@ class CLog {
 			echo "Could not write Counter file";
 		}
 		fclose($fp);
+		
+		parent::init();
 		//-----------------------------------------------------	
 	}//end function
 	
