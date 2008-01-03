@@ -119,7 +119,7 @@ class CLog extends CBaseManager{
 			
 			//write to log file
 			$fp=fopen($logFile,"a");
-			if(fwrite($fp,$logString)===FALSE){
+			if(fwrite($fp,$logString . "\n")===FALSE){
 				echo "Could not write to LOG file";
 			}
 			fclose($fp);
