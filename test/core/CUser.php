@@ -6,11 +6,12 @@
 
 		public function init(){
 			$session = getManager('CSession');
-			$userData = $session->get('user');
-			if(!isset($userData) && !is_array($userData)){
+			$userData = $session->read('user');
+
+			if(!isset($userData) || !is_array($userData)){
 				$this->userType = USER_TYPE_GUEST;
 				$this->userRights = $this->getRights();
-				$session->set('user', array('type'=>$this->userType, 'rights'=>$this->userRights));
+				$session->write('user', serialize(array('type'=>$this->userType, 'rights'=>$this->userRights)));
 			}
 			parent::init();
 		}

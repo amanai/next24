@@ -41,7 +41,7 @@
 			$this->manages['CErrorHandler']->init();
 
 			$this->manages['CSession']->init();
-
+			$this->manages['CUser']->init();
 			$this->manages['CRouter']->route();			
 			$this->manages['CFlashMessage']->displayAll();
 		}
