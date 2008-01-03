@@ -70,6 +70,14 @@ CREATE TABLE `session` (
   KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
+#
+# Dumping data for table session
+#
+
+/*!40101 SET NAMES latin1 */;
+
+
+/*!40101 SET NAMES cp1251 */;
 
 #
 # Table structure for table session_vars
@@ -82,8 +90,16 @@ CREATE TABLE `session_vars` (
   `value` text collate latin1_general_ci,
   PRIMARY KEY  (`id`),
   KEY `sessionID` (`session`)
-) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=153 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
+#
+# Dumping data for table session_vars
+#
+
+/*!40101 SET NAMES latin1 */;
+
+
+/*!40101 SET NAMES cp1251 */;
 
 #
 # Table structure for table subactions_list
@@ -110,7 +126,7 @@ INSERT INTO `subactions_list` VALUES (2,1,'sub2');
 #
 
 CREATE TABLE `user_types` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL default '0',
   `name` varchar(50) character set latin1 collate latin1_general_ci default NULL,
   `rights` text,
   PRIMARY KEY  (`id`)
