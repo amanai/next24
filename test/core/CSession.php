@@ -42,7 +42,7 @@ class CSession extends CBaseManager {
 			array($this, 'write'), 
 			array($this, 'destroy'), 
 			array($this, 'gc'));
-		session_register('SID');
+		session_start();
 	}
 
 	public function open(){
@@ -68,7 +68,6 @@ class CSession extends CBaseManager {
 		  			('" . $varname . "', '" . $this->getSessionID() . "', '" . $value . "')");
 		  } else {
 		  	$mas["value"] = $value;
-		  	$ids["session"] = $this->session;
 		  	$ids["name"] = $varname;
 		  	$sql = "UPDATE " . $this->session_vars_table . " SET `value` = '" . $value . "' WHERE name='" . $varname . "' AND session='" . $this->getSessionID() . "'";
 		  	Mysql::query($sql);
