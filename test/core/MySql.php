@@ -116,10 +116,12 @@ class MySql
 		$ret = array();
 
 		$res = Mysql::query($sql, $link);
-		if ($r = mysql_fetch_assoc($res)){
-			$ret = $r;
+		if (!empty($res)){
+			if ($r = mysql_fetch_assoc($res)){
+				$ret = $r;
+			}
+			mysql_free_result($res);
 		}
-		mysql_free_result($res);
 
 		return $ret;
 	}
@@ -130,17 +132,20 @@ class MySql
 			$link = self::$defaultLink;
 
 		$ret = array();
-
+		
 		$res = Mysql::query($sql, $link);
-		while($r = mysql_fetch_assoc($res)){
-			if ($index_by == ''){
-				$ret[] = $r;
-			}else{
-				$ret[$r[$index_by]] = $r;
+		
+		if (!empty($res)){
+			while($r = mysql_fetch_assoc($res)){
+				if ($index_by == ''){
+					$ret[] = $r;
+				}else{
+					$ret[$r[$index_by]] = $r;
+				}
 			}
-		}
 		mysql_free_result($res);
-
+		}
+		
 		return $ret;
 	}
 
