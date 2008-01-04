@@ -37,11 +37,11 @@ class CErrorHandler extends CBaseManager {
 	                E_STRICT          => "Runtime Notice"
 	                );
 	    // set of errors for which a var trace will be saved
-	    $user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
-	    $err = "ERROR. Number: ".$errno."; Type: ".$errortype[$errno]."; Msg: ".$errmsg."; Script: ".$filename."; Line: ".$linenum.";";
-	    if (in_array($errno, $user_errors)) {
-	        $err .= " Var dump: " . print_r($vars) . ";";
-	    }
+//	    $user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
+	    $err = "ERROR. Number: ".$errno."; Type: ".$errortype[$errno]."; Msg: ".$errstr."; Script: ".$errfile."; Line: ".$errline.";";
+//	    if (in_array($errno, $user_errors)) {
+//	        $err .= " Var dump: " . print_r($vars) . ";";
+//	    }
 		//вывод в протокол
 		$log = getManager('CLog');
 		$log->writeLog($err);
