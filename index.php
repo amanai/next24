@@ -1,6 +1,7 @@
 <?php
 	if(file_exists('local/config.php')) include 'local/config.php';
-	else include 'config.php';
+	include 'config.php';
+
 
 	include 'core/CApp.php';
 

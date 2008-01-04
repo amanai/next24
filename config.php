@@ -4,6 +4,9 @@
 	define('APP_PATH', BASE_PATH.'app/');
 	define('CORE_PATH', BASE_PATH.'core/');
 	
+	define('MANAGER_PATH', CORE_PATH.'managers/');
+	define('UTILS_PATH', CORE_PATH.'utils/');
+	
 	define('CONTROLLERS_PATH', APP_PATH.'controllers/');
 	define('MODELS_PATH', APP_PATH.'models/');
 	define('VIEWS_PATH', APP_PATH.'views/');
@@ -19,5 +22,5 @@
 	define('DB_NAME', 'next24');
 	
 
-	include(CORE_PATH.'constants.php');
+	require_once(CORE_PATH.'constants.php');
 ?>
