@@ -2,8 +2,10 @@
 require_once(CORE_PATH.'CMailer.php');
 
 class CErrorHandler extends CBaseManager {
+	private $log = null;
 	
 	public function init(){
+		$this->log = getManager('CLog');
 		set_exception_handler(array($this, 'exception_handler'));
 		set_error_handler(array($this, 'error_handler'));
 		parent::init();
@@ -14,8 +16,7 @@ class CErrorHandler extends CBaseManager {
 	{
 		$exc = "EXCEPTION. Code: ".$exception->getCode()."; Message: ".$exception->getMessage()."; Script: ".$exception->getFile()."; Line: ".$exception->getLine()."; Trace: ".$exception->getTraceAsString()."; Output: ".$exception->__toString().";";
 		//вывод в протокол
-		$log = getManager('CLog');
-		$log->writeLog($exc);
+		$this->log->writeLog($exc);
 		//отправка админу на мыло
         $mail = new CMailer("Server", "Server", "Admin", ADMIN_MAIL, "Exception", $exc, true);
 	}
@@ -43,8 +44,7 @@ class CErrorHandler extends CBaseManager {
 //	        $err .= " Var dump: " . print_r($vars) . ";";
 //	    }
 		//вывод в протокол
-		$log = getManager('CLog');
-		$log->writeLog($err);
+		$this->log->writeLog($err);
 		//отправка админу на мыло
 	    if ($errno == E_USER_ERROR) {
 	        $mail = new CMailer("Server", "Server", "Admin", ADMIN_MAIL, "Critical User Error", $err, true);
