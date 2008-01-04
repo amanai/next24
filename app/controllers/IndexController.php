@@ -3,7 +3,16 @@
 		
 		public function IndexAction(){
 			echo "IndexController/IndexAction<br/><br/>";
-			echo "params - ";
+			echo "config:<br>";
+			
+			$params = getManager('CParams');
+			echo "param1 = " . $params->getParam("param1");
+			echo "<br/>test_group = ";
+			echo '<pre>';
+			print_r($params->getParamsGroup("test_group"));
+			echo '</pre>';
+			
+			echo "<br/><br/>GET/POST params - ";
 			echo '<pre>';
 			print_r($this->params);
 			echo '</pre>';

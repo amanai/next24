@@ -59,6 +59,25 @@ INSERT INTO `controllers_list` VALUES (1,'IndexController');
 /*!40101 SET NAMES cp1251 */;
 
 #
+# Table structure for table params
+#
+
+CREATE TABLE `params` (
+  `id` int(11) NOT NULL auto_increment,
+  `group_name` varchar(50) default NULL,
+  `item_name` varchar(50) default NULL,
+  `value` text,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+#
+# Dumping data for table params
+#
+
+INSERT INTO `params` VALUES (1,'test_group','param1','Value1');
+INSERT INTO `params` VALUES (2,'test_group','param2','value2');
+
+#
 # Table structure for table session
 #
 
@@ -90,7 +109,7 @@ CREATE TABLE `session_vars` (
   `value` text collate latin1_general_ci,
   PRIMARY KEY  (`id`),
   KEY `sessionID` (`session`)
-) ENGINE=MyISAM AUTO_INCREMENT=153 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=175 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 #
 # Dumping data for table session_vars

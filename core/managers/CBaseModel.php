@@ -22,6 +22,7 @@ class CBaseModel
 		$this->tableNameDB = TABLE_PREFIX . $this->tableName;
 		$this->_initFields();
 		$this->_initFieldsValues();
+		$this->resetSql();
 	}
 
 	/*
@@ -65,6 +66,7 @@ class CBaseModel
 		return true;
 	}
 
+	
 	/*
 	выборка из таблицы по Id
 	*/
@@ -173,6 +175,17 @@ class CBaseModel
 		return implode(", ", $fieldStr);
 	}
 
+	function resetSql(){
+		$this->_parts['*'];
+		$this->_parts['where'] = array();
+        $this->_parts['limitCount']  = 0;
+        $this->_parts['limitOffset'] = 0;
+        $this->_parts['group'] = array();
+        $this->_parts['order'] = array();
+        $this->_parts['join'] = array();
+        
+	}
+	
 	/*
 	установка списка обрабатываемых полей для запроса
 	*/
@@ -335,6 +348,7 @@ class CBaseModel
 		{
 			$sql .= " LIMIT " . $offset . ", " . $count;
 		}
+//echo $sql.'<br>';		
         return $sql;
 	}
 

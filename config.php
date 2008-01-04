@@ -21,6 +21,8 @@
 	define('DB_PASS', 'kduzo2vfsl4b');
 	define('DB_NAME', 'next24');
 	
+	define('ADMIN_MAIL', 'admin@next24.ru');
 
+	
 	require_once(CORE_PATH.'constants.php');
 ?>

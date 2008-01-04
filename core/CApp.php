@@ -11,6 +11,7 @@
 			
 		public function __construct(){
 			$this->managersNames = array(
+				'CParams',
 				'CLog',
 				'CErrorHandler',
 				'CSession',
@@ -39,6 +40,7 @@
 
 		
 		public function run(){	
+			$this->manages['CParams']->init();
 			$this->manages['CLog']->init(BASE_PATH.'log', 'log_', 'LOG', 'oneFile', "counter");
 			$this->manages['CErrorHandler']->init();
 			$this->manages['CSession']->init();
@@ -51,9 +53,6 @@
 			$this->manages['CFlashMessage']->displayAll();
 		}
 		
-		/**
-		 * TODO: добавить проверку на инициализацию менеджера, писать в ерроры ели менеджера нет или не проиничен
-		 */
 		public function getManager($name){				
 			if(isset($this->manages[$name]) ){
 				if (!$this->manages[$name]->inited){
