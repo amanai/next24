@@ -1,5 +1,5 @@
 <?php
-class CBaseController extends CBaseManager 
+class CBaseController 
 {
 	/*
 	* $params - параметры из адресной строки, и т.д., все что будет разбираться роутером
@@ -46,6 +46,9 @@ class CBaseController extends CBaseManager
 		}
 		return implode("/", $str);
 	}
+	
+	
+	public function IndexAction(){}
 	
 	protected function runSubaction($function, $params=array()){
 		$className = get_class($this);

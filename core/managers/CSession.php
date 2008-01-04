@@ -43,6 +43,7 @@ class CSession extends CBaseManager {
 			array($this, 'destroy'), 
 			array($this, 'gc'));
 		session_start();
+		parent::init();
 	}
 
 	public function open(){

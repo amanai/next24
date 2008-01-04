@@ -1,7 +1,6 @@
 <?php
-class CBaseModel extends CBaseManager 
+class CBaseModel
 {
-	var $db;
 	var $id;
 	var $fields = null;
 	var $tableName;
@@ -13,9 +12,8 @@ class CBaseModel extends CBaseManager
 	имя таблицы берется по имени класса
 	если задать Id при создании инициализирует переменные класса записью из таблицы
 	*/
-	function __construct($id = null, $dblink)
+	function __construct($id = null)
 	{
-		$this->db = $dblink;
 		$this->id = $id;
 		if (!$this->tableName) 
 		{
@@ -34,7 +32,7 @@ class CBaseModel extends CBaseManager
         if (!is_array($this->fields)) 
 		{
             $sql = "SHOW COLUMNS FROM `" . $this->tableNameDB . "`";
-            $rs = $CDb::query_array($sql, $this->db);
+            $rs = MySql::query_array($sql);
 			foreach($rs as $item)
 			{ 
 				$this->fields[$item['Field']] = null;
@@ -73,7 +71,7 @@ class CBaseModel extends CBaseManager
 	function getById($id)
 	{
 		$sql .= "SELECT * FROM " . $this->tableNameDB . " WHERE id = " . $id;
-		$rs = $CDb::query_row($sql, $this->db);
+		$rs = MySql::query_row($sql);
 		if ($rs) 
 		{
 			return $rs;
@@ -136,8 +134,8 @@ class CBaseModel extends CBaseManager
 	{
 		$sql = "INSERT INTO `" . $this->tableNameDB . "`
 				SET " . $this->_prepareFields();
-		$CDb::query($sql, $this->db);
-		$this->id = $CDb::insert_id($this->db);
+		MySql::query($sql);
+		$this->id = MySql::insert_id();
 		return $this->id;
 	}
 
@@ -149,7 +147,7 @@ class CBaseModel extends CBaseManager
 		$sql = "UPDATE `" . $this->tableNameDB . "`
 				SET " . $this->_prepareFields() . "
 				WHERE `id` = '" . $this->id . "'";
-		return $CDb::query($sql, $this->db);
+		return MySql::query($sql);
 	}
 
 	/*
@@ -159,7 +157,7 @@ class CBaseModel extends CBaseManager
 	{
 		$sql = "DELETE FROM `" . $this->tableNameDB . "`
 				WHERE id = " . $this->id;
-		return $CDb::query($sql, $this->db);
+		return MySql::query($sql);
 	}
 
 	/*
@@ -346,7 +344,7 @@ class CBaseModel extends CBaseManager
 	function Exec()
 	{
 		$sql = $this->getQueryStr(true);
-		return $CDb::query($sql, $this->db);
+		return MySql::query($sql);
 	}
 
 	/*
@@ -355,7 +353,7 @@ class CBaseModel extends CBaseManager
 	function getOne()
 	{
 		$sql = $this->getQueryStr();
-		return $CDb::query_row($sql, $this->db);
+		return MySql::query_row($sql);
 	}
 
 	/*
@@ -364,7 +362,7 @@ class CBaseModel extends CBaseManager
 	function getAll()
 	{
 		$sql = $this->getQueryStr(true);
-		return $CDb::query_array($sql, $this->db);
+		return MySql::query_array($sql);
 	}
 
 	/*
@@ -375,7 +373,7 @@ class CBaseModel extends CBaseManager
 		$sql = "REPLACE INTO `" . $this->tableNameDB . "`
 				SET " . $this->_prepareFields() . "
 				WHERE `id` = '" . $this->id . "'";
-		return $CDb::query($sql, $this->db);
+		return MySql::query($sql);
 	}
 }
 
