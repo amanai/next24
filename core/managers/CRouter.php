@@ -1,6 +1,6 @@
 <?php
 	
-	class CRouter {
+	class CRouter extends CBaseManager{
 		
 		private $path;
 		

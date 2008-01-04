@@ -1,4 +1,4 @@
-<?php/*базовый класс представления*/class CBaseView{	var $template	= null;	var $_vars		= array();	var $content	= array();	/*	конструктор класса	$template - имя каркасного шаблона	*/
+<?php/*базовый класс представления*/class CBaseView extends CBaseManager {	var $template	= null;	var $_vars		= array();	var $content	= array();	/*	конструктор класса	$template - имя каркасного шаблона	*/
 	function __construct($template = null)	{		if (empty($template)) 		{			$this->mainTpl = DEFAULT_TPL;		} 		else 		{			$this->template = $template;		}	}
 	/*	установка каркасного шаблона	$tpl - имя каркасного шаблона	*/
 	function setTemplate($tpl)	{		$this->template = $tpl;	}

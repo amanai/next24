@@ -1,6 +1,4 @@
 <?php
-	include CORE_PATH.'action_list.php';
-
 	class CRightsManager extends CBaseManager {
 		private $forbiddenName;
 		

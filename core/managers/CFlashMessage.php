@@ -1,9 +1,5 @@
 <?php
-	class CFlashMessage {
-		public function __construct(){
-			
-		}
-		
+	class CFlashMessage extends CBaseManager {
 		public function setMessage($msg, $type){
 			$session = getManager('CSession');
 			$session->write("FLASH_MSG_".$type, $msg);

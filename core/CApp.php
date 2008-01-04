@@ -1,5 +1,5 @@
 <?php
-	require_once(CORE_PATH.'CBaseManager.php');
+	require_once(MANAGER_PATH.'CBaseManager.php');
 
 	class CApp {
 		public $manages = array();
@@ -19,12 +19,12 @@
 			);
 
 			//static classes
-			require_once(CORE_PATH.'MySql.php');
+			require_once(UTILS_PATH.'MySql.php');
 			MySql::initDb();
 			
 			foreach ($this->managersNames as $managerName){
-				if(file_exists(CORE_PATH.$managerName.'.php')){
-					require_once(CORE_PATH.$managerName.'.php');					
+				if(file_exists(MANAGER_PATH.$managerName.'.php')){
+					require_once(MANAGER_PATH.$managerName.'.php');					
 				}
 			}
 			
@@ -36,7 +36,7 @@
 		}
 
 		
-		public function run(){		
+		public function run(){	
 			$this->manages['CLog']->init(BASE_PATH.'log', 'log_', 'LOG', 'oneFile', "counter");
 			$this->manages['CErrorHandler']->init();
 

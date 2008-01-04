@@ -1,5 +1,5 @@
 <?php
-require_once(CORE_PATH.'CMailer.php');
+require_once(UTILS_PATH.'CMailer.php');
 
 class CErrorHandler extends CBaseManager {
 	private $log = null;

@@ -1,5 +1,5 @@
 <?php
-class CBaseController
+class CBaseController extends CBaseManager 
 {
 	/*
 	* $params - параметры из адресной строки, и т.д., все что будет разбираться роутером

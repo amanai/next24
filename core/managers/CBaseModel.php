@@ -1,5 +1,5 @@
 <?php
-class CBaseModel
+class CBaseModel extends CBaseManager 
 {
 	var $db;
 	var $id;
