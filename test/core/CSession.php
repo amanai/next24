@@ -62,12 +62,13 @@ class CSession extends CBaseManager {
 		  $sql = "SELECT id FROM " . $this->session_vars_table . " WHERE name='" . $varname . "' AND session='" . $this->getSessionID() . "'";
 		  $rez = Mysql::query_array($sql);
 
-		  if (!$rez[0]['id']) {
+		  if (!$rez[0]) {
 		  	$rez = Mysql::query("INSERT INTO " . $this->session_vars_table . "  
 		  			(name,session,value) VALUES
 		  			('" . $varname . "', '" . $this->getSessionID() . "', '" . $value . "')");
 		  } else {
 		  	$mas["value"] = $value;
+//		  	$ids["session"] = $this->session;
 		  	$ids["name"] = $varname;
 		  	$sql = "UPDATE " . $this->session_vars_table . " SET `value` = '" . $value . "' WHERE name='" . $varname . "' AND session='" . $this->getSessionID() . "'";
 		  	Mysql::query($sql);
