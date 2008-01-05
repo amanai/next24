@@ -14,6 +14,7 @@ class CValidator
 
 	public function initRules()
 	{
+		
 		if ($handle = opendir(RULE_DIR_PATH)) 
 		{
 		    while ($file = readdir($handle)) 
