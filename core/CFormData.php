@@ -9,12 +9,11 @@
 		'required' => true,
             ),
 */
-require_once 'CBaseView.php';
 
 class CFormData
 {
     var $title			= '';
-    var $tpl			= VIEWS_PATH.'form/form.tpl.php';
+    var $tpl			= 'form/form.tpl.php';
 	var $action			= '';
 	var $method			= '';
 	var $enctype		= '';
@@ -28,10 +27,10 @@ class CFormData
 
 	var $view;
 	
-	public function __construct($formTitle='', $formTpl = VIEWS_PATH.'form/form.tpl.php', $formAction='', $formMethod = 'POST', $formEnctype = '', $formSubmitText = '', $formCancelText = '', $formCancelUrl = '', $formFields = array(), $formData = array(), $formHidden = array(), $formError = array())
+	public function __construct($formTitle='', $formTpl = 'form/form.tpl.php', $formAction='', $formMethod = 'POST', $formEnctype = '', $formSubmitText = '', $formCancelText = '', $formCancelUrl = '', $formFields = array(), $formData = array(), $formHidden = array(), $formError = array())
 	{
 		$this->title		= $formTitle;
-		$this->tpl			= $formTpl;
+		$this->tpl			= VIEWS_PATH.$formTpl;
 		$this->action		= $formAction;
 		$this->method		= $formMethod;
 		$this->enctype		= $formEnctype;
@@ -51,9 +50,9 @@ class CFormData
 		$this->title = $formTitle;
 	}
 	
-	public function setTpl($formTpl = VIEWS_PATH.'form/form.tpl.php')
+	public function setTpl($formTpl = 'form/form.tpl.php')
 	{
-		$this->tpl = $formTpl;
+		$this->tpl = VIEWS_PATH.$formTpl;
 	}
 	
 	public function setAction($formAction='')
@@ -88,12 +87,12 @@ class CFormData
 	
 	public function setFields($formFields = array())
 	{
-		$this->fields = $formCancelUrl;
+		$this->fields = $formFields;
 	}
 	
 	public function setData($formData = array())
 	{
-		$this->data = $formCancelUrl;
+		$this->data = $formData;
 	}
 	
 	public function setHidden($formHidden = array())
@@ -106,7 +105,7 @@ class CFormData
 		$this->error = $formError;
 	}
 	
-	public function setView($formTpl = VIEWS_PATH.'form/form.tpl.php')
+	public function setView($formTpl = 'form/form.tpl.php')
 	{
 		$this->setTpl($formTpl);
 		unset($this->view);
@@ -125,13 +124,15 @@ class CFormData
 			'fields'		=> $this->fields,
 			'data'			=> $this->data,
 			'hidden'		=> $this->hidden,
-			'error'			=> array(),
+			'error'			=> $this->error,
 		);
+
 	}
 
 	public function renderForm()
 	{
 		$this->view->render($this->tpl);
+		return $this->view->content;
 	}
 
 	public function validate()
@@ -145,11 +146,11 @@ class CFormData
 
 		foreach ((array)$this->fields as $key => $field) 
 		{
-			if ($field['required'] == true) 
+			if (isset($field['required']) && ($field['required'] == true)) 
 			{
 				$Validator->addRule(new Required($field['name'], $field['title'] . ' обязательное поле'));
 			}
-			if ($field['validator_name'] != '') 
+			if (isset($field['validator_name']) && ($field['validator_name'] != '')) 
 			{
 				$Validator->addRule(new $field['validator']($field['name'], $field['validator_msg']));
 			}
