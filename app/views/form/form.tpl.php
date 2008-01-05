@@ -18,9 +18,12 @@
 				<?php if (array_key_exists($field['name'], $this->form['error'])): ?>
 					<span><?php echo $this->form['error'][$field['name']]; ?></span><br>
 				<?php endif; ?>
-				<?php include($field['type']); ?><?php echo $field['afterText']; ?>
+				<?php include($field['type']); ?><?php if(isset($field['beforeText'])) {echo $field['afterText'];} ?>
 			</td>
 	</tr>
+	<?php endforeach; ?>
+	<?php foreach ((array)$this->form['hidden'] as $key=>$value): ?>
+	<input type="hidden" name="<?php echo $key; ?>" value="<?php echo $value; ?>">
 	<?php endforeach; ?>
 	<tr>
 		<td align="center" colspan="2">
