@@ -72,7 +72,7 @@ class CBaseModel
 	*/
 	function getById($id)
 	{
-		$sql .= "SELECT * FROM " . $this->tableNameDB . " WHERE id = " . $id;
+		$sql = "SELECT * FROM " . $this->tableNameDB . " WHERE id = " . $id;
 		$rs = MySql::query_row($sql);
 		if ($rs) 
 		{
@@ -176,7 +176,7 @@ class CBaseModel
 	}
 
 	function resetSql(){
-		$this->_parts['*'];
+		$this->_parts['cols'] = '*';
 		$this->_parts['where'] = array();
         $this->_parts['limitCount']  = 0;
         $this->_parts['limitOffset'] = 0;
@@ -259,11 +259,11 @@ class CBaseModel
 	function getQueryStr($dateFormat = false)
     {
         $sql = "SELECT";
-        if ($this->_parts['distinct']) 
+        if (isset($this->_parts['distinct'])) 
 		{
             $sql .= " DISTINCT";
         }
-        if ($this->_parts['forUpdate']) 
+        if (isset($this->_parts['forUpdate'])) 
 		{
             $sql .= " FOR UPDATE";
         }
@@ -280,7 +280,7 @@ class CBaseModel
         $sql .= "\n\t";
         $sql .= "FROM ";
 		// список таблиц
-        if ($this->_parts['from']) 
+        if (isset($this->_parts['from'])) 
 		{
             $list = array();
             foreach ($this->_parts['from'] as $from) 
@@ -295,7 +295,7 @@ class CBaseModel
 		}
         $sql .= "\n\t";
         // список джойнов
-        if ($this->_parts['join']) 
+        if (isset($this->_parts['join'])) 
 		{
             $list = array();
             foreach ($this->_parts['join'] as $join) 
@@ -326,7 +326,7 @@ class CBaseModel
             $sql .= implode(",\n\t", $this->_parts['group']) . "\n";
         }
         // having
-        if ($this->_parts['having']) 
+        if (isset($this->_parts['having'])) 
 		{
             $sql .= "HAVING\n\t";
             $sql .= implode("\n\t", $this->_parts['having']) . "\n";
