@@ -156,6 +156,13 @@ CREATE TABLE `user_types` (
 #
 
 INSERT INTO `user_types` VALUES (0,'?????','a:1:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:1:{i:0;s:4:\"sub2\";}}}');
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL default '',
+  `value` text NOT NULL,
+  `check` enum('y','n') NOT NULL default 'y',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
 /*!40101 SET NAMES latin1 */;
 
