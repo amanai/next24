@@ -28,9 +28,9 @@ class CValidator
 		}
 	}
 
-	public function addRule(&$rule)
+	public function addRule(CRule $rule)
 	{
-		$this->rules[] =& $rule;
+		$this->rules[] = $rule;
 	}
 
 	public function validate()

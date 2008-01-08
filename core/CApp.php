@@ -1,9 +1,7 @@
 <?php
 	require_once(MANAGER_PATH.'CBaseManager.php');
-	require_once(MANAGER_PATH.'CBaseController.php');
-	require_once(MANAGER_PATH.'CBaseView.php');
 	require_once(MANAGER_PATH.'CBaseModel.php');
-	
+
 	class CApp {
 		public $manages = array();
 		
@@ -40,6 +38,7 @@
 
 		
 		public function run(){	
+
 			$this->manages['CParams']->init();
 			$this->manages['CLog']->init(BASE_PATH.'log', 'log_', 'LOG', 'oneFile', "counter");
 			$this->manages['CErrorHandler']->init();
@@ -48,9 +47,13 @@
 			$this->manages['CRouter']->init();
 			$this->manages['CRightsManager']->init();
 			$this->manages['CUser']->init();
-			
+				
+			require_once(MANAGER_PATH.'CBaseController.php');	
+			require_once(MANAGER_PATH.'CBaseView.php');
+
 			$this->manages['CRouter']->route();			
 			$this->manages['CFlashMessage']->displayAll();
+
 		}
 		
 		public function getManager($name){				

@@ -1,12 +1,9 @@
 <?php
 	require_once MODELS_PATH . "Test.php";
-	require_once MANAGER_PATH . 'CBaseView.php';
 	require_once CORE_PATH . 'CFormData.php';
 	
 	class TestController extends CBaseController{
 		
-		var $view;
-		var $model;
 		var $formFields = array(
 			'name' => array(
 				'name' => 'name',
@@ -31,12 +28,10 @@
             ),
 		);
 
-		function __construct($View=null, $params = array(), $vars = array())
-		{
-			$this->params = $params;
-			$this->vars = $vars;
-			$this->view = new CBaseView(VIEWS_PATH . "testview.tpl.php");;
-			$this->model = new Test();
+		function __construct($View=null, $params = array(), $vars = array()){
+			$view = new CBaseView(VIEWS_PATH . "testview.tpl.php");
+			$this->setModel("Test");
+			parent::__construct($view, $params, $vars);	
 		}
 		
 		public function IndexAction(){
@@ -48,7 +43,10 @@
 			{
 				$content .= '<tr><td>'.$item['name'].'</td><td>'.$item['value'].'</td><td>'.$item['check'].'</td><td><a href="/Test/Delete/id:'.$item['id'].'">Удалить</a>&nbsp;<a href="/Test/Edit/id:'.$item['id'].'">Редактировать</a></td></tr>';
 			}
-			$content .= '<tr><th></th><th></th><th></th><th><a href="/Test/Add">Добавить</a></th></tr>';
+			
+			$router = getManager('CRouter');
+			$url = $router->createUrl('Test', 'Add');
+			$content .= '<tr><th></th><th></th><th></th><th><a href="'.$url.'">Добавить</a></th></tr>';
 			$content .= '</table>';
 			$this->view->content = $content;
 			$this->view->display();
@@ -75,10 +73,11 @@
 				$data = $this->model->getById($this->params['id']);
 				$form = new CFormData();
 				$form->setTitle('Редактирование элемента');
-				$form->setAction('/Test/Save');
+				$router = getManager('CRouter');
+				$form->setAction($router->createUrl('Test', 'Save'));
 				$form->setSubmitText('Сохранить');
 				$form->setCancelText('Назад');
-				$form->setCancelUrl('/Test/Index');
+				$form->setCancelUrl($router->createUrl('Test'));
 				$form->setFields($this->formFields);
 				$form->setData($data);
 				$form->setHidden(array('id'=>$this->params['id']));
@@ -93,10 +92,12 @@
 			echo '</pre>';
 			$form = new CFormData();
 			$form->setTitle('Добавление элемента');
-			$form->setAction('/Test/Save');
+			
+			$router = getManager('CRouter');
+			$form->setAction($router->createUrl('Test', 'Save'));
 			$form->setSubmitText('Сохранить');
 			$form->setCancelText('Назад');
-			$form->setCancelUrl('/Test/Index');
+			$form->setCancelUrl($router->createUrl('Test'));
 			$form->setFields($this->formFields);
 			$form->initForm();
 			$this->view->content = $form->renderForm();
@@ -105,11 +106,13 @@
 
 		public function SaveAction(){
 			echo "TestController/SaveAction<br/><br/>";
+
 			$data = $this->params;
 			$form = new CFormData();
 			$form->setFields($this->formFields);
-			$form->setData($data);
-			vdie($data);
+			$form->setData($data);			
+
+			$router = getManager('CRouter');
 			if($form->validate())
 			{
 				$this->model->setData($data);
@@ -118,13 +121,13 @@
 					$this->model->id = $this->params['id'];
 					$this->model->update();
 					echo '</pre>';
-					echo 'Запись обновлена. <a href="/Test/Index">На главную</a></pre>';
+					echo 'Запись обновлена. <a href="'.$router->createUrl('Test').'">На главную</a></pre>';
 				}
 				else
 				{
 					$this->model->insert();
 					echo '</pre>';
-					echo 'Запись вставлена. <a href="/Test/Index">На главную</a></pre>';
+					echo 'Запись вставлена. <a href="'.$router->createUrl('Test').'">На главную</a></pre>';
 				}
 			}
 			else
@@ -138,31 +141,15 @@
 				{
 					$form->setTitle('Добавление элемента');
 				}
-				$form->setAction('/Test/Save');
+				$form->setAction($router->createUrl('Test', 'Save'));
 				$form->setSubmitText('Сохранить');
 				$form->setCancelText('Назад');
-				$form->setCancelUrl('/Test/Index');
+				$form->setCancelUrl($router->createUrl('Test'));
 				$form->initForm();
 				$this->view->content = $form->renderForm();
 				$this->view->display();
 			}
 			echo '</pre>';
-		}
-		
-		public function sub1(){
-			echo 'sub1<br/><br/>';
-		}
-		
-		public function sub2(){
-			echo 'sub2<br/><br/>';
-			echo 'url examples - <br/><br/>';
-			
-			$router = getManager('CRouter');
-			echo $router->createUrl() .'<br/>';
-			echo $router->createUrl('contrl') .'<br/>';
-			echo $router->createUrl('contrl', 'action') .'<br/>';
-			echo $router->createUrl('contrl', 'action', "par1").'<br/>';
-			echo $router->createUrl('contrl', 'action', array("par1"=>"aaa")).'<br/>';
 		}
 	}
 ?>

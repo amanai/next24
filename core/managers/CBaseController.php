@@ -7,6 +7,8 @@ class CBaseController
 	*/
 	var $params = array();
 	var $vars = array();
+	var $view;
+	var $model;
 	
 	/*
 	конструктор получает параметры, переменные и представление
@@ -15,7 +17,7 @@ class CBaseController
 	{
 		$this->params = $params;
 		$this->vars = $vars;
-		$this->view = $View;
+		(!is_null($View)) ? ($this->view = $View) : ($this->view = new CBaseView());
 	}
 	function _getParam($name)
 	{
@@ -62,6 +64,13 @@ class CBaseController
 		if(!$rightsManager->checkAccess($className, $actionName, $function)){return false;}
 		$this->$function();	
 		
+	}
+	
+	protected function setModel($modelName){
+		if(file_exists(MODELS_PATH.$modelName.'.php')){
+			require_once(MODELS_PATH.$modelName.'.php');
+			$this->model = new $modelName;
+		}
 	}
 }
 ?>

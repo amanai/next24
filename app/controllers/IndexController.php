@@ -1,8 +1,14 @@
 <?php
 	class IndexController extends CBaseController{
 		
-		public function IndexAction(){
-			echo "IndexController/IndexAction<br/><br/>";
+		function __construct($View=null, $params = array(), $vars = array()){
+			parent::__construct($View, $params, $vars);
+		}
+		
+		public function IndexAction(){			
+			$this->view->display();
+			
+/*			echo "IndexController/IndexAction<br/><br/>";
 			echo "config:<br>";
 			
 			$params = getManager('CParams');
@@ -16,15 +22,15 @@
 			echo '<pre>';
 			print_r($this->params);
 			echo '</pre>';
-			?>
+			echo '
 			<form method="post" >
 				<input type="text" name="test"/>
 				<input type="submit" >
-			</form>
-			<?php
+			</form>';
+			
 				
 			$this->runSubaction('sub1');
-			$this->runSubaction('sub2');
+			$this->runSubaction('sub2');*/
 		}
 		
 		

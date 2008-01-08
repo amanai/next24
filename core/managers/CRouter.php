@@ -21,7 +21,7 @@
 
 			$rightsManager = getManager('CRightsManager');
 			if(!$rightsManager->checkAccess($this->controllerName, $this->actionName)){return;}
-			
+
 			$session = getManager('CSession');
 			$session->write('LAST_PATH', $_SERVER['REQUEST_URI']);
 						
@@ -33,42 +33,42 @@
 		}
 
 		
-		public function redirect($path){					
+		public function redirect($path){
 			header("Location: ".$path);
-			exit();
+			exit;
 		}
 		
 		public function createUrl($controller=null, $action=null, $params=null){
 			$rez = '';
 			if(is_null($controller)){
-				return DEFAULT_CONTROLLER;
+				return BASE_URL.DEFAULT_CONTROLLER;
 			} else {
 				$rez = $controller;
 			}
 			if(is_null($action)){
-				return $rez.'/'.DEFAULT_ACTION;
+				return BASE_URL.$rez.'/'.DEFAULT_ACTION;
 			} else {
 				$rez .= '/'.$action;
 			}
 			
 			if(is_null($params)){
-				return $rez;
+				return BASE_URL.$rez;
 			} else {
 				if(is_array($params)){
 					$tmp = '';
 					foreach($params as $key=>$val){
 						$tmp = $key.':'.$val;
 					}
-					return $rez.'/'.$tmp;
+					return BASE_URL.$rez.'/'.$tmp;
 				} else {
-					return $rez.'/'.$params;
+					return BASE_URL.$rez.'/'.$params;
 				}
 			}
 		}
 		
 		
 		private function getControllerName($params){
-			if (isset($params[0]) && strlen(trim($params[0]))){
+			if (isset($params[0]) && strlen(trim($params[0]))){				
 				if(file_exists(CONTROLLERS_PATH.ucwords($params[0]).'Controller.php')){
 					require_once(CONTROLLERS_PATH.ucwords($params[0]).'Controller.php');
 					return ucwords($params[0]).'Controller';

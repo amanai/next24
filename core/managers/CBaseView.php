@@ -6,4 +6,4 @@
 	function assign($var, $value)	{		$this->_vars[$var] = $value;		$this->$var = $value;	}
 	/*	генерация шаблона	$file - имя файла с шаблоном переменной	$content_name - имя генерируемого шаблона в массиве сгенерированных шаблонов	*/
 	function render($file, $content_name = 'main')	{		ob_start();		include $file;//		$this->content[$content_name] .=  ob_get_clean();		$this->content .=  ob_get_clean();		foreach ($this->_vars as $name => $value) 		{			unset($this->_vars[$name]);		}		$this->_vars = array();	}	/*	отображение каркасного шаблона	*/
-	function display()	{		include($this->template);	}}?>
+	function display(){		require_once($this->template);	}}?>
