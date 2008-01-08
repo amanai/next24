@@ -29,13 +29,18 @@ CREATE TABLE `actions_list` (
   PRIMARY KEY  (`id`),
   KEY `controller_idIdx` (`controller_id`),
   KEY `nameIdx` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table actions_list
 #
 
 INSERT INTO `actions_list` VALUES (1,1,'IndexAction');
+INSERT INTO `actions_list` VALUES (2,2,'IndexAction');
+INSERT INTO `actions_list` VALUES (3,2,'DeleteAction');
+INSERT INTO `actions_list` VALUES (4,2,'EditAction');
+INSERT INTO `actions_list` VALUES (5,2,'AddAction');
+INSERT INTO `actions_list` VALUES (6,2,'SaveAction');
 
 #
 # Table structure for table controllers_list
@@ -43,20 +48,16 @@ INSERT INTO `actions_list` VALUES (1,1,'IndexAction');
 
 CREATE TABLE `controllers_list` (
   `id` int(11) NOT NULL auto_increment,
-  `name` varchar(50) collate latin1_general_ci default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `nameIdx` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+  `name` varchar(50) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table controllers_list
 #
 
-/*!40101 SET NAMES latin1 */;
-
 INSERT INTO `controllers_list` VALUES (1,'IndexController');
-
-/*!40101 SET NAMES cp1251 */;
+INSERT INTO `controllers_list` VALUES (2,'TestController');
 
 #
 # Table structure for table params
@@ -68,7 +69,7 @@ CREATE TABLE `params` (
   `item_name` varchar(50) default NULL,
   `value` text,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table params
@@ -82,21 +83,17 @@ INSERT INTO `params` VALUES (2,'test_group','param2','value2');
 #
 
 CREATE TABLE `session` (
-  `id` varchar(100) collate latin1_general_ci NOT NULL default '',
+  `id` varchar(100) NOT NULL default '',
   `lastaction` int(10) NOT NULL default '0',
-  `ip` char(15) collate latin1_general_ci NOT NULL default '',
+  `ip` char(15) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 ROW_FORMAT=FIXED;
 
 #
 # Dumping data for table session
 #
 
-/*!40101 SET NAMES latin1 */;
-
-
-/*!40101 SET NAMES cp1251 */;
 
 #
 # Table structure for table session_vars
@@ -104,21 +101,17 @@ CREATE TABLE `session` (
 
 CREATE TABLE `session_vars` (
   `id` int(11) NOT NULL auto_increment,
-  `name` varchar(100) collate latin1_general_ci NOT NULL default '',
-  `session` varchar(100) collate latin1_general_ci NOT NULL default '',
-  `value` text collate latin1_general_ci,
+  `name` varchar(100) default NULL,
+  `session` varchar(100) default NULL,
+  `value` text,
   PRIMARY KEY  (`id`),
   KEY `sessionID` (`session`)
-) ENGINE=MyISAM AUTO_INCREMENT=175 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=153 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table session_vars
 #
 
-/*!40101 SET NAMES latin1 */;
-
-
-/*!40101 SET NAMES cp1251 */;
 
 #
 # Table structure for table subactions_list
@@ -131,7 +124,7 @@ CREATE TABLE `subactions_list` (
   PRIMARY KEY  (`id`),
   KEY `action_idIdx` (`action_id`),
   KEY `nameIdex` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table subactions_list
@@ -141,12 +134,29 @@ INSERT INTO `subactions_list` VALUES (1,1,'sub1');
 INSERT INTO `subactions_list` VALUES (2,1,'sub2');
 
 #
+# Table structure for table test
+#
+
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL default '',
+  `value` text NOT NULL,
+  `check` enum('y','n') NOT NULL default 'y',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+#
+# Dumping data for table test
+#
+
+
+#
 # Table structure for table user_types
 #
 
 CREATE TABLE `user_types` (
   `id` int(11) NOT NULL default '0',
-  `name` varchar(50) character set latin1 collate latin1_general_ci default NULL,
+  `name` varchar(50) default NULL,
   `rights` text,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251 ROW_FORMAT=FIXED;
@@ -155,14 +165,28 @@ CREATE TABLE `user_types` (
 # Dumping data for table user_types
 #
 
-INSERT INTO `user_types` VALUES (0,'?????','a:1:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:1:{i:0;s:4:\"sub2\";}}}');
-CREATE TABLE `test` (
+INSERT INTO `user_types` VALUES (0,'Гость','a:3:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:2:{i:0;s:4:\"sub2\";i:1;s:4:\"sub1\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:2:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}}}');
+INSERT INTO `user_types` VALUES (1,'Админ','a:3:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:2:{i:0;s:4:\"sub2\";i:1;s:4:\"sub1\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:2:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}}}');
+
+#
+# Table structure for table users
+#
+
+CREATE TABLE `users` (
   `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) NOT NULL default '',
-  `value` text NOT NULL,
-  `check` enum('y','n') NOT NULL default 'y',
+  `login` varchar(20) default NULL,
+  `pass` varchar(20) default NULL,
+  `user_type_id` int(11) default NULL,
+  `first_name` varchar(50) default NULL,
+  `last_name` varchar(50) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+#
+# Dumping data for table users
+#
+
+INSERT INTO `users` VALUES (1,'admin','admin',1,'Админ','Админов');
 
 /*!40101 SET NAMES latin1 */;
 
