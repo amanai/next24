@@ -6,7 +6,9 @@
 		'title' => 'Название',
 		'desc' => 'Описание',
 		'type' => FORM_FIELD_TEXT,
-		'required' => true,
+		'validator_name' => 'Required',
+		'validator_msg' => 'обязательное поле',
+		
             ),
 */
 
@@ -17,9 +19,11 @@ class CFormData
 	var $action			= '';
 	var $method			= '';
 	var $enctype		= '';
+	var $script			= '';
 	var $submit_text	= '';
 	var $cancel_text	= '';
 	var $cancel_url		= '';
+	var $script			= '';
 	var $fields			= array();
 	var $data			= array();
 	var $hidden			= array();
@@ -27,7 +31,7 @@ class CFormData
 
 	var $view;
 	
-	public function __construct($formTitle='', $formTpl = 'form/form.tpl.php', $formAction='', $formMethod = 'POST', $formEnctype = '', $formSubmitText = '', $formCancelText = '', $formCancelUrl = '', $formFields = array(), $formData = array(), $formHidden = array(), $formError = array())
+	public function __construct($formTitle='', $formTpl = 'form/form.tpl.php', $formAction='', $formMethod = 'POST', $formEnctype = '', $formSubmitText = '', $formCancelText = '', $formCancelUrl = '', $formFields = array(), $formData = array(), $formHidden = array(), $formError = array(), $formScript = '')
 	{
 		$this->title		= $formTitle;
 		$this->tpl			= VIEWS_PATH.$formTpl;
@@ -41,6 +45,7 @@ class CFormData
 		$this->data			= $formData;
 		$this->hidden		= $formHidden;
 		$this->error		= $formError;
+		$this->script		= $formScript;
 
 		$this->view	= new CBaseView($this->tpl);
 	}
@@ -104,6 +109,11 @@ class CFormData
 	{
 		$this->error = $formError;
 	}
+
+	public function setScript($formScript = array())
+	{
+		$this->script = $formError;
+	}
 	
 	public function setView($formTpl = 'form/form.tpl.php')
 	{
@@ -125,6 +135,7 @@ class CFormData
 			'data'			=> $this->data,
 			'hidden'		=> $this->hidden,
 			'error'			=> $this->error,
+			'script'		=> $this->script,
 		);
 
 	}
@@ -146,10 +157,10 @@ class CFormData
 
 		foreach ((array)$this->fields as $key => $field) 
 		{
-			if (isset($field['required']) && ($field['required'] == true)) 
+/*			if (isset($field['required']) && ($field['required'] == true)) 
 			{
 				$Validator->addRule(new Required($field['name'], $field['title'] . ' обязательное поле'));
-			}
+			}*/
 			if (isset($field['validator_name']) && ($field['validator_name'] != '')) 
 			{
 				$Validator->addRule(new $field['validator']($field['name'], $field['validator_msg']));
