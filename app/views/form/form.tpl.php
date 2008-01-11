@@ -1,3 +1,8 @@
+<?php if (isset($this->form['script']) && !empty($this->form['script'])): ?>
+<script language="JavaScript">
+<?php echo $this->form['script']; ?>
+</script>
+<?php endif; ?>
 <?php if (isset($this->form['title']) && !empty($this->form['title'])): ?>
 	<h2><?php echo $this->form['title']; ?></h2>
 <?php endif; ?>
