@@ -5,17 +5,21 @@
 		
 		public function __construct(){
 			$this->setModel('Users');
+			$this->userType = USER_TYPE_GUEST;
 		}
 
 		public function init(){
 			$session = getManager('CSession');
 			$userData = $session->read('user');
-			$userData = unserialize($userData);
-			
+			$userData = @unserialize($userData);
+
 			if(!isset($userData) || !is_array($userData)){
 				$this->userType = USER_TYPE_GUEST;
 				$this->userRights = $this->getRights();
 				$session->write('user', serialize(array('user_type_id'=>$this->userType, 'rights'=>$this->userRights)));
+			} else {
+				$this->userType = $userData['user_type_id'];
+				$this->userRights = $userData['rights'];
 			}
 			parent::init();
 		}
@@ -24,6 +28,7 @@
 			if(is_null($this->userRights)){
 				$this->userRights = $this->model->getRights($this->userType);
 			}
+
 			return $this->userRights;
 		}
 		
@@ -32,6 +37,8 @@
 			if($userData){
 				$session = getManager('CSession');
 				$session->write('user', serialize($userData));
+				$this->userRights = $userData['rights'];
+				$this->userType = $userData['user_type_id'];
 			} else {
 				$flashMessage = getManager('CFlashMessage');
 				$flashMessage->setMessage("Логин данные неправильные", FLASH_MSG_TYPES::$error);

@@ -18,6 +18,7 @@
 $rights = array("IndexController"=>array("IndexAction"=>array("sub2", "sub1")),
 				"TestController"=>array("IndexAction"=>array(), "DeleteAction"=>array(), "EditAction"=>array(), "AddAction"=>array(), "SaveAction"=>array()),
 				"UserController"=>array("LoginAction"=>array(), "LogoutAction"=>array()),
+				"RightsController"=>array("IndexAction"=>array(), "SaveAction"=>array()),
 				);
 echo serialize($rights);
 die;

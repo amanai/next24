@@ -41,6 +41,11 @@ class CBaseModel
         }
         return true;
 	}
+	
+	function load($id){
+		$this->id = $id;
+		$this->_initFieldsValues();
+	}
 
 	/*
 	инициализирует значения полей

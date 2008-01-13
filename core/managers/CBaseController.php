@@ -50,7 +50,13 @@ class CBaseController
 	}
 	
 	
-	public function IndexAction(){}
+	public function IndexAction(){
+		$router = getManager('CRouter');
+		$session = getManager('CSession');
+		$lastPath = $session->read('LAST_PATH');
+		($lastPath)?$router->redirect($lastPath):$router->redirect($$router->createUrl());
+		
+	}
 	
 	protected function runSubaction($function, $params=array()){
 		$className = get_class($this);
@@ -71,6 +77,17 @@ class CBaseController
 			require_once(MODELS_PATH.$modelName.'.php');
 			$this->model = new $modelName;
 		}
+	}
+	
+	protected function initCommonData(){
+		$router = getManager('CRouter');
+		$session = getManager('CSession');
+		$userData = unserialize($session->read('user'));
+		$lastPath = $session->read('LAST_PATH');
+	
+		$this->view->assign('userData', $userData);
+		$this->view->assign('lastPath', $lastPath);
+		$this->view->assign('router', $router);
 	}
 }
 ?>

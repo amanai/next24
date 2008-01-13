@@ -1,4 +1,5 @@
 <?php
+	require_once(CORE_PATH.'CFormData.php');
 	require_once(MANAGER_PATH.'CBaseManager.php');
 	require_once(MANAGER_PATH.'CBaseModel.php');
 
@@ -11,7 +12,7 @@
 			$this->managersNames = array(
 				'CParams',
 				'CLog',
-				'CErrorHandler',
+//				'CErrorHandler',
 				'CSession',
 				'CFlashMessage',
 				'CRouter',
@@ -41,7 +42,7 @@
 
 			$this->manages['CParams']->init();
 			$this->manages['CLog']->init(BASE_PATH.'log', 'log_', 'LOG', 'oneFile', "counter");
-			$this->manages['CErrorHandler']->init();
+//			$this->manages['CErrorHandler']->init();
 			$this->manages['CSession']->init();
 			$this->manages['CFlashMessage']->init();
 			$this->manages['CRouter']->init();

@@ -29,7 +29,7 @@ CREATE TABLE `actions_list` (
   PRIMARY KEY  (`id`),
   KEY `controller_idIdx` (`controller_id`),
   KEY `nameIdx` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table actions_list
@@ -41,6 +41,10 @@ INSERT INTO `actions_list` VALUES (3,2,'DeleteAction');
 INSERT INTO `actions_list` VALUES (4,2,'EditAction');
 INSERT INTO `actions_list` VALUES (5,2,'AddAction');
 INSERT INTO `actions_list` VALUES (6,2,'SaveAction');
+INSERT INTO `actions_list` VALUES (8,3,'LoginAction');
+INSERT INTO `actions_list` VALUES (9,3,'LogoutAction');
+INSERT INTO `actions_list` VALUES (10,4,'IndexAction');
+INSERT INTO `actions_list` VALUES (11,4,'SaveAction');
 
 #
 # Table structure for table controllers_list
@@ -50,7 +54,7 @@ CREATE TABLE `controllers_list` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table controllers_list
@@ -58,6 +62,8 @@ CREATE TABLE `controllers_list` (
 
 INSERT INTO `controllers_list` VALUES (1,'IndexController');
 INSERT INTO `controllers_list` VALUES (2,'TestController');
+INSERT INTO `controllers_list` VALUES (3,'UserController');
+INSERT INTO `controllers_list` VALUES (4,'RightsController');
 
 #
 # Table structure for table params
@@ -106,7 +112,7 @@ CREATE TABLE `session_vars` (
   `value` text,
   PRIMARY KEY  (`id`),
   KEY `sessionID` (`session`)
-) ENGINE=MyISAM AUTO_INCREMENT=153 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=184 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table session_vars
@@ -165,8 +171,8 @@ CREATE TABLE `user_types` (
 # Dumping data for table user_types
 #
 
-INSERT INTO `user_types` VALUES (0,'Гость','a:3:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:2:{i:0;s:4:\"sub2\";i:1;s:4:\"sub1\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:2:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}}}');
-INSERT INTO `user_types` VALUES (1,'Админ','a:3:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:2:{i:0;s:4:\"sub2\";i:1;s:4:\"sub1\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:2:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}}}');
+INSERT INTO `user_types` VALUES (0,'Гость','a:4:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:2:{i:0;s:4:\"sub1\";i:1;s:4:\"sub2\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:2:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}}s:16:\"RightsController\";a:2:{s:11:\"IndexAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}}');
+INSERT INTO `user_types` VALUES (1,'Админ','a:4:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:1:{i:0;s:4:\"sub2\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:2:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}}s:16:\"RightsController\";a:2:{s:11:\"IndexAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}}');
 
 #
 # Table structure for table users
@@ -180,7 +186,7 @@ CREATE TABLE `users` (
   `first_name` varchar(50) default NULL,
   `last_name` varchar(50) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table users

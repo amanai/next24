@@ -23,7 +23,6 @@ class CFormData
 	var $submit_text	= '';
 	var $cancel_text	= '';
 	var $cancel_url		= '';
-	var $script			= '';
 	var $fields			= array();
 	var $data			= array();
 	var $hidden			= array();

@@ -1,7 +1,4 @@
 <?php
-	require_once MODELS_PATH . "Test.php";
-	require_once CORE_PATH . 'CFormData.php';
-	
 	class TestController extends CBaseController{
 		
 		var $formFields = array(

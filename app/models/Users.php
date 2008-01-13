@@ -14,7 +14,7 @@
 		
 		
 		public function getRights($usertypeId){
-			$tmp = MySql::query_row("SELECT rights FROM user_types WHERE id='" . $this->userType . "'");
+			$tmp = MySql::query_row("SELECT rights FROM user_types WHERE id='" . $usertypeId . "'");
 			return $tmp['rights'];
 		}
 	}

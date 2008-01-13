@@ -24,7 +24,7 @@
 	define('DEFAULT_CONTROLLER', 'Index');
 	define('DEFAULT_ACTION', 'Index');
 
-	define('TABLE_PREFIX', '');	define('APPLICATION_PATH', 'app/');	define('VIEW_PATH', APPLICATION_PATH . 'view/');	define('DEFAULT_TPL', VIEW_PATH . 'main.tpl.php');	
+	define('TABLE_PREFIX', '');	define('DEFAULT_TPL', VIEWS_PATH . 'main.tpl.php');	
 	define('DB_SERVERNAME', 'localhost');
 	define('DB_USERNAME', 'root');
 	define('DB_PASS', '');
