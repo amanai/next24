@@ -29,6 +29,7 @@
 			$actionName = $this->actionName;
 			
 			$controller = new $controllerName(null, $this->params);
+			$controller->initCommonData();		
 			$controller->$actionName();			
 		}
 

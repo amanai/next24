@@ -5,6 +5,10 @@
 	define('APP_PATH', BASE_PATH.'app/');
 	define('CORE_PATH', BASE_PATH.'core/');
 	
+	define('CSS_URL', BASE_URL.'app/css/');
+	define('JS_URL', BASE_URL.'app/js/');
+	define('IMG_URL', BASE_URL.'app/images/');
+		
 	define('MANAGER_PATH', CORE_PATH.'managers/');
 	define('UTILS_PATH', CORE_PATH.'utils/');
 	

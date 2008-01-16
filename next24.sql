@@ -29,7 +29,7 @@ CREATE TABLE `actions_list` (
   PRIMARY KEY  (`id`),
   KEY `controller_idIdx` (`controller_id`),
   KEY `nameIdx` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table actions_list
@@ -45,6 +45,7 @@ INSERT INTO `actions_list` VALUES (8,3,'LoginAction');
 INSERT INTO `actions_list` VALUES (9,3,'LogoutAction');
 INSERT INTO `actions_list` VALUES (10,4,'IndexAction');
 INSERT INTO `actions_list` VALUES (11,4,'SaveAction');
+INSERT INTO `actions_list` VALUES (12,3,'ViewprofileAction');
 
 #
 # Table structure for table controllers_list
@@ -54,7 +55,7 @@ CREATE TABLE `controllers_list` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table controllers_list
@@ -100,7 +101,6 @@ CREATE TABLE `session` (
 # Dumping data for table session
 #
 
-
 #
 # Table structure for table session_vars
 #
@@ -112,12 +112,11 @@ CREATE TABLE `session_vars` (
   `value` text,
   PRIMARY KEY  (`id`),
   KEY `sessionID` (`session`)
-) ENGINE=MyISAM AUTO_INCREMENT=184 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=231 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table session_vars
 #
-
 
 #
 # Table structure for table subactions_list
@@ -172,27 +171,46 @@ CREATE TABLE `user_types` (
 #
 
 INSERT INTO `user_types` VALUES (0,'Гость','a:4:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:2:{i:0;s:4:\"sub1\";i:1;s:4:\"sub2\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:2:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}}s:16:\"RightsController\";a:2:{s:11:\"IndexAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}}');
-INSERT INTO `user_types` VALUES (1,'Админ','a:4:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:1:{i:0;s:4:\"sub2\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:2:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}}s:16:\"RightsController\";a:2:{s:11:\"IndexAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}}');
+INSERT INTO `user_types` VALUES (1,'Админ','a:4:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:1:{i:0;s:4:\"sub2\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:3:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}s:17:\"ViewprofileAction\";a:0:{}}s:16:\"RightsController\";a:2:{s:11:\"IndexAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}}');
 
 #
 # Table structure for table users
 #
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL auto_increment,
-  `login` varchar(20) default NULL,
-  `pass` varchar(20) default NULL,
-  `user_type_id` int(11) default NULL,
-  `first_name` varchar(50) default NULL,
-  `last_name` varchar(50) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` bigint(20) NOT NULL auto_increment,
+  `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `login` varchar(255) NOT NULL,
+  `pass` varchar(255) default NULL,
+  `birth_date` date default NULL,
+  `gender` tinyint(4) NOT NULL,
+  `about` text NOT NULL,
+  `interest` text NOT NULL,
+  `reg_date` int(11) NOT NULL,
+  `su_vis_date` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `country_id` int(11) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `hash` varchar(255) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `tabs_map` varchar(100) NOT NULL default '1111111',
+  `reputation` double NOT NULL,
+  `nextmoney` double NOT NULL,
+  `user_type_id` tinyint(4) default NULL,
+  `banned` tinyint(4) NOT NULL,
+  `registration_date` date default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table users
 #
 
-INSERT INTO `users` VALUES (1,'admin','admin',1,'Админ','Админов');
+INSERT INTO `users` VALUES (1,'Админ','','Админов','','admin','admin',NULL,0,'','',0,0,0,0,'','',0,'1111111',0,0,1,0,NULL);
 
 /*!40101 SET NAMES latin1 */;
 

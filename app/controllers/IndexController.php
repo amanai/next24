@@ -6,7 +6,6 @@
 		}
 		
 		public function IndexAction(){			
-			$this->initCommonData();			
 			$this->view->display();
 			
 /*			echo "IndexController/IndexAction<br/><br/>";
@@ -30,8 +29,8 @@
 			</form>';
 			
 */				
-			$this->runSubaction('sub1');
-			$this->runSubaction('sub2');
+//			$this->runSubaction('sub1');
+//			$this->runSubaction('sub2');
 		}
 		
 		

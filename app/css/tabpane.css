@@ -1,0 +1,73 @@
+.dynamic-tab-pane-control.tab-pane
+{
+	position:	relative;
+}
+
+.dynamic-tab-pane-control .tab-row .tab
+{
+	margin-right: 1px;
+	padding: 0px 7px;
+	border: 1px #C7EEF8 solid;
+	background: #EEFAFD;
+	height: 23px;
+	position: relative;
+	float: left;
+	overflow: hidden;
+	cursor: pointer;
+	white-space: nowrap;
+	line-height: 17px;
+	font-size: 11px;
+	font-weight: normal;
+	z-index: 1;
+}
+
+.dynamic-tab-pane-control .tab-row .tab.selected
+{
+	padding: 1px 7px;
+	border: 1px #C7EEF8 solid;
+	background: #FFFFFF;
+	border-bottom: 0px;
+	height: 22px;
+	bottom: 2px;
+	_bottom: 1px;
+	font-size: 11px;
+	font-weight: normal;
+	z-index: 3;
+}
+
+.dynamic-tab-pane-control .tab-row .tab a
+{
+	color: #888D8E;
+	text-decoration: none;
+	cursor: pointer;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+.dynamic-tab-pane-control .tab-row .tab.hover
+{
+	background: #FAFEFF;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+.dynamic-tab-pane-control .tab-page
+{
+	padding: 10px;
+	border: 1px solid #C7EEF8;
+	background: #FFFFFF;
+	color: #888D8E;
+	position: relative;
+	bottom: 3px;
+	width: 100%;
+	float: left;
+	font-size: 11px;
+	font-weight: normal;
+	z-index: 2;
+}
+
+.dynamic-tab-pane-control .tab-row
+{
+	white-space: nowrap;
+	z-index: 1;
+}

@@ -21,7 +21,7 @@
 			
 			$list = $this->drawList($userType);
 			$this->view->assign('rightsData', $list);
-			$this->view->ontent .= $this->view->render(VIEWS_PATH.'admin/rigtsAdmin.tpl.php');
+			$this->view->render(VIEWS_PATH.'admin/rigtsAdmin.tpl.php');
 			$this->view->display();
 		}
 		

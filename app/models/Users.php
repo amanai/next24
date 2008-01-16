@@ -17,5 +17,9 @@
 			$tmp = MySql::query_row("SELECT rights FROM user_types WHERE id='" . $usertypeId . "'");
 			return $tmp['rights'];
 		}
+		
+		public function getInterests($id){
+			return "test1, test2, test3, test4";
+		}
 	}
 ?>

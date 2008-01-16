@@ -92,7 +92,7 @@ class CBaseController
 		}
 	}
 	
-	protected function initCommonData(){
+	public function initCommonData(){
 		$router = getManager('CRouter');
 		$session = getManager('CSession');
 		$userData = unserialize($session->read('user'));
