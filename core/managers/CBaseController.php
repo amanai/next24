@@ -19,6 +19,19 @@ class CBaseController
 		$this->vars = $vars;
 		(!is_null($View)) ? ($this->view = $View) : ($this->view = new CBaseView());
 	}
+	
+	function __get($var){
+		if (isset($this -> params[$var])){
+			return $this -> params[$var];
+		} else {
+			return null;
+		}
+	}
+			
+	function __set($var, $val){
+		$this -> params[$var] = $val;
+	}
+	
 	function _getParam($name)
 	{
 		return $this->params[$name];
