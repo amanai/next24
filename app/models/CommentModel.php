@@ -17,6 +17,50 @@ abstract class CommentModel extends CBaseModel{
 			parent::__construct($id);
 		}
 		
+		/**
+		 * Загрузка всех комментариев
+		 */
+		function loadAll(){
+			// TODO::постраничнос считывание!
+			$this -> resetSql();
+			$sql = "SELECT * FROM `" . $this->tableNameDB . "`";
+			return MySql::query_array($sql);
+		}
+		
+		/**
+		 * Загрузка всех комментариев пользователя
+		 */
+		function loadByOwner($userId){
+			// TODO::постраничнос считывание!
+			$userId = (int)$userId;
+			$this -> resetSql();
+			if ($userId > 0){
+				$sql = "SELECT `" . $this->tableNameDB . "`.*, user.name FROM `" . $this->tableNameDB . "`" .
+						" LEFT JOIN user on user.id = `" . $this->tableNameDB . "`.user_id 
+						WHERE `user_id` = " . $userId;
+				return MySql::query_array($sql);
+			} else {
+				return array();
+			}
+		}
+		
+		/**
+		 * Загрузка списка комментариев элемента
+		 */
+		function loadByItem($itemId){
+			// TODO::постраничнос считывание!
+			$this -> resetSql();
+			$itemId = (int)$itemId;
+			if ($itemId > 0){
+				$sql = "SELECT `" . $this->tableNameDB . "`.*, users.first_name as first_name FROM `" . $this->tableNameDB . "`" .
+						" LEFT JOIN users on users.id = `" . $this->tableNameDB . "`.user_id 
+						WHERE `".$this -> _object_field_name."` = " . $itemId . " GROUP BY `" . $this->tableNameDB . "`.id";
+				return MySql::query_array($sql);
+			} else {
+				return array();
+			}
+		}
+		
 		
 		/**
 		 * Добавление комментария
