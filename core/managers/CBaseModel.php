@@ -156,6 +156,26 @@ class CBaseModel
 				WHERE `id` = '" . $this->id . "'";
 		return MySql::query($sql);
 	}
+	
+	/**
+	 * Сохранить запись: если записи нет - создать, иначе - обновить
+	 * Предварительно должна быть загружена.
+	 * <code>
+	 * 	$o = new Model();
+	 * 	$o -> set('name' , 'Vasya');
+	 * 	$id1 = $o -> save(); // New ID
+	 * 	$o -> set('name' , 'Kolya');
+	 * 	$id2 = $o -> save(); // $id1 = $id2 and fetched same record
+	 * </code>
+	 */
+	function save(){
+		if ((int)$this -> id > 0){
+			$this -> update();
+		} else {
+			$this -> id = $this -> insert();
+		}
+		return (int)$this -> id;
+	}
 
 	/*
 	удалить запись
