@@ -19,6 +19,12 @@
 			$this->view->display();			
 		}
 		
+		public function PhotoAlbumAction(){
+			
+			$this->view->content .= $this->view->render(VIEWS_PATH.'user/view_photoalbum.tpl.php');
+			$this->view->display();			
+		}
+		
 		public function LoginAction(){
 			$userManager = getManager('CUser');
 			$userManager->login($this->params['login'], $this->params['pass']);

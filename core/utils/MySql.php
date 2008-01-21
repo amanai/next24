@@ -1,5 +1,4 @@
-<?
-
+<?php
 class MySql
 {
 	static public $logFile = null;

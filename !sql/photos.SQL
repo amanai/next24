@@ -1,0 +1,18 @@
+CREATE TABLE photos
+(
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	user_id BIGINT NOT NULL,
+	album_id BIGINT NOT NULL,
+	name VARCHAR(255) NOT NULL,
+	path VARCHAR(255) NOT NULL,
+	thumbnail VARCHAR(255) NOT NULL,
+	is_rating TINYINT NOT NULL,
+	is_onmain TINYINT NOT NULL,
+	access TINYINT NOT NULL,
+	voices INTEGER NOT NULL,
+	rating INTEGER NOT NULL,
+	PRIMARY KEY (id)
+) 
+;
+
+

@@ -48,10 +48,8 @@
 					}
 				}
 			}		
-			
 			$this->setModel("User_types");
 			$rights = serialize($controllerRez);
-			
 			$this->model->load($this->params['userType']);
 			$this->model->set("rights", $rights);
 			$this->model->update();
