@@ -12,7 +12,7 @@
 								<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 									<div class="block_title"><h2>Управление</h2></div>
 
-									<a href="#">Редактировать профиль</a><br />
+									<a href="<?php echo $this->router->createUrl('User', 'Editprofile')?>">Редактировать профиль</a><br />
 									<a href="#">Редактировать аватары</a>
 
 								</div></div></div></div>
@@ -48,7 +48,7 @@
 											<td><?php echo $this->userData['city'];?></td>
 										</tr>
 											<td><b>Интересы</b></td>
-											<td><?php echo $this->userData['interests'];?></td>
+											<td><?php echo $this->userData['interest'];?></td>
 										</tr>
 											<td><b>Репутация</b></td>
 											<td><?php echo $this->userData['reputation'];?> Посмотреть репутацию  (Плюс - Минус)</td>

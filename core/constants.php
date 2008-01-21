@@ -15,4 +15,10 @@
 			'green',
 		);
 	}
+	
+	function quotesEscape($str){
+		$search = array('"', "'");
+		$replace = array('\"', "\'");
+		return str_replace($search, $replace, $str);
+	}
 ?>

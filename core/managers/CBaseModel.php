@@ -43,6 +43,7 @@ class CBaseModel
 	}
 	
 	function load($id){
+		$this->resetSql();
 		$this->id = $id;
 		$this->_initFieldsValues();
 	}

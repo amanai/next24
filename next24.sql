@@ -7,7 +7,7 @@
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='SYSTEM' */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE */;
-/*!40101 SET SQL_MODE='' */;
+/*!40101 SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES */;
 /*!40103 SET SQL_NOTES='ON' */;
 
@@ -29,7 +29,7 @@ CREATE TABLE `actions_list` (
   PRIMARY KEY  (`id`),
   KEY `controller_idIdx` (`controller_id`),
   KEY `nameIdx` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table actions_list
@@ -46,6 +46,28 @@ INSERT INTO `actions_list` VALUES (9,3,'LogoutAction');
 INSERT INTO `actions_list` VALUES (10,4,'IndexAction');
 INSERT INTO `actions_list` VALUES (11,4,'SaveAction');
 INSERT INTO `actions_list` VALUES (12,3,'ViewprofileAction');
+INSERT INTO `actions_list` VALUES (13,7,'CommentList');
+INSERT INTO `actions_list` VALUES (14,3,'EditprofileAction');
+INSERT INTO `actions_list` VALUES (15,3,'SaveprofileAction');
+
+#
+# Table structure for table albums
+#
+
+CREATE TABLE `albums` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `user_id` bigint(20) NOT NULL,
+  `thumbnail_id` bigint(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `access` tinyint(4) NOT NULL,
+  `is_onmain` tinyint(4) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+#
+# Dumping data for table albums
+#
+
 
 #
 # Table structure for table controllers_list
@@ -55,7 +77,7 @@ CREATE TABLE `controllers_list` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=cp1251;
 
 #
 # Dumping data for table controllers_list
@@ -65,6 +87,25 @@ INSERT INTO `controllers_list` VALUES (1,'IndexController');
 INSERT INTO `controllers_list` VALUES (2,'TestController');
 INSERT INTO `controllers_list` VALUES (3,'UserController');
 INSERT INTO `controllers_list` VALUES (4,'RightsController');
+INSERT INTO `controllers_list` VALUES (7,'PhotoCommentController');
+
+#
+# Table structure for table countries
+#
+
+CREATE TABLE `countries` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(100) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;
+
+#
+# Dumping data for table countries
+#
+
+INSERT INTO `countries` VALUES (1,'Россия');
+INSERT INTO `countries` VALUES (2,'Украина');
+INSERT INTO `countries` VALUES (3,'Белорусия');
 
 #
 # Table structure for table params
@@ -84,6 +125,54 @@ CREATE TABLE `params` (
 
 INSERT INTO `params` VALUES (1,'test_group','param1','Value1');
 INSERT INTO `params` VALUES (2,'test_group','param2','value2');
+
+#
+# Table structure for table photo_comments
+#
+
+CREATE TABLE `photo_comments` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `user_id` bigint(20) NOT NULL,
+  `avatar_id` bigint(20) NOT NULL,
+  `warning_id` bigint(20) NOT NULL,
+  `photo_id` bigint(20) NOT NULL,
+  `text` text NOT NULL,
+  `mood` varchar(100) NOT NULL,
+  `creation_date` datetime NOT NULL,
+  `adm_redacted` tinyint(4) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;
+
+#
+# Dumping data for table photo_comments
+#
+
+INSERT INTO `photo_comments` VALUES (1,1,0,0,1,'comment 1','','2007-01-11 00:00:00',0);
+INSERT INTO `photo_comments` VALUES (2,1,0,0,1,'Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст Текст текст','','2008-05-12 00:00:00',0);
+
+#
+# Table structure for table photos
+#
+
+CREATE TABLE `photos` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `user_id` bigint(20) NOT NULL,
+  `album_id` bigint(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `thumbnail` varchar(255) NOT NULL,
+  `is_rating` tinyint(4) NOT NULL,
+  `is_onmain` tinyint(4) NOT NULL,
+  `access` tinyint(4) NOT NULL,
+  `voices` int(11) NOT NULL,
+  `rating` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+#
+# Dumping data for table photos
+#
+
 
 #
 # Table structure for table session
@@ -112,11 +201,8 @@ CREATE TABLE `session_vars` (
   `value` text,
   PRIMARY KEY  (`id`),
   KEY `sessionID` (`session`)
-) ENGINE=MyISAM AUTO_INCREMENT=231 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=252 DEFAULT CHARSET=cp1251;
 
-#
-# Dumping data for table session_vars
-#
 
 #
 # Table structure for table subactions_list
@@ -170,8 +256,8 @@ CREATE TABLE `user_types` (
 # Dumping data for table user_types
 #
 
-INSERT INTO `user_types` VALUES (0,'Гость','a:4:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:2:{i:0;s:4:\"sub1\";i:1;s:4:\"sub2\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:2:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}}s:16:\"RightsController\";a:2:{s:11:\"IndexAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}}');
-INSERT INTO `user_types` VALUES (1,'Админ','a:4:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:1:{i:0;s:4:\"sub2\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:3:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}s:17:\"ViewprofileAction\";a:0:{}}s:16:\"RightsController\";a:2:{s:11:\"IndexAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}}');
+INSERT INTO `user_types` VALUES (0,'Гость','a:5:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:2:{i:0;s:4:\"sub1\";i:1;s:4:\"sub2\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:4:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}s:17:\"ViewprofileAction\";a:0:{}s:17:\"EditprofileAction\";a:0:{}}s:16:\"RightsController\";a:2:{s:11:\"IndexAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:22:\"PhotoCommentController\";a:1:{s:11:\"CommentList\";a:0:{}}}');
+INSERT INTO `user_types` VALUES (1,'Админ','a:5:{s:15:\"IndexController\";a:1:{s:11:\"IndexAction\";a:1:{i:0;s:4:\"sub2\";}}s:14:\"TestController\";a:5:{s:11:\"IndexAction\";a:0:{}s:12:\"DeleteAction\";a:0:{}s:10:\"EditAction\";a:0:{}s:9:\"AddAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:14:\"UserController\";a:5:{s:11:\"LoginAction\";a:0:{}s:12:\"LogoutAction\";a:0:{}s:17:\"ViewprofileAction\";a:0:{}s:17:\"EditprofileAction\";a:0:{}s:17:\"SaveprofileAction\";a:0:{}}s:16:\"RightsController\";a:2:{s:11:\"IndexAction\";a:0:{}s:10:\"SaveAction\";a:0:{}}s:22:\"PhotoCommentController\";a:1:{s:11:\"CommentList\";a:0:{}}}');
 
 #
 # Table structure for table users
@@ -210,7 +296,7 @@ CREATE TABLE `users` (
 # Dumping data for table users
 #
 
-INSERT INTO `users` VALUES (1,'Админ','','Админов','','admin','admin',NULL,0,'','',0,0,0,0,'','',0,'1111111',0,0,1,0,NULL);
+INSERT INTO `users` VALUES (1,'Админ','Админович','Админов','admin@next24.ru','admin','admin','1980-10-29',1,'Главный админ','1, 2, 3',0,0,0,2,'Донецк','',0,'1111111',0,0,1,0,'0000-00-00');
 
 /*!40101 SET NAMES latin1 */;
 

@@ -34,7 +34,7 @@
 							</div>
 
 							<div style="float: left;"><a href="#"><img src="<?php echo IMG_URL?>open.png" width="21" height="24" /></a></div>
-							<div align="right" style="padding-top: 7px;">Вы вошли как: <a href="#">Hunter</a></div>
+							<div align="right" style="padding-top: 7px;">Вы вошли как: <a href="<?php echo $this->router->createUrl('User', 'Viewprofile')?>"><?php echo $this->userData['login'];?></a></div>
 
 						</td>
 						<td class="user3"> </td>
