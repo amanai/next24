@@ -41,7 +41,6 @@
 		public function sub2(){
 			echo 'sub2<br/><br/>';
 			echo 'url examples - <br/><br/>';
-			
 			$router = getManager('CRouter');
 			echo $router->createUrl() .'<br/>';
 			echo $router->createUrl('contrl') .'<br/>';

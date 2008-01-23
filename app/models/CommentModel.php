@@ -47,14 +47,19 @@ abstract class CommentModel extends CBaseModel{
 		/**
 		 * Загрузка списка комментариев элемента
 		 */
-		function loadByItem($itemId){
+		function loadByItem($itemId, $desc = true){
+			if ($desc === true){
+				$d = "DESC";
+			} else {
+				$d = "ASC";
+			}
 			// TODO::постраничнос считывание!
 			$this -> resetSql();
 			$itemId = (int)$itemId;
 			if ($itemId > 0){
-				$sql = "SELECT `" . $this->tableNameDB . "`.*, users.first_name as first_name FROM `" . $this->tableNameDB . "`" .
+				$sql = "SELECT `" . $this->tableNameDB . "`.*, users.first_name as first_name, users.login as login FROM `" . $this->tableNameDB . "`" .
 						" LEFT JOIN users on users.id = `" . $this->tableNameDB . "`.user_id 
-						WHERE `".$this -> _object_field_name."` = " . $itemId . " GROUP BY `" . $this->tableNameDB . "`.id";
+						WHERE `".$this -> _object_field_name."` = " . $itemId . " GROUP BY `" . $this->tableNameDB . "`.id ORDER BY `" . $this->tableNameDB . "`.creation_date ".$d." ";
 				return MySql::query_array($sql);
 			} else {
 				return array();
@@ -72,34 +77,37 @@ abstract class CommentModel extends CBaseModel{
 			$this -> set('avatar_id', (int)$avatar_id);
 			$this -> set('warning_id', (int)$warning_id);
 			$this -> set($this -> _object_field_name, (int)$field_id);
-			$this -> set('text', (int)$text);
+			$this -> set('text', $text);
 			$this -> set('mood', (int)$mood);
+			$this -> set('creation_date', date("Y-m-d H:i:s"));
+			$this -> set('adm_redacted', 0);
 			return $this -> save();
 		}
 		
 		/**
 		 * Удаления комментария
 		 */
-		public function delete($id = 0){
+		public function delete($user_id, $id){
 			// TODO:: добавить определение прав на изменение/добавление записи
 			$id = (int)$id;
-			if ($id > 0){
-				$this -> id = $id;
-			}
+			$user_id = (int)$user_id;
 			$this -> resetSql();
-			return $this -> delete();
+			$sql = "DELETE FROM `" . $this->tableNameDB . "`
+						WHERE `id` = " . $id . " AND user_id=".$user_id;
+			
+			return MySql::query($sql);
 		}
 		
 		/**
 		 * Удаление всех комментариев объекта
 		 */
-		public function deleteByItem($field_id){
+		public function deleteByItem($user_id, $field_id){
 			$this -> resetSql();
 			// TODO:: добавить определение прав на изменение/добавление записи
 			$field_id = (int)$field_id;
 			if ($field_id > 0){
 				$sql = "DELETE FROM `" . $this->tableNameDB . "`
-						WHERE `".$this -> _object_field_name."` = " . $field_id;
+						WHERE `".$this -> _object_field_name."` = " . $field_id . "user_id=".(int)$user_id;
 				return MySql::query($sql);
 			} else {
 				return false;

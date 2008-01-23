@@ -140,9 +140,12 @@ class CBaseModel
 	*/
 	function insert()
 	{
+		unset($this -> fields['id']);
 		$sql = "INSERT INTO `" . $this->tableNameDB . "`
 				SET " . $this->_prepareFields();
+		
 		MySql::query($sql);
+		//echo $sql;
 		$this->id = MySql::insert_id();
 		return $this->id;
 	}
@@ -215,6 +218,18 @@ class CBaseModel
 	/*
 	установка списка обрабатываемых полей для запроса
 	*/
+	function pager($use = true)
+	{
+		if (!is_bool($use)){
+			$use = false;
+		}
+		$this->_parts['pager'] = $use;
+	}
+	
+	
+	/*
+	установка списка обрабатываемых полей для запроса
+	*/
 	function cols($cols = '*')
 	{
 		$this->_parts['cols'] = $cols;
@@ -253,12 +268,13 @@ class CBaseModel
 	$name - имя таблицы
 	$cond - условия
 	*/
-	function join($name, $cond, $type = null)
+	function join($name, $cond, $type = null, $alias = null)
     {
 		$this->_parts['join'][] = array(
 			'type' => $type,
 			'name' => $name,
 			'cond' => $cond,
+			'alias' => $alias
 		);
         return true;
 	}
@@ -289,6 +305,12 @@ class CBaseModel
 		{
             $sql .= " DISTINCT";
         }
+        
+        if (isset($this->_parts['pager']) && ($this->_parts['pager'] === true)) 
+		{
+            $sql .= " SQL_CALC_FOUND_ROWS ";
+        }
+        
         if (isset($this->_parts['forUpdate'])) 
 		{
             $sql .= " FOR UPDATE";
@@ -333,7 +355,7 @@ class CBaseModel
                     $tmp .= strtoupper($join['type']) . ' ';
                 }
                 // имя талицы и условие
-                $tmp .= 'JOIN ' . TABLE_PREFIX . $join['name'] . " AS " . $join['name'];
+                $tmp .= 'JOIN ' . TABLE_PREFIX . $join['name'] . " AS " . (is_null($join['alias'])?$join['name']:$join['alias']);
                 $tmp .= ' ON ' . $join['cond'];
                 $list[] = $tmp;
             }
@@ -374,8 +396,13 @@ class CBaseModel
 		{
 			$sql .= " LIMIT " . $offset . ", " . $count;
 		}
-//echo $sql.'<br>';		
+//echo $sql.'<br>';
         return $sql;
+	}
+	
+	function foundRows(){
+		$c = MySql::query_row("SELECT FOUND_ROWS() as counter");
+		return (int)$c['counter'];
 	}
 
 	/*

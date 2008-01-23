@@ -49,6 +49,27 @@ INSERT INTO `actions_list` VALUES (12,3,'ViewprofileAction');
 INSERT INTO `actions_list` VALUES (13,7,'CommentList');
 INSERT INTO `actions_list` VALUES (14,3,'EditprofileAction');
 INSERT INTO `actions_list` VALUES (15,3,'SaveprofileAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (35,8,'LastListAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (16,8,'TopListAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (17,9,'TopListAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (18,9,'AlbumAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (19,9,'ViewAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (20,9,'UserAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (21,8,'UserAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (22,8,'CreateAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (23,8,'UploadAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (24,8,'SaveAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (25,8,'UploadFormAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (26,8,'CreateFormAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (27,8,'CreateAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (28,8,'ListAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (29,9,'EditAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (30,9,'CommentAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (31,8,'ListSaveAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (32,9,'RatePhotoAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (33,9,'CommentDeleteAction');
+INSERT INTO `actions_list` (`id`,`controller_id`,`name`) VALUES (34,9,'SaveAction');
+
 
 #
 # Table structure for table albums
@@ -61,8 +82,10 @@ CREATE TABLE `albums` (
   `name` varchar(255) NOT NULL,
   `access` tinyint(4) NOT NULL,
   `is_onmain` tinyint(4) NOT NULL,
+  `creation_date` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=cp1251;
+
 
 #
 # Dumping data for table albums
@@ -88,6 +111,8 @@ INSERT INTO `controllers_list` VALUES (2,'TestController');
 INSERT INTO `controllers_list` VALUES (3,'UserController');
 INSERT INTO `controllers_list` VALUES (4,'RightsController');
 INSERT INTO `controllers_list` VALUES (7,'PhotoCommentController');
+INSERT INTO `controllers_list` VALUES (8,'AlbumController');
+INSERT INTO `controllers_list` VALUES (9,'PhotoController');
 
 #
 # Table structure for table countries
@@ -141,7 +166,8 @@ CREATE TABLE `photo_comments` (
   `creation_date` datetime NOT NULL,
   `adm_redacted` tinyint(4) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=cp1251;
+
 
 #
 # Dumping data for table photo_comments
@@ -166,12 +192,22 @@ CREATE TABLE `photos` (
   `access` tinyint(4) NOT NULL,
   `voices` int(11) NOT NULL,
   `rating` int(11) NOT NULL,
+  `creation_date` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=cp1251;
+
 
 #
 # Dumping data for table photos
 #
+
+CREATE TABLE `photo_votes` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `photo_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `ip` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;
 
 
 #

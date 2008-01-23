@@ -58,7 +58,7 @@
 				if(is_array($params)){
 					$tmp = '';
 					foreach($params as $key=>$val){
-						$tmp = $key.':'.$val;
+						$tmp .= '/'.$key.':'.$val;
 					}
 					return BASE_URL.$rez.'/'.$tmp;
 				} else {

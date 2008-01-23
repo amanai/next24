@@ -28,7 +28,7 @@
 							<div class="user2_title">ДОБРО ПОЖАЛОВАТЬ</div>
 							<div class="user2_zz">
 								<a href="<?php echo $this->router->createUrl('User', 'Viewprofile')?>">Профиль</a><br />
-								<a href="#">Фотоальбом</a><br />
+								<a href="<?php echo $this->router->createUrl('Album', 'User')?>">Фотоальбом</a><br />
 								<a href="#">Дневник</a><br />
 								<a href="#">Сообщения</a>
 							</div>
@@ -82,7 +82,7 @@
 						<a href="#">Найти знакомых</a><br />
 						<a href="#">Дневники</a><br />
 						<a href="#">Вопрос-ответ</a><br />
-						<a href="#">Фотоальбомы</a><br />
+						<a href="<?php echo $this->router->createUrl('Album', 'LastList');?>">Фотоальбомы</a><br />
 						<a href="#">Топы</a>
 					</td>
 				</tr>

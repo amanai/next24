@@ -871,3 +871,39 @@ table { border-collapse: collapse; }
 {
 	_margin: 5px 0;
 }
+
+
+
+
+
+/* ALBUM */
+.neighbours {
+margin-top:10px;
+width:100%;
+}
+.neighbours td {
+text-align:center;
+vertical-align:top;
+}
+.neighbours .neigh5 {
+width:20%;
+}
+.neighbours .neigh4 {
+width:25%;
+}
+.neighbours .neigh3 {
+width:33%;
+}
+.neighbours .neigh2 {
+width:50%;
+}
+.ndate {
+color:#999999;
+font-size:11px;
+font-weight:normal;
+margin-bottom:5px;
+margin-top:5px;
+}
+#neigh_selected {
+font-weight:bold;
+}

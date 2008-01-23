@@ -21,7 +21,7 @@
 			);
 
 			//static classes
-			require_once(UTILS_PATH.'MySql.php');
+			require_once(UTILS_PATH."MySql.php");
 			MySql::initDb();
 			
 			foreach ($this->managersNames as $managerName){

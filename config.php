@@ -8,6 +8,7 @@
 	define('CSS_URL', BASE_URL.'app/css/');
 	define('JS_URL', BASE_URL.'app/js/');
 	define('IMG_URL', BASE_URL.'app/images/');
+	define('USER_UPLOAD_DIR', 'users');
 		
 	define('MANAGER_PATH', CORE_PATH.'managers/');
 	define('UTILS_PATH', CORE_PATH.'utils/');
