@@ -97,7 +97,7 @@ class CBaseController
 		$session = getManager('CSession');
 		$userData = unserialize($session->read('user'));
 		$lastPath = $session->read('LAST_PATH');
-	
+
 		$this->view->assign('userData', $userData);
 		$this->view->assign('lastPath', $lastPath);
 		$this->view->assign('router', $router);

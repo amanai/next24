@@ -47,19 +47,26 @@ abstract class CommentModel extends CBaseModel{
 		/**
 		 * Загрузка списка комментариев элемента
 		 */
-		function loadByItem($itemId, $desc = true){
+		function loadByItem($itemId, $desc = true, $start = null, $end = null){
 			if ($desc === true){
 				$d = "DESC";
 			} else {
 				$d = "ASC";
 			}
+			
+			if (($start !== null) && ($end !== null)){
+				$l = " LIMIT $start, $end "; 
+			} else {
+				$l = null;
+			}
+			
 			// TODO::постраничнос считывание!
 			$this -> resetSql();
 			$itemId = (int)$itemId;
 			if ($itemId > 0){
-				$sql = "SELECT `" . $this->tableNameDB . "`.*, users.first_name as first_name, users.login as login FROM `" . $this->tableNameDB . "`" .
+				$sql = "SELECT SQL_CALC_FOUND_ROWS `" . $this->tableNameDB . "`.*, users.first_name as first_name, users.login as login FROM `" . $this->tableNameDB . "`" .
 						" LEFT JOIN users on users.id = `" . $this->tableNameDB . "`.user_id 
-						WHERE `".$this -> _object_field_name."` = " . $itemId . " GROUP BY `" . $this->tableNameDB . "`.id ORDER BY `" . $this->tableNameDB . "`.creation_date ".$d." ";
+						WHERE `".$this -> _object_field_name."` = " . $itemId . " GROUP BY `" . $this->tableNameDB . "`.id ORDER BY `" . $this->tableNameDB . "`.creation_date ".$d." ".$l;
 				return MySql::query_array($sql);
 			} else {
 				return array();
@@ -107,7 +114,8 @@ abstract class CommentModel extends CBaseModel{
 			$field_id = (int)$field_id;
 			if ($field_id > 0){
 				$sql = "DELETE FROM `" . $this->tableNameDB . "`
-						WHERE `".$this -> _object_field_name."` = " . $field_id . "user_id=".(int)$user_id;
+						WHERE `".$this -> _object_field_name."` = " . $field_id . " AND user_id=".(int)$user_id;
+				//var_dump($sql);die;
 				return MySql::query($sql);
 			} else {
 				return false;

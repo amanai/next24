@@ -5,7 +5,7 @@
 		public function checkAccess($controllerName, $actionName, $subactionName=''){
 			$user = getManager('CUser');
 			$userRights = unserialize($user->getRights());
-
+			
 			if(isset($userRights[$controllerName])){				
 				if(isset($userRights[$controllerName][$actionName])){					
 					if(!strlen($subactionName) || in_array($subactionName, $userRights[$controllerName][$actionName])){

@@ -1,4 +1,7 @@
 <?php
+require_once('!tmp/Node.php');
+
+error_reporting(E_ALL^E_NOTICE);
 	if(file_exists('local/config.php')) include 'local/config.php';
 	include 'config.php';
 

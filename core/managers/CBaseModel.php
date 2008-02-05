@@ -79,6 +79,7 @@ class CBaseModel
 	function getById($id)
 	{
 		$sql = "SELECT * FROM " . $this->tableNameDB . " WHERE id = " . $id;
+		//echo $sql.'<br>';
 		$rs = MySql::query_row($sql);
 		if ($rs) 
 		{
@@ -92,6 +93,9 @@ class CBaseModel
 	*/
 	function set($field, $value)
 	{
+		if ($field == 'id'){
+			$this -> id = (int)$value;
+		}
 		if (!array_key_exists($field, $this->fields)) 
 		{
 			return false;
@@ -147,6 +151,7 @@ class CBaseModel
 		MySql::query($sql);
 		//echo $sql;
 		$this->id = MySql::insert_id();
+		echo '<br>'.$sql.'<br>';
 		return $this->id;
 	}
 
@@ -155,9 +160,14 @@ class CBaseModel
 	*/
 	function update()
 	{
+		if (isset($this -> fields['id'])){
+			$this->id = (int)$this -> fields['id'];
+			unset($this -> fields['id']);
+		}
 		$sql = "UPDATE `" . $this->tableNameDB . "`
 				SET " . $this->_prepareFields() . "
 				WHERE `id` = '" . $this->id . "'";
+		//echo '<br>'.$sql.'<br>';die;
 		return MySql::query($sql);
 	}
 	
