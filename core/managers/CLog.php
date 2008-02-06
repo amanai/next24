@@ -119,7 +119,7 @@ class CLog extends CBaseManager{
 			
 			//write to log file
 			$fp=fopen($logFile,"a");
-			if(fwrite($fp,$logString . "\n")===FALSE){
+			if(fwrite($fp, '['.$this->get_formatted_date().'] '.$logString . "\n")===FALSE){
 				echo "Could not write to LOG file";
 			}
 			fclose($fp);
@@ -295,7 +295,7 @@ class CLog extends CBaseManager{
 			
 		*/
 		function get_formatted_date(){
-			$fecha=date("d.m.Y - ") . (date("H")) . date(":i");
+			$fecha=date("H:i:s d.m.Y");
 			
 			return $fecha;
 		}
