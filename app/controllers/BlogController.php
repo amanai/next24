@@ -211,10 +211,10 @@
 			$n = Node::by_key('', 'ub_tree');
 			$this->view->userData['branch_list'] =  $n->getBranch();
 			
-			$config = getManager('CParams');
-			if (($number = $config -> getParam('post_comments_per_page')) === null){
+			if ( ($number = $this -> getParam('post_comments_per_page', self::DEFAULT_COMMENT_PER_PAGE)) === 0){
 				$number = self::DEFAULT_COMMENT_PER_PAGE;
 			}
+			
 			$this -> setModel('BlogComments');
 			$this -> model -> resetSql();
 			$list = $this -> model -> loadByItem($id, false,(int)$this -> pn*$number,  $number);
@@ -363,10 +363,10 @@
 			$this -> blog_id = $blog_id;
 			$this -> checkBranchAccess($id, $user_id);
 			
-			$config = getManager('CParams');
-			if (($number = $config -> getParam('post_per_page')) === null){
+			if ( ($number = $this -> getParam('post_per_page', self::DEFAULT_POST_PER_PAGE)) === 0){
 				$number = self::DEFAULT_POST_PER_PAGE;
 			}
+			
 			$this -> setModel("BlogPosts");
 			$this -> model -> resetSql();
 			$this -> model -> pager();
