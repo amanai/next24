@@ -1,4 +1,4 @@
-<?php/*������� ����� �������������*/class CBaseView extends CBaseManager {	var $template	= null;	var $_vars		= array();	var $content	= '';		/*	����������� ������	$template - ��� ���������� �������	*/
+<?php/*������� ����� �������������*/class CBaseView extends CBaseManager {	var $template	= null;	var $_vars		= array();	var $content	= '';	var $userData = array();		function __get($var){		if (isset($this -> userData[$var])){			return $this -> userData[$var];		} else {			return null;		}	}				function __set($var, $val){		$this -> userData[$var] = $val;	}	/*	����������� ������	$template - ��� ���������� �������	*/
 	function __construct($template = null)	{		if (empty($template)) 		{			$this->template = DEFAULT_TPL;		} 		else 		{			$this->template = $template;		}	}		
 	/*	��������� ���������� �������	$tpl - ��� ���������� �������	*/
 	function setTemplate($tpl)	{		$this->template = $tpl;	}
