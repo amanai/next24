@@ -200,6 +200,10 @@ class CBaseModel
 				WHERE id = " . $this->id;
 		return MySql::query($sql);
 	}
+	
+	function escape($value){
+		return mysql_escape_string($value);
+	}
 
 	/*
 	подготовка списка полей
