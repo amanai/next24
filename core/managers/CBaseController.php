@@ -9,12 +9,14 @@ class CBaseController
 	var $vars = array();
 	var $view;
 	var $model;
+	var $param_group;
 	
 	/*
 	конструктор получает параметры, переменные и представление
 	*/
 	function __construct($View=null, $params = array(), $vars = array())
 	{
+		$this -> setParamGroup();
 		$this->params = $params;
 		$this->vars = $vars;
 		(!is_null($View)) ? ($this->view = $View) : ($this->view = new CBaseView());
@@ -101,6 +103,40 @@ class CBaseController
 		$this->view->assign('userData', $userData);
 		$this->view->assign('lastPath', $lastPath);
 		$this->view->assign('router', $router);
+	}
+	
+	/**
+	 * Взять параметр конфигурации контроллера. Группой выступает имя класса контроллера (устанавливается в конструкторе вызовом функции setParamGroup без параметров).
+	 * Параметр и группа регистронезивасимы (приводится к нижнему регистру в запросе)
+	 * Если параметра нет, возвращается значение $default, равное null по умолчанию.
+	 */
+	public function getParam($param_name, $default = null){
+		$config = getManager('CParams');
+		$param_value = $config -> getParam($this -> param_group, $param_name);
+		return ($param_value === null) ? $default : $param_value;
+	}
+	
+	/**
+	 * Взять общий параметр конфигурации(не связанный ни с какой группой)
+	 */
+	public function getCommonParam($param_name, $default = null){
+		$config = getManager('CParams');
+		$param_value = $config -> getParam(null, $param_name);
+		return ($param_value === null) ? $default : $param_value;
+	}
+	
+	
+	
+	public function getParamGroup(){
+		return $this -> param_group;
+	}
+	
+	public function setParamGroup($value = null){
+		if ($value === null){
+			$this -> param_group = trim(get_class($this));
+		} else {
+			$this -> param_group = $value;
+		}
 	}
 }
 ?>
