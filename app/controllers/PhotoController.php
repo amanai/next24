@@ -453,7 +453,6 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		 * Вывод топовых фотографий
 		 */
 		public function TopListAction(){
-			$config = getManager('CParams');
 			$this -> model -> resetSql();
 			$this -> setModel('Photos');
 			$this -> model -> pager();
@@ -472,8 +471,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$this -> model -> where("photos.is_rating=1");
 			$this -> model -> where("photos.is_onmain=1");
 			$this -> model -> order("photos_rating DESC");
-			// TODO:: parameters by group?
-			if (($number = $config -> getParam('top_per_page')) === null){
+			if ( ($number = $this -> getParam('top_per_page', self::DEFAULT_PHOTO_PER_PAGE)) === 0){
 				$number = self::DEFAULT_PHOTO_PER_PAGE;
 			}
 			$this -> model -> limit($number, (int)$this -> pn*$number);

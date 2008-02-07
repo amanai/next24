@@ -45,7 +45,6 @@
 			$this -> view -> userData['album_list'] = $this -> model -> getAll();
 			
 			
-			$config = getManager('CParams');
 			$this->setModel("Photos");
 			$this -> model -> resetSql();
 			$this -> model -> pager();
@@ -65,10 +64,11 @@
 			}
 			$this -> model -> where('photos.user_id = '.(int)($request_user_id > 0 ? $request_user_id : $user_id));
 			$this -> model -> order("photos.creation_date DESC");
-			// TODO:: parameters by group?
-			if (($number = $config -> getParam('last_photo_per_page')) === null){
+			
+			if ( ($number = $this -> getParam('last_photo_per_page', self::DEFAULT_PHOTO_PER_PAGE)) === 0){
 				$number = self::DEFAULT_PHOTO_PER_PAGE;
 			}
+			
 			$this -> model -> limit($number, (int)$this -> pn*$number);
 			$list = $this -> model -> getAll();
 			$all = $this -> model -> foundRows();
@@ -165,19 +165,17 @@
 				$ok_thumb = $this -> checkDir($thumbs);
 			}
 			
-			$config = getManager('CParams');
 			$p = pathinfo($_FILES['picture']['name']);
 			$ext = strtolower(trim(isset($p['extension'])?$p['extension']:null));
 			$fn = md5(uniqid(rand(), true)). ".".$ext;
 			$thumb = false;
 			$uploaded = false;
 			if ($ok === true){
-				
 				$f = $images . DIRECTORY_SEPARATOR . $fn;
 				if (move_uploaded_file($_FILES['picture']['tmp_name'], $f)) {
 					$uploaded = true;
-					// TODO:: get thumb size: parameters
-					$width = (int)$config -> getParam('thumb_size');
+					// TODO:: write ti log if thumb size no specified
+					$width = $this -> getParam('thumb_size', 99999);
 					if ($width <= 0){
 						$width = 100;
 					}
@@ -351,17 +349,16 @@
 				die("Нет доступа");
 			}
 			
-			$config = getManager('CParams');
 			
 			
 			$this -> model -> resetSql();
 			//$this -> model -> pager();
 			
 			$this -> model -> order("albums.creation_date DESC");
-			// TODO:: parameters by group?
-			if (($number = $config -> getParam('own_albums_per_list')) === null){
+			if ( ($number = $this -> getParam('own_albums_per_list', self::DEFAULT_ALBUM_PER_PAGE)) === 0){
 				$number = self::DEFAULT_ALBUM_PER_PAGE;
 			}
+			
 			//$this -> model -> limit($number, (int)$this -> pn*$number);
 			$this -> model -> cols('albums.id, albums.name, albums.access, albums.is_onmain, albums.thumbnail_id, photos.thumbnail');
 			$this -> model -> join('photos', 'photos.id=albums.thumbnail_id', 'LEFT');
@@ -417,7 +414,6 @@
 		 * Кол-во для вывода берется из конфиг параметров: параметр top_per_page
 		 */
 		public function TopListAction(){
-			$config = getManager('CParams');
 			$this -> model -> resetSql();
 			$this -> model -> pager();
 			$this -> model -> cols('albums.id, albums.user_id, albums.name, albums.creation_date, users.login, photos.thumbnail, IF (rate.voices > 0, rate.rating/rate.voices, 0) as album_rating');
@@ -428,8 +424,7 @@
 			$this -> model -> where("albums.is_onmain>0");
 			$this -> model -> group('albums.id');
 			$this -> model -> order("album_rating DESC");
-			// TODO:: parameters by group?
-			if (($number = $config -> getParam('albums_per_page')) === null){
+			if ( ($number = $this -> getParam('albums_per_page', self::DEFAULT_ALBUM_PER_PAGE)) === 0){
 				$number = self::DEFAULT_ALBUM_PER_PAGE;
 			}
 			$this -> model -> limit($number, (int)$this -> pn*$number);
@@ -448,7 +443,6 @@
 		 * Кол-во для вывода берется из конфиг параметров: параметр last_per_page
 		 */
 		public function LastListAction(){
-			$config = getManager('CParams');
 			$this -> model -> resetSql();
 			$this -> model -> pager();
 			$this -> model -> cols('albums.id, albums.user_id, albums.name, albums.creation_date, users.login, photos.thumbnail');
@@ -457,8 +451,7 @@
 			$this -> model -> where("albums.access>0");
 			$this -> model -> where("albums.is_onmain=1");
 			$this -> model -> order("albums.creation_date DESC");
-			// TODO:: parameters by group?
-			if (($number = $config -> getParam('last_albums_per_page')) === null){
+			if ( ($number = $this -> getParam('last_albums_per_page', self::DEFAULT_ALBUM_PER_PAGE)) === 0){
 				$number = self::DEFAULT_ALBUM_PER_PAGE;
 			}
 			$this -> model -> limit($number, (int)$this -> pn*$number);
