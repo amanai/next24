@@ -1,0 +1,325 @@
+/* Общие классы */
+html,body
+{
+   height:100%;
+   border:none
+}
+
+body
+{
+	margin-left: 18px;
+	margin-right: 18px;
+	margin-top: 4px;
+	margin-bottom: 20px;
+	background: #ffffff url('../img/top_grad.gif') repeat-x 0px 0px;
+	font-size: 13px;
+	font-family: Trebuchet MS, Tahoma, Arial;
+}
+
+
+table.main
+{
+	width: 100%;
+	height: 100%;
+	border: 0px;
+	border-collapse: collapse;
+	color: #5c5c5c;
+	font-size: 13px;
+}
+
+a
+{
+	color: #379dfd;
+}
+
+/* Кнопки */
+.button
+{
+	text-align: center;
+}
+
+.button img
+{
+	border: 0px;
+	display: inline;
+	padding-top: 8px;
+}
+
+.button a
+{
+	position: relative;
+	text-decoration: none;
+	display: block;
+	color: #5e5e5e;
+	width: 100%;
+	height: 100%;
+}
+
+.bbig
+{
+	background: url('../img/button_big.png') no-repeat 0px 0px;
+	width: 114px;
+	height: 39px;
+	line-height: 39px;
+}
+
+.bbig_hover
+{
+	background: url('../img/button_big_hover.png') no-repeat 0px 0px;
+}
+
+.bbig, .bbig_hover
+{
+	font-weight: bold;
+}
+
+.bnormal
+{
+	background: url('../img/button_normal.png') no-repeat 0px 0px;
+	width: 85px;
+	height: 33px;
+	line-height: 33px;
+}
+
+.bnormal_hover
+{
+	background: url('../img/button_normal_hover.png') no-repeat 0px 0px;
+}
+
+.bsmall
+{
+	background: url('../img/button_small.png') no-repeat 0px 0px;
+	width: 44px;
+	height: 28px;
+	line-height: 28px;
+}
+
+.bsmall_hover
+{
+	background: url('../img/button_small_hover.png') no-repeat 0px 0px;
+}
+
+.bclose
+{
+	background: url('../img/button_close.png') no-repeat 0px 0px;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+}
+
+.bclose_hover
+{
+	background: url('../img/button_close_hover.png') no-repeat 0px 0px;
+}
+
+/* Хедер */
+.header
+{
+	height: 65px;
+	border-bottom: 1px solid #c9c8c8;
+}
+
+.header .left
+{
+	float: left;
+	font-size: 24px;
+}
+
+.header .right
+{
+	float: right;
+}
+
+
+/* Серединка */
+.c_left
+{
+	height: 70%;
+	vertical-align: top;
+	padding-top: 20px;
+}
+
+.c_middle
+{
+	width: 100%;
+	height: 100%;
+	vertical-align: top;
+	padding-top: 20px;
+	padding-left: 20px;
+}
+
+.info
+{
+	padding-bottom: 20px;
+	clear: both;
+	overflow: hidden;
+	height: 29px;
+}
+
+.welcome
+{
+	float: left;
+	line-height: 29px;
+}
+
+.lastvisit
+{
+	white-space: nowrap;
+	float: right;
+}
+
+.lastvisit div
+{
+	background-color: #c9c8c8;
+	height: 29px;
+	line-height: 29px;
+}
+
+.lastvisit div, .lastvisit img
+{
+	float: left;
+}
+
+/* Главное меню */
+.mm
+{
+	width: 200px;
+	float: left;
+}
+
+.mm .head, .mm .mm_footer
+{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.mm td
+{
+	padding: 0px;
+}
+
+.mm .head .left
+{
+	background: url('../img/mm_h_left.gif') no-repeat;
+	width: 8px;
+}
+
+.mm .head .right
+{
+	background: url('../img/mm_h_right.gif') no-repeat;
+	width: 8px;
+}
+
+.mm .head .cen
+{
+	color: #4b4b4b;
+	font-size: 12px;
+	font-weight: bold;
+	width: 184px;
+	height: 36px;
+	background: url('../img/mm_h_rep.gif') repeat-x;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.mm .mm_footer .left
+{
+	background: url('../img/mm_b_left.gif') no-repeat;
+	width: 10px;
+}
+
+.mm .mm_footer .right
+{
+	background: url('../img/mm_b_right.gif') no-repeat;
+	width: 11px;
+}
+
+.mm .mm_footer .cen
+{
+	width: 179px;
+	height: 11px;
+	background: url('../img/mm_b_rep.gif') repeat-x;
+}
+
+.mm ul, .sm ul
+{
+	width: 198px;
+	padding: 0px;
+	margin: 0px;
+	list-style-type: none;
+	border-left: 1px solid #c9c9c9;
+	border-right: 1px solid #c9c9c9;
+	background-color: #f4f3f3;
+}
+
+.mm li, .sm li
+{
+	padding: 0px;
+	margin: 0px;
+}
+
+.mm li a, .sm li a
+{
+	line-height: 40px;
+	padding-left: 12px;
+	display: block; 
+	height: 40px;
+	text-decoration: none;
+	color: #5c5c5c;
+	background: url('../img/mm_delim.gif') bottom repeat-x;
+}
+
+.mm li a:hover, .sm li a:hover
+{
+	background-color: #dcedfe;
+}
+
+/* Подменю */
+.sm
+{
+	position: absolute;
+	display: none;
+	visibility: hidden;
+	left: 200px;
+	top: 20px;
+	border: 1px solid #c9c9c9;
+	z-index: 10;
+	font-size: 12px;
+}
+
+.sm ul
+{
+	background: url('../img/sm_grad.gif') top repeat-x;
+	width: 150px;
+	border: 0px;
+}
+
+.sm li a
+{
+	line-height: 30px;
+	height: 30px;
+}
+
+/* ФУТЕР */
+
+.footer
+{
+	padding-top: 20px;
+	height: 70px;
+	border-top: 1px solid #c9c8c8;
+}
+
+.footer .left
+{
+	float: left;
+}
+
+.footer .right
+{
+	float: right;
+}
+
+.footer a
+{
+	color: #5c5c5c;
+}

@@ -1,0 +1,117 @@
+.message 
+{
+	border-collapse: collapse;
+}
+
+.message td
+{
+	padding: 0px;
+	border: 0px solid red;
+}
+
+.message .l_top
+{
+	width: 16px;
+	height: 34px;
+	background: url('../img/message/l_top.gif') no-repeat left bottom;
+}
+
+.message .t_rep
+{
+	width: 100%;
+	height: 34px;
+	background: url('../img/message/t_rep.gif') repeat-x left bottom;
+}
+
+.message .icon
+{
+	background: #fbfafa url('../img/message/t_rep.gif') repeat-x left top;
+	vertical-align: top;
+}
+
+.message .r_top
+{
+	width: 16px;
+	height: 34px;
+	background: url('../img/message/r_top.gif') no-repeat left bottom;
+}
+
+.message .l_rep
+{
+	background: url('../img/message/l_rep.gif') repeat-y left top;
+	width: 16px;
+}
+
+.message .r_rep
+{
+	background: url('../img/message/r_rep.gif') repeat-y left top;
+	width: 16px;
+}
+
+.message .l_bot
+{
+	width: 16px;
+	height: 17px;
+	background: url('../img/message/l_bot.gif') no-repeat left top;
+}
+
+.message .b_rep
+{
+	width: 100%;
+	height: 17px;
+	background: url('../img/message/b_rep.gif') repeat-x left top;
+}
+
+.message .r_bot
+{
+	width: 16px;
+	height: 17px;
+	background: url('../img/message/r_bot.gif') no-repeat left top;
+}
+
+.message .l_top img, .message .r_top img, .message .l_rep img, .message .r_rep img, .message .l_bot img, .message .r_bot img
+{
+	width: 16px;
+}
+
+.message .center
+{
+	background-color: #fbfafa;
+	height: 80px;
+	vertical-align: top;
+	padding-left: 20px;
+}
+
+/* ICONS */
+.error .icon div
+{
+	background: url('../img/message/ico_error.png') no-repeat left top;
+	width: 74px;
+	height: 110px;
+}
+
+.warning .icon div
+{
+	background: url('../img/message/ico_warning.png') no-repeat left top;
+	width: 87px;
+	height: 104px;
+}
+
+.info .icon div
+{
+	background: url('../img/message/ico_info.png') no-repeat left top;
+	width: 84px;
+	height: 105px;
+}
+
+.question .icon div
+{
+	background: url('../img/message/ico_question.png') no-repeat left top;
+	width: 72px;
+	height: 104px;
+}
+
+.error .center h3
+{
+	color: red;
+}

@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+	<title>Рабочий стол | Административый интерфейс</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+	<link href="css/main.css" type="text/css" rel="StyleSheet"/>
+	<link href="css/dialog.css" type="text/css" rel="StyleSheet"/>
+	<link href="css/message.css" type="text/css" rel="StyleSheet"/>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/jquery_pngfix.js"></script>
+	<script type="text/javascript" src="js/menu.js"></script>
+	<script type="text/javascript" src="js/init.js"></script>
+</head>
+
+<body>
+
+<!-- SUBMENUS -->
+<div class="sm" id="sub1"><ul>
+	<li><a href="#">Добавить</a></li>
+	<li><a href="#">Удалить</a></li>
+	<li><a href="#">Поправить</a></li>
+</ul></div>
+
+<div class="sm" id="sub2"><ul>
+	<li><a href="#">Добавить2</a></li>
+	<li><a href="#">Удалить2</a></li>
+	<li><a href="#">Поправить2</a></li>
+</ul></div>
+<!-- /SUBMENUS -->
+
+<table class="main">
+	<!-- Header -->
+	<tr>
+		<td colspan="2" class="header">
+			<div class="left">
+				Административный интерфейс сайта next24.ru
+			</div>
+			<div class="right">
+				<div class="button bbig"><a href="#">Выход</a></div>
+			</div>
+		</td>
+	</tr>
+	<!-- /Header -->
+	<!-- Middle -->
+	<tr>
+		<td class="c_left">
+			<!-- MAIN MENU -->
+			<div class="mm">
+				<table class="head">
+					<tr>
+						<td class="left">&nbsp;</td>
+						<td class="cen">Главное меню</td>
+						<td class="right">&nbsp;</td>
+					</tr>
+				</table>
+				<ul>
+					<li><a href="#">Каталог сложных опросов</a></li>
+					<li><a href="#">Каталог лент новостей</a></li>
+					<li><a href="#" class="sub" id="_sub2">Блоги пользователей</a></li>
+					<li><a href="#" class="sub" id="_sub1">Дневники пользователей</a></li>
+				</ul>
+				<table class="mm_footer">
+					<tr>
+						<td class="left">&nbsp;</td>
+						<td class="cen">&nbsp;</td>
+						<td class="right">&nbsp;</td>
+					</tr>
+				</table>
+			</div>
+			<!-- /MAIN MENU -->
+		</td>
+		<td class="c_middle">
+			<div class="info">
+				<div class="welcome">Здравствуйте, Сергей Петрович</div>
+				<div class="lastvisit"><img src="img/visit_left.gif" alt=""/><div>Ваш последний визит...</div><img src="img/visit_right.gif" alt=""/></div>
+			</div>
+		
+		
+			<!-- MESSAGE BLOCK -->
+			<table class="message error">
+				<tr height="34">
+					<td class="l_top"><img src="img/1x1.gif" alt=""/></td>
+					<td rowspan="2" class="icon"><div>&nbsp;</div></td>
+					<td class="t_rep">&nbsp;</td>
+					<td class="r_top"><img src="img/1x1.gif" alt=""/></td>
+				</tr>
+				<tr>
+					<td class="l_rep"<img src="img/1x1.gif" alt=""/></td>
+					<td class="center">
+						<!-- CONTENT -->
+						<h3>Ошибка!</h3>
+						Неправильно введены параметры новости, повторите ввод еще раз.
+						<!-- /CONTENT -->
+					</td>
+					<td class="r_rep"><img src="img/1x1.gif" alt=""/></td>
+				</tr>
+				<tr>
+					<td class="l_bot"><img src="img/1x1.gif" alt=""/></td>
+					<td class="b_rep" colspan="2">&nbsp;</td>
+					<td class="r_bot"><img src="img/1x1.gif" alt=""/></td>
+				</tr>
+			</table>
+			<!-- /MESSAGE BLOCK -->
+			
+			
+			<br /><br /><br />
+			<!-- DIALOG BLOCK -->
+			<table class="dialog">
+				<tr>
+					<td class="h_left"><img src="img/1x1.gif" alt=""/></td>
+					<td class="h_cen">
+						<table>
+							<tr>
+								<td class="text">
+									Добавление пользователя системы
+								</td>
+								<td>
+									<div class="button bclose"><a href="#">X</a></div>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td class="h_right"><img src="img/1x1.gif" alt=""/></td>
+				</tr>
+				<tr>
+					<td class="c_left">&nbsp;</td>
+					<td class="c_cen">
+					
+						<!-- САМ ДИАЛОГ -->
+						<form action="/adm/dialogs/users.php" method="POST">
+						<table cellspacing="0" cellpadding="0" border="0">
+							<tr>
+								<td class="left_col">
+								Имя:
+								</td>
+								<td class="right_col" style="width: 100%;">
+								<input type="text" class="field" name="login" value="">
+								</td>
+							</tr>
+							<tr>
+								<td class="left_col">
+								Пароль:					</td>
+								<td class="right_col">
+								<input type="password" class="field" name="pass" value="">
+								</td>
+							</tr>
+							<tr>
+								<td class="left_col">
+								Email:
+								</td>
+								<td class="right_col">
+								<input type="text" class="field" name="email" value="">
+								</td>
+							</tr>
+							<tr>
+								<td class="left_col">
+								Суперпользователь:<br>
+								<span class="small">(неограниченные права)</span>
+								</td>
+								<td class="right_col">
+									<input type="radio" name="is_superuser" value="1">Да&nbsp;&nbsp;
+									<input type="radio" name="is_superuser" value="0" checked="checked">Нет
+								</td>
+							</tr>
+						</table>
+						</form>
+						<!-- -->
+
+					</td>
+					<td class="c_right">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="b_left">&nbsp;</td>
+					<td class="b_cen"><div class="b_delim">
+						<div class="button bbig" style="float: right;"><a href="#">Отмена</a></div>
+						<div class="button bbig" style="float: right;"><a href="#">Добавить</a></div>
+					</div></td>
+					<td class="b_right">&nbsp;</td>
+				</tr>
+			</table>
+			<!-- /DIALOG BLOCK -->
+			
+		</td>
+	</tr>
+	<!-- /Middle -->
+	<!-- Footer -->
+	<tr>
+		<td colspan="2" class="footer">
+			<div class="left">(с) Next24.ru Group. Все права защищены.</div>
+			<div class="right"><a href="#">Личные данные</a> | <a href="#">Наверх</a> | <a href="#">Выход</a></div>
+		</td>
+	</tr>
+	<!-- /Footer -->
+</table>
+
+</body>
+</html>
