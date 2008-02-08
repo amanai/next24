@@ -16,7 +16,7 @@
 											<div class="block_ee1"><div class="block_ee2">
 												<div class="block_ee3">
 													<div class="block_ee4">
-														<div class="block_title"><h2><? echo $this->userData['blog_info']['title'];  ?></h2></div>
+														<div class="block_title"><h2><? echo $this->blog_info['title'];  ?></h2></div>
 															<?php require('blog_left_tree.tpl.php'); ?>
 														</div>
 													</div>
@@ -31,7 +31,7 @@
 						<td class="next24u_right">
 							<!-- Список постов -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-								<?php foreach ($this->userData['post_list'] as $key=>$item){?>
+								<?php foreach ($this->post_list as $key=>$item){?>
 									<div class="block_title" id="record_93">
 										<div class="block_title_left"><h2><?php echo $item['title']; ?></h2></div>
 										<div class="block_title_right"><?php echo date("j F Y", strtotime($item['creation_date']));?> | <span class="tags"><a href="#taglink" class="astable">_TAG_</a></span></div>

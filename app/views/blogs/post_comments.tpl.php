@@ -16,7 +16,7 @@
 											<div class="block_ee1"><div class="block_ee2">
 												<div class="block_ee3">
 													<div class="block_ee4">
-														<div class="block_title"><h2><? echo $this->userData['blog_info']['title'];  ?></h2></div>
+														<div class="block_title"><h2><? echo $this->blog_info['title'];  ?></h2></div>
 															<?php require('blog_left_tree.tpl.php'); ?>
 														</div>
 													</div>
@@ -32,11 +32,11 @@
 							<!-- Создание нового раздела -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 									<div class="block_title" id="record_93">
-										<div class="block_title_left"><h2><?php echo $this->userData['post_info']['title']; ?></h2></div>
-										<div class="block_title_right"><?php echo date("j F Y", strtotime($this->userData['post_info']['creation_date']));?> | <span class="tags"><a href="#taglink" class="astable">_TAG_</a></span></div>
+										<div class="block_title_left"><h2><?php echo $this->post_info['title']; ?></h2></div>
+										<div class="block_title_right"><?php echo date("j F Y", strtotime($this->post_info['creation_date']));?> | <span class="tags"><a href="#taglink" class="astable">_TAG_</a></span></div>
 									</div>
 									<div>
-										<?php echo $this->userData['post_info']['full_text']; ?><br><br>
+										<?php echo $this->post_info['full_text']; ?><br><br>
 										
 									</div>
 									<br>

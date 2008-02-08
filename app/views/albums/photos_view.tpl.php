@@ -17,11 +17,11 @@
 												<div class="block_ee3">
 													<div class="block_ee4">
 														<div class="block_title"><h2>Фотоальбомы</h2></div>
-															<?php foreach($this->userData['album_list'] as $key => $item){ ?>
+															<?php foreach($this->album_list as $key => $item){ ?>
 																<p>
-																	<?php if ($this->userData['album_id'] != $item['id']){ ?><a href="<?php echo BASE_URL;?>Photo/Album/id:<?php echo $item['id'];?>"><?php } ?><img src="<?php echo IMG_URL;?>/folder.png" width="15" height="12" id="ico2" /><?php echo $item['name'];?><?php if ($this->userData['album_id'] != $item['id']){ ?></a><?php } ?>
+																	<?php if ($this->album_id != $item['id']){ ?><a href="<?php echo BASE_URL;?>Photo/Album/id:<?php echo $item['id'];?>"><?php } ?><img src="<?php echo IMG_URL;?>/folder.png" width="15" height="12" id="ico2" /><?php echo $item['name'];?><?php if ($this->album_id != $item['id']){ ?></a><?php } ?>
 																	
-																	<?php if ($this->userData['photo_owner']) {?>
+																	<?php if ($this->photo_owner) {?>
 																	<a href="<?php echo $this->router->createUrl('Photo', 'Edit', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Редактировать альбом" class="editbtn" height="12" width="11"></a>
 																	<?php }?>
 																</p>
@@ -30,7 +30,7 @@
 													</div>
 												</div>
 											</div>
-											<?php if ($this->userData['photo_owner']) {?>
+											<?php if ($this->photo_owner) {?>
 												<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 													<div class="block_title"><h2>Управление альбомами</h2></div>
 													<p><a href="<?php echo $this->router->createUrl('Album', 'CreateForm');?>">Создать альбом</a></p>
@@ -53,25 +53,25 @@
 											<div class="block_ee4">
 												<div class="block_title">		
 													<div class="block_title_left"><h2>
-														<a href="<?php echo BASE_URL;?>Photo/Album/id:<?php echo $this->userData['album_info']['id'];?>"><?php echo $this->userData['album_info']['name'];?></a>&nbsp;&raquo;&nbsp;<?php echo $this->userData['photo_info']['name'];?>
+														<a href="<?php echo BASE_URL;?>Photo/Album/id:<?php echo $this->album_info['id'];?>"><?php echo $this->album_info['name'];?></a>&nbsp;&raquo;&nbsp;<?php echo $this->photo_info['name'];?>
 													</h2>
 													</div>
-													<div class="block_title_right"><?php echo date("j F Y", strtotime($this->userData['photo_info']['creation_date']));?></div>
+													<div class="block_title_right"><?php echo date("j F Y", strtotime($this->photo_info['creation_date']));?></div>
 												</div>
 												<center>
 													<div class="photoRating">
-														Рейтинг фотографии: <?php echo round((($this->userData['photo_info']['voices'] > 0)?$this->userData['photo_info']['rating']/($this->userData['photo_info']['voices']):0), 2); ?><br>
-														Количество голосов: <?php echo $this->userData['photo_info']['voices']; ?>
+														Рейтинг фотографии: <?php echo round((($this->photo_info['voices'] > 0)?$this->photo_info['rating']/($this->photo_info['voices']):0), 2); ?><br>
+														Количество голосов: <?php echo $this->photo_info['voices']; ?>
 													</div>
-													<?php if ($this->userData['photo_info']['path'] !== false) { ?>
-													<img src="<?php echo BASE_URL.$this->userData['photo_info']['path']; ?>" id="iborder"/>
+													<?php if ($this->photo_info['path'] !== false) { ?>
+													<img src="<?php echo BASE_URL.$this->photo_info['path']; ?>" id="iborder"/>
 													<?php } else { ?>
 														<img src="<?php echo IMG_URL; ?>noimage.gif" id="iborder"/>
 													<?php } ?>
 													<br><br /><br />
-													<?php if ($this->userData['can_rate'] === true){?>
+													<?php if ($this->can_rate === true){?>
 														<form action="<?php echo $this->router->createUrl('Photo', 'RatePhoto');?>" method="post">
-															<input type="hidden" name="id" value="<?php echo $this->userData['photo_info']['id'];?>" />
+															<input type="hidden" name="id" value="<?php echo $this->photo_info['id'];?>" />
 															<table>
 																<tr align="center">
 																	<td>-5</td>
@@ -124,7 +124,7 @@
 									<div class="block_ee3">
 										<div class="block_ee4">
 											<table class="neighbours">
-												<?php foreach($this->userData['photo_list'] as $key => $item){ ?>
+												<?php foreach($this->photo_list as $key => $item){ ?>
 													<?php if ($key%5 == 0){ ?><tr><?php } ?>
 														<td class="neigh5">
 															<a href="<?php echo BASE_URL;?>Photo/View/id:<?php echo $item['id'];?>">
@@ -150,7 +150,7 @@
 							
 							
 					<!-- Комменты -->
-						<?php foreach($this->userData['comment_list'] as $key => $item){ ?>
+						<?php foreach($this->comment_list as $key => $item){ ?>
 							<div class="block_ee1">
 								<div class="block_ee2">
 									<div class="block_ee3">
@@ -175,7 +175,7 @@
 							</div>
 						<?php }?>
 						<form action="<?php echo $this->router->createUrl('Photo', 'Comment');?>" method="post">
-						    <input type="hidden" name="id" value="<?php echo $this->userData['photo_info']['id'];?>" />
+						    <input type="hidden" name="id" value="<?php echo $this->photo_info['id'];?>" />
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 								<table width="100%">
 								<tr>

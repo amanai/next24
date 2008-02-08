@@ -99,6 +99,15 @@ class CBaseController
 		$session = getManager('CSession');
 		$userData = unserialize($session->read('user'));
 		$lastPath = $session->read('LAST_PATH');
+		
+		/*
+		 if (is_array($userData)){
+
+			foreach ($userData as $key => $value){
+				$this -> view -> $key = $value;
+			}
+		}
+		*/
 
 		$this->view->assign('userData', $userData);
 		$this->view->assign('lastPath', $lastPath);

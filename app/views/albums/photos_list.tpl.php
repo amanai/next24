@@ -6,22 +6,22 @@
 					<!-- ПРОФИЛЬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
-						<?php if (is_array($this -> userData['album_list']) || $this->userData['album_owner']) {?>
+						<?php if (is_array($this -> album_list) || $this->album_owner) {?>
 							<td class="next24u_left">
 								<!-- левый блок -->
-									<?php if (is_array($this -> userData['album_list'])) {?>
+									<?php if (is_array($this -> album_list)) {?>
 										<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 											<div class="block_title"><h2>Фотоальбомы</h2></div>
-											<?php foreach ($this -> userData['album_list'] as $item) {?>
+											<?php foreach ($this -> album_list as $item) {?>
 												<p><a href="#"><img src="<?php echo IMG_URL; ?>folder.png" id="ico2" height="12" width="15"><?php echo $item['name'];?></a>&nbsp;&nbsp;
-												<?php if ($this->userData['album_owner']) {?>
+												<?php if ($this->album_owner) {?>
 												<a href="<?php echo BASE_URL; ?>Album/Edit"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Редактировать альбом" class="editbtn" height="12" width="11"></a>
 												<?php } ?>
 												</p>
 											<?php } ?>
 										</div></div></div></div>
 									<?php } ?>
-									<?php if ($this->userData['album_owner']) {?>
+									<?php if ($this->album_owner) {?>
 										<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 											<div class="block_title"><h2>Управление альбомами</h2></div>
 											<p><a href="<?php echo BASE_URL; ?>Album/CreateForm">Создать альбом</a></p>
@@ -34,7 +34,7 @@
 						<?php } ?>
 						<td class="next24u_right">
 							<table class="photo_table">
-								<?php foreach($this->userData['photo_list'] as $key => $item){ ?>
+								<?php foreach($this->photo_list as $key => $item){ ?>
 									<?php if ($key%4 == 0){ ?><tr><?php } ?>
 										<td>
 											<div class="block_ee1" style="width: 160px;">

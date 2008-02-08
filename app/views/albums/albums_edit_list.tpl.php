@@ -9,10 +9,10 @@
 					<tr>
 						<td class="next24u_left">
 							<!-- левый блок -->
-								<?php if (is_array($this -> userData['album_list'])) {?>
+								<?php if (is_array($this -> album_list)) {?>
 									<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 										<div class="block_title"><h2>Фотоальбомы</h2></div>
-										<?php foreach ($this -> userData['album_list'] as $item) {?>
+										<?php foreach ($this -> album_list as $item) {?>
 											<p><a href="#"><img src="<?php echo IMG_URL; ?>folder.png" id="ico2" height="12" width="15"><?php echo $item['name'];?></a>&nbsp;&nbsp;
 												<a href="<?php echo $this->router->createUrl('Photo', 'Edit', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Редактировать альбом" class="editbtn" height="12" width="11"></a>
 											</p>
@@ -31,7 +31,7 @@
 							<form action="<?php echo $this->router->createUrl('Album', 'ListSave');?>" method="post">
 								<div class="block_title"><h2>Управление альбомами</h2></div>
 								<table class="photo_table">
-									<?php foreach($this->userData['album_list'] as $key => $item){ ?>
+									<?php foreach($this->album_list as $key => $item){ ?>
 										<?php if ($key%4 == 0){ ?><tr><?php } ?>
 											<input type="hidden" name="album_id[<?php echo $item['id'];?>]" value="<?php echo $item['id'];?>"/>
 											<td>

@@ -10,7 +10,7 @@
 						
 						<td class="next24u_right">
 							<table class="photo_table">
-								<?php foreach($this->userData['album_list'] as $key => $item){ ?>
+								<?php foreach($this->album_list as $key => $item){ ?>
 									<?php if ($key%4 == 0){ ?><tr><?php } ?>
 										<td>
 											<div class="block_ee1" style="width: 160px;">
@@ -37,18 +37,18 @@
 							<!-- листинг -->
 							<div class="listing_div_c">
 								<li class="listing">
-									<?php if ($this->userData['current_page_number'] > 0) { ?>
-										<a href="<?php echo $this->router->createUrl($this->userData['current_controller'], $this->userData['current_action'], array('pn'=>$this->userData['current_page_number']-1));?>" title="Предыдущая страница">«</a>
+									<?php if ($this->current_page_number > 0) { ?>
+										<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, array('pn'=>$this->current_page_number-1));?>" title="Предыдущая страница">«</a>
 									<?php } ?>
-									<?php for($i = 0; $i < $this->userData['pages_number']; $i++){ ?>
-										<?php if ($this->userData['current_page_number'] == $i) { ?>
+									<?php for($i = 0; $i < $this->pages_number; $i++){ ?>
+										<?php if ($this->current_page_number == $i) { ?>
 											<a class="active"><?php echo ($i+1);?></a>
 										<?php } else { ?>
-											<a href="<?php echo $this->router->createUrl($this->userData['current_controller'], $this->userData['current_action'], array('pn'=>$i));?>"><?php echo ($i+1);?></a>
+											<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, array('pn'=>$i));?>"><?php echo ($i+1);?></a>
 										<?php } ?>
 									<?php } ?>
-									<?php if ($this->userData['current_page_number'] < $this->userData['pages_number'] - 1) { ?>
-										<a href="<?php echo $this->router->createUrl($this->userData['current_controller'], $this->userData['current_action'], array('pn'=>$this->userData['current_page_number']+1));?>" title="Следующая страница">»</a>
+									<?php if ($this->current_page_number < $this->pages_number - 1) { ?>
+										<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, array('pn'=>$this->current_page_number+1));?>" title="Следующая страница">»</a>
 									<?php } ?>
 									
 								</li>

@@ -26,7 +26,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$this -> model -> resetSql();
 			$this -> model -> where('user_id='.(int)$user_id);
 			$list = $this -> model -> getAll();
-			$this->view->userData['album_list'] = $list;
+			$this -> view -> album_list = $list;
 			
 			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/user_albums.tpl.php');
 			$this->view->display();
@@ -83,7 +83,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 				die("No album");
 			}
 			
-			$this->view->userData['album_info'] = $this -> model -> getData();
+			$this -> view -> album_info = $this -> model -> getData();
 			
 			if (isset($photo['user_id']) && ((int)$photo['user_id'] > 0)){
 				$user_id = (int)$photo['user_id'];
@@ -94,7 +94,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			
 			
 			if ($photo['user_id'] == $user['id']){
-				$this->view->userData['photo_owner'] = true;
+				$this -> view -> photo_owner = true;
 			}
 			$this->setModel("Users");
 			$this -> model -> resetSql();
@@ -134,10 +134,10 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			
 			
 			
-			$this->view->userData['photo_info'] = $photo;
+			$this -> view -> photo_info = $photo;
 			
 			$this->setModel("PhotoVotes");
-			$this->view->userData['can_rate'] = $this -> model -> canVote($user_id, $this -> id);;
+			$this -> view -> can_rate = $this -> model -> canVote($user_id, $this -> id);;
 			
 			
 			
@@ -165,7 +165,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 				$list[$key]['thumbnail'] = $thumb;
 			}
 			
-			$this->view->userData['photo_list'] = $list;
+			$this -> view -> photo_list = $list;
 			
 			$this->setModel("Albums");
 			$this -> model -> resetSql();
@@ -173,15 +173,15 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			if ($photo['user_id'] != $user['id']){
 				$this -> model -> where('access>0');
 			}
-			$this->view->userData['album_list'] = $this -> model -> getAll();
-			$this->view->userData['album_id'] = (int)$this -> id;
+			$this -> view -> album_list = $this -> model -> getAll();
+			$this -> view -> album_id = (int)$this -> id;
 			
 			
 			
 			$this->setModel("PhotoComment");
 			$this -> model -> resetSql();
 			$list = $this -> model -> loadByItem($this -> id);
-			$this->view->userData['comment_list'] = $list;
+			$this -> view -> comment_list = $list;
 			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photos_view.tpl.php');
 			$this->view->display();
 		}
@@ -291,7 +291,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$this -> model -> where('id='.(int)$this -> id);
 			$o = $this -> model -> getOne();
 			$owner_id = (int)$o['user_id'];
-			$this->view->userData['album_thumbnail_id'] = (int)$o['thumbnail_id'];
+			$this -> view -> album_thumbnail_id = (int)$o['thumbnail_id'];
 			$this->setModel("Users");
 			$this -> model -> resetSql();
 			$this -> model -> where('id='.(int)$owner_id);
@@ -345,7 +345,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 				$list[$key]['thumbnail'] = $thumb;
 			}
 			
-			$this->view->userData['photo_list'] = $list;
+			$this -> view -> photo_list = $list;
 			
 			
 			$this->setModel("Albums");
@@ -354,10 +354,10 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			if ($owner_id != $user_id){
 				$this -> model -> where('access>0');
 			} else {
-				$this->view->userData['album_owner'] = true;
+				$this -> view -> album_owner = true;
 			}
-			$this->view->userData['album_list'] = $this -> model -> getAll();
-			$this->view->userData['album_id'] = (int)$this -> id;
+			$this -> view -> album_list = $this -> model -> getAll();
+			$this -> view -> album_id = (int)$this -> id;
 			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photos_of_album_edit.tpl.php');
 			$this->view->display();
 			
@@ -431,7 +431,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 				$list[$key]['thumbnail'] = $thumb;
 			}
 			
-			$this->view->userData['photo_list'] = $list;
+			$this -> view -> photo_list = $list;
 			
 			
 			$this->setModel("Albums");
@@ -440,10 +440,10 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			if ($owner_id != $user_id){
 				$this -> model -> where('access>0');
 			} else {
-				$this->view->userData['album_owner'] = true;
+				$this -> view -> album_owner = true;
 			}
-			$this->view->userData['album_list'] = $this -> model -> getAll();
-			$this->view->userData['album_id'] = (int)$this -> id;
+			$this -> view -> album_list = $this -> model -> getAll();
+			$this -> view -> album_id = (int)$this -> id;
 			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photos_of_album.tpl.php');
 			$this->view->display();
 			
@@ -477,8 +477,8 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$this -> model -> limit($number, (int)$this -> pn*$number);
 			$list = $this -> model -> getAll();
 			$all = $this -> model -> foundRows();
-			$this->view->userData['pages_number'] = ceil($all / $number);
-			$this->view->userData['current_page_number'] = (int)$this -> pn;
+			$this -> view -> pages_number = ceil($all / $number);
+			$this -> view -> current_page_number = (int)$this -> pn;
 			
 			foreach($list as $key => $value){
 				$login = trim($value['login']);
@@ -512,7 +512,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 				}
 				$list[$key]['thumbnail'] = $thumb;
 			}
-			$this->view->userData['photo_list'] = $list;
+			$this -> view -> photo_list = $list;
 			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photo_top_list.tpl.php');
 			$this->view->display();
 		}

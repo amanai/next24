@@ -28,7 +28,7 @@
 				$this -> model -> load($blog_id);
 				$owner_id = (int)$this -> model -> get('user_id');
 				
-				$this->view->userData['blog_info'] = $this -> model -> getData();
+				$this -> view -> blog_info = $this -> model -> getData();
 				
 				if (($owner_id === 0) || ($owner_id !== $user_id)) {
 					// User not logged or is not owner of blog
@@ -36,10 +36,10 @@
 					$router = getManager('CRouter');
 					$router -> redirect($router -> createUrl('Blog', 'Post'));
 				}
-				$this->view->userData['new_branch'] = false;
+				$this -> view -> new_branch = false;
 			} else {
 				$blog_id = (int)$this -> blog_id;
-				$this->view->userData['new_branch'] = true;
+				$this -> view -> new_branch = true;
 				if ($blog_id > 0){
 					$this -> setModel("BlogsModel");
 					$this -> model -> resetSql();
@@ -51,7 +51,7 @@
 						$router = getManager('CRouter');
 						$router -> redirect($router -> createUrl('Blog', 'Post'));
 					}
-					$this->view->userData['blog_info'] = $this -> model -> getData();
+					$this -> view -> blog_info = $this -> model -> getData();
 				} else {
 					// Can't create branch out of blog
 					die('out of blog');
@@ -60,7 +60,7 @@
 				}
 				
 			}
-			$this -> view -> userData['blog_owner'] = true;
+			$this -> view -> blog_owner = true;
 			return $blog_id;
 		}
 		
@@ -87,7 +87,7 @@
 			$id = (int)$this -> id;
 			$this -> setModel("BlogPosts");
 			$this -> model -> load($id);
-			$this->view->userData['post_info'] =  $this -> model -> getData();
+			$this -> view -> post_info =  $this -> model -> getData();
 			/*if ((int)$this -> model -> id <= 0){
 				// TODO:: no post
 				$router = getManager('CRouter');
@@ -95,7 +95,7 @@
 			}*/
 			
 			$n = Node::by_key('', 'ub_tree');
-			$this->view->userData['branch_list'] =  $n->getBranch();
+			$this -> view -> branch_list =  $n->getBranch();
 			
 			
 			$branch_id = (int)$this -> model -> get('ub_tree_id');
@@ -111,7 +111,7 @@
 			$this -> setModel('Moods');
 			$this -> model -> resetSql();
 			$this -> model -> where('user_id='.(int)$user_id);
-			$this->view->userData['mood_list'] =  $this -> model -> getAll();
+			$this -> view -> mood_list =  $this -> model -> getAll();
 			
 			$this->view->content .= $this->view->render(VIEWS_PATH.'blogs/edit_post.tpl.php');
 			$this->view->display();
@@ -203,13 +203,13 @@
 			$this -> setModel("BlogPosts");
 			$this -> model -> load($id);
 			$post_data = $this -> model -> getData();
-			$this->view->userData['post_info'] =  $post_data;
+			$this -> view -> post_info =  $post_data;
 			$post_data['views']++;
 			$this -> model -> setData($post_data);
 			$this -> model -> save();
 			
 			$n = Node::by_key('', 'ub_tree');
-			$this->view->userData['branch_list'] =  $n->getBranch();
+			$this -> view -> branch_list =  $n->getBranch();
 			
 			if ( ($number = $this -> getParam('post_comments_per_page', self::DEFAULT_COMMENT_PER_PAGE)) === 0){
 				$number = self::DEFAULT_COMMENT_PER_PAGE;
@@ -226,26 +226,26 @@
 				$list[$key]['delete_comment_param'] = array('id'=>$value['id']);
 			}
 			
-			$this->view->userData['delete_comment_controller'] = 'Blog';
-			$this->view->userData['delete_comment_action'] = 'DeleteComment';
+			$this -> view -> delete_comment_controller = 'Blog';
+			$this -> view -> delete_comment_action = 'DeleteComment';
 			
 			
 			$all = $this -> model -> foundRows();
-			$this->view->userData['pages_number'] = ceil($all / $number);
-			$this->view->userData['current_page_number'] = (int)$this -> pn;
-			$this->view->userData['current_controller'] = 'Blog';
-			$this->view->userData['current_action'] = 'Comments';
+			$this -> view -> pages_number = ceil($all / $number);
+			$this -> view -> current_page_number = (int)$this -> pn;
+			$this -> view -> current_controller = 'Blog';
+			$this -> view -> current_action = 'Comments';
 			if ($id > 0){
-				$this->view->userData['pager_params'] = array('id'=>$id);
+				$this -> view -> pager_params = array('id'=>$id);
 			}
 			
-			$this->view->userData['allow_add_comment'] = ($user_id > 0) ? true : false;
-			$this->view->userData['add_comment_controller'] = 'Blog';
-			$this->view->userData['add_comment_action'] = 'SaveComment';
-			$this->view->userData['add_comment_item_id'] = $id;
-			$this->view->userData['add_comment_page_number'] = (int)$this -> pn;
+			$this -> view -> allow_add_comment = ($user_id > 0) ? true : false;
+			$this -> view -> add_comment_controller = 'Blog';
+			$this -> view -> add_comment_action = 'SaveComment';
+			$this -> view -> add_comment_item_id = $id;
+			$this -> view -> add_comment_page_number = (int)$this -> pn;
 			
-			$this->view->userData['comment_list'] = $list;
+			$this -> view -> comment_list = $list;
 			
 			
 			
@@ -268,7 +268,7 @@
 			$this -> setModel("BlogPosts");
 			$this -> model -> load($this -> id);
 			$post_data = $this -> model -> getData();
-			$this->view->userData['post_info'] =  $post_data;
+			$this -> view -> post_info =  $post_data;
 			$post_data['comments']++;
 			$this -> model -> setData($post_data);
 			$this -> model -> save();
@@ -335,7 +335,7 @@
 			
 			
 			$n = Node::by_key('', 'ub_tree');
-			$this->view->userData['branch_list'] =  $n->getBranch();
+			$this -> view -> branch_list =  $n->getBranch();
 			
 			$id = (int)$this -> id;
 			if ($id > 0){
@@ -343,13 +343,13 @@
 				$this -> model -> resetSql();
 				$this -> model -> load($id);
 				$blog_id = (int)$this -> model -> get('blog_id');
-				$this -> view -> userData['blog_owner'] = $this -> checkOwner($blog_id, $user_id);
+				$this -> view -> blog_owner = $this -> checkOwner($blog_id, $user_id);
 				$this -> setModel("BlogsModel");
 				$this -> model -> resetSql();
 				$this -> model -> load($blog_id);
 				$blog_data = $this -> model -> getData();
 			} else {
-				$this -> view -> userData['blog_owner'] = true;
+				$this -> view -> blog_owner = true;
 				$this -> setModel("BlogsModel");
 				$this -> model -> resetSql();
 				$this -> model -> where('user_id='.(int)$user_id);
@@ -359,7 +359,6 @@
 			if ($blog_id == 0){
 				//TODO:: no blog exists
 			}
-			//$this->view->userData['blog_info'] = $blog_data;
 			$this -> blog_id = $blog_id;
 			$this -> checkBranchAccess($id, $user_id);
 			
@@ -383,12 +382,12 @@
 			$this -> model -> limit($number, (int)$this -> pn*$number);
 			$list = $this -> model -> getAll();
 			$all = $this -> model -> foundRows();
-			$this->view->userData['pages_number'] = ceil($all / $number);
-			$this->view->userData['current_page_number'] = (int)$this -> pn;
-			$this->view->userData['current_controller'] = 'Blog';
-			$this->view->userData['current_action'] = 'Post';
+			$this -> view -> pages_number = ceil($all / $number);
+			$this -> view -> current_page_number = (int)$this -> pn;
+			$this -> view -> current_controller = 'Blog';
+			$this -> view -> current_action = 'Post';
 			if ($id > 0){
-				$this->view->userData['pager_params'] = array('id'=>$id);
+				$this -> view -> pager_params = array('id'=>$id);
 			}
 			
 			foreach ($list as $key=>$value){
@@ -399,7 +398,7 @@
 				}
 				
 			}
-			$this->view->userData['post_list'] = $list;
+			$this -> view -> post_list = $list;
 			$this->view->content .= $this->view->render(VIEWS_PATH.'blogs/posts.tpl.php');
 			$this->view->display();
 		}
@@ -462,15 +461,15 @@
 			$this -> setModel("BlogTree");
 			$this -> model -> resetSql();
 			$this -> model -> load($branch_id);
-			$this -> view -> userData['branch_info'] = $this -> model -> getData();
+			$this -> view -> branch_info = $this -> model -> getData();
 			
 			$n = Node::by_key('', 'ub_tree');
-			$this->view->userData['branch_list'] =  $n->getBranch();
+			$this -> view -> branch_list =  $n->getBranch();
 	
 			$this -> setModel("BlogsCatalog");
 			$this -> model -> resetSql();
 			$this -> model -> order("`name` ASC");
-			$this->view->userData['catalog_list'] =  $this -> model -> getAll();
+			$this -> view -> catalog_list =  $this -> model -> getAll();
 
 			$this->view->content .= $this->view->render(VIEWS_PATH.'blogs/edit_branch.tpl.php');
 			$this->view->display();

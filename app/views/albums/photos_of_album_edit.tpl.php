@@ -17,11 +17,11 @@
 												<div class="block_ee3">
 													<div class="block_ee4">
 														<div class="block_title"><h2>Фотоальбомы</h2></div>
-															<?php foreach($this->userData['album_list'] as $key => $item){ ?>
+															<?php foreach($this->album_list as $key => $item){ ?>
 																<p>
-																	<?php if ($this->userData['album_id'] != $item['id']){ ?><a href="<?php echo BASE_URL;?>Photo/Album/id:<?php echo $item['id'];?>"><?php } ?><img src="<?php echo IMG_URL;?>/folder.png" width="15" height="12" id="ico2" /><?php echo $item['name'];?><?php if ($this->userData['album_id'] != $item['id']){ ?></a><?php } ?>
+																	<?php if ($this->album_id != $item['id']){ ?><a href="<?php echo BASE_URL;?>Photo/Album/id:<?php echo $item['id'];?>"><?php } ?><img src="<?php echo IMG_URL;?>/folder.png" width="15" height="12" id="ico2" /><?php echo $item['name'];?><?php if ($this->album_id != $item['id']){ ?></a><?php } ?>
 																	
-																	<?php if ($this->userData['album_owner']) {?>
+																	<?php if ($this->album_owner) {?>
 																	<a href="<?php echo $this->router->createUrl('Photo', 'Edit', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Редактировать альбом" class="editbtn" height="12" width="11"></a>
 																	<?php }?>
 																</p>
@@ -30,7 +30,7 @@
 													</div>
 												</div>
 											</div>
-											<?php if ($this->userData['album_owner']) {?>
+											<?php if ($this->album_owner) {?>
 												<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 													<div class="block_title"><h2>Управление альбомами</h2></div>
 													<p><a href="<?php echo $this->router->createUrl('Album', 'CreateForm');?>">Создать альбом</a></p>
@@ -46,7 +46,7 @@
 						<td class="next24u_right">
 							<form  action="<?php echo $this->router->createUrl('Photo', 'Save');?>" method="post">
 							<table class="photo_table">
-								<?php foreach($this->userData['photo_list'] as $key => $item){ ?>
+								<?php foreach($this->photo_list as $key => $item){ ?>
 									<?php if ($key%4 == 0){ ?><tr><?php } ?>
 										<td>
 											<div class="block_ee1" style="width: 160px;">
@@ -62,7 +62,7 @@
 															</div>
 															<div class="block_title2">
 																<span id="micro">Участвует в рейтинге</span> &nbsp; <input type="checkbox" name="photo_rating[<?php echo $item['id'];?>]" <?php if ($item['is_rating'] == 1) echo 'checked'; ?> class="delcheck" /><br />
-																<span id="micro">Обложка альбома</span> &nbsp; <input type="radio" name="thumb_photo" value="<?php echo $item['id'];?>" class="delcheck" <?php if ($item['id'] == $this->userData['album_thumbnail_id']){echo 'checked';} ?> /><br />
+																<span id="micro">Обложка альбома</span> &nbsp; <input type="radio" name="thumb_photo" value="<?php echo $item['id'];?>" class="delcheck" <?php if ($item['id'] == $this->album_thumbnail_id){echo 'checked';} ?> /><br />
 																<span id="micro">Удалить</span> &nbsp;<input type="checkbox" name="photo_del[<?php echo $item['id'];?>]" class="delcheck" />		
 															</div>
 														</div>
@@ -80,10 +80,10 @@
 									<div class="block_ee3">
 										<div class="block_ee4">
 											<table class="neighbours">
-												<?php foreach($this->userData['album_list'] as $key => $item){ ?>
+												<?php foreach($this->album_list as $key => $item){ ?>
 													<?php if ($key%5 == 0){ ?><tr><?php } ?>
 														<td class="neigh1">
-															<?php if ($this->userData['album_id'] != $item['id']){ ?>
+															<?php if ($this->album_id != $item['id']){ ?>
 																<a href="<?php echo BASE_URL;?>Photo/Album/id:<?php echo $item['id'];?>"><?php echo $item['name'];?></a>
 															<?php } else { ?>
 																<b><?php echo $item['name'];?></b>

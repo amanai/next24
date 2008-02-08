@@ -9,19 +9,19 @@
 					<tr>
 						<td class="next24u_left">
 							<!-- левый блок -->
-								<?php if (is_array($this -> userData['album_list'])) {?>
+								<?php if (is_array($this -> album_list)) {?>
 									<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 										<div class="block_title"><h2>Фотоальбомы</h2></div>
-										<?php foreach ($this -> userData['album_list'] as $item) {?>
+										<?php foreach ($this -> album_list as $item) {?>
 											<p><a href="<?php echo $this->router->createUrl('Photo', 'Album', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>folder.png" id="ico2" height="12" width="15"><?php echo $item['name'];?></a>&nbsp;&nbsp;
-											<?php if ($this->userData['album_owner']) {?>
+											<?php if ($this->album_owner) {?>
 											<a href="<?php echo $this->router->createUrl('Photo', 'Edit', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Редактировать альбом" class="editbtn" height="12" width="11"></a>
 											<?php } ?>
 											</p>
 										<?php } ?>
 									</div></div></div></div>
 								<?php } ?>
-								<?php if ($this->userData['album_owner']) {?>
+								<?php if ($this->album_owner) {?>
 									<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 										<div class="block_title"><h2>Управление альбомами</h2></div>
 										<p><a href="<?php echo $this->router->createUrl('Album', 'CreateForm');?>">Создать альбом</a></p>
@@ -33,7 +33,7 @@
 						</td>
 						<td class="next24u_right">
 							<table class="photo_table">
-								<?php foreach($this->userData['photo_list'] as $key => $item){ ?>
+								<?php foreach($this->photo_list as $key => $item){ ?>
 									<?php if ($key%4 == 0){ ?><tr><?php } ?>
 										<td>
 											<div class="block_ee1" style="width: 160px;">
@@ -60,18 +60,18 @@
 							<!-- листинг -->
 							<div class="listing_div_c">
 								<li class="listing">
-									<?php if ($this->userData['current_page_number'] > 0) { ?>
-										<a href="<?php echo  $this->router->createUrl('Album', 'User', array('pn'=>($this->userData['current_page_number']-1), 'id'=>$this->userData['album_owner_id']));?>" title="Предыдущая страница">«</a>
+									<?php if ($this->current_page_number > 0) { ?>
+										<a href="<?php echo  $this->router->createUrl('Album', 'User', array('pn'=>($this->current_page_number-1), 'id'=>$this->album_owner_id));?>" title="Предыдущая страница">«</a>
 									<?php } ?>
-									<?php for($i = 0; $i < $this->userData['pages_number']; $i++){ ?>
-										<?php if ($this->userData['current_page_number'] == $i) { ?>
+									<?php for($i = 0; $i < $this->pages_number; $i++){ ?>
+										<?php if ($this->current_page_number == $i) { ?>
 											<a class="active"><?php echo ($i+1);?></a>
 										<?php } else { ?>
-											<a href="<?php echo  $this->router->createUrl('Album', 'User', array('pn'=>$i, 'id'=>$this->userData['album_owner_id']));?>"><?php echo ($i+1);?></a>
+											<a href="<?php echo  $this->router->createUrl('Album', 'User', array('pn'=>$i, 'id'=>$this->album_owner_id));?>"><?php echo ($i+1);?></a>
 										<?php } ?>
 									<?php } ?>
-									<?php if ($this->userData['current_page_number'] < $this->userData['pages_number'] - 1) { ?>
-										<a href="<?php echo  $this->router->createUrl('Album', 'User', array('pn'=>($this->userData['current_page_number']+1), 'id'=>$this->userData['album_owner_id']));?>" title="Следующая страница">»</a>
+									<?php if ($this->current_page_number < $this->pages_number - 1) { ?>
+										<a href="<?php echo  $this->router->createUrl('Album', 'User', array('pn'=>($this->current_page_number+1), 'id'=>$this->album_owner_id));?>" title="Следующая страница">»</a>
 									<?php } ?>
 									
 								</li>

@@ -16,7 +16,7 @@
 											<div class="block_ee1"><div class="block_ee2">
 												<div class="block_ee3">
 													<div class="block_ee4">
-														<div class="block_title"><h2><? echo $this->userData['blog_info']['title'];  ?></h2></div>
+														<div class="block_title"><h2><? echo $this->blog_info['title'];  ?></h2></div>
 															<?php require('blog_left_tree.tpl.php'); ?>
 														</div>
 													</div>
@@ -32,8 +32,8 @@
 							<!-- Создание нового раздела -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 								<form action="<?php echo $this->router->createUrl('Blog', 'SaveBranch');?>" method="post">
-									<input type="hidden" name="branch_id" value="<?php echo (int)$this->userData['branch_info']['id']; ?>"><br />
-									<h1><?php if($this->userData['new_branch'] == true) echo 'Создание нового раздела'; else echo 'Редактирование раздела';?></h1>
+									<input type="hidden" name="branch_id" value="<?php echo (int)$this->branch_info['id']; ?>"><br />
+									<h1><?php if($this->new_branch == true) echo 'Создание нового раздела'; else echo 'Редактирование раздела';?></h1>
 									<br />
 	
 									<table>
@@ -41,7 +41,7 @@
 										<td width="100" valign="top">Название раздела</td>
 	
 										<td>
-											<input type="text" name="branch_name" style="width: 300px;" value="<?php echo $this->userData['branch_info']['name']; ?>"><br />
+											<input type="text" name="branch_name" style="width: 300px;" value="<?php echo $this->branch_info['name']; ?>"><br />
 											<span id="micro2">Кто сможет смотреть и комментировать этот раздел.</span>
 										</td>
 									</tr>
@@ -49,9 +49,9 @@
 										<td width="100" valign="top">Родительский раздел</td>
 										<td>
 											<select style="width: 300px;" name="branch_parent">
-												<option value="0"><? echo $this->userData['blog_info']['title'];  ?></option>
-												<?php foreach($this->userData['branch_list'] as $key => $item){ ?>
-													<?php if (((int)$item['level'] == 1) && ($this->userData['branch_info']['id'] != $item['id']) ) { ?>
+												<option value="0"><? echo $this->blog_info['title'];  ?></option>
+												<?php foreach($this->branch_list as $key => $item){ ?>
+													<?php if (((int)$item['level'] == 1) && ($this->branch_info['id'] != $item['id']) ) { ?>
 														<option value="<?php echo $item['key'];?>"><?php echo $item['name'];?></option>
 												<?php }
 													} ?>
@@ -65,7 +65,7 @@
 										<td width="100" valign="top">Раздел каталога</td>
 										<td>
 											<select style="width: 300px;" name="branch_catalog">
-												<?php foreach($this->userData['catalog_list'] as $key => $item){ ?>
+												<?php foreach($this->catalog_list as $key => $item){ ?>
 													<option value="<?php echo $item['id'];?>"><?php echo $item['name'];?></option>
 												<?php } ?>
 												

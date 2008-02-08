@@ -11,7 +11,7 @@
 							<!-- левый блок -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 									<div class="block_title"><h2>Фотоальбомы</h2></div>
-									<?php foreach ($this -> userData['album_list'] as $item) {?>
+									<?php foreach ($this -> album_list as $item) {?>
 										<a href="#"><?php echo $item['name'];?></a><br />
 									<?php } ?>
 								</div></div></div></div>
@@ -67,7 +67,7 @@
 											<td valign="top">Альбом</td>
 											<td>
 												<select style="width: 300px;" name="album_id">
-													<?php foreach ($this -> userData['album_list'] as $item) {?>
+													<?php foreach ($this -> album_list as $item) {?>
 													<option value=<?php echo (int)$item['id'];?>><?php echo $item['name'];?></option>
 													<?php } ?>
 												</select><br />

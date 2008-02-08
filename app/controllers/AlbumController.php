@@ -42,7 +42,7 @@
 			if ($owner === false){
 				$this -> model -> where('access > 0');
 			}
-			$this -> view -> userData['album_list'] = $this -> model -> getAll();
+			$this -> view -> album_list = $this -> model -> getAll();
 			
 			
 			$this->setModel("Photos");
@@ -72,8 +72,8 @@
 			$this -> model -> limit($number, (int)$this -> pn*$number);
 			$list = $this -> model -> getAll();
 			$all = $this -> model -> foundRows();
-			$this->view->userData['pages_number'] = ceil($all / $number);
-			$this->view->userData['current_page_number'] = (int)$this -> pn;
+			$this -> view -> pages_number = ceil($all / $number);
+			$this -> view -> current_page_number = (int)$this -> pn;
 			
 			$login = trim($user['login']);
 			
@@ -113,12 +113,12 @@
 				}
 				$list[$key]['thumbnail'] = $thumb;
 			}
-			$this -> view -> userData['photo_list'] = $list;
+			$this -> view -> photo_list = $list;
 			
 			
 			
-			$this -> view -> userData['album_owner'] = $owner;
-			$this -> view -> userData['album_owner_id'] = (int)($request_user_id > 0 ? $request_user_id : $user_id);
+			$this -> view -> album_owner = $owner;
+			$this -> view -> album_owner_id = (int)($request_user_id > 0 ? $request_user_id : $user_id);
 			
 			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photo_last_list.tpl.php');
 			$this->view->display();
@@ -227,7 +227,7 @@
 			$this -> model -> order("albums.creation_date DESC");
 			$this -> model -> where('albums.user_id='.(int)$user_id);
 			$list = $this -> model -> getAll();
-			$this->view->userData['album_list'] = $list;
+			$this -> view -> album_list = $list;
 			
 			
 			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/upload_form.tpl.php');
@@ -274,7 +274,7 @@
 			$this -> model -> order("albums.creation_date DESC");
 			$this -> model -> where('albums.user_id='.(int)$user_id);
 			$list = $this -> model -> getAll();
-			$this->view->userData['album_list'] = $list;
+			$this -> view -> album_list = $list;
 			
 			
 			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/create_form.tpl.php');
@@ -365,8 +365,6 @@
 			$this -> model -> where('albums.user_id='.(int)$user_id);
 			$list = $this -> model -> getAll();
 			//$all = $this -> model -> foundRows();
-			//$this->view->userData['pages_number'] = ceil($all / $number);
-			//$this->view->userData['current_page_number'] = (int)$this -> pn;
 			$login = trim($user['login']);
 			foreach($list as $key => $value){
 				
@@ -403,7 +401,7 @@
 				$list[$key]['thumbnail'] = $thumb;
 			} 
 			
-			$this->view->userData['album_list'] = $list;
+			$this -> view -> album_list = $list;
 			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/albums_edit_list.tpl.php');
 			$this->view->display();
 		}
@@ -430,10 +428,10 @@
 			$this -> model -> limit($number, (int)$this -> pn*$number);
 			$list = $this -> model -> getAll();
 			$all = $this -> model -> foundRows();
-			$this->view->userData['pages_number'] = ceil($all / $number);
-			$this->view->userData['current_page_number'] = (int)$this -> pn;
-			$this->view->userData['current_controller'] = 'Album';
-			$this->view->userData['current_action'] = 'TopList';
+			$this -> view -> pages_number = ceil($all / $number);
+			$this -> view -> current_page_number = (int)$this -> pn;
+			$this -> view -> current_controller = 'Album';
+			$this -> view -> current_action = 'TopList';
 			$this -> showAlbums($list);
 		}
 		
@@ -457,10 +455,10 @@
 			$this -> model -> limit($number, (int)$this -> pn*$number);
 			$list = $this -> model -> getAll();
 			$all = $this -> model -> foundRows();
-			$this->view->userData['pages_number'] = ceil($all / $number);
-			$this->view->userData['current_page_number'] = (int)$this -> pn;
-			$this->view->userData['current_controller'] = 'Album';
-			$this->view->userData['current_action'] = 'LastList';
+			$this -> view -> pages_number = ceil($all / $number);
+			$this -> view -> current_page_number = (int)$this -> pn;
+			$this -> view -> current_controller = 'Album';
+			$this -> view -> current_action = 'LastList';
 			
 			
 			$this -> showAlbums($list);
@@ -501,8 +499,8 @@
 				}
 				$list[$key]['thumbnail'] = $thumb;
 			} 
-			$this->view->userData['album_list'] = $list;
-			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/albums_list.tpl.php');
+			$this -> view -> album_list = $list;
+			$this -> view -> content .= $this->view->render(VIEWS_PATH.'albums/albums_list.tpl.php');
 			$this->view->display();
 			
 		}
