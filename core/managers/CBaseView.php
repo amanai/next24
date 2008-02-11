@@ -6,4 +6,4 @@
 	function assign($var, $value)	{		$this->_vars[$var] = $value;		$this->$var = $value;	}
 	/*	��������� �������	$file - ��� ����� � �������� ����������	$content_name - ��� ������������� ������� � ������� ��������������� ��������	*/
 	function render($file, $content_name = 'main')	{		ob_start();		include $file;//		$this->content[$content_name] .=  ob_get_clean();		$this->content .=  ob_get_clean();				foreach ($this->_vars as $name => $value) 		{			unset($this->_vars[$name]);		}		$this->_vars = array();	}	/*	����������� ���������� �������	*/
-	function display(){		require_once($this->template);	}}?>
+	function display(){		//$fm = getManager('CFlashMessage');CFlashMessage		//$this -> _flash_messages = $fm		require_once($this->template);	}}?>

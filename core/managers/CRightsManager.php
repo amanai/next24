@@ -14,11 +14,21 @@
 						return false;
 					}
 				} else {
+					// TODO:: hardcoded admin controller name
+					if ($controllerName == 'AdminController'){
+						$router = getManager('CRouter');
+						$router -> redirect($router -> createUrl('Admin', 'LoginForm'));
+					}
 					$flashMessage = getManager('CFlashMessage');
 					$flashMessage->setMessage("Доступ запрещен (Екшн ".$actionName.")", FLASH_MSG_TYPES::$error);
 					return false;
 				}
 			} else {
+				// TODO:: hardcoded admin controller name
+				if ($controllerName == 'AdminController'){
+					$router = getManager('CRouter');
+					$router -> redirect($router -> createUrl('Admin', 'LoginForm'));
+				}
 				$flashMessage = getManager('CFlashMessage');
 				$flashMessage->setMessage("Доступ запрещен (Контроллер ".$controllerName.")", FLASH_MSG_TYPES::$error);
 				return false;

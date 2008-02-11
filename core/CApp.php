@@ -53,7 +53,7 @@
 			require_once(MANAGER_PATH.'CBaseView.php');
 
 			$this->manages['CRouter']->route();			
-			$this->manages['CFlashMessage']->displayAll();
+			//$this->manages['CFlashMessage']->displayAll();
 
 		}
 		

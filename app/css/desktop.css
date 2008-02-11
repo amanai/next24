@@ -1,0 +1,94 @@
+/* Рабочий стол */
+.desktop
+{
+	clear: both;
+	padding-top: 20px;
+}
+
+.desktop .item
+{
+	width: 270px;
+	height: 140px;
+	float: left;
+	padding-left: 105px;
+	margin-right: 10px;
+}
+
+.desktop h3, .desktop h3 a
+{
+	color: #63b3fe;
+	font-size: 16px;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.desktop .hpolls
+{
+	background: url('../images/icons/hpolls.gif') no-repeat;
+}
+
+.desktop .admins
+{
+	background: url('../images/icons/admins.gif') no-repeat;
+}
+
+.desktop .albums
+{
+	background: url('../images/icons/albums.gif') no-repeat;
+}
+
+.desktop .arbitrage
+{
+	background: url('../images/icons/arbitrage.gif') no-repeat;
+}
+
+.desktop .articles
+{
+	background: url('../images/icons/articles.gif') no-repeat;
+}
+
+.desktop .blogs
+{
+	background: url('../images/icons/blogs.gif') no-repeat;
+}
+
+.desktop .bookmarks
+{
+	background: url('../images/icons/bookmarks.gif') no-repeat;
+}
+
+.desktop .debates
+{
+	background: url('../images/icons/debates.gif') no-repeat;
+}
+
+.desktop .diary
+{
+	background: url('../images/icons/diary.gif') no-repeat;
+}
+
+.desktop .news
+{
+	background: url('../images/icons/news.gif') no-repeat;
+}
+
+.desktop .questions
+{
+	background: url('../images/icons/questions.gif') no-repeat;
+}
+
+.desktop .settings
+{
+	background: url('../images/icons/settings.gif') no-repeat;
+}
+
+.desktop .social
+{
+	background: url('../images/icons/social.gif') no-repeat;
+}
+
+.desktop .users
+{
+	background: url('../images/icons/users.gif') no-repeat;
+}

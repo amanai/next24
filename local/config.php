@@ -1,4 +1,36 @@
 <?php
+function BACKTRACE($debugInfo = null){
+	if (is_null($debugInfo)) {
+		$debugInfo = debug_backtrace();
+	} else {
+		if (!is_array($debugInfo)) {
+			return 'must be array';
+		}
+	}
+	$str = '<table border="1px"><tr><th>File</th><th>Function</th><th>Line</th><th>Params</th></tr>';
+	foreach ( $debugInfo as $value ) {
+			$str .= '<tr><td>'.$value['file'].'</td><td>'.$value['function'].'</td><td>'.$value['line'].'</td><td>';
+			$first = true;
+			$args = $value['args'];
+			if (is_array($args)) {
+				foreach ($args as $arg) {
+					if (!$first){
+						$str .= '<br>';
+					} else {
+						$first = false;
+					}
+					if (is_object($arg)) {
+						$str .= get_class($arg);
+					} else {
+						$str .= $arg;
+					}
+				}
+			}
+			$str .=  '</td></tr>';
+	}
+	$str .= '</table>';
+	return $str;
+}
 	define('BASE_PATH', $_SERVER['DOCUMENT_ROOT'].str_replace(basename($_SERVER['SCRIPT_FILENAME']), '', $_SERVER['SCRIPT_NAME']));
 	
 	define('APP_PATH', BASE_PATH.'app/');
@@ -27,7 +59,7 @@
 	define('TABLE_PREFIX', '');	define('DEFAULT_TPL', VIEWS_PATH . 'main.tpl.php');	
 	define('DB_SERVERNAME', 'localhost');
 	define('DB_USERNAME', 'root');
-	define('DB_PASS', '');
+	define('DB_PASS', 'pass');
 	define('DB_NAME', 'next24');
 	
 
