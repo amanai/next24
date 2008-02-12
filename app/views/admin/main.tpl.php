@@ -58,8 +58,8 @@
 
 		<td class="c_middle">
 			<div class="info">
-				<div class="welcome">Здравствуйте, Сергей Петрович</div>
-				<div class="lastvisit"><img src="<?php echo IMG_URL?>visit_left.gif" alt=""/><div>Ваш последний визит <?php echo 'ОТКУДА БРАТЬ???'//date("Y-m-d H:i:s", "a"); ?></div><img src="<?php echo IMG_URL?>visit_right.gif" alt=""/></div>
+				<div class="welcome">Здравствуйте, <?php echo $this -> userData['first_name']." ".$this -> userData['middle_name']; ?></div>
+				<div class="lastvisit"><img src="<?php echo IMG_URL?>visit_left.gif" alt=""/><div>Вы зарегистрованы <?php echo date("Y-m-d", strtotime($this -> userData['registration_date'])); ?></div><img src="<?php echo IMG_URL?>visit_right.gif" alt=""/></div>
 			</div>
 		
 			<?php echo $this->content; ?>

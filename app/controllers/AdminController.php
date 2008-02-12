@@ -40,7 +40,7 @@
 				$router = getManager('CRouter');
 				$router -> redirect($router -> createUrl('Admin', 'Desktop'));
 			}
-			
+			//$this -> view -> login_result = "";
 			$this -> view -> setTemplate(VIEWS_PATH.'admin/login.tpl.php');
 			$this->view->display();
 		}
@@ -54,6 +54,9 @@
 				// User already logged -> redirect to home page of administration
 				$router = getManager('CRouter');
 				$router -> redirect($router -> createUrl('Admin', 'Desktop'));
+			} elseif (!$this -> u_login || !$this -> u_pass) {
+				$router = getManager('CRouter');
+				$router -> redirect($router -> createUrl('Admin', 'LoginForm'));
 			}
 			
 			$this -> setModel("Users");

@@ -24,10 +24,10 @@
 				<tr>
 					<td class="c_left">&nbsp;</td>
 					<td class="c_cen"><table cellspacing="4" style="font-family: Arial; font-size: 12px;">
-						<?php if (!$this -> login_result) { ?>
+						<?php if ($this -> login_result === false) { ?>
 							<tr><td colspan="2" align="center"><font color="red">Неправильное имя или пароль</font></td></tr>
 						<?php } ?>
-						<tr><td>Имя</td><td><input type="text" name="u_login" value="ertert"/></td></tr><tr><td>Пароль</td><td><input type="password" name="u_pass" value=""/><input type="hidden" name="auth_enter" value="1"></td></tr></table></td>
+						<tr><td>Имя</td><td><input type="text" name="u_login" value=""/></td></tr><tr><td>Пароль</td><td><input type="password" name="u_pass" value=""/><input type="hidden" name="auth_enter" value="1"></td></tr></table></td>
 					<td class="c_right">&nbsp;</td>
 				</tr>
 
