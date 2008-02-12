@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
 	<link href="<?php echo CSS_URL?>main.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo CSS_URL?>desktop.css" type="text/css" rel="StyleSheet"/>
+	<link href="<?php echo CSS_URL?>list.css" type="text/css" rel="StyleSheet"/>
 	<script type="text/javascript" src="<?php echo JS_URL?>jquery.js"></script>
 	<script type="text/javascript" src="<?php echo JS_URL?>jquery_pngfix.js"></script>
 
@@ -42,7 +43,7 @@
 				</table>
 				<ul>
 					<?php foreach ($this -> main_menu as $menu_item) { ?>
-						<li><a href="<?php echo $menu_item['link']; ?><"><?php echo $menu_item['name']; ?></a></li>
+						<li><a href="<?php echo $menu_item['link']; ?>"><?php echo $menu_item['name']; ?></a></li>
 					<?php } ?>
 				</ul>
 

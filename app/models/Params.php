@@ -52,5 +52,36 @@
 			}
 			return $ret;
 		}
+		
+		function casting(){
+			// TODO:: what to do with array!
+			switch(trim(strtolower($this -> get('php_type')))){
+				case "string":
+						break;
+				case "integer":
+						$this -> set('value', (int)$this -> get('value'));
+						break;
+				case "float":
+						$val = str_replace(',', '.', $this -> get('value'));
+						$this -> set('value', (float)$val);
+						break;
+				case "array":
+						/*$tmp = unserialize($value);
+						if (is_array($value)){
+							$ret = $tmp;
+						} else {
+							$ret = array();
+						}*/
+						break;
+				case "boolean":
+						$this -> set('value', (bool)$this -> get('value'));
+						//$ret = (bool)$value;
+						break;
+				default:
+						//$ret = $value;
+						break;
+					
+			}
+		}
 	}
 ?>

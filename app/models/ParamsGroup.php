@@ -5,7 +5,5 @@
 				$this -> tableName = 'params_group';
 				parent::__construct($id);
 			}
-		
-		
 	}
 ?>

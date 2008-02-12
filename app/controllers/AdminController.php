@@ -10,12 +10,15 @@
 		}
 		
 		protected function BaseAdminData(){
+			$router = getManager('CRouter');
 			// TODO:: hardcoded menu
 			$this -> view -> main_menu = array(
+												array('link'=>$router -> createUrl('Admin', 'Desktop'), 'name'=>'Рабочий стол'),
 												array('link'=>'#', 'name'=>'Каталог сложных опросов'),
 												array('link'=>'#', 'name'=>'Каталог лент новостей'),
 												array('link'=>'#', 'name'=>'Блоги пользователей'),
 												array('link'=>'#', 'name'=>'Дневники пользователей'),
+												array('link'=>$router -> createUrl('AdminParameter', 'GroupList'), 'name'=>'Параметры системы')
 												);
 			
 			$session = getManager('CSession');
@@ -81,8 +84,8 @@
 		}
 		
 		public function LogoutAction(){
-			$session = getManager('CSession');
-			$session -> write('user', null);
+			$user = getManager('CUser');
+			$user -> logout();
 			$router = getManager('CRouter');
 			$router -> redirect($router -> createUrl('Admin', 'LoginForm'));
 		}

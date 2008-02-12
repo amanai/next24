@@ -111,6 +111,9 @@ class CBaseModel
 	{
 		foreach ($data as $field => $value) 
 		{
+			if ($field == 'id'){
+				$this -> id = (int)$value;
+			}
 			if (array_key_exists($field, $this->fields)) 
 			{
 				$this->fields[$field] = $value;
@@ -151,7 +154,7 @@ class CBaseModel
 		MySql::query($sql);
 		//echo $sql;
 		$this->id = MySql::insert_id();
-		echo '<br>'.$sql.'<br>';
+		//echo '<br>'.$sql.'<br>';
 		return $this->id;
 	}
 
