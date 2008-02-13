@@ -8,10 +8,10 @@
 				N
 			</td>
 			<td>
-				Группа (controller)
+				Описание
 			</td>
 			<td>
-				Описание
+				Группа (controller)
 			</td>
 			<td>
 
@@ -25,10 +25,10 @@
 				<?php echo $item['number']; ?>
 			</td>
 			<td>
-				<?php echo $item['name']; ?>
+				<?php echo $item['description']; ?>
 			</td>
 			<td>
-				<?php echo $item['description']; ?>
+				<?php echo $item['name']; ?>
 			</td>
 			<td>
 				<div class="button bsmall" style="float: left;"><a href="<?php echo $this->router->createUrl('AdminParameter', 'EditGroup', array('id' => $item['id']));?>"><img src="<?php echo IMG_URL;?>icons/small_edit.gif" alt="Правка"/></a></div>

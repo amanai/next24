@@ -28,6 +28,7 @@
 		
 		public function DesktopAction(){
 			$this -> BaseAdminData();
+			$this -> view -> title = 'Рабочий стол';
 			$this -> view -> content .= $this->view->render(VIEWS_PATH.'admin/desktop.tpl.php');
 			$this -> view -> display();
 		}

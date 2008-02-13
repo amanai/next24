@@ -53,6 +53,18 @@
 			return $ret;
 		}
 		
+		function exists($group_id, $param_name){
+			$this -> resetSql();
+			$this->where(' LOWER(params.name) = LOWER("'.$this -> escape($param_name).'")');
+			$this->where(' params_group_id = '.(int)$group_id);
+			$rez = $this->getOne();
+			if (count($rez) === 0){
+				return false;
+			} else {
+				return $rez;
+			}
+		}
+		
 		function casting(){
 			// TODO:: what to do with array!
 			switch(trim(strtolower($this -> get('php_type')))){

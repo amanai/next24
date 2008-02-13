@@ -45,13 +45,15 @@
 					</select>
 				</td>
 				<td>
-					<div class="button bsmall" style="float: left;"><a href="<?php echo $this->router->createUrl('AdminParameter', 'DeleteParam', array('id' => $item['id'], 'controller_id' => $this -> controller_id));?>"><img src="<?php echo IMG_URL;?>icons/small_del.gif" alt="Правка"/></a></div>
+					<?php if ($item['id'] > 0) { ?>
+						<div class="button bsmall" style="float: left;"><a href="<?php echo $this->router->createUrl('AdminParameter', 'DeleteParam', array('id' => $item['id'], 'controller_id' => $this -> controller_id));?>"><img src="<?php echo IMG_URL;?>icons/small_del.gif" alt="Правка"/></a></div>
+					<?php } else echo "&nbsp"; ?>
 				</td>
 	
 			</tr>
 			<?php } ?>
 			<tr>
-				<td colspan="4" align="center"><input type="submit" value="Сохранить изменения" /></td>
+				<td colspan="5" align="center"><input type="submit" value="Сохранить изменения" /></td>
 			</tr>
 		<form>
 	</table>

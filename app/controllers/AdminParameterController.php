@@ -2,7 +2,12 @@
 require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AdminController.php');
 class AdminParameterController extends AdminController{
 	
-	
+		
+		
+		function BaseAdminData(){
+			parent::BaseAdminData();
+			$this -> view -> title = 'Параметры системы';
+		}
 	
 	
 		function GroupListAction(){
@@ -53,10 +58,9 @@ class AdminParameterController extends AdminController{
 			}
 			$this -> view -> param_group_id = $param_group_id;
 			$this -> view -> php_types = array(
-												'string'=>'string',
-												'integer'=>'integer',
-												'float'=>'float',
-												'array'=>'array'
+												'string'=>'строка',
+												'integer'=>'целое',
+												'float'=>'с плавающей точкой'
 												);
 			
 			$this -> setModel("Params");
@@ -84,22 +88,48 @@ class AdminParameterController extends AdminController{
 					if ($id === 0){
 						if (isset($this -> param_name[$id]) && strlen($this -> param_name[$id]) && isset($this -> param_value[$id]) && strlen($this -> param_value[$id])){
 							// New param
+							$data = array();
 						} else {
 							// Data for new params is not valid
 							continue;
 						}
 					} else {
-						$this -> model -> setData($this -> model -> getById($id));
+						$data = $this -> model -> getById($id);
 					}
-					$this -> model -> set('params_group_id', $this -> id);
-					$this -> model -> set('name', $this -> param_name[$id]);
-					$this -> model -> set('value', $this -> param_value[$id]);
-					$this -> model -> set('php_type', $this -> php_type[$id]);
-					$this -> model -> casting();
-					$this -> model -> save();
+					
+					$tmp = $this -> model -> exists($this -> id, $this -> param_name[$id]);
+					if ($tmp !== false){
+						if (isset($data['id'])){
+							if ((int)$data['id'] === (int)$tmp['id']){
+								// Exists param is current item: so ok, we can update it
+								$can_update = true;
+							} else{
+								// Param with the same name alrady exists
+								$can_update = false;
+							}
+						} else {
+							// It's new parameter, but name already busy
+							$can_update = false;
+						}
+					} else {
+						// Param is not exists, we can add it
+						$can_update = true;
+					}
+					if ($can_update){
+						
+						$this -> model -> setData($data);
+						$this -> model -> set('params_group_id', $this -> id);
+						$this -> model -> set('name', $this -> param_name[$id]);
+						$this -> model -> set('value', $this -> param_value[$id]);
+						$this -> model -> set('php_type', $this -> php_type[$id]);
+						$this -> model -> casting();
+						$this -> model -> save();
+					} else {
+						// TODO:: Flash message that parameter already exists
+						
+					}
 				}
 			}
-			
 			$router = getManager('CRouter');
 			$router -> redirect($router -> createUrl('AdminParameter', 'EditGroup', array('id' => $this -> controller_id)));
 		}

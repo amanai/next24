@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 <head>
-	<title>Рабочий стол | Административый интерфейс</title>
+	<title><?php echo $this -> title; ?> | Административый интерфейс</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
 	<link href="<?php echo CSS_URL?>main.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo CSS_URL?>desktop.css" type="text/css" rel="StyleSheet"/>
