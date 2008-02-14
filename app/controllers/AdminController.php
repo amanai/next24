@@ -18,7 +18,8 @@
 												array('link'=>'#', 'name'=>'Каталог лент новостей'),
 												array('link'=>'#', 'name'=>'Блоги пользователей'),
 												array('link'=>'#', 'name'=>'Дневники пользователей'),
-												array('link'=>$router -> createUrl('AdminParameter', 'GroupList'), 'name'=>'Параметры системы')
+												array('link'=>$router -> createUrl('AdminParameter', 'GroupList'), 'name'=>'Параметры системы'),
+												array('link'=>$router -> createUrl('AdminUser', 'List'), 'name'=>'Пользователи'),
 												);
 			
 			$session = getManager('CSession');

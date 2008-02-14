@@ -13,7 +13,7 @@
 										<?php } ?>
 									<?php } ?>
 									<?php if ($this->current_page_number < $this->pages_number - 1) { ?>
-										<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, (is_array($this->pager_params)?array_merge(array('pn'=>$this->current_page_number+1), $this->pager_params):array('pn'=>$i)));?>" title="Следующая страница">»</a>
+										<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, (is_array($this->pager_params)?array_merge(array('pn'=>$this->current_page_number+1), $this->pager_params):array('pn'=>$this->current_page_number+1)));?>" title="Следующая страница">»</a>
 									<?php } ?>
 			<?php } ?>
 			</li>

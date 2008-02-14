@@ -6,10 +6,17 @@
 	<link href="<?php echo CSS_URL?>main.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo CSS_URL?>desktop.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo CSS_URL?>list.css" type="text/css" rel="StyleSheet"/>
+	<link href="<?php echo CSS_URL?>dialog.css" type="text/css" rel="StyleSheet"/>
+	<link href="<?php echo CSS_URL?>ajax.css" type="text/css" rel="StyleSheet"/>
+	<link href="<?php echo CSS_URL?>datepicker.css" type="text/css" rel="StyleSheet"/>
+	
 	<script type="text/javascript" src="<?php echo JS_URL?>jquery.js"></script>
 	<script type="text/javascript" src="<?php echo JS_URL?>jquery_pngfix.js"></script>
-
 	<script type="text/javascript" src="<?php echo JS_URL?>init.js"></script>
+	<script type="text/javascript" src="<?php echo JS_URL?>xpath.js"></script>
+	<script type="text/javascript" src="<?php echo JS_URL?>blockUI.js"></script>
+	<script type="text/javascript" src="<?php echo JS_URL?>ajax.js"></script>
+	<script type="text/javascript" src="<?php echo JS_URL?>datepicker.js"></script>
 </head>
 
 <body>

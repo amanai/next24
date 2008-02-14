@@ -107,7 +107,7 @@ class CBaseModel
 	/*
 	установка значений всех полей из массива
 	*/
-	function setData($data)
+	function setData($data, $encode = false)
 	{
 		foreach ($data as $field => $value) 
 		{
@@ -116,7 +116,12 @@ class CBaseModel
 			}
 			if (array_key_exists($field, $this->fields)) 
 			{
-				$this->fields[$field] = $value;
+				if ($encode){
+					$this->fields[$field] = $value;
+					//$this->fields[$field] = iconv('UTF-8', 'CP1251', $value);
+				} else {
+					$this->fields[$field] = $value;
+				}
 			}
 		}
 		return true;
@@ -446,6 +451,7 @@ class CBaseModel
 	function getAll()
 	{
 		$sql = $this->getQueryStr(true);
+		//echo $sql .'<br>';
 		return MySql::query_array($sql);
 	}
 
@@ -458,6 +464,10 @@ class CBaseModel
 				SET " . $this->_prepareFields() . "
 				WHERE `id` = '" . $this->id . "'";
 		return MySql::query($sql);
+	}
+	
+	function setUtf8(){
+		return MySql::query("SET NAMES utf8");
 	}
 }
 
