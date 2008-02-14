@@ -1,5 +1,5 @@
 <div class="list">
-	<div style="float: left;"><h3><?php if($this -> controller_id>0){ echo $this -> controller_name;} else {echo 'Общие параметры системы';}?></h3><?php if (strlen($this -> controller_description)){echo " (".$this -> controller_description.")";}?></div>
+	<div style="float: left;"><h3><?php if($this -> controller_id>0){ echo $this -> controller_name;} else {echo 'РћР±С‰РёРµ РїР°СЂР°РјРµС‚СЂС‹ СЃРёСЃС‚РµРјС‹';}?></h3><?php if (strlen($this -> controller_description)){echo " (".$this -> controller_description.")";}?></div>
 
 	<table class="list_table">
 		<tr class="head">
@@ -8,17 +8,17 @@
 				N
 			</td>
 			<td>
-				Параметр
+				РџР°СЂР°РјРµС‚СЂ
 			</td>
 			<td>
-				Значение
+				Р—РЅР°С‡РµРЅРёРµ
 			</td>
 			<td>
-				Типа параметра
+				РўРёРїР° РїР°СЂР°РјРµС‚СЂР°
 			</td>
 			<td>
 
-				Действия
+				Р”РµР№СЃС‚РІРёСЏ
 			</td>
 			<td class="last" rowspan="100">&nbsp;</td>
 		</tr>
@@ -46,14 +46,14 @@
 				</td>
 				<td>
 					<?php if ($item['id'] > 0) { ?>
-						<div class="button bsmall" style="float: left;"><a href="<?php echo $this->router->createUrl('AdminParameter', 'DeleteParam', array('id' => $item['id'], 'controller_id' => $this -> controller_id));?>"><img src="<?php echo IMG_URL;?>icons/small_del.gif" alt="Правка"/></a></div>
+						<div class="button bsmall" style="float: left;"><a href="<?php echo $this->router->createUrl('AdminParameter', 'DeleteParam', array('id' => $item['id'], 'controller_id' => $this -> controller_id));?>"><img src="<?php echo IMG_URL;?>icons/small_del.gif" alt="РџСЂР°РІРєР°"/></a></div>
 					<?php } else echo "&nbsp"; ?>
 				</td>
 	
 			</tr>
 			<?php } ?>
 			<tr>
-				<td colspan="5" align="center"><input type="submit" value="Сохранить изменения" /></td>
+				<td colspan="5" align="center"><input type="submit" value="РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ" /></td>
 			</tr>
 		<form>
 	</table>

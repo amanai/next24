@@ -19,7 +19,7 @@
 		
 		
 		/**
-		 * TODO: сделать рендер через базовый контроллер
+		 * TODO: СЃРґРµР»Р°С‚СЊ СЂРµРЅРґРµСЂ С‡РµСЂРµР· Р±Р°Р·РѕРІС‹Р№ РєРѕРЅС‚СЂРѕР»Р»РµСЂ
 		 */
 		private function renderMsg($msg, $type){
 			$color = FLASH_MSG_TYPES::$colors[$type];

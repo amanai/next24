@@ -20,7 +20,7 @@
 						$router -> redirect($router -> createUrl('Admin', 'LoginForm'));
 					}
 					$flashMessage = getManager('CFlashMessage');
-					$flashMessage->setMessage("Доступ запрещен (Екшн ".$actionName.")", FLASH_MSG_TYPES::$error);
+					$flashMessage->setMessage("Р”РѕСЃС‚СѓРї Р·Р°РїСЂРµС‰РµРЅ (Р•РєС€РЅ ".$actionName.")", FLASH_MSG_TYPES::$error);
 					return false;
 				}
 			} else {
@@ -30,7 +30,7 @@
 					$router -> redirect($router -> createUrl('Admin', 'LoginForm'));
 				}
 				$flashMessage = getManager('CFlashMessage');
-				$flashMessage->setMessage("Доступ запрещен (Контроллер ".$controllerName.")", FLASH_MSG_TYPES::$error);
+				$flashMessage->setMessage("Р”РѕСЃС‚СѓРї Р·Р°РїСЂРµС‰РµРЅ (РљРѕРЅС‚СЂРѕР»Р»РµСЂ ".$controllerName.")", FLASH_MSG_TYPES::$error);
 				return false;
 			}
 		}
@@ -39,21 +39,21 @@
 		private function checkController($controllerName, $userType){
 			global $actionList;
 			$rez = in_array($userType, $actionList[$controllerName]['allow']);
-			(!$rez)?$this->forbiddenName='Контроллер '.$controllerName:'';
+			(!$rez)?$this->forbiddenName='РљРѕРЅС‚СЂРѕР»Р»РµСЂ '.$controllerName:'';
 			return $rez;
 		}
 		
 		private function checkAction($controllerName, $actionName, $userType){
 			global $actionList;
 			$rez = in_array($userType, $actionList[$controllerName]['actions'][$actionName]['allow']);
-			(!$rez)?$this->forbiddenName='Екшн '.$ationName:'';
+			(!$rez)?$this->forbiddenName='Р•РєС€РЅ '.$ationName:'';
 			return $rez;
 		}
 		
 		private function checkSubaction($controllerName, $actionName, $subactionName, $userType){
 			global $actionList;
 			$rez = in_array($userType, $actionList[$controllerName]['actions'][$actionName]['subactions'][$subactionName]);
-			(!$rez)?$this->forbiddenName='Субекшн'.$subactionName:'';
+			(!$rez)?$this->forbiddenName='РЎСѓР±РµРєС€РЅ'.$subactionName:'';
 			return $rez;
 		}
 		

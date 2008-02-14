@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>Next24</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href="<?php echo CSS_URL?>style.css" type="text/css" rel="StyleSheet" />
 	<link href="<?php echo CSS_URL?>tabpane.css" type="text/css" rel="StyleSheet"	/>
 	<script type="text/javascript" src="<?php echo JS_URL;?>tabpane.js"></script>
@@ -18,23 +18,23 @@
 		<tr>
 			<td width="270"><a href="#"><img src="<?php echo IMG_URL?>logo.png" width="270" height="180" /></a></td>
 			<td class="header2" align="right">
-				<!-- Блок авторизации -->
+				<!-- Р‘Р»РѕРє Р°РІС‚РѕСЂРёР·Р°С†РёРё -->
 				<?php if(isset($this->userData['first_name'])) {?>
 					<table width="210" height="125" cellpadding="0">
 					<tr>
 						<td class="user1"> </td>
 						<td class="user2">
 
-							<div class="user2_title">ДОБРО ПОЖАЛОВАТЬ</div>
+							<div class="user2_title">Р”РћР‘Р Рћ РџРћР–РђР›РћР’РђРўР¬</div>
 							<div class="user2_zz">
-								<a href="<?php echo $this->router->createUrl('User', 'Viewprofile')?>">Профиль</a><br />
-								<a href="<?php echo $this->router->createUrl('Album', 'User')?>">Фотоальбом</a><br />
-								<a href="#">Дневник</a><br />
-								<a href="#">Сообщения</a>
+								<a href="<?php echo $this->router->createUrl('User', 'Viewprofile')?>">РџСЂРѕС„РёР»СЊ</a><br />
+								<a href="<?php echo $this->router->createUrl('Album', 'User')?>">Р¤РѕС‚РѕР°Р»СЊР±РѕРј</a><br />
+								<a href="#">Р”РЅРµРІРЅРёРє</a><br />
+								<a href="#">РЎРѕРѕР±С‰РµРЅРёСЏ</a>
 							</div>
 
 							<div style="float: left;"><a href="#"><img src="<?php echo IMG_URL?>open.png" width="21" height="24" /></a></div>
-							<div align="right" style="padding-top: 7px;">Вы вошли как: <a href="<?php echo $this->router->createUrl('User', 'Viewprofile')?>"><?php echo $this->userData['login'];?></a></div>
+							<div align="right" style="padding-top: 7px;">Р’С‹ РІРѕС€Р»Рё РєР°Рє: <a href="<?php echo $this->router->createUrl('User', 'Viewprofile')?>"><?php echo $this->userData['login'];?></a></div>
 
 						</td>
 						<td class="user3"> </td>
@@ -48,46 +48,46 @@
 						<td class="user2">
 							<form action="<?php echo $this->router->createUrl('User', 'Login')?>" method="POST">
 								<input type="hidden" value="<?php echo $this->lastPath; ?>" name="lastPath">
-								<div class="user2_title">АВТОРИЗАЦИЯ</div>
+								<div class="user2_title">РђР’РўРћР РР—РђР¦РРЇ</div>
 								<table align="center" cellpadding="0">
 								<tr>
-									<td>Логин:</td>
+									<td>Р›РѕРіРёРЅ:</td>
 									<td><input type="text" style="width: 130px;" name="login"/></td>
 								</tr>
 								<tr>
-									<td>Пароль:</td>
+									<td>РџР°СЂРѕР»СЊ:</td>
 									<td><input type="password" style="width: 130px;" name="pass"/></td>
 								</tr>
 								</table>
-								<div class="user2_x"><input type="checkbox" style="padding: 0px;" /> Запомнить <input type="submit" value="Вход" style="width: 45px;" /></div>
-								<div class="user2_x"><a href="#">Потеряли пароль?</a> | <a href="#">Регистрация</a></div>
+								<div class="user2_x"><input type="checkbox" style="padding: 0px;" /> Р—Р°РїРѕРјРЅРёС‚СЊ <input type="submit" value="Р’С…РѕРґ" style="width: 45px;" /></div>
+								<div class="user2_x"><a href="#">РџРѕС‚РµСЂСЏР»Рё РїР°СЂРѕР»СЊ?</a> | <a href="#">Р РµРіРёСЃС‚СЂР°С†РёСЏ</a></div>
 							</form>
 						</td>
 						<td class="user3"> </td>
 					</tr>
 					</table>	
 				<?php } ?>		
-				<!-- /Блок авторизации -->
+				<!-- /Р‘Р»РѕРє Р°РІС‚РѕСЂРёР·Р°С†РёРё -->
 			
 							</td>
 			<td width="170">
-				<!-- Навигация -->
+				<!-- РќР°РІРёРіР°С†РёСЏ -->
 				<table width="170" height="180" cellpadding="0">
 				<tr>
 					<td class="menu1"> </td>
 					<td class="menu2"> </td>
 					<td class="menu3">
-						<a href="#">Новости</a><br />
-						<a href="#">Статьи</a><br />
-						<a href="#">Найти знакомых</a><br />
-						<a href="#">Дневники</a><br />
-						<a href="#">Вопрос-ответ</a><br />
-						<a href="<?php echo $this->router->createUrl('Album', 'LastList');?>">Фотоальбомы</a><br />
-						<a href="#">Топы</a>
+						<a href="#">РќРѕРІРѕСЃС‚Рё</a><br />
+						<a href="#">РЎС‚Р°С‚СЊРё</a><br />
+						<a href="#">РќР°Р№С‚Рё Р·РЅР°РєРѕРјС‹С…</a><br />
+						<a href="#">Р”РЅРµРІРЅРёРєРё</a><br />
+						<a href="#">Р’РѕРїСЂРѕСЃ-РѕС‚РІРµС‚</a><br />
+						<a href="<?php echo $this->router->createUrl('Album', 'LastList');?>">Р¤РѕС‚РѕР°Р»СЊР±РѕРјС‹</a><br />
+						<a href="#">РўРѕРїС‹</a>
 					</td>
 				</tr>
 				</table>
-				<!-- /Навигация -->
+				<!-- /РќР°РІРёРіР°С†РёСЏ -->
 			</td>
 		</tr>
 		</table>		
@@ -96,7 +96,7 @@
 </tr>
 <tr>
 	<td valign="top">
-	<!-- ТЕЛО САЙТА -->
+	<!-- РўР•Р›Рћ РЎРђР™РўРђ -->
 	<table width="100%" cellpadding="0">
 	<tr>
 		<td class="next24">
@@ -108,15 +108,15 @@
 		</td>
 	</tr>
 	</table>
-	<!-- /ТЕЛО САЙТА -->
+	<!-- /РўР•Р›Рћ РЎРђР™РўРђ -->
 	</td>
 </tr>
 <tr>
 	<td class="footer">
 		<!-- FOOTER -->
-			Все права защищены.<br />
+			Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹.<br />
 			<a href="http://ruster.info/" target="_blank">Design by Ruster</a><br />
-			Электронная почта: <a href="#">info@next24.ru</a>
+			Р­Р»РµРєС‚СЂРѕРЅРЅР°СЏ РїРѕС‡С‚Р°: <a href="#">info@next24.ru</a>
 		<!-- /footer -->
 	</td>
 </tr>
@@ -132,17 +132,17 @@
 
 <!--
 <?php if(isset($this->userData['first_name'])) {?>
-Добро пожаловать <?php echo $this->userData['first_name'].' '.$this->userData['last_name']; ?>!<br/>
-<a href="<?php echo $this->router->createUrl('User', 'Logout')?>">Выход</a>
+Р”РѕР±СЂРѕ РїРѕР¶Р°Р»РѕРІР°С‚СЊ <?php echo $this->userData['first_name'].' '.$this->userData['last_name']; ?>!<br/>
+<a href="<?php echo $this->router->createUrl('User', 'Logout')?>">Р’С‹С…РѕРґ</a>
 <?php } else { ?>
 <form action="<?php echo $this->router->createUrl('User', 'Login')?>" method="POST">
 <input type="hidden" value="<?php echo $this->lastPath; ?>" name="lastPath">
-Логин: <input type="text" name="login"><br/>
-Пароль: <input type="password" name="pass"><br/>
-<input type="submit" value="Логин">
+Р›РѕРіРёРЅ: <input type="text" name="login"><br/>
+РџР°СЂРѕР»СЊ: <input type="password" name="pass"><br/>
+<input type="submit" value="Р›РѕРіРёРЅ">
 </form>
 <?php } ?>
 	
-<a href="<?php echo $this->router->createUrl('Rights')?>">Управление правами</a>
+<a href="<?php echo $this->router->createUrl('Rights')?>">РЈРїСЂР°РІР»РµРЅРёРµ РїСЂР°РІР°РјРё</a>
 	
 -->

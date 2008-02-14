@@ -1,6 +1,6 @@
 <?php
 /**
- * Êîíòðîëåð àäìèíèñòðèðîâàíèÿ ñèñòåìû
+ * ÐšÐ¾Ð½Ñ‚Ñ€Ð¾Ð»ÐµÑ€ Ð°Ð´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹
  */
 	class AdminController extends CBaseController{
 		
@@ -13,13 +13,13 @@
 			$router = getManager('CRouter');
 			// TODO:: hardcoded menu
 			$this -> view -> main_menu = array(
-												array('link'=>$router -> createUrl('Admin', 'Desktop'), 'name'=>'Ðàáî÷èé ñòîë'),
-												array('link'=>'#', 'name'=>'Êàòàëîã ñëîæíûõ îïðîñîâ'),
-												array('link'=>'#', 'name'=>'Êàòàëîã ëåíò íîâîñòåé'),
-												array('link'=>'#', 'name'=>'Áëîãè ïîëüçîâàòåëåé'),
-												array('link'=>'#', 'name'=>'Äíåâíèêè ïîëüçîâàòåëåé'),
-												array('link'=>$router -> createUrl('AdminParameter', 'GroupList'), 'name'=>'Ïàðàìåòðû ñèñòåìû'),
-												array('link'=>$router -> createUrl('AdminUser', 'List'), 'name'=>'Ïîëüçîâàòåëè'),
+												array('link'=>$router -> createUrl('Admin', 'Desktop'), 'name'=>'Ð Ð°Ð±Ð¾Ñ‡Ð¸Ð¹ ÑÑ‚Ð¾Ð»'),
+												array('link'=>'#', 'name'=>'ÐšÐ°Ñ‚Ð°Ð»Ð¾Ð³ ÑÐ»Ð¾Ð¶Ð½Ñ‹Ñ… Ð¾Ð¿Ñ€Ð¾ÑÐ¾Ð²'),
+												array('link'=>'#', 'name'=>'ÐšÐ°Ñ‚Ð°Ð»Ð¾Ð³ Ð»ÐµÐ½Ñ‚ Ð½Ð¾Ð²Ð¾ÑÑ‚ÐµÐ¹'),
+												array('link'=>'#', 'name'=>'Ð‘Ð»Ð¾Ð³Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹'),
+												array('link'=>'#', 'name'=>'Ð”Ð½ÐµÐ²Ð½Ð¸ÐºÐ¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹'),
+												array('link'=>$router -> createUrl('AdminParameter', 'GroupList'), 'name'=>'ÐŸÐ°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹'),
+												array('link'=>$router -> createUrl('AdminUser', 'List'), 'name'=>'ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ð¸'),
 												);
 			
 			$session = getManager('CSession');
@@ -29,7 +29,7 @@
 		
 		public function DesktopAction(){
 			$this -> BaseAdminData();
-			$this -> view -> title = 'Ðàáî÷èé ñòîë';
+			$this -> view -> title = 'Ð Ð°Ð±Ð¾Ñ‡Ð¸Ð¹ ÑÑ‚Ð¾Ð»';
 			$this -> view -> content .= $this->view->render(VIEWS_PATH.'admin/desktop.tpl.php');
 			$this -> view -> display();
 		}
@@ -71,7 +71,7 @@
 				$this -> view -> login_result = false;
 			} else {
 				$user = getManager('CUser');
-				// TODO:: Áðåä êàêîé-òî ïîëó÷àåòñÿ!!!
+				// TODO:: Ð‘Ñ€ÐµÐ´ ÐºÐ°ÐºÐ¾Ð¹-Ñ‚Ð¾ Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÑ‚ÑÑ!!!
 				$user -> login($this -> u_login, $this -> u_pass);
 				$router = getManager('CRouter');
 				$router -> redirect($router -> createUrl('Admin', 'Desktop'));

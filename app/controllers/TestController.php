@@ -4,22 +4,22 @@
 		var $formFields = array(
 			'name' => array(
 				'name' => 'name',
-				'title' => 'Название',
-				'desc' => 'Поле наименование',
+				'title' => 'РќР°Р·РІР°РЅРёРµ',
+				'desc' => 'РџРѕР»Рµ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ',
 				'type' => FORM_FIELD_TEXT,
 				'required' => true,
             ),
 			'value' => array(
 				'name' => 'value',
-				'title' => 'Значение',
-				'desc' => 'Поле содержащее значение',
+				'title' => 'Р—РЅР°С‡РµРЅРёРµ',
+				'desc' => 'РџРѕР»Рµ СЃРѕРґРµСЂР¶Р°С‰РµРµ Р·РЅР°С‡РµРЅРёРµ',
 				'type' => FORM_FIELD_TEXTAREA,
 				'required' => true,
             ),
 			'check' => array(
 				'name' => 'check',
-				'title' => 'Чек бокс',
-				'desc' => 'Поле с чекбоксом',
+				'title' => 'Р§РµРє Р±РѕРєСЃ',
+				'desc' => 'РџРѕР»Рµ СЃ С‡РµРєР±РѕРєСЃРѕРј',
 				'type' => FORM_FIELD_CHECKBOX,
 				'required' => true,
             ),
@@ -38,12 +38,12 @@
 			$content .= '<tr><th>name</th><th>value</th><th>check</th><th>options</th></tr>';
 			foreach($data as $item)
 			{
-				$content .= '<tr><td>'.$item['name'].'</td><td>'.$item['value'].'</td><td>'.$item['check'].'</td><td><a href="/Test/Delete/id:'.$item['id'].'">Удалить</a>&nbsp;<a href="/Test/Edit/id:'.$item['id'].'">Редактировать</a></td></tr>';
+				$content .= '<tr><td>'.$item['name'].'</td><td>'.$item['value'].'</td><td>'.$item['check'].'</td><td><a href="/Test/Delete/id:'.$item['id'].'">РЈРґР°Р»РёС‚СЊ</a>&nbsp;<a href="/Test/Edit/id:'.$item['id'].'">Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ</a></td></tr>';
 			}
 			
 			$router = getManager('CRouter');
 			$url = $router->createUrl('Test', 'Add');
-			$content .= '<tr><th></th><th></th><th></th><th><a href="'.$url.'">Добавить</a></th></tr>';
+			$content .= '<tr><th></th><th></th><th></th><th><a href="'.$url.'">Р”РѕР±Р°РІРёС‚СЊ</a></th></tr>';
 			$content .= '</table>';
 			$this->view->content = $content;
 			$this->view->display();
@@ -58,7 +58,7 @@
 				$this->model->Delete();
 			}
 			echo '</pre>';
-			echo 'Запись удалена. <a href="/Test/Index">Назад</a></pre>';
+			echo 'Р—Р°РїРёСЃСЊ СѓРґР°Р»РµРЅР°. <a href="/Test/Index">РќР°Р·Р°Рґ</a></pre>';
 			
 		}
 		
@@ -69,11 +69,11 @@
 			{
 				$data = $this->model->getById($this->params['id']);
 				$form = new CFormData();
-				$form->setTitle('Редактирование элемента');
+				$form->setTitle('Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ СЌР»РµРјРµРЅС‚Р°');
 				$router = getManager('CRouter');
 				$form->setAction($router->createUrl('Test', 'Save'));
-				$form->setSubmitText('Сохранить');
-				$form->setCancelText('Назад');
+				$form->setSubmitText('РЎРѕС…СЂР°РЅРёС‚СЊ');
+				$form->setCancelText('РќР°Р·Р°Рґ');
 				$form->setCancelUrl($router->createUrl('Test'));
 				$form->setFields($this->formFields);
 				$form->setData($data);
@@ -88,12 +88,12 @@
 			echo "TestController/AddAction<br/><br/>";
 			echo '</pre>';
 			$form = new CFormData();
-			$form->setTitle('Добавление элемента');
+			$form->setTitle('Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р°');
 			
 			$router = getManager('CRouter');
 			$form->setAction($router->createUrl('Test', 'Save'));
-			$form->setSubmitText('Сохранить');
-			$form->setCancelText('Назад');
+			$form->setSubmitText('РЎРѕС…СЂР°РЅРёС‚СЊ');
+			$form->setCancelText('РќР°Р·Р°Рґ');
 			$form->setCancelUrl($router->createUrl('Test'));
 			$form->setFields($this->formFields);
 			$form->initForm();
@@ -118,29 +118,29 @@
 					$this->model->id = $this->params['id'];
 					$this->model->update();
 					echo '</pre>';
-					echo 'Запись обновлена. <a href="'.$router->createUrl('Test').'">На главную</a></pre>';
+					echo 'Р—Р°РїРёСЃСЊ РѕР±РЅРѕРІР»РµРЅР°. <a href="'.$router->createUrl('Test').'">РќР° РіР»Р°РІРЅСѓСЋ</a></pre>';
 				}
 				else
 				{
 					$this->model->insert();
 					echo '</pre>';
-					echo 'Запись вставлена. <a href="'.$router->createUrl('Test').'">На главную</a></pre>';
+					echo 'Р—Р°РїРёСЃСЊ РІСЃС‚Р°РІР»РµРЅР°. <a href="'.$router->createUrl('Test').'">РќР° РіР»Р°РІРЅСѓСЋ</a></pre>';
 				}
 			}
 			else
 			{
 				if(isset($this->params['id']))
 				{
-					$form->setTitle('Редактирование элемента');
+					$form->setTitle('Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ СЌР»РµРјРµРЅС‚Р°');
 					$form->setHidden(array('id'=>$this->params['id']));
 				}
 				else
 				{
-					$form->setTitle('Добавление элемента');
+					$form->setTitle('Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р°');
 				}
 				$form->setAction($router->createUrl('Test', 'Save'));
-				$form->setSubmitText('Сохранить');
-				$form->setCancelText('Назад');
+				$form->setSubmitText('РЎРѕС…СЂР°РЅРёС‚СЊ');
+				$form->setCancelText('РќР°Р·Р°Рґ');
 				$form->setCancelUrl($router->createUrl('Test'));
 				$form->initForm();
 				$this->view->content = $form->renderForm();

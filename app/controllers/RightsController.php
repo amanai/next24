@@ -17,7 +17,7 @@
 			
 			$this->view->assign('userTypes', $userTypes);
 			$this->view->assign('userType', $userType);
-			$this->view->assign('title', 'Óïðàâëåíèå ïðàâàìè ïðîëüçîâàòåëåé');
+			$this->view->assign('title', 'Ð£Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð¿Ñ€Ð°Ð²Ð°Ð¼Ð¸ Ð¿Ñ€Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹');
 			
 			$list = $this->drawList($userType);
 			$this->view->assign('rightsData', $list);

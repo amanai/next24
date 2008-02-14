@@ -6,7 +6,7 @@ class AdminParameterController extends AdminController{
 		
 		function BaseAdminData(){
 			parent::BaseAdminData();
-			$this -> view -> title = 'Ïàðàìåòðû ñèñòåìû';
+			$this -> view -> title = 'ÐŸÐ°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹';
 		}
 	
 	
@@ -19,7 +19,7 @@ class AdminParameterController extends AdminController{
 				$item['number'] = $counter;
 				$counter++;
 			}
-			array_unshift($list, array('number'=>1, 'id'=>0, 'name'=>'CommonParameters', 'description'=>'Îáùèå ïàðàìåòðû, íå ïðèâÿçàííûå íè ê êàêîìó êîíòðîëëåðó'));
+			array_unshift($list, array('number'=>1, 'id'=>0, 'name'=>'CommonParameters', 'description'=>'ÐžÐ±Ñ‰Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹, Ð½Ðµ Ð¿Ñ€Ð¸Ð²ÑÐ·Ð°Ð½Ð½Ñ‹Ðµ Ð½Ð¸ Ðº ÐºÐ°ÐºÐ¾Ð¼Ñƒ ÐºÐ¾Ð½Ñ‚Ñ€Ð¾Ð»Ð»ÐµÑ€Ñƒ'));
 			$this -> view -> group_list = $list;
 			$this -> view -> content .= $this->view->render(VIEWS_PATH.'admin/parameters/group_list.tpl.php');
 			$this -> view -> display();
@@ -58,9 +58,9 @@ class AdminParameterController extends AdminController{
 			}
 			$this -> view -> param_group_id = $param_group_id;
 			$this -> view -> php_types = array(
-												'string'=>'ñòðîêà',
-												'integer'=>'öåëîå',
-												'float'=>'ñ ïëàâàþùåé òî÷êîé'
+												'string'=>'ÑÑ‚Ñ€Ð¾ÐºÐ°',
+												'integer'=>'Ñ†ÐµÐ»Ð¾Ðµ',
+												'float'=>'Ñ Ð¿Ð»Ð°Ð²Ð°ÑŽÑ‰ÐµÐ¹ Ñ‚Ð¾Ñ‡ÐºÐ¾Ð¹'
 												);
 			
 			$this -> setModel("Params");

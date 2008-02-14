@@ -7,7 +7,7 @@
 	<h2><?php echo $this->form['title']; ?></h2>
 <?php endif; ?>
 <?php if ($this->form['error']): ?>
-	<div style="color: red; align: center;"><b>Ошибка!</b></div>
+	<div style="color: red; align: center;"><b>РћС€РёР±РєР°!</b></div>
 <?php endif; ?>
 <form action="<?php echo $this->form['action']; ?>" method="<?php echo $this->form['method']; ?>" <?php if ($this->form['enctype'] != ''): ?> enctype="$this->form['enctype']" <?php endif; ?>>
 <table>

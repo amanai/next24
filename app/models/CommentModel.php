@@ -3,14 +3,14 @@
 abstract class CommentModel extends CBaseModel{
 	
 	/**
-	 * Èìÿ ïîëÿ, êîòîðîå îòëè÷àåòñÿ äëÿ ðàçíûõ âèäîâ êîììåíòàðèåâ: photo_id, news_id etc.
+	 * Ð˜Ð¼Ñ Ð¿Ð¾Ð»Ñ, ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ðµ Ð¾Ñ‚Ð»Ð¸Ñ‡Ð°ÐµÑ‚ÑÑ Ð´Ð»Ñ Ñ€Ð°Ð·Ð½Ñ‹Ñ… Ð²Ð¸Ð´Ð¾Ð² ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸ÐµÐ²: photo_id, news_id etc.
 	 */
 	protected $_object_field_name;
 	
 	
 		/**
-		 * Âûçûâàòü èç ïîòîìêà!!!, äëÿ òîãî, ÷òîáû íå ïåðåäàâàòü â êîíñòðóêòîð èìÿ ïîëÿ
-		 * Ïðèìåð: parent::__construct('photo_id');
+		 * Ð’Ñ‹Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð¸Ð· Ð¿Ð¾Ñ‚Ð¾Ð¼ÐºÐ°!!!, Ð´Ð»Ñ Ñ‚Ð¾Ð³Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð½Ðµ Ð¿ÐµÑ€ÐµÐ´Ð°Ð²Ð°Ñ‚ÑŒ Ð² ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€ Ð¸Ð¼Ñ Ð¿Ð¾Ð»Ñ
+		 * ÐŸÑ€Ð¸Ð¼ÐµÑ€: parent::__construct('photo_id');
 		 */
 		function __construct($field_name, $id = null){
 			$this -> _object_field_name = $field_name;
@@ -18,20 +18,20 @@ abstract class CommentModel extends CBaseModel{
 		}
 		
 		/**
-		 * Çàãðóçêà âñåõ êîììåíòàðèåâ
+		 * Ð—Ð°Ð³Ñ€ÑƒÐ·ÐºÐ° Ð²ÑÐµÑ… ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸ÐµÐ²
 		 */
 		function loadAll(){
-			// TODO::ïîñòðàíè÷íîñ ñ÷èòûâàíèå!
+			// TODO::Ð¿Ð¾ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ‡Ð½Ð¾Ñ ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°Ð½Ð¸Ðµ!
 			$this -> resetSql();
 			$sql = "SELECT * FROM `" . $this->tableNameDB . "`";
 			return MySql::query_array($sql);
 		}
 		
 		/**
-		 * Çàãðóçêà âñåõ êîììåíòàðèåâ ïîëüçîâàòåëÿ
+		 * Ð—Ð°Ð³Ñ€ÑƒÐ·ÐºÐ° Ð²ÑÐµÑ… ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸ÐµÐ² Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ
 		 */
 		function loadByOwner($userId){
-			// TODO::ïîñòðàíè÷íîñ ñ÷èòûâàíèå!
+			// TODO::Ð¿Ð¾ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ‡Ð½Ð¾Ñ ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°Ð½Ð¸Ðµ!
 			$userId = (int)$userId;
 			$this -> resetSql();
 			if ($userId > 0){
@@ -45,7 +45,7 @@ abstract class CommentModel extends CBaseModel{
 		}
 		
 		/**
-		 * Çàãðóçêà ñïèñêà êîììåíòàðèåâ ýëåìåíòà
+		 * Ð—Ð°Ð³Ñ€ÑƒÐ·ÐºÐ° ÑÐ¿Ð¸ÑÐºÐ° ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸ÐµÐ² ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°
 		 */
 		function loadByItem($itemId, $desc = true, $start = null, $end = null){
 			if ($desc === true){
@@ -60,7 +60,7 @@ abstract class CommentModel extends CBaseModel{
 				$l = null;
 			}
 			
-			// TODO::ïîñòðàíè÷íîñ ñ÷èòûâàíèå!
+			// TODO::Ð¿Ð¾ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ‡Ð½Ð¾Ñ ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°Ð½Ð¸Ðµ!
 			$this -> resetSql();
 			$itemId = (int)$itemId;
 			if ($itemId > 0){
@@ -75,10 +75,10 @@ abstract class CommentModel extends CBaseModel{
 		
 		
 		/**
-		 * Äîáàâëåíèå êîììåíòàðèÿ
+		 * Ð”Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ñ
 		 */
 		public function addComment($user_id, $avatar_id, $warning_id, $field_id, $text, $mood){
-			// TODO:: äîáàâèòü îïðåäåëåíèå ïðàâ íà èçìåíåíèå/äîáàâëåíèå çàïèñè
+			// TODO:: Ð´Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ðµ Ð¿Ñ€Ð°Ð² Ð½Ð° Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ/Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð·Ð°Ð¿Ð¸ÑÐ¸
 			$this -> resetSql();
 			$this -> set('user_id', (int)$user_id);
 			$this -> set('avatar_id', (int)$avatar_id);
@@ -92,10 +92,10 @@ abstract class CommentModel extends CBaseModel{
 		}
 		
 		/**
-		 * Óäàëåíèÿ êîììåíòàðèÿ
+		 * Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ñ ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ñ
 		 */
 		public function delete($user_id, $id){
-			// TODO:: äîáàâèòü îïðåäåëåíèå ïðàâ íà èçìåíåíèå/äîáàâëåíèå çàïèñè
+			// TODO:: Ð´Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ðµ Ð¿Ñ€Ð°Ð² Ð½Ð° Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ/Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð·Ð°Ð¿Ð¸ÑÐ¸
 			$id = (int)$id;
 			$user_id = (int)$user_id;
 			$this -> resetSql();
@@ -106,11 +106,11 @@ abstract class CommentModel extends CBaseModel{
 		}
 		
 		/**
-		 * Óäàëåíèå âñåõ êîììåíòàðèåâ îáúåêòà
+		 * Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð²ÑÐµÑ… ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸ÐµÐ² Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
 		 */
 		public function deleteByItem($user_id, $field_id){
 			$this -> resetSql();
-			// TODO:: äîáàâèòü îïðåäåëåíèå ïðàâ íà èçìåíåíèå/äîáàâëåíèå çàïèñè
+			// TODO:: Ð´Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ðµ Ð¿Ñ€Ð°Ð² Ð½Ð° Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ/Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð·Ð°Ð¿Ð¸ÑÐ¸
 			$field_id = (int)$field_id;
 			if ($field_id > 0){
 				$sql = "DELETE FROM `" . $this->tableNameDB . "`
@@ -123,11 +123,11 @@ abstract class CommentModel extends CBaseModel{
 		}
 		
 		/**
-		 * Óäàëåíèå âñå êîììåíòàðèè ïîëüçîâàòåëÿ
+		 * Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð²ÑÐµ ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ
 		 */
 		public function deleteByOwner($user_id){
 			$this -> resetSql();
-			// TODO:: äîáàâèòü îïðåäåëåíèå ïðàâ íà èçìåíåíèå/äîáàâëåíèå çàïèñè
+			// TODO:: Ð´Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ðµ Ð¿Ñ€Ð°Ð² Ð½Ð° Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ/Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð·Ð°Ð¿Ð¸ÑÐ¸
 			$user_id = (int)$user_id;
 			if ($user_id > 0){
 				$sql = "DELETE FROM `" . $this->tableNameDB . "`

@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 <head>
-	<title><?php echo $this -> title; ?> | Административый интерфейс</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+	<title><?php echo $this -> title; ?> | РђРґРјРёРЅРёСЃС‚СЂР°С‚РёРІС‹Р№ РёРЅС‚РµСЂС„РµР№СЃ</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href="<?php echo CSS_URL?>main.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo CSS_URL?>desktop.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo CSS_URL?>list.css" type="text/css" rel="StyleSheet"/>
@@ -26,11 +26,11 @@
 	<tr>
 		<td colspan="2" class="header">
 			<div class="left">
-				Административный интерфейс сайта next24.ru
+				РђРґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅС‹Р№ РёРЅС‚РµСЂС„РµР№СЃ СЃР°Р№С‚Р° next24.ru
 			</div>
 
 			<div class="right">
-				<div class="button bbig"><a href="<?php echo $this->router->createUrl('Admin', 'Logout')?>">Выход</a></div>
+				<div class="button bbig"><a href="<?php echo $this->router->createUrl('Admin', 'Logout')?>">Р’С‹С…РѕРґ</a></div>
 			</div>
 		</td>
 	</tr>
@@ -43,7 +43,7 @@
 				<table class="head">
 					<tr>
 						<td class="left">&nbsp;</td>
-						<td class="cen">Главное меню</td>
+						<td class="cen">Р“Р»Р°РІРЅРѕРµ РјРµРЅСЋ</td>
 						<td class="right">&nbsp;</td>
 					</tr>
 
@@ -66,8 +66,8 @@
 
 		<td class="c_middle">
 			<div class="info">
-				<div class="welcome">Здравствуйте, <?php echo $this -> userData['first_name']." ".$this -> userData['middle_name']; ?></div>
-				<div class="lastvisit"><img src="<?php echo IMG_URL?>visit_left.gif" alt=""/><div>Вы зарегистрованы <?php echo date("Y-m-d", strtotime($this -> userData['registration_date'])); ?></div><img src="<?php echo IMG_URL?>visit_right.gif" alt=""/></div>
+				<div class="welcome">Р—РґСЂР°РІСЃС‚РІСѓР№С‚Рµ, <?php echo $this -> userData['first_name']." ".$this -> userData['middle_name']; ?></div>
+				<div class="lastvisit"><img src="<?php echo IMG_URL?>visit_left.gif" alt=""/><div>Р’С‹ Р·Р°СЂРµРіРёСЃС‚СЂРѕРІР°РЅС‹ <?php echo date("Y-m-d", strtotime($this -> userData['registration_date'])); ?></div><img src="<?php echo IMG_URL?>visit_right.gif" alt=""/></div>
 			</div>
 		
 			<?php echo $this->content; ?>
@@ -78,8 +78,8 @@
 	<!-- Footer -->
 	<tr>
 		<td colspan="2" class="footer">
-			<div class="left">(с) Next24.ru Group. Все права защищены.</div>
-			<div class="right"><a href="#">Личные данные</a> | <a href="#">Наверх</a> | <a href="#">Выход</a></div>
+			<div class="left">(СЃ) Next24.ru Group. Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹.</div>
+			<div class="right"><a href="#">Р›РёС‡РЅС‹Рµ РґР°РЅРЅС‹Рµ</a> | <a href="#">РќР°РІРµСЂС…</a> | <a href="#">Р’С‹С…РѕРґ</a></div>
 
 		</td>
 	</tr>

@@ -1,5 +1,5 @@
 <div class="list">
-	<div style="float: left;"><h3>Группы параметров (Controllers)</h3></div>
+	<div style="float: left;"><h3>Р“СЂСѓРїРїС‹ РїР°СЂР°РјРµС‚СЂРѕРІ (Controllers)</h3></div>
 
 	<table class="list_table">
 		<tr class="head">
@@ -8,14 +8,14 @@
 				N
 			</td>
 			<td>
-				Описание
+				РћРїРёСЃР°РЅРёРµ
 			</td>
 			<td>
-				Группа (controller)
+				Р“СЂСѓРїРїР° (controller)
 			</td>
 			<td>
 
-				Действия
+				Р”РµР№СЃС‚РІРёСЏ
 			</td>
 			<td class="last" rowspan="100">&nbsp;</td>
 		</tr>
@@ -31,7 +31,7 @@
 				<?php echo $item['name']; ?>
 			</td>
 			<td>
-				<div class="button bsmall" style="float: left;"><a href="<?php echo $this->router->createUrl('AdminParameter', 'EditGroup', array('id' => $item['id']));?>"><img src="<?php echo IMG_URL;?>icons/small_edit.gif" alt="Правка"/></a></div>
+				<div class="button bsmall" style="float: left;"><a href="<?php echo $this->router->createUrl('AdminParameter', 'EditGroup', array('id' => $item['id']));?>"><img src="<?php echo IMG_URL;?>icons/small_edit.gif" alt="РџСЂР°РІРєР°"/></a></div>
 			</td>
 
 		</tr>

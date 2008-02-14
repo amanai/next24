@@ -9,8 +9,8 @@
 		public function ViewprofileAction(){
 			$this->view->userData['birth_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['birth_date']));
 			$this->view->userData['registration_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['registration_date']));
-			$this->view->userData['gender_formatted'] = 'ìóæñêîé';
-			if($this->view->userData['gender'] == 1) $this->view->userData['gender_formatted'] = 'æåíñêèé';
+			$this->view->userData['gender_formatted'] = 'Ğ¼ÑƒĞ¶ÑĞºĞ¾Ğ¹';
+			if($this->view->userData['gender'] == 1) $this->view->userData['gender_formatted'] = 'Ğ¶ĞµĞ½ÑĞºĞ¸Ğ¹';
 			
 			
 			$this->model->set("userData", $this->view->userData);

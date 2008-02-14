@@ -135,9 +135,9 @@ class CLog extends CBaseManager{
 			Writes to LOG File each recieved value.
 			To write the log we use the function "writeLog".
 					
-			Esta función va escribiendo en el archivo de LOG 
+			Esta funciï¿½n va escribiendo en el archivo de LOG 
 			a medida que recibe	valores. 
-			Para escribir el log se recurre a la función "writeLog".
+			Para escribir el log se recurre a la funciï¿½n "writeLog".
 			
 			Output: $this->writeLog()
 					Will directly write to log file
@@ -199,7 +199,7 @@ class CLog extends CBaseManager{
 				//----------------
 				//FUNCTIONS - "F:"
 				//--------------------------------------------------
-				//using a log function passed in $string //es: aquí estoy utilizando una función de log pasada en $string
+				//using a log function passed in $string //es: aquï¿½ estoy utilizando una funciï¿½n de log pasada en $string
 				//example: logThis('f:line')
 				switch($string){
 					case 'f:line':

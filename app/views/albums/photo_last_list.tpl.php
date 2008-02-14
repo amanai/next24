@@ -1,21 +1,21 @@
-			<!-- Главный блок, с вкладками (Контент) -->
+			<!-- Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 2 )</script>
 				<div class="tab-page">
-					<h2 class="tab">Топ фотографий</h2>
-					<!-- ПРОФИЛЬ -->
+					<h2 class="tab">РўРѕРї С„РѕС‚РѕРіСЂР°С„РёР№</h2>
+					<!-- РџР РћР¤РР›Р¬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<td class="next24u_left">
-							<!-- левый блок -->
+							<!-- Р»РµРІС‹Р№ Р±Р»РѕРє -->
 								<?php if (is_array($this -> album_list)) {?>
 									<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-										<div class="block_title"><h2>Фотоальбомы</h2></div>
+										<div class="block_title"><h2>Р¤РѕС‚РѕР°Р»СЊР±РѕРјС‹</h2></div>
 										<?php foreach ($this -> album_list as $item) {?>
 											<p><a href="<?php echo $this->router->createUrl('Photo', 'Album', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>folder.png" id="ico2" height="12" width="15"><?php echo $item['name'];?></a>&nbsp;&nbsp;
 											<?php if ($this->album_owner) {?>
-											<a href="<?php echo $this->router->createUrl('Photo', 'Edit', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Редактировать альбом" class="editbtn" height="12" width="11"></a>
+											<a href="<?php echo $this->router->createUrl('Photo', 'Edit', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ Р°Р»СЊР±РѕРј" class="editbtn" height="12" width="11"></a>
 											<?php } ?>
 											</p>
 										<?php } ?>
@@ -23,13 +23,13 @@
 								<?php } ?>
 								<?php if ($this->album_owner) {?>
 									<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-										<div class="block_title"><h2>Управление альбомами</h2></div>
-										<p><a href="<?php echo $this->router->createUrl('Album', 'CreateForm');?>">Создать альбом</a></p>
-										<p><a href="<?php echo $this->router->createUrl('Album', 'UploadForm');?>">Загрузить фотографии</a></p>
-										<p><a href="<?php echo $this->router->createUrl('Album', 'List');?>">Список альбомов</a></p>
+										<div class="block_title"><h2>РЈРїСЂР°РІР»РµРЅРёРµ Р°Р»СЊР±РѕРјР°РјРё</h2></div>
+										<p><a href="<?php echo $this->router->createUrl('Album', 'CreateForm');?>">РЎРѕР·РґР°С‚СЊ Р°Р»СЊР±РѕРј</a></p>
+										<p><a href="<?php echo $this->router->createUrl('Album', 'UploadForm');?>">Р—Р°РіСЂСѓР·РёС‚СЊ С„РѕС‚РѕРіСЂР°С„РёРё</a></p>
+										<p><a href="<?php echo $this->router->createUrl('Album', 'List');?>">РЎРїРёСЃРѕРє Р°Р»СЊР±РѕРјРѕРІ</a></p>
 									</div></div></div></div>
 								<?php } ?>
-							<!-- /левый блок -->
+							<!-- /Р»РµРІС‹Р№ Р±Р»РѕРє -->
 						</td>
 						<td class="next24u_right">
 							<table class="photo_table">
@@ -57,11 +57,11 @@
 										</td>
 								<?php }?>
 							</table>
-							<!-- листинг -->
+							<!-- Р»РёСЃС‚РёРЅРі -->
 							<div class="listing_div_c">
 								<li class="listing">
 									<?php if ($this->current_page_number > 0) { ?>
-										<a href="<?php echo  $this->router->createUrl('Album', 'User', array('pn'=>($this->current_page_number-1), 'id'=>$this->album_owner_id));?>" title="Предыдущая страница">«</a>
+										<a href="<?php echo  $this->router->createUrl('Album', 'User', array('pn'=>($this->current_page_number-1), 'id'=>$this->album_owner_id));?>" title="РџСЂРµРґС‹РґСѓС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°">В«</a>
 									<?php } ?>
 									<?php for($i = 0; $i < $this->pages_number; $i++){ ?>
 										<?php if ($this->current_page_number == $i) { ?>
@@ -71,18 +71,18 @@
 										<?php } ?>
 									<?php } ?>
 									<?php if ($this->current_page_number < $this->pages_number - 1) { ?>
-										<a href="<?php echo  $this->router->createUrl('Album', 'User', array('pn'=>($this->current_page_number+1), 'id'=>$this->album_owner_id));?>" title="Следующая страница">»</a>
+										<a href="<?php echo  $this->router->createUrl('Album', 'User', array('pn'=>($this->current_page_number+1), 'id'=>$this->album_owner_id));?>" title="РЎР»РµРґСѓСЋС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°">В»</a>
 									<?php } ?>
 									
 								</li>
 
 							</div>
-							<!-- /листинг -->
+							<!-- /Р»РёСЃС‚РёРЅРі -->
 						</td>
 					</tr>
 					</table>
-					<!-- /ПРОФИЛЬ -->
+					<!-- /РџР РћР¤РР›Р¬ -->
 				</div>
 
 			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+			<!-- /Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->

@@ -1,58 +1,58 @@
-<!-- Главный блок, с вкладками (Контент) -->
+<!-- Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 
 				<div class="tab-page">
-					<h2 class="tab">Профиль</h2>
-					<!-- ПРОФИЛЬ -->
+					<h2 class="tab">РџСЂРѕС„РёР»СЊ</h2>
+					<!-- РџР РћР¤РР›Р¬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<td class="next24u_left">
-							<!-- левый блок -->
+							<!-- Р»РµРІС‹Р№ Р±Р»РѕРє -->
 								<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-									<div class="block_title"><h2>Управление</h2></div>
+									<div class="block_title"><h2>РЈРїСЂР°РІР»РµРЅРёРµ</h2></div>
 
-									Редактировать профиль<br />
+									Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РїСЂРѕС„РёР»СЊ<br />
 
 								</div></div></div></div>
-							<!-- /левый блок -->
+							<!-- /Р»РµРІС‹Р№ Р±Р»РѕРє -->
 						</td>
 						<td class="next24u_right">
-							<!-- правый блок -->
+							<!-- РїСЂР°РІС‹Р№ Р±Р»РѕРє -->
 								<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-									<div class="block_title"><h2>Профиль пользователя</h2></div>
+									<div class="block_title"><h2>РџСЂРѕС„РёР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</h2></div>
 									<form action="<?php echo $this->router->createUrl('User', 'Saveprofile')?>" method="post">
 									<table cellpadding="3">
 									<tr>
 										<td width="150" valign="top" style="padding-top: 5px;"><b>E-Mail</b></td>
 										<td>
 											<input type="text" style="width: 200px;" name="email" value="<?php echo $this->userData['email'];?>" /><br />
-											<span id="micro2">Пожалуйста, указывайте существующий адрес,<br />так как на него вам будет отправлена техническая информация о доступе на сайт.</span>
+											<span id="micro2">РџРѕР¶Р°Р»СѓР№СЃС‚Р°, СѓРєР°Р·С‹РІР°Р№С‚Рµ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ Р°РґСЂРµСЃ,<br />С‚Р°Рє РєР°Рє РЅР° РЅРµРіРѕ РІР°Рј Р±СѓРґРµС‚ РѕС‚РїСЂР°РІР»РµРЅР° С‚РµС…РЅРёС‡РµСЃРєР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РґРѕСЃС‚СѓРїРµ РЅР° СЃР°Р№С‚.</span>
 										</td>
 									</tr>
 									<tr>
-										<td valign="top" style="padding-top: 5px;"><b>Фамилия</b></td>
+										<td valign="top" style="padding-top: 5px;"><b>Р¤Р°РјРёР»РёСЏ</b></td>
 										<td>
 											<input type="text" style="width: 200px;" name="last_name" value="<?php echo $this->userData['last_name'];?>"/><br />
-											<span id="micro2">Ваша реальная фамилия. Допустима кириллица, пробел и символ дефиса.</span>
+											<span id="micro2">Р’Р°С€Р° СЂРµР°Р»СЊРЅР°СЏ С„Р°РјРёР»РёСЏ. Р”РѕРїСѓСЃС‚РёРјР° РєРёСЂРёР»Р»РёС†Р°, РїСЂРѕР±РµР» Рё СЃРёРјРІРѕР» РґРµС„РёСЃР°.</span>
 										</td>
 									</tr>
 									<tr>
-										<td><b>Имя</b></td>
+										<td><b>РРјСЏ</b></td>
 										<td valign="top" style="padding-top: 5px;">
 											<input type="text" style="width: 200px;" name="first_name" value="<?php echo $this->userData['first_name'];?>"/><br />
-											<span id="micro2">Ваше реальное имя. Допустима кириллица, пробел и символ дефиса.</span>
+											<span id="micro2">Р’Р°С€Рµ СЂРµР°Р»СЊРЅРѕРµ РёРјСЏ. Р”РѕРїСѓСЃС‚РёРјР° РєРёСЂРёР»Р»РёС†Р°, РїСЂРѕР±РµР» Рё СЃРёРјРІРѕР» РґРµС„РёСЃР°.</span>
 										</td>
 									</tr>
 									<tr>
-										<td><b>Отчество</b></td>
+										<td><b>РћС‚С‡РµСЃС‚РІРѕ</b></td>
 										<td valign="top" style="padding-top: 5px;">
 											<input type="text" style="width: 200px;" name="middle_name" value="<?php echo $this->userData['middle_name'];?>"/><br />
-											<span id="micro2">Ваше отчество. Допустима кириллица, пробел и символ дефиса.</span>
+											<span id="micro2">Р’Р°С€Рµ РѕС‚С‡РµСЃС‚РІРѕ. Р”РѕРїСѓСЃС‚РёРјР° РєРёСЂРёР»Р»РёС†Р°, РїСЂРѕР±РµР» Рё СЃРёРјРІРѕР» РґРµС„РёСЃР°.</span>
 										</td>
 									</tr>
 									<tr>
-										<td><b>Дата рождения</b></td>
+										<td><b>Р”Р°С‚Р° СЂРѕР¶РґРµРЅРёСЏ</b></td>
 										<td>
 											<select name="birth_day">
 												<?php for($i=1;$i<=31;$i++){?>
@@ -63,18 +63,18 @@
 											</select>
 											
 											<select name="birth_month">
-												<option <?php echo $this->userData['birth_month'][1];?> value="1">января</option>
-												<option <?php echo $this->userData['birth_month'][2];?> value="2">февраля</option>
-												<option <?php echo $this->userData['birth_month'][3];?> value="3">марта</option>
-												<option <?php echo $this->userData['birth_month'][4];?> value="4">апреля</option>
-												<option <?php echo $this->userData['birth_month'][5];?> value="5">мая</option>
-												<option <?php echo $this->userData['birth_month'][6];?> value="6">июня</option>
-												<option <?php echo $this->userData['birth_month'][7];?> value="7">июля</option>
-												<option <?php echo $this->userData['birth_month'][8];?> value="8">августа</option>
-												<option <?php echo $this->userData['birth_month'][9];?> value="9">сентября</option>
-												<option <?php echo $this->userData['birth_month'][10];?> value="10">октября</option>
-												<option <?php echo $this->userData['birth_month'][11];?> value="11">ноября</option>
-												<option <?php echo $this->userData['birth_month'][12];?> value="12">декабря</option>
+												<option <?php echo $this->userData['birth_month'][1];?> value="1">СЏРЅРІР°СЂСЏ</option>
+												<option <?php echo $this->userData['birth_month'][2];?> value="2">С„РµРІСЂР°Р»СЏ</option>
+												<option <?php echo $this->userData['birth_month'][3];?> value="3">РјР°СЂС‚Р°</option>
+												<option <?php echo $this->userData['birth_month'][4];?> value="4">Р°РїСЂРµР»СЏ</option>
+												<option <?php echo $this->userData['birth_month'][5];?> value="5">РјР°СЏ</option>
+												<option <?php echo $this->userData['birth_month'][6];?> value="6">РёСЋРЅСЏ</option>
+												<option <?php echo $this->userData['birth_month'][7];?> value="7">РёСЋР»СЏ</option>
+												<option <?php echo $this->userData['birth_month'][8];?> value="8">Р°РІРіСѓСЃС‚Р°</option>
+												<option <?php echo $this->userData['birth_month'][9];?> value="9">СЃРµРЅС‚СЏР±СЂСЏ</option>
+												<option <?php echo $this->userData['birth_month'][10];?> value="10">РѕРєС‚СЏР±СЂСЏ</option>
+												<option <?php echo $this->userData['birth_month'][11];?> value="11">РЅРѕСЏР±СЂСЏ</option>
+												<option <?php echo $this->userData['birth_month'][12];?> value="12">РґРµРєР°Р±СЂСЏ</option>
 											</select>
 											
 											<select name="birth_year">
@@ -87,7 +87,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td><b>Страна</b></td>
+										<td><b>РЎС‚СЂР°РЅР°</b></td>
 										<td valign="top" style="padding-top: 5px;">
 											<select name="country_id">
 												<?php foreach($this->userData['countries'] as $country){?>
@@ -96,39 +96,39 @@
 												<option <?php echo $selected;?> value="<?php echo $country['id'];?>"><?php echo $country['name'];?></option>
 												<?php }?>
 											</select><br />
-											<span id="micro2">Страна проживания.</span>
+											<span id="micro2">РЎС‚СЂР°РЅР° РїСЂРѕР¶РёРІР°РЅРёСЏ.</span>
 										</td>
 									</tr>
 									<tr>
-										<td valign="top" style="padding-top: 5px;"><b>Город</b></td>
+										<td valign="top" style="padding-top: 5px;"><b>Р“РѕСЂРѕРґ</b></td>
 										<td>
 											<input type="text" style="width: 200px;" name="city" value="<?php echo $this->userData['city'];?>"/><br />
-											<span id="micro2">Город проживания. Допустима латиница, кирилица, пробел и дефис.</span>
+											<span id="micro2">Р“РѕСЂРѕРґ РїСЂРѕР¶РёРІР°РЅРёСЏ. Р”РѕРїСѓСЃС‚РёРјР° Р»Р°С‚РёРЅРёС†Р°, РєРёСЂРёР»РёС†Р°, РїСЂРѕР±РµР» Рё РґРµС„РёСЃ.</span>
 										</td>
 									</tr>
 									<tr>
-										<td><b>Пол</b></td>
+										<td><b>РџРѕР»</b></td>
 										<td>
-											<input name="gender" value="0" type="radio" <?php echo $this->userData['gender_formatted'][0];?> /> Мужской  &nbsp;&nbsp;
-											<input name="gender" value="1" type="radio" <?php echo $this->userData['gender_formatted'][1];?>/> Женский
+											<input name="gender" value="0" type="radio" <?php echo $this->userData['gender_formatted'][0];?> /> РњСѓР¶СЃРєРѕР№  &nbsp;&nbsp;
+											<input name="gender" value="1" type="radio" <?php echo $this->userData['gender_formatted'][1];?>/> Р–РµРЅСЃРєРёР№
 										</td>
 									</tr>
 									<tr>
-										<td><b>О себе</b></td>
+										<td><b>Рћ СЃРµР±Рµ</b></td>
 										<td>
 											<textarea style="width: 450px; height: 100px;" name="about"><?php echo $this->userData['about'];?></textarea><br />
-											<span id="micro2">Информация о себе.</span>
+											<span id="micro2">РРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЃРµР±Рµ.</span>
 										</td>
 									</tr>
 									<tr>
-										<td><b>Интересы</b></td>
+										<td><b>РРЅС‚РµСЂРµСЃС‹</b></td>
 										<td>
 											<textarea style="width: 450px; height: 100px;" name="interest"><?php echo $this->userData['interest'];?></textarea><br />
-											<span id="micro2">Ваши интересы. Слова и словосочетания разделенные запятой.</span>
+											<span id="micro2">Р’Р°С€Рё РёРЅС‚РµСЂРµСЃС‹. РЎР»РѕРІР° Рё СЃР»РѕРІРѕСЃРѕС‡РµС‚Р°РЅРёСЏ СЂР°Р·РґРµР»РµРЅРЅС‹Рµ Р·Р°РїСЏС‚РѕР№.</span>
 										</td>
 									</tr>
 									<tr>
-										<td colspan="2" align="right"><input type="submit" value="Сохранить изменение" /></td>
+										<td colspan="2" align="right"><input type="submit" value="РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёРµ" /></td>
 									</tr>
 									</table>
 									</form>
@@ -137,45 +137,45 @@
 
 
 								<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-									<div class="block_title"><h2>Места учебы, работы, отдыха, службы</h2></div>
+									<div class="block_title"><h2>РњРµСЃС‚Р° СѓС‡РµР±С‹, СЂР°Р±РѕС‚С‹, РѕС‚РґС‹С…Р°, СЃР»СѓР¶Р±С‹</h2></div>
 
 
 									<table cellpadding="3">
 									<tr>
-										<td width="150"><b>Нового места</b></td>
+										<td width="150"><b>РќРѕРІРѕРіРѕ РјРµСЃС‚Р°</b></td>
 										<td>
 											<select>
-												<option>выберите тип</option>
-												<option>Учебы</option>
-												<option>Работы</option>
-												<option>Отдыха</option>
-												<option>Службы</option>
+												<option>РІС‹Р±РµСЂРёС‚Рµ С‚РёРї</option>
+												<option>РЈС‡РµР±С‹</option>
+												<option>Р Р°Р±РѕС‚С‹</option>
+												<option>РћС‚РґС‹С…Р°</option>
+												<option>РЎР»СѓР¶Р±С‹</option>
 											</select>
 										</td>
 									</tr>
 									<tr>
-										<td><b>Страна</b></td>
+										<td><b>РЎС‚СЂР°РЅР°</b></td>
 										<td>
 											<select>
-												<option>Россия</option>
-												<option>Эстония</option>
+												<option>Р РѕСЃСЃРёСЏ</option>
+												<option>Р­СЃС‚РѕРЅРёСЏ</option>
 											</select>
 										</td>
 									</tr>
 									<tr>
-										<td><b>Город</b></td>
+										<td><b>Р“РѕСЂРѕРґ</b></td>
 										<td><input type="text" style="width: 200px;" /></td>
 									</tr>
 									<tr>
-										<td><b>Тип</b></td>
+										<td><b>РўРёРї</b></td>
 										<td><input type="text" style="width: 200px;" /></td>
 									</tr>
 									<tr>
-										<td><b>Место</b></td>
+										<td><b>РњРµСЃС‚Рѕ</b></td>
 										<td><input type="text" style="width: 200px;" /></td>
 									</tr>
 									<tr>
-										<td colspan="2" align="right"><input type="submit" value="Добавить" /></td>
+										<td colspan="2" align="right"><input type="submit" value="Р”РѕР±Р°РІРёС‚СЊ" /></td>
 									</tr>
 									</table>
 
@@ -185,30 +185,30 @@
 
 
 								<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-									<div class="block_title"><h2>Аватар</h2></div>
+									<div class="block_title"><h2>РђРІР°С‚Р°СЂ</h2></div>
 
 									<table cellpadding="3">
 									<tr>
-										<td colspan="2" id="micro2">Аватар - это картинка, которая может быть показана рядом с вашим именем в комментариях, блоге, личном профиле и т.д.<br/> Аватар должен быть не более 100х100 пикселей.</td>
+										<td colspan="2" id="micro2">РђРІР°С‚Р°СЂ - СЌС‚Рѕ РєР°СЂС‚РёРЅРєР°, РєРѕС‚РѕСЂР°СЏ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїРѕРєР°Р·Р°РЅР° СЂСЏРґРѕРј СЃ РІР°С€РёРј РёРјРµРЅРµРј РІ РєРѕРјРјРµРЅС‚Р°СЂРёСЏС…, Р±Р»РѕРіРµ, Р»РёС‡РЅРѕРј РїСЂРѕС„РёР»Рµ Рё С‚.Рґ.<br/> РђРІР°С‚Р°СЂ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РЅРµ Р±РѕР»РµРµ 100С…100 РїРёРєСЃРµР»РµР№.</td>
 									</tr>
 									<tr>
-										<td width="150" valign="top" style="padding-top: 5px;"><b>Файл</br></td>
+										<td width="150" valign="top" style="padding-top: 5px;"><b>Р¤Р°Р№Р»</br></td>
 										<td>
 											<input type="file" style="width: 450px;" /><br />
-											<span id="micro2">Принимаются форматы GIF, JPG, PNG</span>
+											<span id="micro2">РџСЂРёРЅРёРјР°СЋС‚СЃСЏ С„РѕСЂРјР°С‚С‹ GIF, JPG, PNG</span>
 										</td>
 									</tr>
 									<tr>
-										<td colspan="2" align="right"><input type="submit" value="Загрузить аватар"></td>
+										<td colspan="2" align="right"><input type="submit" value="Р—Р°РіСЂСѓР·РёС‚СЊ Р°РІР°С‚Р°СЂ"></td>
 									</tr>
 									</table>
 
 								</div></div></div></div>
-							<!-- /правый блок -->
+							<!-- /РїСЂР°РІС‹Р№ Р±Р»РѕРє -->
 						</td>
 					</tr>
 					</table>
-					<!-- /ПРОФИЛЬ -->
+					<!-- /РџР РћР¤РР›Р¬ -->
 				</div>
 			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+			<!-- /Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->

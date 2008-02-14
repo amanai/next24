@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
-<head><title>Авторизация</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+<head><title>РђРІС‚РѕСЂРёР·Р°С†РёСЏ</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href="<?php echo CSS_URL?>main.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo CSS_URL?>dialog.css" type="text/css" rel="StyleSheet"/>
 	<script type="text/javascript" src="<?php echo JS_URL?>jquery.js"></script>
@@ -16,7 +16,7 @@
 				<tr>
 					<td class="h_left">&nbsp;</td>
 					<td class="h_cen">
-						<div class="text">Вход в систему</div>
+						<div class="text">Р’С…РѕРґ РІ СЃРёСЃС‚РµРјСѓ</div>
 					</td>
 
 					<td class="h_right">&nbsp;</td>
@@ -25,16 +25,16 @@
 					<td class="c_left">&nbsp;</td>
 					<td class="c_cen"><table cellspacing="4" style="font-family: Arial; font-size: 12px;">
 						<?php if ($this -> login_result === false) { ?>
-							<tr><td colspan="2" align="center"><font color="red">Неправильное имя или пароль</font></td></tr>
+							<tr><td colspan="2" align="center"><font color="red">РќРµРїСЂР°РІРёР»СЊРЅРѕРµ РёРјСЏ РёР»Рё РїР°СЂРѕР»СЊ</font></td></tr>
 						<?php } ?>
-						<tr><td>Имя</td><td><input type="text" name="u_login" value=""/></td></tr><tr><td>Пароль</td><td><input type="password" name="u_pass" value=""/><input type="hidden" name="auth_enter" value="1"></td></tr></table></td>
+						<tr><td>РРјСЏ</td><td><input type="text" name="u_login" value=""/></td></tr><tr><td>РџР°СЂРѕР»СЊ</td><td><input type="password" name="u_pass" value=""/><input type="hidden" name="auth_enter" value="1"></td></tr></table></td>
 					<td class="c_right">&nbsp;</td>
 				</tr>
 
 				<tr>
 					<td class="b_left">&nbsp;</td>
 					<td class="b_cen"><div class="b_delim">
-						<div class="button bbig" style="float: right;"><a href="#" onClick="document.forms.login.submit();">Вход</a></div>
+						<div class="button bbig" style="float: right;"><a href="#" onClick="document.forms.login.submit();">Р’С…РѕРґ</a></div>
 					</div></td>
 					<td class="b_right">&nbsp;</td>
 				</tr>

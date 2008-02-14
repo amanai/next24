@@ -1,128 +1,128 @@
-			<!-- Главный блок, с вкладками (Контент) -->
+			<!-- Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 
 				<div class="tab-page">
-					<h2 class="tab">Фотоальбом</h2>
-					<!-- ПРОФИЛЬ -->
+					<h2 class="tab">Р¤РѕС‚РѕР°Р»СЊР±РѕРј</h2>
+					<!-- РџР РћР¤РР›Р¬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<td class="next24u_left">
-							<!-- левый блок -->
+							<!-- Р»РµРІС‹Р№ Р±Р»РѕРє -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-									<div class="block_title"><h2>Фотоальбомы</h2></div>
+									<div class="block_title"><h2>Р¤РѕС‚РѕР°Р»СЊР±РѕРјС‹</h2></div>
 									<?php foreach ($this -> album_list as $item) {?>
 										<a href="#"><?php echo $item['name'];?></a><br />
 									<?php } ?>
 								</div></div></div></div>
 							
 								<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-									<div class="block_title"><h2>Управление альбомами</h2></div>
-									<a href="#">Создать альбом</a><br />
-									<a href="#">Загрузить фотографии</a><br />
-									<a href="#">Список альбомов</a>
+									<div class="block_title"><h2>РЈРїСЂР°РІР»РµРЅРёРµ Р°Р»СЊР±РѕРјР°РјРё</h2></div>
+									<a href="#">РЎРѕР·РґР°С‚СЊ Р°Р»СЊР±РѕРј</a><br />
+									<a href="#">Р—Р°РіСЂСѓР·РёС‚СЊ С„РѕС‚РѕРіСЂР°С„РёРё</a><br />
+									<a href="#">РЎРїРёСЃРѕРє Р°Р»СЊР±РѕРјРѕРІ</a>
 								</div></div></div></div>
-							<!-- /левый блок -->
+							<!-- /Р»РµРІС‹Р№ Р±Р»РѕРє -->
 						</td>
 						<td class="next24u_right">
-							<!-- Загрузка изображений -->
+							<!-- Р—Р°РіСЂСѓР·РєР° РёР·РѕР±СЂР°Р¶РµРЅРёР№ -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 
-								<h1>Загрузка изображений</h1>
-								<span id="micro2">Вы можете загружать файлы, не превышающие размером 4 мегабайта.<br />Можно загружать PNG, JPG, GIF изображения.</span>
+								<h1>Р—Р°РіСЂСѓР·РєР° РёР·РѕР±СЂР°Р¶РµРЅРёР№</h1>
+								<span id="micro2">Р’С‹ РјРѕР¶РµС‚Рµ Р·Р°РіСЂСѓР¶Р°С‚СЊ С„Р°Р№Р»С‹, РЅРµ РїСЂРµРІС‹С€Р°СЋС‰РёРµ СЂР°Р·РјРµСЂРѕРј 4 РјРµРіР°Р±Р°Р№С‚Р°.<br />РњРѕР¶РЅРѕ Р·Р°РіСЂСѓР¶Р°С‚СЊ PNG, JPG, GIF РёР·РѕР±СЂР°Р¶РµРЅРёСЏ.</span>
 								<br /><br />
 								
 								<form action="<?php echo BASE_URL;?>Album/Upload" method="post" enctype="multipart/form-data">
 									<table>
 										<tr>
-											<td width="100">Файл</td>
+											<td width="100">Р¤Р°Р№Р»</td>
 											<td><input type="file" style="width: 300px;" name="picture" /><br /></td>
 										</tr>
 										<tr>
-											<td width="100">Название</td>
+											<td width="100">РќР°Р·РІР°РЅРёРµ</td>
 											<td><input type="text" style="width: 300px;" name="pic_name" /><br /></td>
 										</tr>
 										<tr>
-											<td width="100">В рейтинге</td>
+											<td width="100">Р’ СЂРµР№С‚РёРЅРіРµ</td>
 											<td><input type="checkbox" name="rating" /><br /></td>
 										</tr>
 										<tr>
-											<td width="100">На главной</td>
+											<td width="100">РќР° РіР»Р°РІРЅРѕР№</td>
 											<td><input type="checkbox" name="on_main" /><br /></td>
 										</tr>
 										<tr>
-											<td valign="top">Уровень доступа</td>
+											<td valign="top">РЈСЂРѕРІРµРЅСЊ РґРѕСЃС‚СѓРїР°</td>
 											<td>
 		
 												<select style="width: 300px;" name="access">
-													<option value="1">для всех</option>
-													<option value="2">только для друзей</option>
-													<option value="0">только для себя</option>
+													<option value="1">РґР»СЏ РІСЃРµС…</option>
+													<option value="2">С‚РѕР»СЊРєРѕ РґР»СЏ РґСЂСѓР·РµР№</option>
+													<option value="0">С‚РѕР»СЊРєРѕ РґР»СЏ СЃРµР±СЏ</option>
 												</select><br />
-												<span id="micro2">Кто сможет смотреть и комментировать этот альбом.</span>
+												<span id="micro2">РљС‚Рѕ СЃРјРѕР¶РµС‚ СЃРјРѕС‚СЂРµС‚СЊ Рё РєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ СЌС‚РѕС‚ Р°Р»СЊР±РѕРј.</span>
 											</td>
 		
 										</tr>
 										<tr>
-											<td valign="top">Альбом</td>
+											<td valign="top">РђР»СЊР±РѕРј</td>
 											<td>
 												<select style="width: 300px;" name="album_id">
 													<?php foreach ($this -> album_list as $item) {?>
 													<option value=<?php echo (int)$item['id'];?>><?php echo $item['name'];?></option>
 													<?php } ?>
 												</select><br />
-												<span id="micro2">В какой альбом будет загружено изображение.</span>
+												<span id="micro2">Р’ РєР°РєРѕР№ Р°Р»СЊР±РѕРј Р±СѓРґРµС‚ Р·Р°РіСЂСѓР¶РµРЅРѕ РёР·РѕР±СЂР°Р¶РµРЅРёРµ.</span>
 		
 											</td>
 										</tr>
 										<tr>
-											<td colspan="2" align="right"><input type="submit" value="Загрузить" /></td>
+											<td colspan="2" align="right"><input type="submit" value="Р—Р°РіСЂСѓР·РёС‚СЊ" /></td>
 										</tr>
 									</table>
 								</form>
 
 							</div></div></div></div>
-							<!-- /Загрузка изображений -->
+							<!-- /Р—Р°РіСЂСѓР·РєР° РёР·РѕР±СЂР°Р¶РµРЅРёР№ -->
 
 
-							<!-- Создание нового альбома -->
+							<!-- РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ Р°Р»СЊР±РѕРјР° -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 
-								<h1>Создание нового альбома</h1>
+								<h1>РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ Р°Р»СЊР±РѕРјР°</h1>
 								<br />
 								<table>
 								<tr>
-									<td width="100" valign="top">Название альбома</td>
+									<td width="100" valign="top">РќР°Р·РІР°РЅРёРµ Р°Р»СЊР±РѕРјР°</td>
 
 									<td>
 										<input type="text" style="width: 300px;"><br />
-										<span id="micro2">Кто сможет смотреть и комментировать этот альбом.</span>
+										<span id="micro2">РљС‚Рѕ СЃРјРѕР¶РµС‚ СЃРјРѕС‚СЂРµС‚СЊ Рё РєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ СЌС‚РѕС‚ Р°Р»СЊР±РѕРј.</span>
 									</td>
 								</tr>
 								<tr>
-									<td valign="top">Уровень доступа</td>
+									<td valign="top">РЈСЂРѕРІРµРЅСЊ РґРѕСЃС‚СѓРїР°</td>
 									<td>
 
 										<select style="width: 300px;">
-											<option>для всех</option>
-											<option>только для друзей</option>
-											<option>только для себя</option>
+											<option>РґР»СЏ РІСЃРµС…</option>
+											<option>С‚РѕР»СЊРєРѕ РґР»СЏ РґСЂСѓР·РµР№</option>
+											<option>С‚РѕР»СЊРєРѕ РґР»СЏ СЃРµР±СЏ</option>
 										</select><br />
-										<span id="micro2">В какой альбом будет загружено изображение.</span>
+										<span id="micro2">Р’ РєР°РєРѕР№ Р°Р»СЊР±РѕРј Р±СѓРґРµС‚ Р·Р°РіСЂСѓР¶РµРЅРѕ РёР·РѕР±СЂР°Р¶РµРЅРёРµ.</span>
 									</td>
 
 								</tr>
 								<tr>
-									<td colspan="2" align="right"><input type="submit" value="Создать альбом" /></td>
+									<td colspan="2" align="right"><input type="submit" value="РЎРѕР·РґР°С‚СЊ Р°Р»СЊР±РѕРј" /></td>
 								</tr>
 								</table>
 
 							</div></div></div></div>
-							<!-- /Создание нового альбома -->
+							<!-- /РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ Р°Р»СЊР±РѕРјР° -->
 
 
-							<!-- Управление альбомами -->
-							<h1>Управление альбомами</h1>
+							<!-- РЈРїСЂР°РІР»РµРЅРёРµ Р°Р»СЊР±РѕРјР°РјРё -->
+							<h1>РЈРїСЂР°РІР»РµРЅРёРµ Р°Р»СЊР±РѕРјР°РјРё</h1>
 							<br />
 
 							<table class="photo_table">
@@ -135,8 +135,8 @@
 										</div>
 										<img src="<?php echo IMG_URL?>x1.png" width="140" height="112" id="iborder" />
 										<div class="block_title2">
-											<span id="micro">Публиковать на главной</span> &nbsp; <input type="radio" /><br />
-											<a href="#">Удалить</a>				
+											<span id="micro">РџСѓР±Р»РёРєРѕРІР°С‚СЊ РЅР° РіР»Р°РІРЅРѕР№</span> &nbsp; <input type="radio" /><br />
+											<a href="#">РЈРґР°Р»РёС‚СЊ</a>				
 										</div>
 
 									</div></div></div></div>
@@ -149,8 +149,8 @@
 										<img src="<?php echo IMG_URL?>x1.png" width="140" height="112" id="iborder" />
 										<div class="block_title2">
 
-											<span id="micro">Публиковать на главной</span> &nbsp; <input type="radio" /><br />
-											<a href="#">Удалить</a>				
+											<span id="micro">РџСѓР±Р»РёРєРѕРІР°С‚СЊ РЅР° РіР»Р°РІРЅРѕР№</span> &nbsp; <input type="radio" /><br />
+											<a href="#">РЈРґР°Р»РёС‚СЊ</a>				
 										</div>
 									</div></div></div></div>
 								</td>
@@ -162,8 +162,8 @@
 										</div>
 										<img src="<?php echo IMG_URL?>x1.png" width="140" height="112" id="iborder" />
 										<div class="block_title2">
-											<span id="micro">Публиковать на главной</span> &nbsp; <input type="radio" /><br />
-											<a href="#">Удалить</a>				
+											<span id="micro">РџСѓР±Р»РёРєРѕРІР°С‚СЊ РЅР° РіР»Р°РІРЅРѕР№</span> &nbsp; <input type="radio" /><br />
+											<a href="#">РЈРґР°Р»РёС‚СЊ</a>				
 										</div>
 
 									</div></div></div></div>
@@ -176,8 +176,8 @@
 										<img src="<?php echo IMG_URL?>x1.png" width="140" height="112" id="iborder" />
 										<div class="block_title2">
 
-											<span id="micro">Публиковать на главной</span> &nbsp; <input type="radio" /><br />
-											<a href="#">Удалить</a>				
+											<span id="micro">РџСѓР±Р»РёРєРѕРІР°С‚СЊ РЅР° РіР»Р°РІРЅРѕР№</span> &nbsp; <input type="radio" /><br />
+											<a href="#">РЈРґР°Р»РёС‚СЊ</a>				
 										</div>
 									</div></div></div></div>
 								</td>
@@ -192,9 +192,9 @@
 										</div>
 										<img src="<?php echo IMG_URL?>x1.png" width="140" height="112" id="iborder" />
 										<div class="block_title2">
-											<span id="micro">Публиковать на главной</span> &nbsp; <input type="radio" /><br />
+											<span id="micro">РџСѓР±Р»РёРєРѕРІР°С‚СЊ РЅР° РіР»Р°РІРЅРѕР№</span> &nbsp; <input type="radio" /><br />
 
-											<a href="#">Удалить</a>				
+											<a href="#">РЈРґР°Р»РёС‚СЊ</a>				
 										</div>
 									</div></div></div></div>
 								</td>
@@ -206,8 +206,8 @@
 
 										<img src="<?php echo IMG_URL?>x1.png" width="140" height="112" id="iborder" />
 										<div class="block_title2">
-											<span id="micro">Публиковать на главной</span> &nbsp; <input type="radio" /><br />
-											<a href="#">Удалить</a>				
+											<span id="micro">РџСѓР±Р»РёРєРѕРІР°С‚СЊ РЅР° РіР»Р°РІРЅРѕР№</span> &nbsp; <input type="radio" /><br />
+											<a href="#">РЈРґР°Р»РёС‚СЊ</a>				
 										</div>
 									</div></div></div></div>
 								</td>
@@ -219,9 +219,9 @@
 										</div>
 										<img src="<?php echo IMG_URL?>x1.png" width="140" height="112" id="iborder" />
 										<div class="block_title2">
-											<span id="micro">Публиковать на главной</span> &nbsp; <input type="radio" /><br />
+											<span id="micro">РџСѓР±Р»РёРєРѕРІР°С‚СЊ РЅР° РіР»Р°РІРЅРѕР№</span> &nbsp; <input type="radio" /><br />
 
-											<a href="#">Удалить</a>				
+											<a href="#">РЈРґР°Р»РёС‚СЊ</a>				
 										</div>
 									</div></div></div></div>
 								</td>
@@ -233,8 +233,8 @@
 
 										<img src="<?php echo IMG_URL?>x1.png" width="140" height="112" id="iborder" />
 										<div class="block_title2">
-											<span id="micro">Публиковать на главной</span> &nbsp; <input type="radio" /><br />
-											<a href="#">Удалить</a>				
+											<span id="micro">РџСѓР±Р»РёРєРѕРІР°С‚СЊ РЅР° РіР»Р°РІРЅРѕР№</span> &nbsp; <input type="radio" /><br />
+											<a href="#">РЈРґР°Р»РёС‚СЊ</a>				
 										</div>
 									</div></div></div></div>
 								</td>
@@ -242,13 +242,13 @@
 							</tr>
 							</table>
 
-							<input type="submit" value="Сохранить изменения" />
-							<!-- /Управление альбомами -->
+							<input type="submit" value="РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ" />
+							<!-- /РЈРїСЂР°РІР»РµРЅРёРµ Р°Р»СЊР±РѕРјР°РјРё -->
 						</td>
 					</tr>
 					</table>
-					<!-- /ПРОФИЛЬ -->
+					<!-- /РџР РћР¤РР›Р¬ -->
 				</div>
 
 			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+			<!-- /Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->

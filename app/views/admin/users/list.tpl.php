@@ -1,5 +1,5 @@
 <div class="list" id="users_list">
-	<div style="float: left;"><h3>Пользователи</h3></div>
+	<div style="float: left;"><h3>РџРѕР»СЊР·РѕРІР°С‚РµР»Рё</h3></div>
 
 	<table class="list_table">
 		<tr class="head">
@@ -8,22 +8,22 @@
 				N
 			</td>
 			<td>
-				Имя/Фамилия
+				РРјСЏ/Р¤Р°РјРёР»РёСЏ
 			</td>
 			<td>
-				Логин
+				Р›РѕРіРёРЅ
 			</td>
 			<td>
-				Группа
+				Р“СЂСѓРїРїР°
 			</td>
 			<td>
-				Дата регистрации
+				Р”Р°С‚Р° СЂРµРіРёСЃС‚СЂР°С†РёРё
 			</td>
 			<td>
-				Забанен
+				Р—Р°Р±Р°РЅРµРЅ
 			</td>
 			<td>
-				Действия
+				Р”РµР№СЃС‚РІРёСЏ
 			</td>
 			
 			
@@ -47,11 +47,11 @@
 				<?php echo date("Y-m-d", strtotime($item['registration_date'])); ?>
 			</td>
 			<td>
-				<?php if ((int)$item['banned'] == 0){ echo 'нет'; } else { echo 'до !!ДАТА!!'; } ?>
+				<?php if ((int)$item['banned'] == 0){ echo 'РЅРµС‚'; } else { echo 'РґРѕ !!Р”РђРўРђ!!'; } ?>
 			</td>
 			<td>
-				<div class="button bsmall" style="float: left;"><a href="#" onClick='ajax(<?php echo $item['edit_link'];?>);'><img src="<?php echo IMG_URL;?>icons/small_edit.gif" alt="Правка"/></a></div>
-				<div class="button bsmall" style="float: left;"><a href="#" onclick='if (confirm("Удалить пользователя <?php echo $item['first_name'] . " " . $item['last_name']; ?>?")){document.location="<?php echo $item['delete_link'];?>"}'><img src="<?php echo IMG_URL;?>icons/small_del.gif" alt="Удаление"/></a></div>
+				<div class="button bsmall" style="float: left;"><a href="#" onClick='ajax(<?php echo $item['edit_link'];?>);'><img src="<?php echo IMG_URL;?>icons/small_edit.gif" alt="РџСЂР°РІРєР°"/></a></div>
+				<div class="button bsmall" style="float: left;"><a href="#" onclick='if (confirm("РЈРґР°Р»РёС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ <?php echo $item['first_name'] . " " . $item['last_name']; ?>?")){document.location="<?php echo $item['delete_link'];?>"}'><img src="<?php echo IMG_URL;?>icons/small_del.gif" alt="РЈРґР°Р»РµРЅРёРµ"/></a></div>
 			</td>
 
 		</tr>

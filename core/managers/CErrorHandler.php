@@ -15,9 +15,9 @@ class CErrorHandler extends CBaseManager {
 	public function exception_handler($exception) 
 	{
 		$exc = "EXCEPTION. Code: ".$exception->getCode()."; Message: ".$exception->getMessage()."; Script: ".$exception->getFile()."; Line: ".$exception->getLine()."; Trace: ".$exception->getTraceAsString()."; Output: ".$exception->__toString().";";
-		//вывод в протокол
+		//РІС‹РІРѕРґ РІ РїСЂРѕС‚РѕРєРѕР»
 		$this->log->writeLog($exc);
-		//отправка админу на мыло
+		//РѕС‚РїСЂР°РІРєР° Р°РґРјРёРЅСѓ РЅР° РјС‹Р»Рѕ
         $mail = new CMailer("Server", "Server", "Admin", ADMIN_MAIL, "Exception", $exc, true);
 	}
 
@@ -43,9 +43,9 @@ class CErrorHandler extends CBaseManager {
 //	    if (in_array($errno, $user_errors)) {
 //	        $err .= " Var dump: " . print_r($vars) . ";";
 //	    }
-		//вывод в протокол
+		//РІС‹РІРѕРґ РІ РїСЂРѕС‚РѕРєРѕР»
 		$this->log->writeLog($err);
-		//отправка админу на мыло
+		//РѕС‚РїСЂР°РІРєР° Р°РґРјРёРЅСѓ РЅР° РјС‹Р»Рѕ
 	    if ($errno == E_USER_ERROR) {
 	        $mail = new CMailer("Server", "Server", "Admin", ADMIN_MAIL, "Critical User Error", $err, true);
 	    }

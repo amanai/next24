@@ -5,7 +5,7 @@
 			<div class="block_title_left"><h2><a href="#"><?php echo $comment['first_name'];?></a></h2></div>
 			<div class="block_title_right">
 				<?php if ($comment['comment_owner'] || $this->blog_owner) { ?>
-					<span class="dellink"> (<a href="<?php echo $this->router->createUrl($this->delete_comment_controller, $this->delete_comment_action, $comment['delete_comment_param']);?>" >Удалить комментарий</a>)</span>
+					<span class="dellink"> (<a href="<?php echo $this->router->createUrl($this->delete_comment_controller, $this->delete_comment_action, $comment['delete_comment_param']);?>" >РЈРґР°Р»РёС‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёР№</a>)</span>
 				<?php } ?>
 				<?php echo date("j F Y H:i", strtotime($comment['creation_date']));?></div>
 		</div>
@@ -29,14 +29,14 @@
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<table width="100%">
 						<tr>
-							<td><h2>Оставить комментарий</h2></td>
+							<td><h2>РћСЃС‚Р°РІРёС‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёР№</h2></td>
 						</tr>
 			
 						<tr>
 							<td><textarea name="comment" style="width: 100%; height: 100px;"></textarea></td>
 						</tr>
 						<tr>
-							<td align="right" style="padding-right: 5px;"><input type="submit" name="Submit" value="Комментировать"></td>
+							<td align="right" style="padding-right: 5px;"><input type="submit" name="Submit" value="РљРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ"></td>
 						</tr>
 					</table>
 					<a name="comments"></a>

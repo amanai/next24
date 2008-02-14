@@ -1,9 +1,9 @@
-<!-- Ëèñòèíã -->
+<!-- Ð›Ð¸ÑÑ‚Ð¸Ð½Ð³ -->
 	<div class="listing_div_c">
 		<li class="listing">
 			<?php if ($this->pages_number > 1) { ?>
 			<?php if ($this->current_page_number > 0) { ?>
-										<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, (is_array($this->pager_params)?array_merge(array('pn'=>$i), $this->pager_params):array('pn'=>$this->current_page_number-1)));?>" title="Ïðåäûäóùàÿ ñòðàíèöà">«</a>
+										<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, (is_array($this->pager_params)?array_merge(array('pn'=>$i), $this->pager_params):array('pn'=>$this->current_page_number-1)));?>" title="ÐŸÑ€ÐµÐ´Ñ‹Ð´ÑƒÑ‰Ð°Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð°">Â«</a>
 									<?php } ?>
 									<?php for($i = 0; $i < $this->pages_number; $i++){ ?>
 										<?php if ($this->current_page_number == $i) { ?>
@@ -13,9 +13,9 @@
 										<?php } ?>
 									<?php } ?>
 									<?php if ($this->current_page_number < $this->pages_number - 1) { ?>
-										<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, (is_array($this->pager_params)?array_merge(array('pn'=>$this->current_page_number+1), $this->pager_params):array('pn'=>$this->current_page_number+1)));?>" title="Ñëåäóþùàÿ ñòðàíèöà">»</a>
+										<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, (is_array($this->pager_params)?array_merge(array('pn'=>$this->current_page_number+1), $this->pager_params):array('pn'=>$this->current_page_number+1)));?>" title="Ð¡Ð»ÐµÐ´ÑƒÑŽÑ‰Ð°Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð°">Â»</a>
 									<?php } ?>
 			<?php } ?>
 			</li>
 		</div>
-<!-- /Ëèñòèíã -->
+<!-- /Ð›Ð¸ÑÑ‚Ð¸Ð½Ð³ -->

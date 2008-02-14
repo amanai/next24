@@ -1,10 +1,10 @@
-			<!-- Главный блок, с вкладками (Контент) -->
+			<!-- Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 
 				<div class="tab-page">
-					<h2 class="tab">Блог</h2>
-					<!-- ПРОФИЛЬ -->
+					<h2 class="tab">Р‘Р»РѕРі</h2>
+					<!-- РџР РћР¤РР›Р¬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<tr>
@@ -12,7 +12,7 @@
 								<table width="100%" height="100%" cellpadding="0">
 									<tr>
 										<td class="next24u_left">
-										<!-- левый блок -->
+										<!-- Р»РµРІС‹Р№ Р±Р»РѕРє -->
 											<div class="block_ee1"><div class="block_ee2">
 												<div class="block_ee3">
 													<div class="block_ee4">
@@ -24,12 +24,12 @@
 											</div>
 											<?php require('blog_control_panel.tpl.php'); ?>
 				
-									<!-- /левый блок -->
+									<!-- /Р»РµРІС‹Р№ Р±Р»РѕРє -->
 				
 						
 						</td>
 						<td class="next24u_right">
-							<!-- Список постов -->
+							<!-- РЎРїРёСЃРѕРє РїРѕСЃС‚РѕРІ -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 								<?php foreach ($this->post_list as $key=>$item){?>
 									<div class="block_title" id="record_93">
@@ -39,11 +39,11 @@
 									<div>
 										<?php echo $item['small_text']; ?><br><br>
 										<div style="text-align: left;">
-											<span><a href="<?php echo $this->router->createUrl('Blog', 'Comments', array('id'=>$item['id']));?>#comments">комментировать</a></span>&nbsp;&nbsp;
-											<span><a href="<?php echo $this->router->createUrl('Blog', 'Comments', array('id'=>$item['id']));?>">читать комментарии (<?php echo $item['comments_count'];?>)</a></span>&nbsp;&nbsp;
+											<span><a href="<?php echo $this->router->createUrl('Blog', 'Comments', array('id'=>$item['id']));?>#comments">РєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ</a></span>&nbsp;&nbsp;
+											<span><a href="<?php echo $this->router->createUrl('Blog', 'Comments', array('id'=>$item['id']));?>">С‡РёС‚Р°С‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёРё (<?php echo $item['comments_count'];?>)</a></span>&nbsp;&nbsp;
 											<?php if ($item['owner'] === true) { ?>
-												<span><a href="<?php echo $this->router->createUrl('Blog', 'PostEdit', array('id'=>$item['id']));?>">редактировать</a></span>&nbsp;&nbsp;
-												<span><a href="<?php echo $this->router->createUrl('Blog', 'PostDelete', array('id'=>$item['id']));?>" class="redlink">удалить</a></span>
+												<span><a href="<?php echo $this->router->createUrl('Blog', 'PostEdit', array('id'=>$item['id']));?>">СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ</a></span>&nbsp;&nbsp;
+												<span><a href="<?php echo $this->router->createUrl('Blog', 'PostDelete', array('id'=>$item['id']));?>" class="redlink">СѓРґР°Р»РёС‚СЊ</a></span>
 											<? } ?>
 										</div>
 									</div>
@@ -53,16 +53,16 @@
 		
 </div></div></div></div>
 
-							<!-- /Список постов -->
-							<!-- Листинг -->
+							<!-- /РЎРїРёСЃРѕРє РїРѕСЃС‚РѕРІ -->
+							<!-- Р›РёСЃС‚РёРЅРі -->
 							<?php include(VIEWS_PATH.'pager.tpl.php'); ?>
-							<!-- /Листинг -->
+							<!-- /Р›РёСЃС‚РёРЅРі -->
 						</td>
 					</tr>
 					
 					</table>
-					<!-- /ПРОФИЛЬ -->
+					<!-- /РџР РћР¤РР›Р¬ -->
 				</div>
 
 			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+			<!-- /Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->

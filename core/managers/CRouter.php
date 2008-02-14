@@ -77,7 +77,7 @@
 					$flashMessage = getManager('CFlashMessage');
 					$session = getManager('CSession');
 
-					$flashMessage->setMessage("Ñòðàíèöà íå ñóùåñòâóåò", FLASH_MSG_TYPES::$error);
+					$flashMessage->setMessage("Ð¡Ñ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° Ð½Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚", FLASH_MSG_TYPES::$error);
 					$lastPath = $session->read('LAST_PATH');
 					if($lastPath){
 						$this->redirect($lastPath);
@@ -101,7 +101,7 @@
 				} else {
 					$flashMessage = getManager('CFlashMessage');
 					$session = getManager('CSession');
-					$flashMessage->setMessage("Äåéñòâèå íå ñóùåñòâóåò", FLASH_MSG_TYPES::$error);
+					$flashMessage->setMessage("Ð”ÐµÐ¹ÑÑ‚Ð²Ð¸Ðµ Ð½Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚", FLASH_MSG_TYPES::$error);
 					$lastPath = $session->read('LAST_PATH');
 					if($lastPath){
 						$this->redirect($lastPath);

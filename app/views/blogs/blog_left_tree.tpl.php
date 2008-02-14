@@ -2,7 +2,7 @@
 	<p style="padding-left:<? echo  $item['level']*10;?>px;">
 		<a href="<?php echo $this->router->createUrl('Blog', 'Post', array('id'=>$item['id']));?>"><? echo $item['name']; ?></a>
 		<?php if ($this->blog_owner) {?>
-			<a href="<?php echo $this->router->createUrl('Blog', 'EditBranch', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Ðåäàêòèðîâàòü ðàçäåë" class="editbtn" height="12" width="11"></a>
+			<a href="<?php echo $this->router->createUrl('Blog', 'EditBranch', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ€Ð°Ð·Ð´ÐµÐ»" class="editbtn" height="12" width="11"></a>
 		<?php }?>
 	</p>
 <?php } ?>

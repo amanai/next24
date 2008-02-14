@@ -8,7 +8,7 @@ class MySql
 	static public function initDb(){
 		self::$defaultLink = self::connect(DB_SERVERNAME, DB_USERNAME, DB_PASS);
 		self::select_db(DB_NAME);
-		$sql = 'SET NAMES "cp1251"';
+		$sql = 'SET NAMES "utf8"';
 		self::query($sql);
 	}
 

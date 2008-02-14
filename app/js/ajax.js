@@ -5,7 +5,7 @@ function blockUnblockUI(){
 }
 
 function block(){
-	$.blockUI('Пожалуйста, подождите...');
+	$.blockUI('РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїРѕРґРѕР¶РґРёС‚Рµ...');
 }
   
 

@@ -1,10 +1,10 @@
-			<!-- Главный блок, с вкладками (Контент) -->
+			<!-- Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 
 				<div class="tab-page">
-					<h2 class="tab">Блог</h2>
-					<!-- ПРОФИЛЬ -->
+					<h2 class="tab">Р‘Р»РѕРі</h2>
+					<!-- РџР РћР¤РР›Р¬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<tr>
@@ -12,7 +12,7 @@
 								<table width="100%" height="100%" cellpadding="0">
 									<tr>
 										<td class="next24u_left">
-										<!-- левый блок -->
+										<!-- Р»РµРІС‹Р№ Р±Р»РѕРє -->
 											<div class="block_ee1"><div class="block_ee2">
 												<div class="block_ee3">
 													<div class="block_ee4">
@@ -24,29 +24,29 @@
 											</div>
 											<?php require('blog_control_panel.tpl.php'); ?>
 				
-									<!-- /левый блок -->
+									<!-- /Р»РµРІС‹Р№ Р±Р»РѕРє -->
 				
 						
 						</td>
 						<td class="next24u_right">
-							<!-- Создание нового раздела -->
+							<!-- РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ СЂР°Р·РґРµР»Р° -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 								<form action="<?php echo $this->router->createUrl('Blog', 'PostSave');?>" method="post">
 									<input type="hidden" name="post_id" value="<?php echo (int)$this->post_info['id']; ?>"><br />
-									<h1><?php if((int)$this->post_info['id'] === 0) echo 'Новый пост'; else echo 'Редактирование поста';?></h1>
+									<h1><?php if((int)$this->post_info['id'] === 0) echo 'РќРѕРІС‹Р№ РїРѕСЃС‚'; else echo 'Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїРѕСЃС‚Р°';?></h1>
 									<br />
 	
 									<table>
 									<tr>
-										<td width="100" valign="top">Название</td>
+										<td width="100" valign="top">РќР°Р·РІР°РЅРёРµ</td>
 	
 										<td>
 											<input type="text" name="post_name" style="width: 300px;" value="<?php echo $this->post_info['title']; ?>"><br />
-											<span id="micro2">Кто сможет смотреть и комментировать этот раздел.</span>
+											<span id="micro2">РљС‚Рѕ СЃРјРѕР¶РµС‚ СЃРјРѕС‚СЂРµС‚СЊ Рё РєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ СЌС‚РѕС‚ СЂР°Р·РґРµР».</span>
 										</td>
 									</tr>
 									<tr>
-										<td width="100" valign="top">Раздел</td>
+										<td width="100" valign="top">Р Р°Р·РґРµР»</td>
 										<td>
 											<select style="width: 300px;" name="post_branch">
 												<?php foreach($this->branch_list as $key => $item){ ?>
@@ -54,52 +54,52 @@
 												<?php } ?>
 												
 											</select><br />
-											<span id="micro2">Привязка к разделу блога.</span>
+											<span id="micro2">РџСЂРёРІСЏР·РєР° Рє СЂР°Р·РґРµР»Сѓ Р±Р»РѕРіР°.</span>
 										</td>
 	
 									</tr>
 									<tr>
-										<td width="100" valign="top">Метка каталога</td>
+										<td width="100" valign="top">РњРµС‚РєР° РєР°С‚Р°Р»РѕРіР°</td>
 										<td>
 											???
-											<span id="micro2">Привязка к разделу каталога.</span>
+											<span id="micro2">РџСЂРёРІСЏР·РєР° Рє СЂР°Р·РґРµР»Сѓ РєР°С‚Р°Р»РѕРіР°.</span>
 										</td>
 	
 									</tr>
 									<tr>
-										<td valign="top">Уровень доступа</td>
+										<td valign="top">РЈСЂРѕРІРµРЅСЊ РґРѕСЃС‚СѓРїР°</td>
 										<td>
 											<select style="width: 300px;" name="post_access">
-												<option value="1">для всех</option>
-												<option value="2">только для друзей</option>
-												<option value="0">только для себя</option>
+												<option value="1">РґР»СЏ РІСЃРµС…</option>
+												<option value="2">С‚РѕР»СЊРєРѕ РґР»СЏ РґСЂСѓР·РµР№</option>
+												<option value="0">С‚РѕР»СЊРєРѕ РґР»СЏ СЃРµР±СЏ</option>
 											</select><br />
-											<!--<span id="micro2">В какой альбом будет загружено изображение.</span>-->
+											<!--<span id="micro2">Р’ РєР°РєРѕР№ Р°Р»СЊР±РѕРј Р±СѓРґРµС‚ Р·Р°РіСЂСѓР¶РµРЅРѕ РёР·РѕР±СЂР°Р¶РµРЅРёРµ.</span>-->
 										</td>
 									</tr>
 									<tr>
-										<td valign="top">Короткий текст</td>
+										<td valign="top">РљРѕСЂРѕС‚РєРёР№ С‚РµРєСЃС‚</td>
 										<td>
 											<textarea name="small_text"  style="width:300px;height:100px;"><?php echo $this->post_info['small_text']; ?></textarea><br />
 											<span id="micro2">Small text</span>
 										</td>
 									</tr>
 									<tr>
-										<td valign="top">Полный текст</td>
+										<td valign="top">РџРѕР»РЅС‹Р№ С‚РµРєСЃС‚</td>
 										<td>
 											<textarea name="full_text" style="width:300px;height:200px;"><?php echo $this->post_info['full_text']; ?></textarea><br />
 											<span id="micro2">Full text</span>
 										</td>
 									</tr>
 									<tr>
-										<td valign="top">Разрешить комментировать</td>
+										<td valign="top">Р Р°Р·СЂРµС€РёС‚СЊ РєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ</td>
 										<td>
 											<input type="checkbox" name="allowcomments" <?php if((int)$this->post_info['allowcomments'] > 0) echo 'checked'; ?> />
-											<span id="micro2">Пользователи могут комментировать пост</span>
+											<span id="micro2">РџРѕР»СЊР·РѕРІР°С‚РµР»Рё РјРѕРіСѓС‚ РєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ РїРѕСЃС‚</span>
 										</td>
 									</tr>
 									<tr>
-										<td valign="top">Настроение автора</td>
+										<td valign="top">РќР°СЃС‚СЂРѕРµРЅРёРµ Р°РІС‚РѕСЂР°</td>
 										<td>
 											<select style="width: 300px;" name="post_mood">
 												<option value="0">----</option>
@@ -107,34 +107,34 @@
 														<option <?php if($this->post_info['mood'] == $item['id']) echo 'selected'; ?> value="<?php echo $item['id'];?>"><?php echo $item['name'];?></option>
 												<?php } ?>
 											</select><br />
-											<span id="micro2">Фразы настроения</span>
+											<span id="micro2">Р¤СЂР°Р·С‹ РЅР°СЃС‚СЂРѕРµРЅРёСЏ</span>
 										</td>
 									</tr>
 									<tr>
-										<td valign="top">Статус в "лучших за день"</td>
+										<td valign="top">РЎС‚Р°С‚СѓСЃ РІ "Р»СѓС‡С€РёС… Р·Р° РґРµРЅСЊ"</td>
 										<td>
 											<select style="width: 300px;" name="post_best_status">
-												<option value="0">не учавствует</option>
-												<option value="1">отправлен на модерацию</option>
-												<option value="2">одобрен модератором</option>
-												<option value="3">отклонен модератором</option>
+												<option value="0">РЅРµ СѓС‡Р°РІСЃС‚РІСѓРµС‚</option>
+												<option value="1">РѕС‚РїСЂР°РІР»РµРЅ РЅР° РјРѕРґРµСЂР°С†РёСЋ</option>
+												<option value="2">РѕРґРѕР±СЂРµРЅ РјРѕРґРµСЂР°С‚РѕСЂРѕРј</option>
+												<option value="3">РѕС‚РєР»РѕРЅРµРЅ РјРѕРґРµСЂР°С‚РѕСЂРѕРј</option>
 											</select><br />
-											<span id="micro2">как быть с этим?????????????????????</span>
+											<span id="micro2">РєР°Рє Р±С‹С‚СЊ СЃ СЌС‚РёРј?????????????????????</span>
 										</td>
 									</tr>
 									<tr>
-										<td colspan="2" align="right"><input type="submit" value="Сохранить" /></td>
+										<td colspan="2" align="right"><input type="submit" value="РЎРѕС…СЂР°РЅРёС‚СЊ" /></td>
 	
 									</tr>
 									</table>
 								</form>
 							</div></div></div></div>
-							<!-- /Создание нового альбома -->
+							<!-- /РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ Р°Р»СЊР±РѕРјР° -->
 						</td>
 					</tr>
 					</table>
-					<!-- /ПРОФИЛЬ -->
+					<!-- /РџР РћР¤РР›Р¬ -->
 				</div>
 
 			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+			<!-- /Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->

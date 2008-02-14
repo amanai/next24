@@ -1,35 +1,35 @@
-			<!-- Главный блок, с вкладками (Контент) -->
+			<!-- Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 
 				<div class="tab-page">
-					<h2 class="tab">Последние альбомы</h2>
-					<!-- ПРОФИЛЬ -->
+					<h2 class="tab">РџРѕСЃР»РµРґРЅРёРµ Р°Р»СЊР±РѕРјС‹</h2>
+					<!-- РџР РћР¤РР›Р¬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<td class="next24u_left">
-							<!-- левый блок -->
+							<!-- Р»РµРІС‹Р№ Р±Р»РѕРє -->
 								<?php if (is_array($this -> album_list)) {?>
 									<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-										<div class="block_title"><h2>Фотоальбомы</h2></div>
+										<div class="block_title"><h2>Р¤РѕС‚РѕР°Р»СЊР±РѕРјС‹</h2></div>
 										<?php foreach ($this -> album_list as $item) {?>
 											<p><a href="#"><img src="<?php echo IMG_URL; ?>folder.png" id="ico2" height="12" width="15"><?php echo $item['name'];?></a>&nbsp;&nbsp;
-												<a href="<?php echo $this->router->createUrl('Photo', 'Edit', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Редактировать альбом" class="editbtn" height="12" width="11"></a>
+												<a href="<?php echo $this->router->createUrl('Photo', 'Edit', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ Р°Р»СЊР±РѕРј" class="editbtn" height="12" width="11"></a>
 											</p>
 										<?php } ?>
 									</div></div></div></div>
 								<?php } ?>
 								<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-									<div class="block_title"><h2>Управление альбомами</h2></div>
-									<p><a href="<?php echo $this->router->createUrl('Album', 'CreateForm');?>">Создать альбом</a></p>
-									<p><a href="<?php echo $this->router->createUrl('Album', 'UploadForm');?>">Загрузить фотографии</a></p>
-									<p><a href="<?php echo $this->router->createUrl('Album', 'List');?>">Список альбомов</a></p>
+									<div class="block_title"><h2>РЈРїСЂР°РІР»РµРЅРёРµ Р°Р»СЊР±РѕРјР°РјРё</h2></div>
+									<p><a href="<?php echo $this->router->createUrl('Album', 'CreateForm');?>">РЎРѕР·РґР°С‚СЊ Р°Р»СЊР±РѕРј</a></p>
+									<p><a href="<?php echo $this->router->createUrl('Album', 'UploadForm');?>">Р—Р°РіСЂСѓР·РёС‚СЊ С„РѕС‚РѕРіСЂР°С„РёРё</a></p>
+									<p><a href="<?php echo $this->router->createUrl('Album', 'List');?>">РЎРїРёСЃРѕРє Р°Р»СЊР±РѕРјРѕРІ</a></p>
 								</div></div></div></div>
-							<!-- /левый блок -->
+							<!-- /Р»РµРІС‹Р№ Р±Р»РѕРє -->
 						</td>
 						<td class="next24u_right">
 							<form action="<?php echo $this->router->createUrl('Album', 'ListSave');?>" method="post">
-								<div class="block_title"><h2>Управление альбомами</h2></div>
+								<div class="block_title"><h2>РЈРїСЂР°РІР»РµРЅРёРµ Р°Р»СЊР±РѕРјР°РјРё</h2></div>
 								<table class="photo_table">
 									<?php foreach($this->album_list as $key => $item){ ?>
 										<?php if ($key%4 == 0){ ?><tr><?php } ?>
@@ -47,16 +47,16 @@
 																</div>
 																<div class="block_title2">
 																	<select style="width: 140px;" name="access[<?php echo $item['id'];?>]">
-																		<option value="1" <?php echo ($item['access']==1?'selected':null);?>>для всех</option>
-																		<option value="2" <?php echo ($item['access']==2?'selected':null);?>>только для друзей</option>
-																		<option value="0" <?php echo ($item['access']==0?'selected':null);?>>только для себя</option>
+																		<option value="1" <?php echo ($item['access']==1?'selected':null);?>>РґР»СЏ РІСЃРµС…</option>
+																		<option value="2" <?php echo ($item['access']==2?'selected':null);?>>С‚РѕР»СЊРєРѕ РґР»СЏ РґСЂСѓР·РµР№</option>
+																		<option value="0" <?php echo ($item['access']==0?'selected':null);?>>С‚РѕР»СЊРєРѕ РґР»СЏ СЃРµР±СЏ</option>
 																	</select>
 																	<span id="micro">
-	  																	Публиковать на главной<input type="radio" name="on_main" value="<?php echo $item['id'];?>"/>
+	  																	РџСѓР±Р»РёРєРѕРІР°С‚СЊ РЅР° РіР»Р°РІРЅРѕР№<input type="radio" name="on_main" value="<?php echo $item['id'];?>"/>
 	  																</span>
 	
 																	<span id="micro">
-																		Удалить<input type="checkbox" name="delete[<?php echo $item['id'];?>]" />
+																		РЈРґР°Р»РёС‚СЊ<input type="checkbox" name="delete[<?php echo $item['id'];?>]" />
 																	</span>
 															</div>
 														</div>
@@ -65,15 +65,15 @@
 											</td>
 									<?php }?>
 								</table>
-								<input type="submit" class="button" value="Сохранить изменения" />
+								<input type="submit" class="button" value="РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ" />
 							</form>
 							<div>
 							</
 						</td>
 					</tr>
 					</table>
-					<!-- /ПРОФИЛЬ -->
+					<!-- /РџР РћР¤РР›Р¬ -->
 				</div>
 
 			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+			<!-- /Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->

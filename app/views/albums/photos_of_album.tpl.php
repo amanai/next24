@@ -1,10 +1,10 @@
-			<!-- Главный блок, с вкладками (Контент) -->
+			<!-- Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 
 				<div class="tab-page">
-					<h2 class="tab">Фотоальбом</h2>
-					<!-- ПРОФИЛЬ -->
+					<h2 class="tab">Р¤РѕС‚РѕР°Р»СЊР±РѕРј</h2>
+					<!-- РџР РћР¤РР›Р¬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<tr>
@@ -12,17 +12,17 @@
 								<table width="100%" height="100%" cellpadding="0">
 									<tr>
 										<td class="next24u_left">
-										<!-- левый блок -->
+										<!-- Р»РµРІС‹Р№ Р±Р»РѕРє -->
 											<div class="block_ee1"><div class="block_ee2">
 												<div class="block_ee3">
 													<div class="block_ee4">
-														<div class="block_title"><h2>Фотоальбомы</h2></div>
+														<div class="block_title"><h2>Р¤РѕС‚РѕР°Р»СЊР±РѕРјС‹</h2></div>
 															<?php foreach($this->album_list as $key => $item){ ?>
 																<p>
 																	<?php if ($this->album_id != $item['id']){ ?><a href="<?php echo BASE_URL;?>Photo/Album/id:<?php echo $item['id'];?>"><?php } ?><img src="<?php echo IMG_URL;?>/folder.png" width="15" height="12" id="ico2" /><?php echo $item['name'];?><?php if ($this->album_id != $item['id']){ ?></a><?php } ?>
 																	
 																	<?php if ($this->album_owner) {?>
-																	<a href="<?php echo $this->router->createUrl('Photo', 'Edit', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Редактировать альбом" class="editbtn" height="12" width="11"></a>
+																	<a href="<?php echo $this->router->createUrl('Photo', 'Edit', array('id'=>$item['id']));?>"><img src="<?php echo IMG_URL; ?>edit.gif" alt="Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ Р°Р»СЊР±РѕРј" class="editbtn" height="12" width="11"></a>
 																	<?php }?>
 																</p>
 															<?php } ?>
@@ -32,14 +32,14 @@
 											</div>
 											<?php if ($this->album_owner) {?>
 												<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-													<div class="block_title"><h2>Управление альбомами</h2></div>
-													<p><a href="<?php echo $this->router->createUrl('Album', 'CreateForm');?>">Создать альбом</a></p>
-													<p><a href="<?php echo $this->router->createUrl('Album', 'UploadForm');?>">Загрузить фотографии</a></p>
-													<p><a href="<?php echo $this->router->createUrl('Album', 'List');?>">Список альбомов</a></p>
+													<div class="block_title"><h2>РЈРїСЂР°РІР»РµРЅРёРµ Р°Р»СЊР±РѕРјР°РјРё</h2></div>
+													<p><a href="<?php echo $this->router->createUrl('Album', 'CreateForm');?>">РЎРѕР·РґР°С‚СЊ Р°Р»СЊР±РѕРј</a></p>
+													<p><a href="<?php echo $this->router->createUrl('Album', 'UploadForm');?>">Р—Р°РіСЂСѓР·РёС‚СЊ С„РѕС‚РѕРіСЂР°С„РёРё</a></p>
+													<p><a href="<?php echo $this->router->createUrl('Album', 'List');?>">РЎРїРёСЃРѕРє Р°Р»СЊР±РѕРјРѕРІ</a></p>
 												</div></div></div></div>
 											<?php } ?>
 				
-									<!-- /левый блок -->
+									<!-- /Р»РµРІС‹Р№ Р±Р»РѕРє -->
 				
 						
 						</td>
@@ -59,7 +59,7 @@
 																<a href="<?php echo BASE_URL;?>Photo/View/id:<?php echo $item['id'];?>"><img src="<?php echo ($item['thumbnail'] ===false)?IMG_URL.'noimage.gif' :BASE_URL.$item['thumbnail'];?>" width="140" /></a>
 															</div>
 															<div class="block_title2">
-																<a href="#ССылка на profile пользователя"><?php echo $item['login'];?></a><br />
+																<a href="#РЎРЎС‹Р»РєР° РЅР° profile РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ"><?php echo $item['login'];?></a><br />
 																<span id="micro"><?php echo date("j F Y", strtotime($item['creation_date']));?></span>
 															</div>
 														</div>
@@ -97,8 +97,8 @@
 						</td>
 					</tr>
 					</table>
-					<!-- /ПРОФИЛЬ -->
+					<!-- /РџР РћР¤РР›Р¬ -->
 				</div>
 
 			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+			<!-- /Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->

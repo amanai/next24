@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 /**
- * Êîíòðîëåð äëÿ óïðàâëåíèÿ ôîòîàëüáîìàìè
+ * ÐšÐ¾Ð½Ñ‚Ñ€Ð¾Ð»ÐµÑ€ Ð´Ð»Ñ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ Ñ„Ð¾Ñ‚Ð¾Ð°Ð»ÑŒÐ±Ð¾Ð¼Ð°Ð¼Ð¸
  */
 	class PhotoController extends AlbumController{
 		const DEFAULT_PHOTO_PER_PAGE = 8;
@@ -231,7 +231,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 					$this -> model -> resetSql();
 					$this -> model -> load($photo_id);
 					$photo_info = $this -> model -> getData();
-					// Ïðîâåðêà, ÿâëÿåòñÿ ëè ïîëüçîâàòåëåì âëàäåëüöåì àëüáîìà
+					// ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ°, ÑÐ²Ð»ÑÐµÑ‚ÑÑ Ð»Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¼ Ð²Ð»Ð°Ð´ÐµÐ»ÑŒÑ†ÐµÐ¼ Ð°Ð»ÑŒÐ±Ð¾Ð¼Ð°
 					if (((int)$this -> model -> id > 0) && ((int)$this -> model -> get('user_id') === $user_id)){
 						if (isset($this -> photo_del[$photo_id]) && ($this -> photo_del[$photo_id] == "on")){
 							// Delete album
@@ -450,7 +450,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		}
 		
 		/**
-		 * Âûâîä òîïîâûõ ôîòîãðàôèé
+		 * Ð’Ñ‹Ð²Ð¾Ð´ Ñ‚Ð¾Ð¿Ð¾Ð²Ñ‹Ñ… Ñ„Ð¾Ñ‚Ð¾Ð³Ñ€Ð°Ñ„Ð¸Ð¹
 		 */
 		public function TopListAction(){
 			$this -> model -> resetSql();

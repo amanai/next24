@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Êîíòðîëëåð äëÿ ðàáîòû ñ áëîãàìè
+ * ÐšÐ¾Ð½Ñ‚Ñ€Ð¾Ð»Ð»ÐµÑ€ Ð´Ð»Ñ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ñ Ð±Ð»Ð¾Ð³Ð°Ð¼Ð¸
  */
 	class BlogController extends CBaseController{
 		const DEFAULT_POST_PER_PAGE = 8;
@@ -404,7 +404,7 @@
 		}
 		
 		/**
-		 * Óäàëåíèå ïîñòà èç ðàçäåëà áëîãà
+		 * Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð¿Ð¾ÑÑ‚Ð° Ð¸Ð· Ñ€Ð°Ð·Ð´ÐµÐ»Ð° Ð±Ð»Ð¾Ð³Ð°
 		 */
 		public function PostDeleteAction(){
 			$session = getManager('CSession');

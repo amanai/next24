@@ -8,7 +8,7 @@ class AdminUserController extends AdminController{
 		
 		function BaseAdminData(){
 			parent::BaseAdminData();
-			$this -> view -> title = 'Ïîëüçîâàòåëè';
+			$this -> view -> title = 'ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ð¸';
 		}
 	
 	

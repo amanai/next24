@@ -1,10 +1,10 @@
-			<!-- √Î‡‚Ì˚È ·ÎÓÍ, Ò ‚ÍÎ‡‰Í‡ÏË ( ÓÌÚÂÌÚ) -->
+			<!-- –ì–ª–∞–≤–Ω—ã–π –±–ª–æ–∫, —Å –≤–∫–ª–∞–¥–∫–∞–º–∏ (–ö–æ–Ω—Ç–µ–Ω—Ç) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 
 				<div class="tab-page">
-					<h2 class="tab">¡ÎÓ„</h2>
-					<!-- œ–Œ‘»À‹ -->
+					<h2 class="tab">–ë–ª–æ–≥</h2>
+					<!-- –ü–†–û–§–ò–õ–¨ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<tr>
@@ -12,7 +12,7 @@
 								<table width="100%" height="100%" cellpadding="0">
 									<tr>
 										<td class="next24u_left">
-										<!-- ÎÂ‚˚È ·ÎÓÍ -->
+										<!-- –ª–µ–≤—ã–π –±–ª–æ–∫ -->
 											<div class="block_ee1"><div class="block_ee2">
 												<div class="block_ee3">
 													<div class="block_ee4">
@@ -24,12 +24,12 @@
 											</div>
 											<?php require('blog_control_panel.tpl.php'); ?>
 				
-									<!-- /ÎÂ‚˚È ·ÎÓÍ -->
+									<!-- /–ª–µ–≤—ã–π –±–ª–æ–∫ -->
 				
 						
 						</td>
 						<td class="next24u_right">
-							<!-- —ÓÁ‰‡ÌËÂ ÌÓ‚Ó„Ó ‡Á‰ÂÎ‡ -->
+							<!-- –°–æ–∑–¥–∞–Ω–∏–µ –Ω–æ–≤–æ–≥–æ —Ä–∞–∑–¥–µ–ª–∞ -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 									<div class="block_title" id="record_93">
 										<div class="block_title_left"><h2><?php echo $this->post_info['title']; ?></h2></div>
@@ -45,12 +45,12 @@
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 								<?php include(VIEWS_PATH.'/base_comment.tpl.php'); ?>
 							</div></div></div></div>
-							<!-- /—ÓÁ‰‡ÌËÂ ÌÓ‚Ó„Ó ‡Î¸·ÓÏ‡ -->
+							<!-- /–°–æ–∑–¥–∞–Ω–∏–µ –Ω–æ–≤–æ–≥–æ –∞–ª—å–±–æ–º–∞ -->
 						</td>
 					</tr>
 					</table>
-					<!-- /œ–Œ‘»À‹ -->
+					<!-- /–ü–†–û–§–ò–õ–¨ -->
 				</div>
 
 			</div>
-			<!-- /√Î‡‚Ì˚È ·ÎÓÍ, Ò ‚ÍÎ‡‰Í‡ÏË ( ÓÌÚÂÌÚ) -->
+			<!-- /–ì–ª–∞–≤–Ω—ã–π –±–ª–æ–∫, —Å –≤–∫–ª–∞–¥–∫–∞–º–∏ (–ö–æ–Ω—Ç–µ–Ω—Ç) -->

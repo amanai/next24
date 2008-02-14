@@ -41,7 +41,7 @@
 				$this->userType = $userData['user_type_id'];
 			} else {
 				$flashMessage = getManager('CFlashMessage');
-				$flashMessage->setMessage("Логин данные неправильные", FLASH_MSG_TYPES::$error);
+				$flashMessage->setMessage("Р›РѕРіРёРЅ РґР°РЅРЅС‹Рµ РЅРµРїСЂР°РІРёР»СЊРЅС‹Рµ", FLASH_MSG_TYPES::$error);
 			}
 		}
 		
@@ -49,7 +49,7 @@
 			$session = getManager('CSession');
 			$userData = unserialize($session->read('user')); 
 			$flashMessage = getManager('CFlashMessage');
-			$flashMessage->setMessage("Досвидания ".$userData['first_name'].' '.$userData['last_name'].'!', FLASH_MSG_TYPES::$error);
+			$flashMessage->setMessage("Р”РѕСЃРІРёРґР°РЅРёСЏ ".$userData['first_name'].' '.$userData['last_name'].'!', FLASH_MSG_TYPES::$error);
 			
 			$this->userType = USER_TYPE_GUEST;
 			$this->userRights = $this->getRights();

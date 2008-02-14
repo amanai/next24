@@ -1,9 +1,9 @@
-			<!-- Главный блок, с вкладками (Контент) -->
+			<!-- Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 				<div class="tab-page">
-					<h2 class="tab">Топ фотографий</h2>
-					<!-- ПРОФИЛЬ -->
+					<h2 class="tab">РўРѕРї С„РѕС‚РѕРіСЂР°С„РёР№</h2>
+					<!-- РџР РћР¤РР›Р¬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<td class="next24u_right">
@@ -32,11 +32,11 @@
 										</td>
 								<?php }?>
 							</table>
-							<!-- листинг -->
+							<!-- Р»РёСЃС‚РёРЅРі -->
 							<div class="listing_div_c">
 								<li class="listing">
 									<?php if ($this->current_page_number > 0) { ?>
-										<a href="<?php echo  $this->router->createUrl('Photo', 'TopList', array('pn'=>($this->current_page_number-1)));?>" title="Предыдущая страница">«</a>
+										<a href="<?php echo  $this->router->createUrl('Photo', 'TopList', array('pn'=>($this->current_page_number-1)));?>" title="РџСЂРµРґС‹РґСѓС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°">В«</a>
 									<?php } ?>
 									<?php for($i = 0; $i < $this->pages_number; $i++){ ?>
 										<?php if ($this->current_page_number == $i) { ?>
@@ -46,18 +46,18 @@
 										<?php } ?>
 									<?php } ?>
 									<?php if ($this->current_page_number < $this->pages_number - 1) { ?>
-										<a href="<?php echo  $this->router->createUrl('Photo', 'TopList', array('pn'=>($this->current_page_number+1)));?>" title="Следующая страница">»</a>
+										<a href="<?php echo  $this->router->createUrl('Photo', 'TopList', array('pn'=>($this->current_page_number+1)));?>" title="РЎР»РµРґСѓСЋС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°">В»</a>
 									<?php } ?>
 									
 								</li>
 
 							</div>
-							<!-- /листинг -->
+							<!-- /Р»РёСЃС‚РёРЅРі -->
 						</td>
 					</tr>
 					</table>
-					<!-- /ПРОФИЛЬ -->
+					<!-- /РџР РћР¤РР›Р¬ -->
 				</div>
 
 			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+			<!-- /Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->

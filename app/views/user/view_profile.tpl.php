@@ -1,62 +1,62 @@
-			<!-- Главный блок, с вкладками (Контент) -->
+			<!-- Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 
 				<div class="tab-page">
-					<h2 class="tab">Профиль</h2>
-					<!-- ПРОФИЛЬ -->
+					<h2 class="tab">РџСЂРѕС„РёР»СЊ</h2>
+					<!-- РџР РћР¤РР›Р¬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<td class="next24u_left">
-							<!-- левый блок -->
+							<!-- Р»РµРІС‹Р№ Р±Р»РѕРє -->
 								<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-									<div class="block_title"><h2>Управление</h2></div>
+									<div class="block_title"><h2>РЈРїСЂР°РІР»РµРЅРёРµ</h2></div>
 
-									<a href="<?php echo $this->router->createUrl('User', 'Editprofile')?>">Редактировать профиль</a><br />
-									<a href="#">Редактировать аватары</a>
+									<a href="<?php echo $this->router->createUrl('User', 'Editprofile')?>">Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РїСЂРѕС„РёР»СЊ</a><br />
+									<a href="#">Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ Р°РІР°С‚Р°СЂС‹</a>
 
 								</div></div></div></div>
-							<!-- /левый блок -->
+							<!-- /Р»РµРІС‹Р№ Р±Р»РѕРє -->
 						</td>
 						<td class="next24u_right">
-							<!-- правый блок -->
+							<!-- РїСЂР°РІС‹Р№ Р±Р»РѕРє -->
 								<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 									<div class="block_title">
-											<div class="block_title_left"><h2>Профиль пользователя</h2></div>
+											<div class="block_title_left"><h2>РџСЂРѕС„РёР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</h2></div>
 											<div class="block_title_right"><img src="<?php echo IMG_URL?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" /></div>
 									</div>
 
 									<div id="user_profile_js">
 										<table width="100%" cellpadding="3">
 										<tr>
-											<td width="150"><b>Пользователь</b></td>
+											<td width="150"><b>РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ</b></td>
 											<td><?php echo $this->userData['login'];?></td>
 										</tr>
-											<td><b>Имя пользователя</b></td>
+											<td><b>РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</b></td>
 											<td><?php echo $this->userData['last_name'].' '.$this->userData['first_name'].' '.$this->userData['middle_name'];?></td>
 										</tr>
-											<td><b>Дата рождения</b></td>
+											<td><b>Р”Р°С‚Р° СЂРѕР¶РґРµРЅРёСЏ</b></td>
 											<td><?php echo $this->userData['birth_date_formatted'];?></td>
 										</tr>
-											<td><b>Дата регистрации</b></td>
+											<td><b>Р”Р°С‚Р° СЂРµРіРёСЃС‚СЂР°С†РёРё</b></td>
 											<td><?php echo $this->userData['registration_date_formatted'];?></td>
 										</tr>
-											<td><b>Пол</b></td>
+											<td><b>РџРѕР»</b></td>
 											<td><?php echo $this->userData['gender_formatted'];?></td>
 										</tr>
-											<td><b>Расположение</b></td>
+											<td><b>Р Р°СЃРїРѕР»РѕР¶РµРЅРёРµ</b></td>
 											<td><?php echo $this->userData['city'];?></td>
 										</tr>
-											<td><b>Интересы</b></td>
+											<td><b>РРЅС‚РµСЂРµСЃС‹</b></td>
 											<td><?php echo $this->userData['interest'];?></td>
 										</tr>
-											<td><b>Репутация</b></td>
-											<td><?php echo $this->userData['reputation'];?> Посмотреть репутацию  (Плюс - Минус)</td>
+											<td><b>Р РµРїСѓС‚Р°С†РёСЏ</b></td>
+											<td><?php echo $this->userData['reputation'];?> РџРѕСЃРјРѕС‚СЂРµС‚СЊ СЂРµРїСѓС‚Р°С†РёСЋ  (РџР»СЋСЃ - РњРёРЅСѓСЃ)</td>
 										</tr>
 										</table>
 										<table width="100%" cellpadding="3">
 										<tr>
-											<td colspan="2"><b>О себе</b></td>
+											<td colspan="2"><b>Рћ СЃРµР±Рµ</b></td>
 										</tr>
 										<tr>
 											<td colspan="2"><i>
@@ -67,12 +67,12 @@
 									</div>
 
 								</div></div></div></div>
-							<!-- /правый блок -->
+							<!-- /РїСЂР°РІС‹Р№ Р±Р»РѕРє -->
 						</td>
 					</tr>
 					</table>
-					<!-- /ПРОФИЛЬ -->
+					<!-- /РџР РћР¤РР›Р¬ -->
 				</div>
 
 			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+			<!-- /Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->

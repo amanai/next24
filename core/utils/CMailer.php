@@ -1,10 +1,10 @@
 <?php
 class CMailer
 {
-    var $content_type = "text/plain";			// òèï
-    var $charset = "win-1251";					// êîäèðîâêà
-    var $content_transfer_encoding = "8bit";	// øèôðîâàíèå
-    var $custom_headers = array();				// ïîëüçîâàòåëüñêèå çàãîëîâêè
+    var $content_type = "text/plain";			// Ñ‚Ð¸Ð¿
+    var $charset = "utf8";					// ÐºÐ¾Ð´Ð¸Ñ€Ð¾Ð²ÐºÐ°
+    var $content_transfer_encoding = "8bit";	// ÑˆÐ¸Ñ„Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ
+    var $custom_headers = array();				// Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒÑÐºÐ¸Ðµ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ¸
     var $from;
     var $to;
     var $subject;

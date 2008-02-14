@@ -1,10 +1,10 @@
-			<!-- Главный блок, с вкладками (Контент) -->
+			<!-- Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
 			<div class="tab-page" id="modules-cpanel">
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 
 				<div class="tab-page">
-					<h2 class="tab">Блог</h2>
-					<!-- ПРОФИЛЬ -->
+					<h2 class="tab">Р‘Р»РѕРі</h2>
+					<!-- РџР РћР¤РР›Р¬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<tr>
@@ -12,7 +12,7 @@
 								<table width="100%" height="100%" cellpadding="0">
 									<tr>
 										<td class="next24u_left">
-										<!-- левый блок -->
+										<!-- Р»РµРІС‹Р№ Р±Р»РѕРє -->
 											<div class="block_ee1"><div class="block_ee2">
 												<div class="block_ee3">
 													<div class="block_ee4">
@@ -24,29 +24,29 @@
 											</div>
 											<?php require('blog_control_panel.tpl.php'); ?>
 				
-									<!-- /левый блок -->
+									<!-- /Р»РµРІС‹Р№ Р±Р»РѕРє -->
 				
 						
 						</td>
 						<td class="next24u_right">
-							<!-- Создание нового раздела -->
+							<!-- РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ СЂР°Р·РґРµР»Р° -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 								<form action="<?php echo $this->router->createUrl('Blog', 'SaveBranch');?>" method="post">
 									<input type="hidden" name="branch_id" value="<?php echo (int)$this->branch_info['id']; ?>"><br />
-									<h1><?php if($this->new_branch == true) echo 'Создание нового раздела'; else echo 'Редактирование раздела';?></h1>
+									<h1><?php if($this->new_branch == true) echo 'РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ СЂР°Р·РґРµР»Р°'; else echo 'Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ СЂР°Р·РґРµР»Р°';?></h1>
 									<br />
 	
 									<table>
 									<tr>
-										<td width="100" valign="top">Название раздела</td>
+										<td width="100" valign="top">РќР°Р·РІР°РЅРёРµ СЂР°Р·РґРµР»Р°</td>
 	
 										<td>
 											<input type="text" name="branch_name" style="width: 300px;" value="<?php echo $this->branch_info['name']; ?>"><br />
-											<span id="micro2">Кто сможет смотреть и комментировать этот раздел.</span>
+											<span id="micro2">РљС‚Рѕ СЃРјРѕР¶РµС‚ СЃРјРѕС‚СЂРµС‚СЊ Рё РєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ СЌС‚РѕС‚ СЂР°Р·РґРµР».</span>
 										</td>
 									</tr>
 									<tr>
-										<td width="100" valign="top">Родительский раздел</td>
+										<td width="100" valign="top">Р РѕРґРёС‚РµР»СЊСЃРєРёР№ СЂР°Р·РґРµР»</td>
 										<td>
 											<select style="width: 300px;" name="branch_parent">
 												<option value="0"><? echo $this->blog_info['title'];  ?></option>
@@ -57,12 +57,12 @@
 													} ?>
 												
 											</select><br />
-											<span id="micro2">Привязка к разделу каталога.</span>
+											<span id="micro2">РџСЂРёРІСЏР·РєР° Рє СЂР°Р·РґРµР»Сѓ РєР°С‚Р°Р»РѕРіР°.</span>
 										</td>
 	
 									</tr>
 									<tr>
-										<td width="100" valign="top">Раздел каталога</td>
+										<td width="100" valign="top">Р Р°Р·РґРµР» РєР°С‚Р°Р»РѕРіР°</td>
 										<td>
 											<select style="width: 300px;" name="branch_catalog">
 												<?php foreach($this->catalog_list as $key => $item){ ?>
@@ -70,36 +70,36 @@
 												<?php } ?>
 												
 											</select><br />
-											<span id="micro2">Привязка к разделу каталога.</span>
+											<span id="micro2">РџСЂРёРІСЏР·РєР° Рє СЂР°Р·РґРµР»Сѓ РєР°С‚Р°Р»РѕРіР°.</span>
 										</td>
 	
 									</tr>
 									<tr>
-										<td valign="top">Уровень доступа</td>
+										<td valign="top">РЈСЂРѕРІРµРЅСЊ РґРѕСЃС‚СѓРїР°</td>
 										<td>
 											<select style="width: 300px;" name="branch_access">
-												<option value="1">для всех</option>
-												<option value="2">только для друзей</option>
+												<option value="1">РґР»СЏ РІСЃРµС…</option>
+												<option value="2">С‚РѕР»СЊРєРѕ РґР»СЏ РґСЂСѓР·РµР№</option>
 	
-												<option value="0">только для себя</option>
+												<option value="0">С‚РѕР»СЊРєРѕ РґР»СЏ СЃРµР±СЏ</option>
 											</select><br />
-											<!--<span id="micro2">В какой альбом будет загружено изображение.</span>-->
+											<!--<span id="micro2">Р’ РєР°РєРѕР№ Р°Р»СЊР±РѕРј Р±СѓРґРµС‚ Р·Р°РіСЂСѓР¶РµРЅРѕ РёР·РѕР±СЂР°Р¶РµРЅРёРµ.</span>-->
 										</td>
 	
 									</tr>
 									<tr>
-										<td colspan="2" align="right"><input type="submit" value="Сохранить" /></td>
+										<td colspan="2" align="right"><input type="submit" value="РЎРѕС…СЂР°РЅРёС‚СЊ" /></td>
 	
 									</tr>
 									</table>
 								</form>
 							</div></div></div></div>
-							<!-- /Создание нового альбома -->
+							<!-- /РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ Р°Р»СЊР±РѕРјР° -->
 						</td>
 					</tr>
 					</table>
-					<!-- /ПРОФИЛЬ -->
+					<!-- /РџР РћР¤РР›Р¬ -->
 				</div>
 
 			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+			<!-- /Р“Р»Р°РІРЅС‹Р№ Р±Р»РѕРє, СЃ РІРєР»Р°РґРєР°РјРё (РљРѕРЅС‚РµРЅС‚) -->
