@@ -15,23 +15,7 @@ class AdminUserController extends AdminController{
 		function ListAction(){
 			$this -> BaseAdminData();
 			$router = getManager('CRouter');
-			$this -> setModel("Users");
-			$this -> model -> resetSql();
-			$number = self::USER_PER_PAGE;
-			$this -> model -> limit($number, (int)$this -> pn*$number);
-			$this -> model -> pager();
-			$list = $this -> model -> getAll();
-			foreach ($list as &$item){
-				$item['delete_link'] = $router->createUrl('AdminUser', 'Delete', array('id' => $item['id']));
-				$item['edit_link'] = AjaxRequest::getJsonParam('AdminUser', 'Edit', array('id'=>$item['id']));
-			}
-			$this -> view -> user_list = $list;
-			
-			$all = $this -> model -> foundRows();
-			$this -> view -> pages_number = ceil($all / $number);
-			$this -> view -> current_page_number = (int)$this -> pn;
-			$this -> view -> current_controller = 'AdminUser';
-			$this -> view -> current_action = 'List';
+			$this -> getUserList();
 			/*if ($id > 0){
 				$this -> view -> pager_params = array('id'=>$id);
 			}*/
@@ -85,7 +69,8 @@ class AdminUserController extends AdminController{
 			$this -> model -> resetSql();
 			$data = $this -> model -> getById($id);
 			$data['login'] = $this -> login;
-			$data['user_type_id'] = $this -> user_type_id;
+			$data['user_type_id'] = (int)$this -> user_group;
+			
 			$this -> model -> setData($data, true);
 			
 			$this -> model -> save();
@@ -98,24 +83,36 @@ class AdminUserController extends AdminController{
 			$response -> clear();
 			
 			
-			$this -> setModel("Users");
-			$this -> model -> setUtf8();
-			$this -> model -> resetSql();
-			$number = self::USER_PER_PAGE;
-			$this -> model -> limit($number, (int)$this -> pn*$number);
-			$this -> model -> pager();
-			$list = $this -> model -> getAll();
-			foreach ($list as &$item){
-				$item['delete_link'] = $router->createUrl('AdminUser', 'Delete', array('id' => $item['id']));
-				$item['edit_link'] = AjaxRequest::getJsonParam('AdminUser', 'Edit', array('id'=>$item['id']));
-			}
-			$this -> view -> user_list = $list;
+			$this -> getUserList();
+			
 			$response -> hide('edit_user');
 			$response -> enable('users_list');
 			$response -> block('users_list', true, $this -> view -> ajaxRender(VIEWS_PATH.'admin/users/user_list_ajax.tpl.php'));
 			$this -> view -> response($response);
 			/*$router = getManager('CRouter');
 			$router -> redirect($router -> createUrl('AdminParameter', 'EditGroup', array('id' => $this -> controller_id)));*/
+		}
+		
+		private function getUserList(){
+			$router = getManager('CRouter');
+			$this -> setModel("Users");
+			$this -> model -> resetSql();
+			$number = self::USER_PER_PAGE;
+			$this -> model -> limit($number, (int)$this -> pn*$number);
+			$this -> model -> pager();
+			$this -> model -> cols('users.*, user_types.name as group_name');
+			$this -> model -> join('user_types', 'user_types.id=users.user_type_id', 'LEFT');
+			$list = $this -> model -> getAll();
+			foreach ($list as &$item){
+				$item['delete_link'] = $router->createUrl('AdminUser', 'Delete', array('id' => $item['id']));
+				$item['edit_link'] = AjaxRequest::getJsonParam('AdminUser', 'Edit', array('id'=>$item['id']));
+			}
+			$this -> view -> user_list = $list;
+			$all = $this -> model -> foundRows();
+			$this -> view -> pages_number = ceil($all / $number);
+			$this -> view -> current_page_number = (int)$this -> pn;
+			$this -> view -> current_controller = 'AdminUser';
+			$this -> view -> current_action = 'List';
 		}
 		
 		function DeleteAction(){

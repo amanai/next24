@@ -216,7 +216,12 @@ class CBaseModel
 		$fieldStr = array();
 		foreach ($this->fields as $name => $value) 
 		{
-			$fieldStr[] = " `" . $name . "` = '" . mysql_escape_string($value) . "'";
+			if ($value === null){
+				$value = 'NULL';
+			} else {
+				$value = "'".mysql_escape_string($value)."'";
+			}
+			$fieldStr[] = " `" . $name . "` = " . $value;
 		}
 		return implode(", ", $fieldStr);
 	}

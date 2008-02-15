@@ -56,7 +56,7 @@
 						<td class="right_col">
 							<select name="user_group">
 								<?php foreach($this -> user_group_list as $item) { ?>
-									<option value="<?php echo $item['id'];?>"><?php echo $item['name'];?></option>
+									<option value="<?php echo $item['id'];?>" <?php if((int)$item['id'] === (int)$this -> edit_data['user_type_id']) echo 'selected';?>><?php echo $item['name'];?></option>
 								<?php } ?>
 							</select>
 						</td>
