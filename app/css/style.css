@@ -1,4 +1,4 @@
-/* Системные Классы */
+/* РЎРёСЃС‚РµРјРЅС‹Рµ РљР»Р°СЃСЃС‹ */
 
 body
 {
@@ -60,7 +60,7 @@ table { border-collapse: collapse; }
 
 
 
-/* Спец. идентификаторы */
+/* РЎРїРµС†. РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹ */
 
 #ico1
 {
@@ -121,7 +121,7 @@ table { border-collapse: collapse; }
 
 
 
-/* Тело сайта */
+/* РўРµР»Рѕ СЃР°Р№С‚Р° */
 
 .header
 {
@@ -295,7 +295,7 @@ table { border-collapse: collapse; }
 
 
 
-/* Листинг */
+/* Р›РёСЃС‚РёРЅРі */
 
 .listing
 {
@@ -345,7 +345,7 @@ table { border-collapse: collapse; }
 
 
 
-/* Блоки слева */
+/* Р‘Р»РѕРєРё СЃР»РµРІР° */
 
 .block24
 {
@@ -385,7 +385,7 @@ table { border-collapse: collapse; }
 	text-decoration: underline;
 }
 
-/* блок с права */
+/* Р±Р»РѕРє СЃ РїСЂР°РІР° */
 .tab-page_2
 {
 	padding: 10px;
@@ -397,7 +397,7 @@ table { border-collapse: collapse; }
 }
 
 
-/* две разноцветных блока */
+/* РґРІРµ СЂР°Р·РЅРѕС†РІРµС‚РЅС‹С… Р±Р»РѕРєР° */
 .cmod_tab1
 {
 	background: #E9F1F7;
@@ -448,7 +448,7 @@ table { border-collapse: collapse; }
 
 
 
-/* мод просмотра сообщении */
+/* РјРѕРґ РїСЂРѕСЃРјРѕС‚СЂР° СЃРѕРѕР±С‰РµРЅРёРё */
 .cmod_messages
 {
 	overflow: auto;
@@ -470,7 +470,7 @@ table { border-collapse: collapse; }
 
 
 
-/* _Новости */
+/* _РќРѕРІРѕСЃС‚Рё */
 .news
 {
 	clear: both;
@@ -495,7 +495,7 @@ table { border-collapse: collapse; }
 }
 
 
-/* Дневники */
+/* Р”РЅРµРІРЅРёРєРё */
 .blogs_x1
 {
 	background: #F4FAFE url('../images/qq1.png') no-repeat top left;
@@ -534,7 +534,7 @@ table { border-collapse: collapse; }
 }
 
 
-/* Найти знакомых */
+/* РќР°Р№С‚Рё Р·РЅР°РєРѕРјС‹С… */
 .searchz_block
 {
 	float: left;
@@ -568,7 +568,7 @@ table { border-collapse: collapse; }
 
 
 
-/* Статьи */
+/* РЎС‚Р°С‚СЊРё */
 
 .articles_t
 {
@@ -589,7 +589,7 @@ table { border-collapse: collapse; }
 }
 
 
-/* Фотоальбомы */
+/* Р¤РѕС‚РѕР°Р»СЊР±РѕРјС‹ */
 .photo_table
 {
 	width: 100%;
@@ -636,7 +636,7 @@ table { border-collapse: collapse; }
 
 
 
-/* Личный кабинет - Левый блок */
+/* Р›РёС‡РЅС‹Р№ РєР°Р±РёРЅРµС‚ - Р›РµРІС‹Р№ Р±Р»РѕРє */
 .block_ee1
 {
 	background: #F4FAFE url('../images/ee1.png') top left no-repeat;
@@ -704,7 +704,7 @@ table { border-collapse: collapse; }
 }
 
 
-/* Личный кабинет - Блок для аватара */
+/* Р›РёС‡РЅС‹Р№ РєР°Р±РёРЅРµС‚ - Р‘Р»РѕРє РґР»СЏ Р°РІР°С‚Р°СЂР° */
 .block_d_ld1
 {
 	background: #E9F1F7 url('../images/d_ld1.png') top right no-repeat;
@@ -731,7 +731,7 @@ table { border-collapse: collapse; }
 	text-align: right;
 }
 
-/* Опросы */
+/* РћРїСЂРѕСЃС‹ */
 .questions
 {
 	width: 100%;
@@ -754,7 +754,7 @@ table { border-collapse: collapse; }
 }
 
 
-/* архив новостей */
+/* Р°СЂС…РёРІ РЅРѕРІРѕСЃС‚РµР№ */
 
 .arh_x1
 {
@@ -771,7 +771,7 @@ table { border-collapse: collapse; }
 }
 
 
-/* Форма опроса */
+/* Р¤РѕСЂРјР° РѕРїСЂРѕСЃР° */
 .questions_var td
 {
 	text-align: right;
@@ -779,7 +779,7 @@ table { border-collapse: collapse; }
 }
 
 
-/* Новые лица */
+/* РќРѕРІС‹Рµ Р»РёС†Р° */
 .novie_lica .block_ee4
 {
 	margin-top: 14px;
