@@ -1,6 +1,6 @@
 <!-- Листинг -->
 	<div class="listing_div_c">
-		<li class="listing">
+		<div class="listing">
 			<?php if ($this->pages_number > 1) { ?>
 			<?php if ($this->current_page_number > 0) { ?>
 										<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, (is_array($this->pager_params)?array_merge(array('pn'=>$i), $this->pager_params):array('pn'=>$this->current_page_number-1)));?>" title="Предыдущая страница">«</a>
@@ -16,6 +16,6 @@
 										<a href="<?php echo $this->router->createUrl($this->current_controller, $this->current_action, (is_array($this->pager_params)?array_merge(array('pn'=>$this->current_page_number+1), $this->pager_params):array('pn'=>$this->current_page_number+1)));?>" title="Следующая страница">»</a>
 									<?php } ?>
 			<?php } ?>
-			</li>
+			</div>
 		</div>
 <!-- /Листинг -->
