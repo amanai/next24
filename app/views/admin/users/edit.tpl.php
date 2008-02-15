@@ -7,7 +7,7 @@
 					<tbody>
 						<tr>
 							<td class="text">
-								Добавление пользователя системы
+								Редактирование пользователя системы
 							</td>
 							<td>
 								<div class="button bclose"><a href="#" onClick='cancel(<?php echo $this -> cancel_param;?>);'>X</a></div>
@@ -24,7 +24,7 @@
 				<!-- САМ ДИАЛОГ -->
 				<form id="edit_user_form">
 				<input name="id" value="<?php echo isset($this -> edit_data['id'])?$this -> edit_data['id']:null; ?>" type="hidden" />
-				<table border="0" cellpadding="0" cellspacing="0">
+				<table border="0" cellpadding="0" cellspacing="4">
 					<tbody><tr>
 						<td class="left_col">
 						Логин:
@@ -39,15 +39,15 @@
 						<td class="right_col">
 						<input class="field" name="pass" value="" type="password">
 						</td>
-	
+
 					</tr>
 					<tr>
 						<td class="left_col">
-						Подтверждени:					</td>
+						Подтверждение:					</td>
 						<td class="right_col">
 						<input class="field" name="pass_confirm" value="" type="password">
 						</td>
-	
+
 					</tr>
 					<tr>
 						<td class="left_col">
@@ -61,7 +61,7 @@
 							</select>
 						</td>
 					</tr>
-	
+
 					<tr>
 						<td class="left_col">
 						Забанен до:
@@ -82,7 +82,7 @@
 			<td class="b_left">&nbsp;</td>
 			<td class="b_cen"><div class="b_delim">
 				<div class="button bbig" style="float: right;"><a href="#" onClick='cancel(<?php echo $this -> cancel_param;?>);'>Отмена</a></div>
-				<div class="button bbig" style="float: right;"><a href="#" onClick='save(<?php echo $this -> save_param;?>);'>Добавить</a></div>
+				<div class="button bbig" style="float: right;"><a href="#" onClick='save(<?php echo $this -> save_param;?>);'>Сохранить</a></div>
 			</td>
 			<td class="b_right">&nbsp;</td>
 		</tr>
