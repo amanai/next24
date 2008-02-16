@@ -4,33 +4,35 @@
  */
 	class AdminController extends CBaseController{
 
-		function __construct($View=null, $params = array(), $vars = array()){
-			parent::__construct($View, $params, $vars);
-			$this -> view -> setTemplate(VIEWS_PATH.'admin/main.tpl.php');
+
+		function __construct(){
+			parent::__construct("AdminView");
 		}
 
 		protected function BaseAdminData(){
 			//$router = getManager('CRouter');
-			$router = getManager('router');
+			$router = Project::getRequest();
 			// TODO:: hardcoded menu
-			$this -> view -> main_menu = array(
-												array('link'=>$router -> createUrl('Admin', 'Desktop'), 'name'=>'Рабочий стол'),
-												array('link'=>$router -> createUrl('AdminParameter', 'GroupList'), 'name'=>'Параметры системы'),
-												array('link'=>$router -> createUrl('AdminUser', 'List'), 'name'=>'Пользователи'),
-												);
+			$this -> _view -> assign('main_menu', array(
+														array('link'=>$router -> createUrl('Admin', 'Desktop'), 'name'=>'Рабочий стол'),
+														array('link'=>$router -> createUrl('AdminParameter', 'GroupList'), 'name'=>'Параметры системы'),
+														array('link'=>$router -> createUrl('AdminUser', 'List'), 'name'=>'Пользователи'),
+														));
 
+			$this -> _view -> assign('title', $this -> _action_model -> page_title);
 			//$session = getManager('CSession');
-			$session = getManager('session');
-			$user = unserialize($session->read('user'));
+			// TODO:: read logged user information
 		}
 
 
 		public function DesktopAction(){
 			$this -> BaseAdminData();
-			$this -> view -> title = 'Рабочий стол';
-			$this -> view -> content .= $this->view->render(VIEWS_PATH.'admin/desktop.tpl.php');
-			$this -> view -> display();
+			// TODO:: get title from database
+			$this -> _view -> Desktop();
+			$this -> _view -> parse();
 		}
+		
+		
 
 
 
