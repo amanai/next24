@@ -1,6 +1,6 @@
 <?php
 
-class CLog extends CBaseManager{
+class CLog extends CBaseManager implements IManager{
 	
 	//globals
 	var $logDir="";
@@ -19,14 +19,23 @@ class CLog extends CBaseManager{
 		
 	*/
 
-	function init($logDir='log', $logFile='log_', $headerTitle='LOG', $logMode='oneFile', $countFile="counter"){
+	//function init($logDir='log', $logFile='log_', $headerTitle='LOG', $logMode='oneFile', $countFile="counter"){
+	function init(IConfigParameter $configuration){
 		//-----------------------------------------------------
 		//set global variables
-		$this->logDir=$logDir;
+		/*$this->logDir=$logDir;
 		$this->logFile=$logFile;
 		if($countFile) $this->countFile=$this->logDir . "/$countFile";
 		$this->headerTitle=$headerTitle;
-		$this->logMode=$logMode;
+		$this->logMode=$logMode;*/
+
+		$this -> logDir = $configuration -> get('logDir');
+		$this -> logFile = $configuration -> get('logFile');
+		if($configuration -> get('countFile')){
+			$this -> countFile = Project::NS()->path($this->logDir) . DIRECTORY_SEPARATOR . $configuration -> get('countFile');
+		}
+		$this -> headerTitle = $configuration -> get('headerTitle');
+		$this -> logMode = $configuration -> get('logMode');
 	
 		//generate log number
 		//set counter file and log folder 

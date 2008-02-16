@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application version="0.1">
+
+	<module id="NS"  class="NamespaceManager">
+		<param key="include_path" value="core;
+										 core/managers;
+										 core/utils;
+										 app/controllers;
+										 app/includes;
+										 app/interfaces;
+										 app/models;
+										 app/views;" />
+	</module>
+	
+	<!-- Application logger -->
+	<module id="logger"  class="CLog">
+		<param key="logDir" value="log" enabled="true" />
+		<param key="logFile" value="log"/>
+		<param key="headerTitle" value="LOG"/>
+		<param key="logMode" value="oneFile"/>
+		<param key="countFile" value="counter"/>
+	</module>
+	
+	<!-- Error handler module -->
+	<module id="error_handler"  class="CErrorHandler">
+		<param key="logger_id" value="logger" />
+		<param key="send_mail" value="false" />
+	</module>
+	
+	<!-- Sesion module -->
+	<module id="session"  class="CSession" >
+		<!-- Params such as session live time, name etc. -->
+	</module>
+	
+	<!-- Router module -->
+	<module id="router"  class="CRouter" >
+		<!-- Params such as url rewrite rules etc. -->
+	</module>
+	
+	<!-- Right manager module -->
+	<module id="rm"  class="CRightsManager" >
+		<!-- Params such as system user class, password rules etc auth rules etc. -->
+	</module>
+	
+	<!-- User module (need to change -->
+	<module id="user"  class="CUser" >
+		<!-- Must be moved -->
+	</module>
+	
+</application>

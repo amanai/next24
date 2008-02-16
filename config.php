@@ -13,9 +13,13 @@
 	define('MANAGER_PATH', CORE_PATH.'managers/');
 	define('UTILS_PATH', CORE_PATH.'utils/');
 	
+	
+	define('INTERFACES_PATH', APP_PATH.'interfaces/');
+	
 	define('CONTROLLERS_PATH', APP_PATH.'controllers/');
 	define('MODELS_PATH', APP_PATH.'models/');
 	define('VIEWS_PATH', APP_PATH.'views/');
+	define('TEMPLATES_PATH', APP_PATH.'templates/');
 	
 	
 	define('DEFAULT_CONTROLLER', 'Index');

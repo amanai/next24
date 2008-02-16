@@ -1,6 +1,6 @@
 <?php
 	
-	class CRouter extends CBaseManager{
+	class CRouter extends CBaseManager implements IManager{
 		
 		private $path;
 		
@@ -11,6 +11,10 @@
 		public function __construct(){
 			$this->path = isset($_REQUEST['_path'])?$_REQUEST['_path']:DEFAULT_CONTROLLER;
 		}
+		
+		function init(IConfigParameter $configuration){
+			$this -> inited = true;
+		}
 
 		public function route(){
 			$actionArr = explode("/", $this->path);
@@ -19,10 +23,12 @@
 			$this->actionName = $this->getActionName($actionArr);
 			$this->params = $this->getParams($actionArr, $_POST);
 
-			$rightsManager = getManager('CRightsManager');
+			//$rightsManager = getManager('CRightsManager');
+			$rightsManager = getManager('rm');
 			if(!$rightsManager->checkAccess($this->controllerName, $this->actionName)){return;}
 
-			$session = getManager('CSession');
+			//$session = getManager('CSession');
+			$session = getManager('session');
 			$session->write('LAST_PATH', $_SERVER['REQUEST_URI']);
 						
 			$controllerName = $this->controllerName;

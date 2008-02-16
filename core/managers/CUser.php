@@ -1,15 +1,19 @@
 <?php	
-	class CUser extends CBaseManager{
+	class CUser extends CBaseManager implements IManager{
 		public $userType;
 		public $userRights = null;
 		
 		public function __construct(){
 			$this->setModel('Users');
 			$this->userType = USER_TYPE_GUEST;
+			
 		}
 
-		public function init(){
-			$session = getManager('CSession');
+		public function init(IConfigParameter $configuration){
+			$this->inited=true;
+			//die(BACKTRACE());
+			//$session = getManager('CSession');
+			$session = getManager('session');
 			$userData = $session->read('user');
 			$userData = @unserialize($userData);
 
@@ -35,7 +39,8 @@
 		public function login($login, $pass){
 			$userData = $this->model->loginUser($login, $pass);
 			if($userData){
-				$session = getManager('CSession');
+				//$session = getManager('CSession');
+				$session = getManager('session');
 				$session->write('user', serialize($userData));
 				$this->userRights = $userData['rights'];
 				$this->userType = $userData['user_type_id'];

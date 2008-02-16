@@ -3,9 +3,9 @@ require_once(UTILS_PATH.'CMailer.php');
 
 class CErrorHandler extends CBaseManager {
 	private $log = null;
-	
-	public function init(){
-		$this->log = getManager('CLog');
+	private $_config  = null;
+	public function init($configuration){
+		$this -> _config = $configuration;
 		set_exception_handler(array($this, 'exception_handler'));
 		set_error_handler(array($this, 'error_handler'));
 		parent::init();
@@ -16,9 +16,13 @@ class CErrorHandler extends CBaseManager {
 	{
 		$exc = "EXCEPTION. Code: ".$exception->getCode()."; Message: ".$exception->getMessage()."; Script: ".$exception->getFile()."; Line: ".$exception->getLine()."; Trace: ".$exception->getTraceAsString()."; Output: ".$exception->__toString().";";
 		//вывод в протокол
-		$this->log->writeLog($exc);
-		//отправка админу на мыло
-        $mail = new CMailer("Server", "Server", "Admin", ADMIN_MAIL, "Exception", $exc, true);
+		if ( ($log = Project::get($this -> _config -> get('logger_id')))){
+			$log -> writeLog($exc);
+		}
+		if ( $this -> _config -> get('send_mail') === true ){
+			//отправка админу на мыло
+	        $mail = new CMailer("Server", "Server", "Admin", ADMIN_MAIL, "Exception", $exc, true);
+		}
 	}
 
 	public function error_handler($errno, $errstr, $errfile, $errline) 
@@ -44,11 +48,16 @@ class CErrorHandler extends CBaseManager {
 //	        $err .= " Var dump: " . print_r($vars) . ";";
 //	    }
 		//вывод в протокол
-		$this->log->writeLog($err);
-		//отправка админу на мыло
-	    if ($errno == E_USER_ERROR) {
-	        $mail = new CMailer("Server", "Server", "Admin", ADMIN_MAIL, "Critical User Error", $err, true);
-	    }
+		if ( ($log = Project::get($this -> _config -> get('logger_id')))){
+			
+			$log -> writeLog($err);
+		}
+		if ( $this -> _config -> get('send_mail') === true ){
+			//отправка админу на мыло TODO:: mail params get from configuration
+		    if ($errno == E_USER_ERROR) {
+		        $mail = new CMailer("Server", "Server", "Admin", ADMIN_MAIL, "Critical User Error", $err, true);
+		    }
+		}
 	}
     
 }

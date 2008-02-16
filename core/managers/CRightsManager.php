@@ -2,10 +2,14 @@
 	class CRightsManager extends CBaseManager {
 		private $forbiddenName;
 		
+		function init(IConfigParameter $configuration){
+			$this->inited=true;
+		}
+		
 		public function checkAccess($controllerName, $actionName, $subactionName=''){
-			$user = getManager('CUser');
+			//$user = getManager('CUser');
+			$user = getManager('user');
 			$userRights = unserialize($user->getRights());
-			
 			if(isset($userRights[$controllerName])){				
 				if(isset($userRights[$controllerName][$actionName])){					
 					if(!strlen($subactionName) || in_array($subactionName, $userRights[$controllerName][$actionName])){
@@ -16,7 +20,8 @@
 				} else {
 					// TODO:: hardcoded admin controller name
 					if ($controllerName == 'AdminController'){
-						$router = getManager('CRouter');
+						//$router = getManager('CRouter');
+						$router = getManager('router');
 						$router -> redirect($router -> createUrl('Admin', 'LoginForm'));
 					}
 					$flashMessage = getManager('CFlashMessage');
@@ -26,7 +31,8 @@
 			} else {
 				// TODO:: hardcoded admin controller name
 				if ($controllerName == 'AdminController'){
-					$router = getManager('CRouter');
+					//$router = getManager('CRouter');
+					$router = getManager('router');
 					$router -> redirect($router -> createUrl('Admin', 'LoginForm'));
 				}
 				$flashMessage = getManager('CFlashMessage');

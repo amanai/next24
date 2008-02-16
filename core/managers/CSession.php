@@ -1,6 +1,6 @@
 <?php
 
-class CSession extends CBaseManager {
+class CSession extends CBaseManager implements IManager {
 	
 	private $_autoStart=false;
 
@@ -32,8 +32,24 @@ class CSession extends CBaseManager {
 //	function __construct() 
 
 
-	public function init(){		
+	/*public function init(){		
 		$this->_initialized=true;	
+		
+		session_set_save_handler(
+			array($this, 'open'), 
+			array($this, 'close'), 
+			array($this, 'read'), 
+			array($this, 'write'), 
+			array($this, 'destroy'), 
+			array($this, 'gc'));
+		session_name("SSID");		
+		session_start();
+		parent::init();
+	}*/
+	public function init(IConfigParameter $configuration){
+		$this->inited = true;		
+		$this->_initialized=true;	
+		
 		
 		session_set_save_handler(
 			array($this, 'open'), 

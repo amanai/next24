@@ -95,8 +95,11 @@ class CBaseController
 	}
 	
 	public function initCommonData(){
-		$router = getManager('CRouter');
-		$session = getManager('CSession');
+		//$router = getManager('CRouter');
+		//$session = getManager('CSession');
+		$router = getManager('router');
+		$session = getManager('session');
+		
 		$userData = unserialize($session->read('user'));
 		$lastPath = $session->read('LAST_PATH');
 		
