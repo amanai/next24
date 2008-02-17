@@ -207,5 +207,24 @@ class Project{
 	    	}
 	    	return $tm;
 	    }
+	    
+	    function setSecurityManager(IManager $security){
+	    	self::set('security_manager', $security);
+	    }
+	    
+	    function getSecurityManager(){
+	    	return self::get('security_manager');
+	    }
+	    
+	     function setUser($object){
+	    	self::set('current_user', $object);
+	    }
+	    
+	    function getUser(){
+	    	if (($u = self::get('current_user')) === null){
+	    		throw new SecurityException("Security: current user not defined");
+	    	}
+	    	return $u;
+	    }
 }
 ?>

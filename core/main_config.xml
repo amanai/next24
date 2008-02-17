@@ -8,10 +8,12 @@
 										 app/controllers;
 										 app/includes;
 										 core/interfaces;
+										 core/security;
 										 app/models/new_version;
 										 app/views;
 										 app/views/admin;
 										 core/utils/dbsimple;" />
+		<param key="set_to_registry" value="false" />
 	</module>
 	
 	<!-- Application logger -->
@@ -27,34 +29,42 @@
 	<module id="error_handler"  class="CErrorHandler">
 		<param key="logger_id" value="logger" />
 		<param key="send_mail" value="false" />
+		<param key="set_to_registry" value="false" />
 	</module>
 	
 	<!-- Error handler module -->
 	<module id="database"  class="DatabaseManager">
 		<param key="DSN" value="mysql://root:pass@localhost/next24" />
 		<param key="native_logger" value="myLogger" enabled="false" />
+		<param key="set_to_registry" value="false" />
 	</module>
 	
 	<!-- Sesion module -->
-	<module id="session"  class="CSession" >
+	<module id="session"  class="HttpSessionManager" >
 		<!-- Params such as session live time, name etc. -->
+		<param key="set_to_registry" value="false" />
 	</module>
 	
 	<!-- Http request handling -->
 	<module id="request" class="HttpRequestManager">
 		<param key="rewrite" value="true"/>
 		<param key="request_key" value="_path"/>
-		<param key="controller_name_extension" value="html" />
+		<param key="controller_name_extension" value="html" enabled="false" />
 		<param key="param_delimiter" value="/" />
 		<param key="value_delimiter" value=":" />
 		<param key="request_service_key" value="sk" />
 		<param key="request_action_key" value="act" />
+		<param key="set_to_registry" value="false" />
 	</module>
 	
 	<!-- Right manager module -->
-	<module id="rm"  class="CRightsManager" >
+	<module id="security_manager"  class="SecurityManager" >
 		<!-- Params such as system user class, password rules etc auth rules etc. -->
-		<param key="user" value="CUser"/>
+		<param key="user" value="AppUser"/>
+		<param key="set_to_registry" value="false" />
+		<param key="login_controller" value="Admin" />
+		<param key="login_action" value="LoginForm" />
+		<param key="logger_id" value="logger" />
 	</module>
 	
 	
@@ -63,6 +73,7 @@
 		<param key="template_dir" value="app/templates" />
 		<param key="js_path" value="app/js/" />
 		<param key="css_path" value="app/css/" />
+		<param key="set_to_registry" value="false" />
 	</module>
 	
 	<!-- Http response handling -->
@@ -71,6 +82,7 @@
 		<param key="ContentType" value="text/html"/>
 		<param key="CacheExpire" value="3600" />
 		<param key="CacheControl" value="nocache" />
+		<param key="set_to_registry" value="false" />
 	</module>
 	
 	

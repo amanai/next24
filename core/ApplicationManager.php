@@ -6,11 +6,12 @@ abstract class ApplicationManager{
 	protected $_initialized = false;
 	protected $_app_cache_id;
 	protected $_app_cache_key;
-	
+	protected $_registry = true;
 		protected function _common_config(IConfigParameter $configuration, $skip_pathes = false){
 			$this -> _config = $configuration;
 			$this -> _app_cache_id = $this -> _config -> get('cache_id');
 			$this -> _app_cache_key = $this -> _config -> get('cache_key');
+			$this -> _registry = $this -> _config -> get('set_to_registry', true);
 			$this -> _initialized = true;
 			if ($skip_pathes === false){
 				Project::NS() -> setPathes($configuration);
@@ -31,6 +32,10 @@ abstract class ApplicationManager{
 			} else {
 				return false;
 			}
+		}
+		
+		public function setToRegistry(){
+			return $this -> _registry;
 		}
 }
 ?>
