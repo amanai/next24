@@ -28,76 +28,25 @@ class CApp {
 				$module = new $class;
 				$module -> initialize($configuration);
 				//var_dump($module_id, $class);echo '<br>';
-				Project::set($module_id, $module);
+				if ($module -> setToRegistry() === true){
+					Project::set($module_id, $module);
+				}
 				unset($module);
 			}
 		}
 
 		
 		public function run(){
-			$request = Project::getRequest();
-			$controller_key = $request -> getController();
-			$controller_model = new ControllerModel;
-			$controller_model -> loadByKey($controller_key);
-			if ($controller_model -> id > 0){
-				$controller_class = $controller_model -> name;
-			} else {
-				// TODO:: use different configurations for admin and frontend
-				$controller_model -> loadDefault($admin = true);
-				if ($controller_model -> id > 0){
-					$controller_class = $controller_model -> name;
-				} else {
-					// TODO:: redirect where? no default controller
-					die("No default controller!!!!!!! What to do, if we have no default controller");
-					throw new ConfigurationException("Can't load default controller:request_key=".$controller_key);
-				}
-			}
+			
+			
+			$autorize = Project::getSecurityManager() -> getAutorize(); 
+			$controller_class = $autorize -> getController() -> name;
 			$controller = new $controller_class;
-			$reflection = new ReflectionClass($controller_class);
-			
-			
-			
-			$action = $request -> getAction();
-			$has_action = false;
-			if ($action){
-				$action_function = $action . 'Action';
-				if ($reflection -> hasMethod($action_function)){
-					$has_action = true;
-				}
-			}
-			
-			$action_model = new ActionModel;
-			if ($has_action === false){
-				$action_model -> loadDefault($controller_model -> id);
-				if ($action_model -> id <= 0){
-					// TODO:: redirect where or what to show? no default action for controller
-					throw new InvalidActionException("Can't load default action for controller:ID=".$controller_model -> id.";class=".$controller_class);
-				}
-				$action_function = $action_model -> name . 'Action';
-				if ($reflection -> hasMethod($action_function)){
-					$has_action = true;
-				}
-			}
-			
-			if ($has_action === false){
-				// TODO:: no request action and default action: what to do? may be redirect to default action of default controller or show:: page is not aviable or moved to another place
-				// may by header 404 to own document?
-				throw new InvalidActionException("Default action not exists at controller controller:ID=".$controller_model -> id.";class=".$controller_class.";action_id=".$action_model -> id.";action_name=".$action_function);
-			}
-			
-			$controller -> init($controller_model, $action_model);
+			$controller -> init($autorize -> getController(), $autorize -> getAction());
+			$action_function = $autorize -> getAction() -> name . 'Action';
 			$controller -> $action_function();
-			
-			
 			$this -> _request_complete = true;
-			
-	
-			//Project::get('router') -> route();
-			//$this->manages['CRouter']->route();			
-			//$this->manages['CFlashMessage']->displayAll();
-			
 			return $controller;
-
 		}
 		
 		public function complete($controller){
