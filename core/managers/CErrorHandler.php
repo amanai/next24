@@ -1,7 +1,6 @@
 <?php
-class CErrorHandler extends CBaseManager implements IManager{
+class CErrorHandler extends ApplicationManager implements IManager{
 	private $log = null;
-	private $_config  = null;
 	public function initialize(IConfigParameter $configuration){
 		$this -> _config = $configuration;
 		Project::setErrorHandler($this);
@@ -10,7 +9,7 @@ class CErrorHandler extends CBaseManager implements IManager{
 	
 	public function handleException($exception) 
 	{
-		die("");
+		die($exception);
 		$exc = "EXCEPTION. Code: ".$exception->getCode()."; Message: ".$exception->getMessage()."; Script: ".$exception->getFile()."; Line: ".$exception->getLine()."; Trace: ".$exception->getTraceAsString()."; Output: ".$exception->__toString().";";
 		//вывод в протокол
 		if ( ($log = Project::get($this -> _config -> get('logger_id')))){

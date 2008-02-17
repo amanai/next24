@@ -1,6 +1,6 @@
 <?php
 
-class CLog extends CBaseManager implements IManager{
+class CLog extends ApplicationManager implements IManager{
 	
 	//globals
 	var $logDir="";
@@ -80,7 +80,8 @@ class CLog extends CBaseManager implements IManager{
 		}
 		fclose($fp);
 		
-		parent::init();
+		//parent::init();
+		$this -> _common_config($configuration);
 		//-----------------------------------------------------	
 	}//end function
 	
