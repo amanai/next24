@@ -6,6 +6,8 @@ class CBaseController
 	protected $_action_model;
 	protected $_view = null;
 	
+	
+	
 	public function __construct($view = null){
 		if ($view !== null){
 			$this -> _view = new $view;
@@ -19,6 +21,15 @@ class CBaseController
 	
 	public function getContent(){
 		return $this -> _view -> getContent();
+	}
+	
+	/**
+	 * Get default url for this controller: create as current controller name+default action
+	 */
+	protected function getDefaultUrl(){
+		$action_model = new ActionModel;
+		$action_model -> loadDefault($this -> _controller_model -> id);
+		return Project::getRequest() -> createUrl(null, $action_model -> name);
 	}
 	
 	
