@@ -1,5 +1,5 @@
 <?php
-require_once(INTERFACES_PATH .'IConfigParameter.php');
+require_once(dirname(__FILE__). DIRECTORY_SEPARATOR. 'interfaces' . DIRECTORY_SEPARATOR . 'IConfigParameter.php');
 
 /**
  * Class for handling application/module parameters from xml 

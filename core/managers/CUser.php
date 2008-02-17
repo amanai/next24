@@ -9,7 +9,7 @@
 			
 		}
 
-		public function init(IConfigParameter $configuration){
+		public function initialize(IConfigParameter $configuration){
 			$this->inited=true;
 			//die(BACKTRACE());
 			//$session = getManager('CSession');

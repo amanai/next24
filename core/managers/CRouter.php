@@ -12,7 +12,7 @@
 			$this->path = isset($_REQUEST['_path'])?$_REQUEST['_path']:DEFAULT_CONTROLLER;
 		}
 		
-		function init(IConfigParameter $configuration){
+		function initialize(IConfigParameter $configuration){
 			$this -> inited = true;
 		}
 

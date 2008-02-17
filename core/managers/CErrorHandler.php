@@ -1,19 +1,16 @@
 <?php
-require_once(UTILS_PATH.'CMailer.php');
-
-class CErrorHandler extends CBaseManager {
+class CErrorHandler extends CBaseManager implements IManager{
 	private $log = null;
 	private $_config  = null;
-	public function init($configuration){
+	public function initialize(IConfigParameter $configuration){
 		$this -> _config = $configuration;
-		set_exception_handler(array($this, 'exception_handler'));
-		set_error_handler(array($this, 'error_handler'));
-		parent::init();
+		Project::setErrorHandler($this);
 	}
 	
 	
-	public function exception_handler($exception) 
+	public function handleException($exception) 
 	{
+		die("");
 		$exc = "EXCEPTION. Code: ".$exception->getCode()."; Message: ".$exception->getMessage()."; Script: ".$exception->getFile()."; Line: ".$exception->getLine()."; Trace: ".$exception->getTraceAsString()."; Output: ".$exception->__toString().";";
 		//вывод в протокол
 		if ( ($log = Project::get($this -> _config -> get('logger_id')))){
@@ -25,7 +22,7 @@ class CErrorHandler extends CBaseManager {
 		}
 	}
 
-	public function error_handler($errno, $errstr, $errfile, $errline) 
+	public function handlePhpError($errno, $errstr, $errfile, $errline) 
 	{
 	    $errortype = array (
 	                E_ERROR           => "Error",
@@ -47,6 +44,7 @@ class CErrorHandler extends CBaseManager {
 //	    if (in_array($errno, $user_errors)) {
 //	        $err .= " Var dump: " . print_r($vars) . ";";
 //	    }
+// TODO:: generate exception, if error has level for exception
 		//вывод в протокол
 		if ( ($log = Project::get($this -> _config -> get('logger_id')))){
 			

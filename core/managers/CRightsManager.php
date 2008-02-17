@@ -1,8 +1,8 @@
 <?php
-	class CRightsManager extends CBaseManager {
+	class CRightsManager extends CBaseManager implements IManager{
 		private $forbiddenName;
 		
-		function init(IConfigParameter $configuration){
+		function initialize(IConfigParameter $configuration){
 			$this->inited=true;
 		}
 		

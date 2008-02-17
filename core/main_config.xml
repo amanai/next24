@@ -8,8 +8,10 @@
 										 app/controllers;
 										 app/includes;
 										 app/interfaces;
-										 app/models;
-										 app/views;" />
+										 app/models/new_version;
+										 app/views;
+										 app/views/admin;
+										 core/utils/dbsimple;" />
 	</module>
 	
 	<!-- Application logger -->
@@ -27,24 +29,49 @@
 		<param key="send_mail" value="false" />
 	</module>
 	
+	<!-- Error handler module -->
+	<module id="database"  class="DatabaseManager">
+		<param key="DSN" value="mysql://root:pass@localhost/next24" />
+		<param key="native_logger" value="myLogger" enabled="false" />
+	</module>
+	
 	<!-- Sesion module -->
 	<module id="session"  class="CSession" >
 		<!-- Params such as session live time, name etc. -->
 	</module>
 	
-	<!-- Router module -->
-	<module id="router"  class="CRouter" >
-		<!-- Params such as url rewrite rules etc. -->
+	<!-- Http request handling -->
+	<module id="request" class="HttpRequestManager">
+		<param key="rewrite" value="true"/>
+		<param key="request_key" value="_path"/>
+		<param key="controller_name_extension" value="html" />
+		<param key="param_delimiter" value="/" />
+		<param key="value_delimiter" value=":" />
+		<param key="request_service_key" value="sk" />
+		<param key="request_action_key" value="act" />
 	</module>
 	
 	<!-- Right manager module -->
 	<module id="rm"  class="CRightsManager" >
 		<!-- Params such as system user class, password rules etc auth rules etc. -->
+		<param key="user" value="CUser"/>
 	</module>
 	
-	<!-- User module (need to change -->
-	<module id="user"  class="CUser" >
-		<!-- Must be moved -->
+	
+	<!-- Template manager -->
+	<module id="template_manager" class="TemplateManager" >
+		<param key="template_dir" value="app/templates" />
+		<param key="js_path" value="app/js/" />
+		<param key="css_path" value="app/css/" />
 	</module>
+	
+	<!-- Http response handling -->
+	<module id="response" class="HttpResponse">
+		<param key="DefaultCharset" value="UTF-8"/>
+		<param key="ContentType" value="text/html"/>
+		<param key="CacheExpire" value="3600" />
+		<param key="CacheControl" value="nocache" />
+	</module>
+	
 	
 </application>

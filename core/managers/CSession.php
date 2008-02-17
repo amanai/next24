@@ -46,7 +46,7 @@ class CSession extends CBaseManager implements IManager {
 		session_start();
 		parent::init();
 	}*/
-	public function init(IConfigParameter $configuration){
+	public function initialize(IConfigParameter $configuration){
 		$this->inited = true;		
 		$this->_initialized=true;	
 		

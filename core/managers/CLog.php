@@ -20,7 +20,7 @@ class CLog extends CBaseManager implements IManager{
 	*/
 
 	//function init($logDir='log', $logFile='log_', $headerTitle='LOG', $logMode='oneFile', $countFile="counter"){
-	function init(IConfigParameter $configuration){
+	function initialize(IConfigParameter $configuration){
 		//-----------------------------------------------------
 		//set global variables
 		/*$this->logDir=$logDir;

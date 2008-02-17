@@ -3,7 +3,7 @@ class NamespaceManager extends ApplicationManager implements IManager{
 
 	private $_script_dir;
 	
-			function init(IConfigParameter $configuration){
+			function initialize(IConfigParameter $configuration){
 				$this -> _script_dir = dirname($_SERVER['SCRIPT_FILENAME']);
 				// TODO:: need aliases from configuration
 				Project::setNS($this);

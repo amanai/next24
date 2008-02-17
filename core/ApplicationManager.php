@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__). DIRECTORY_SEPARATOR. 'ConfigParameter.php');
+require_once(dirname(__FILE__). DIRECTORY_SEPARATOR. 'interfaces' . DIRECTORY_SEPARATOR . 'IManager.php');
 abstract class ApplicationManager{
 	protected $_debugger = null;
 	protected $_config = null;
