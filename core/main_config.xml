@@ -7,7 +7,7 @@
 										 core/utils;
 										 app/controllers;
 										 app/includes;
-										 app/interfaces;
+										 core/interfaces;
 										 app/models/new_version;
 										 app/views;
 										 app/views/admin;
