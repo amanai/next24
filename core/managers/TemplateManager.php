@@ -4,6 +4,7 @@ class TemplateManager extends ApplicationManager implements IManager{
 	private $_templateDir;
 	private $_css_path;
 	private $_js_path;
+	private $_image_path;
 	
 			function initialize(IConfigParameter $configuration){
 				$this -> _templateDir = Project::NS() -> path($configuration -> get('template_dir'));
@@ -13,6 +14,7 @@ class TemplateManager extends ApplicationManager implements IManager{
 				
 				$this -> _js_path = $configuration -> get('js_path');
 				$this -> _css_path = $configuration -> get('css_path');
+				$this -> _image_path = $configuration -> get('image_path');
 				Project::setTemplateManager($this);
 				$this -> _common_config($configuration);
 			}
@@ -38,5 +40,10 @@ class TemplateManager extends ApplicationManager implements IManager{
 			public function getJsPath(){
 				return $this -> _js_path;
 			}
+			
+			public function getImagePath(){
+				return $this -> _image_path;
+			}
+			
 }
 ?>

@@ -22,17 +22,28 @@ class AppUser{
 				return $this -> _guest;
 			}
 			
+			function setIsGuest(){
+				$session = Project::getSession();
+				$session -> clear();
+				$this -> _guest = true;
+				$this -> _dbUser =  new UserModel;
+			}
+			
 			function setIsLogged($dbUser){
 				$session = Project::getSession();
 				$session -> add('logged', true);
 				$session -> add('logged_user_id', (int)$dbUser -> id);
 				$this -> _guest = false;
+				$this -> _dbUser = $dbUser;
 			}
 			
-			function logout(){
-				$session = Project::getSession();
-				$session -> clear();
-				$this -> _guest = true;
+			function login($user, $pwd){
+				$this -> _dbUser -> login($user, $pwd);
+				if ($this -> _dbUser -> id > 0){
+					return $this -> _dbUser;
+				} else {
+					return false;
+				}
 			}
 			
 			function getDbUser(){

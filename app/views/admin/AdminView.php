@@ -6,5 +6,9 @@ class AdminView extends BaseAdminView{
 			$this -> setTemplate(null, 'desktop.tpl.php');
 			
 		}
+		
+		function Login(){
+			$this -> setTemplate(null, 'login.tpl.php');
+		}
 }
 ?>

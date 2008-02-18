@@ -1,5 +1,5 @@
 <?php
-class ActionModel extends BaseModel{
+class ParamModel extends BaseModel{
 		function __construct(){
 			parent::__construct('param');
 		}

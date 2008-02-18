@@ -125,6 +125,14 @@ class Project{
 	    	}
 	    	return $response;
 	    }
+	    
+	    function getAjaxResponse(){
+	    	if (($response = self::get('ajax_response')) === null){
+	    		$response = new AjaxResponse();
+	    		self::set('ajax_response', $response);
+	    	}
+	    	return $response;
+	    }
 		
 		function setNS(IManager $ns){
 	    	self::set('namespace_manager', $ns);

@@ -65,6 +65,7 @@
 		<param key="login_controller" value="Admin" />
 		<param key="login_action" value="LoginForm" />
 		<param key="logger_id" value="logger" />
+		<param key="autorization" value="true" />
 	</module>
 	
 	
@@ -73,6 +74,7 @@
 		<param key="template_dir" value="app/templates" />
 		<param key="js_path" value="app/js/" />
 		<param key="css_path" value="app/css/" />
+		<param key="image_path" value="app/images/" />
 		<param key="set_to_registry" value="false" />
 	</module>
 	

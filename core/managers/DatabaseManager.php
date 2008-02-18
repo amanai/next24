@@ -14,6 +14,7 @@ class DatabaseManager extends ApplicationManager implements IManager{
 				}
 				$this -> _driver -> query("SET NAMES utf8");
 				$this -> _driver -> setLogger($configuration -> get('native_logger'));
+				//$this -> _driver -> setLogger('myLogger');
 				Project::setDatabase($this);
 			}
 			

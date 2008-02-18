@@ -15,7 +15,7 @@ class ControllerModel extends BaseModel{
 		function loadDefault($admin = true){
 			$DE = Project::getDatabase();
 			$result = array();
-			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE default=1 AND admin=?d LIMIT 1", $admin);
+			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE `default`=1 AND admin=?d LIMIT 1", $admin);
 			$this -> bind($result);
 			return $result;
 		}

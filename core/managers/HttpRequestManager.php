@@ -186,10 +186,16 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 				$parameters = array_merge(array($this -> _request_controller_key=>$service), $parameters);
 			}
 			
+			
+			
 			$query = http_build_query(is_array($parameters)?$parameters:array(), '', $this -> _param_delimiter);
+			
 			$url = '';
 			if ($this -> _rewrite){
 				$url = $service . (($this -> _controller_key_ext !== null)?'.'.$this -> _controller_key_ext:null );
+				if ( $action !== null ) {
+					$url .= $this -> _param_delimiter . $action;
+				}
 			}
 			
 			if ($query){

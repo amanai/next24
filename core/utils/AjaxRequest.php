@@ -15,7 +15,7 @@ class AjaxRequest{
 		}
 
 		static function getParam($controller, $action, $params, $method, $async = false, $dataType = 'json'){
-			$router = getManager('CRouter');
+			$router = Project::getRequest();
 			if (!is_array($params)){
 				$params = array();
 			}

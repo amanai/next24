@@ -44,7 +44,7 @@ class AppAutorization extends ApplicationManager implements IManager{
 				
 				$request_controller = $request -> getController();
 				$request_action = $request -> getAction();
-				
+				//var_dump($request_controller, $request_action);die;
 				$controller_model = new ControllerModel;
 				$controller_model -> loadByKey($request_controller);
 				$load_default = false;
@@ -52,9 +52,10 @@ class AppAutorization extends ApplicationManager implements IManager{
 					// Requested controller exists at list
 					$reflection = new ReflectionClass($controller_model -> name);
 					$action_model = new ActionModel;
-					$action_model -> loadByKey($request_action);
+					$action_model -> loadByKey($controller_model -> id, $request_action);
 					if (($action_model -> id > 0) && $reflection -> hasMethod($request_action . 'Action')){
 						// Request action exists at database list and controller has method for it
+
 						if ($auth -> checkAccess($controller_model -> id, $action_model -> id) === true){
 							// We have access for requested controller and action
 							$this -> setData($controller_model, $action_model);
@@ -110,7 +111,7 @@ class AppAutorization extends ApplicationManager implements IManager{
 					// Load default controller and action
 					$controller_model = new ControllerModel;
 					// TODO:: how to check, if we need default admin or user controller? 
-					$controller_model -> loadDefault($admin = false);
+					$controller_model -> loadDefault($admin = true);
 					if ($controller_model -> id > 0){
 						// Default controller exists and load default action of it
 						$reflection = new ReflectionClass($controller_model -> name);
@@ -145,7 +146,7 @@ class AppAutorization extends ApplicationManager implements IManager{
 						// Login controller exists at database list
 						$reflection = new ReflectionClass($controller_model -> name);
 						$action_model = new ActionModel;
-						$action_model -> loadByKey($this -> _login_action);
+						$action_model -> loadByKey($controller_model -> id, $this -> _login_action);
 						if (($action_model -> id > 0) && $reflection -> hasMethod($action_model -> name . 'Action')){
 							// Login action exists at login controller
 							$this -> setData($controller_model, $action_model);
@@ -154,6 +155,16 @@ class AppAutorization extends ApplicationManager implements IManager{
 						}
 					} else {
 						throw new SecurityException('Critical security error: login controller not defined at configuration');
+					}
+				}
+				
+				if (($controller_model -> id > 0) && ($action_model -> id > 0)){
+					if ( ($controller_model -> name != $request_controller) || ($action_model -> name != $request_action)){
+						//var_dump($get_login, $load_default,$controller_model -> name, $request_controller, $action_model -> name, $request_action);die;
+						if ($get_login || $load_default){
+							// If controllers is not equal to requested
+							Project::getResponse() -> redirect(Project::getRequest() -> createUrl($controller_model -> name, $action_model -> name));
+						}
 					}
 				}
 			}

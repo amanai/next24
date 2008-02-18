@@ -3,16 +3,17 @@ class AppAuth{
 	private $_accessList = array();
 	private $_subactions = array();
 		function __construct($autorization){
+			$this -> init($autorization);
 			
-			$this -> _aviableControls = array();
-			
+		}
+		
+		function init($autorization){
 			if ($autorization -> needAutorization() === true){
 				$type = Project::getUser() -> getDbUser() -> getUserType();
 			} else {
 				$this -> _guest = true;
 				$type = new UserTypeModel;
 			}
-			
 			// TODO:: need adding cache
 			$right_model = new UserRightModel;
 			$list = $right_model -> loadByUserType($type -> id);
