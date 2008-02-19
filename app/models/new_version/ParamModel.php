@@ -10,7 +10,18 @@ class ParamModel extends BaseModel{
 									INNER JOIN param_group ON param_group.id = param.param_group_id AND LOWER(param_group.label)=LOWER(?)", $group_name);
 		}
 		
+		function getByGroupId($group_id){
+			$DE = Project::getDatabase();
+			return $DE -> select("SELECT param.id as id, param.name as name, param.value as value, param.php_type as php_type from param 
+									INNER JOIN param_group ON param_group.id = param.param_group_id AND param_group.id=?d", $group_id);
+		}
+		
+		function count($group_id){
+			return Project::getDatabase() -> selectCell("SELECT count(id) FROM ".$this -> _table ." WHERE param_group_id=?d", (int)$group_id);
+		}
+		
 		public function getParam($group_name, $param_name){
+			$DE = Project::getDatabase();
 			if ($group_name !== null){
 				// TODO:: need caching
 				$DE = Project::getDatabase();
@@ -65,11 +76,12 @@ class ParamModel extends BaseModel{
 		}
 		
 		function exists($group_id, $param_name){
+			$DE = Project::getDatabase();
 			$sql = "SELECT * " .
 					   " FROM  param " .
 						" WHERE " .
-						" params_group_id = ?d" .
-						" AND LOWER(params.name) = LOWER(?)";
+						" param_group_id = ?d" .
+						" AND LOWER(param.name) = LOWER(?)";
 			$rez = $DE -> selectRow($sql, $group_id, $param_name);
 			if (count($rez) === 0){
 				return false;
@@ -79,7 +91,7 @@ class ParamModel extends BaseModel{
 		}
 		
 		function casting(){
-			switch(trim(strtolower($this -> get('php_type')))){
+			switch(trim(strtolower($this -> php_type))){
 				case "string":
 						break;
 				case "integer":

@@ -2,6 +2,10 @@
 require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AdminController.php');
 class AdminParameterController extends AdminController{
 	
+		function __construct(){
+			parent::__construct("AdminParameterView");
+			
+		}
 		
 		
 		function BaseAdminData(){
@@ -11,82 +15,91 @@ class AdminParameterController extends AdminController{
 	
 	
 		function GroupListAction(){
+			
+			
 			$this -> BaseAdminData();
-			$this -> setModel("Controllers_list");
-			$list = $this -> model -> getAll();
-			$counter = 2;
-			foreach($list as &$item){
-				$item['number'] = $counter;
-				$counter++;
-			}
-			array_unshift($list, array('number'=>1, 'id'=>0, 'name'=>'CommonParameters', 'description'=>'Общие параметры, не привязанные ни к какому контроллеру'));
-			$this -> view -> group_list = $list;
-			$this -> view -> content .= $this->view->render(VIEWS_PATH.'admin/parameters/group_list.tpl.php');
-			$this -> view -> display();
+			$request = Project::getRequest();
+			$info = array();
+
+			
+			$param_model = new ParamModel;
+			$item = array();
+			$item['number'] = 1;
+			$item['controller_description'] = 'Общие параметры конфигурации';
+			$item['count_param'] = $param_model -> count(0);
+			$item['controller_id'] = 0;
+			$item['label'] = 'Common';
+
+			$model = new ParamGroupModel;
+			$info['group_list'] = $model -> loadAll();
+			array_unshift($info['group_list'], $item);
+			$info['edit_controller'] = null;
+			$info['edit_action'] = 'EditGroup';
+			$this -> _view -> GroupList($info);
+			$this -> _view -> parse();
 		}
 		
 		
-		function EditGroupAction(){
+		function EditGroupAction($rid = null){
 			$this -> BaseAdminData();
-			// TODO:: id is ID from controllers_list!
-			$group_id = (int)$this -> id;
-			$this -> setModel("Controllers_list");
-			$this -> model -> resetSql();
-			$this -> model -> setData($this -> model -> getById($group_id));
-			$group_id = (int)$this -> model -> get('id');
-			$controller_name = $this -> model -> get('name');
-			$this -> view -> controller_name = $controller_name;
-			$this -> view -> controller_id = $group_id;
-			$this -> view -> controller_description = $this -> model -> get('description');
+			$request = Project::getRequest();
+			$info = array();
 			
-			if ($group_id > 0){
-				// TODO:: check param group, if not exists - create group
-				$this -> setModel("ParamsGroup");
-				$this -> model -> resetSql();
-				$this -> model -> where('label="'.$this -> model -> escape($controller_name).'"');
-				$group_data = $this -> model -> getOne();
-				if (is_array($group_data) && count($group_data)){
-					$param_group_id = (int)$group_data['id'];
+			if ((int)$rid > 0){
+				$controller_id = $rid;
+			} else {
+				$controller_id = (int)$request -> id;
+			}
+			
+			$controller_model = new ControllerModel;
+			$controller_model -> load($controller_id);
+			
+			$param_group_model = new ParamGroupModel;
+			if ($controller_id > 0){
+				$param_group_model -> loadByLabel($controller_model -> name);
+				if ($param_group_model -> id > 0){
+					$param_group_id = $param_group_model -> id;
 				} else {
-					// Group not exists
-					$this -> model -> resetSql();
-					$this -> model -> set('label', $controller_name);
-					$param_group_id = (int)$this -> model -> save();
+					// Group is not exists yet, so create it
+					$param_group_model -> label = $controller_model -> name;
+					$param_group_id = $param_group_model -> save();
 				}
 			} else {
 				$param_group_id = 0;
 			}
-			$this -> view -> param_group_id = $param_group_id;
-			$this -> view -> php_types = array(
-												'string'=>'строка',
+			
+			$info['controller_id'] = $controller_id;
+			$info['param_group_id'] = $param_group_id;
+			$info['php_types'] = array(			'string'=>'строка',
 												'integer'=>'целое',
 												'float'=>'с плавающей точкой'
 												);
 			
-			$this -> setModel("Params");
-			$this -> model -> resetSql();
-			$this -> model -> where('params_group_id='.(int)$param_group_id);
-			$list = $this -> model -> getAll();
-			$counter = 1;
-			foreach($list as &$item){
-				$item['number'] = $counter;
-				$counter++;
-			}
-			array_push($list, array('number'=>$counter, 'id'=>0, 'name'=>'', 'value'=>''));
-			$this -> view -> group_list = $list;
-			$this -> view -> content .= $this->view->render(VIEWS_PATH.'admin/parameters/param_list.tpl.php');
-			$this -> view -> display();
+			$param_model = new ParamModel;
+			$list = $param_model -> getByGroupId($param_group_id);
+			array_push($list, array('id'=>0, 'name'=>'', 'value'=>''));
+			$info['param_list'] = $list;
+			$info['save_controller'] = null;
+			$info['save_action'] = 'SaveParams';
+			$info['save_controller'] = null;
+			$info['delete_controller'] = null;
+			$info['delete_action'] = 'DeleteParam';
+			
+			$this -> _view -> ParamList($info);
+			$this -> _view -> parse();
 		}
 		
 		function SaveParamsAction(){
+			$request = Project::getRequest();
+			/*echo '<pre>';
+			print_r($request -> getKeys());*/
 			// TODO:: this id is id from params_group table!
-			if (is_array($this -> ids) && count($this -> ids)){
-				foreach($this -> ids as $id){
+			if (is_array($request -> ids) && count($request -> ids)){
+				foreach($request -> ids as $id){
 					$id = (int)$id;
-					$this -> setModel("Params");
-					$this -> model -> resetSql();
+					$model = new ParamModel;
 					if ($id === 0){
-						if (isset($this -> param_name[$id]) && strlen($this -> param_name[$id]) && isset($this -> param_value[$id]) && strlen($this -> param_value[$id])){
+						if (isset($request -> param_name[$id]) && strlen($request -> param_name[$id]) && isset($request -> param_value[$id]) && strlen($request -> param_value[$id])){
 							// New param
 							$data = array();
 						} else {
@@ -94,10 +107,10 @@ class AdminParameterController extends AdminController{
 							continue;
 						}
 					} else {
-						$data = $this -> model -> getById($id);
+						$data = $model -> load($id);
 					}
 					
-					$tmp = $this -> model -> exists($this -> id, $this -> param_name[$id]);
+					$tmp = $model -> exists($request -> param_group_id, $request -> param_name[$id]);
 					if ($tmp !== false){
 						if (isset($data['id'])){
 							if ((int)$data['id'] === (int)$tmp['id']){
@@ -116,30 +129,27 @@ class AdminParameterController extends AdminController{
 						$can_update = true;
 					}
 					if ($can_update){
-						
-						$this -> model -> setData($data);
-						$this -> model -> set('params_group_id', $this -> id);
-						$this -> model -> set('name', $this -> param_name[$id]);
-						$this -> model -> set('value', $this -> param_value[$id]);
-						$this -> model -> set('php_type', $this -> php_type[$id]);
-						$this -> model -> casting();
-						$this -> model -> save();
+						$model -> param_group_id = $request -> param_group_id;
+						$model -> name = $request -> param_name[$id];
+						$model -> value = $request -> param_value[$id];
+						$model -> php_type = $request -> php_type[$id];
+						$model -> casting();
+						$model -> save();
 					} else {
 						// TODO:: Flash message that parameter already exists
-						
+						$this -> _view -> addFlashMessage(FM::ERROR, "Параметр с таким названием уже существует:". $request -> param_name[$id]);
 					}
 				}
 			}
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('AdminParameter', 'EditGroup', array('id' => $this -> controller_id)));
+			$this -> EditGroupAction($request -> controller_id);
+			//Project::getResponse() -> redirect($request -> createUrl(null, 'EditGroup', array('id' => $request -> controller_id)));
 		}
 		
 		function DeleteParamAction(){
-			$this -> setModel('Params');
-			$this -> model -> id = (int)$this -> id;
-			$this -> model -> delete();
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('AdminParameter', 'EditGroup', array('id' => $this -> controller_id)));
+			$request = Project::getRequest();
+			$model = new ParamModel;
+			$model -> delete($request -> id);
+			Project::getResponse() -> redirect($request -> createUrl('AdminParameter', 'EditGroup', array('id' => $request -> cid)));
 		}
 		
 		
