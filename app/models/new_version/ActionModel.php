@@ -19,5 +19,21 @@ class ActionModel extends BaseModel{
 			$this -> bind($result);
 			return $result;
 		}
+		
+		function getRightsByUserTypeController($user_type_id, $controller_id){
+			$DE = Project::getDatabase();
+			$sql = "SELECT " .
+										" a.id as id, " .
+										" a.`default` as `default`, " .
+										" a.page_title as page_title, " .
+										" CAST(ur.access AS UNSIGNED) as access, " .
+										" a.name as name " .
+								" FROM ".$this -> _table." as a " .
+								" LEFT JOIN user_right ur ON ur.controller_id = a.controller_id AND ur.user_type_id = ?d AND action_id = a.id" .
+								" WHERE " .
+									" a.controller_id = ?d " .
+									" GROUP BY a.id";
+			return $DE -> select($sql, (int)$user_type_id, (int)$controller_id);
+		}
 }
 ?>
