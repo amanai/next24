@@ -67,12 +67,15 @@ function handleResponse(msg){
 						} else {
 							parent = "body";
 						}
+						/*
+						alert(item);
+						alert(item.class);
 						if (item.class){
-							class = 'class="' + item.class + '"';
+							class = "class='" + item.class + "'";
 						} else {
-							class = '';
-						}
-						$(parent).append("<div id='" + item.id + "' " + class + ">" + item.html + "</div>");
+							class = "";
+						}*/
+						$(parent).append("<div id='" + item.id + "' >" + item.html + "</div>");
 						//alert(parent);
 					//}
 		          });
