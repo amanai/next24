@@ -25,7 +25,7 @@
 					<?php if((int)$item['default'] == 1) echo '+'; else echo '-'; ?>
 				</td>
 				<td>
-					<input onChange='ajax(<?php echo $item['change_access_link'];?>);' type="checkbox" <?php if((int)$item['access'] > 0) echo 'checked'; ?>  />
+					<input onClick='ajax(<?php echo $item['change_access_link'];?>);' type="checkbox" <?php if((int)$item['access'] > 0) echo 'checked'; ?>  />
 				</td>
 			</tr>
 			<?php } ?>
