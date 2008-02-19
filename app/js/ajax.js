@@ -1,4 +1,6 @@
 // JavaScript Document
+
+
 function blockUnblockUI(){
 	$().ajaxStop($.unblockUI);
 	block();
@@ -32,6 +34,12 @@ function handleResponse(msg){
 	if (msg){
 		p = eval(msg);
 		if (p){
+			if (p.clear_blocks){
+				$.each(p.clear_blocks, function(i, item){
+						$("div#"+item).html('');
+			          });
+			    p.clear_blocks = null;
+			}
 			if (p.location){
 				document.location = p.location;
 			}
@@ -77,6 +85,12 @@ function handleResponse(msg){
 function cancel(params){
 		p = eval(params);
 		if (p){
+			if (p.clear_blocks){
+				$.each(p.clear_blocks, function(i, item){
+						$("div#"+item).html('');
+			          });
+			    p.clear_blocks = null;
+			}
 			if (p.disable){
 				$.each(p.disable, function(i, item){
 						$("div#"+item).block();
