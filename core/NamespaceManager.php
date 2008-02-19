@@ -51,12 +51,12 @@ class NamespaceManager extends ApplicationManager implements IManager{
 						$dir = mb_substr($path, $last_dots + 3 );
 					}
 					if ($version !== null){
-						$dir .= '/' . $version;
+						$dir .= DIRECTORY_SEPARATOR . $version;
 					}
-					$p=realpath($new_script_dir . '/' . $dir);
+					$p=realpath($new_script_dir . DIRECTORY_SEPARATOR . $dir);
 				}
 				if ($p !== false){
-					$p .= '/';
+					$p .= DIRECTORY_SEPARATOR;
 				}
 				if (($p == false) || !file_exists($p) || !is_dir($p)){
 					throw new InvalidValueException("Invalid path: ".$path);

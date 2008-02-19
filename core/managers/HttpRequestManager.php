@@ -57,9 +57,8 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 						$this -> _current_action = trim($d[1]);
 						unset($d[1]);// unset action key
 					} // TODO:: else we need to get default action for this controller from application
-					
 					foreach($d as $item){
-						$tmp = explode(',', $item);
+						$tmp = explode($this -> _value_delimiter, $item);
 						if (isset($tmp[0])){
 							$v0 = trim($tmp[0]);
 							$v1 = isset($tmp[1])?trim($tmp[1]):null;

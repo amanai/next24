@@ -77,9 +77,6 @@ abstract class BaseModel{
 			if ((int)$this -> id > 0){
 				$DE -> query('UPDATE '.$this -> _table.' SET ?a WHERE id = ?d', $this -> _data, $this -> id);
 			} else {
-				if (!isset($this -> _data['client_id'])){
-					$this -> _data['client_id'] = $this -> _client_id;
-				}
 				$this -> id = (int)$DE -> query('INSERT INTO '.$this -> _table.' (?#) VALUES(?a)', array_keys($this -> _data), array_values($this -> _data));
 			}
 			return $this -> id;

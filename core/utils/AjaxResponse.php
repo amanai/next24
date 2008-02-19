@@ -21,8 +21,11 @@ class AjaxResponse{
 		}
 		
 		function location($controller, $action, $params){
-			$router = getManager('CRouter');
-			$this -> _response['location'] = $router -> createUrl($controller, $action, $params);
+			$this -> _response['location'] = Project::getRequest() -> createUrl($controller, $action, $params);
+		}
+		
+		function clearBlock($id){
+			$this -> _response['clear_blocks'][] = $id;
 		}
 		
 		public function addBlock($id, $parent_id, $html, $class = null){

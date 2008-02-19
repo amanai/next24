@@ -48,7 +48,7 @@ class AppAutorization extends ApplicationManager implements IManager{
 				$controller_model = new ControllerModel;
 				$controller_model -> loadByKey($request_controller);
 				$load_default = false;
-				if ($controller_model -> id > 0){
+				if ((int)$controller_model -> id > 0){
 					// Requested controller exists at list
 					$reflection = new ReflectionClass($controller_model -> name);
 					$action_model = new ActionModel;
@@ -102,7 +102,7 @@ class AppAutorization extends ApplicationManager implements IManager{
 					}
 				} else {
 					// Requested controller not exists at list
-					$this -> accessLog(__METHOD__, __LINE__, "Requested controller not exists: requested controller - ".$request_controller);
+					$this -> accessLog(__METHOD__, __LINE__, "Requested controller not exists: requested controller - " . $request_controller);
 					$load_default = true;
 				}
 				
@@ -163,7 +163,10 @@ class AppAutorization extends ApplicationManager implements IManager{
 						//var_dump($get_login, $load_default,$controller_model -> name, $request_controller, $action_model -> name, $request_action);die;
 						if ($get_login || $load_default){
 							// If controllers is not equal to requested
-							Project::getResponse() -> redirect(Project::getRequest() -> createUrl($controller_model -> name, $action_model -> name));
+							$url = Project::getRequest() -> createUrl($controller_model -> request_key, $action_model -> name);
+							// TODO:: check, if it's ajax request, then change location!!!
+							//Project::getAjaxResponse() -> location($url);
+							Project::getResponse() -> redirect($url);
 						}
 					}
 				}

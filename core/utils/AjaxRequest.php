@@ -23,6 +23,7 @@ class AjaxRequest{
 				$method = "POST";
 				$url = $router -> createUrl($controller, $action);
 			} else {
+				
 				$url = $router -> createUrl($controller, $action, $params);
 				//$url = str_replace(":", "___", $url);
 			}

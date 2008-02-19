@@ -36,6 +36,7 @@
 	<module id="database"  class="DatabaseManager">
 		<param key="DSN" value="mysql://root:pass@localhost/next24" />
 		<param key="native_logger" value="myLogger" enabled="false" />
+		<param key="logger_id" value="logger" />
 		<param key="set_to_registry" value="false" />
 	</module>
 	

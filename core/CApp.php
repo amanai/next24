@@ -38,7 +38,6 @@ class CApp {
 		
 		public function run(){
 			
-			
 			$autorize = Project::getSecurityManager() -> getAutorize(); 
 			$controller_class = $autorize -> getController() -> name;
 			$controller = new $controller_class;
