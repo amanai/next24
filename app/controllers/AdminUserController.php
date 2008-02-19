@@ -1,32 +1,35 @@
 <?php
-require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AdminController.php');
-require_once(UTILS_PATH . 'AjaxResponse.php');
-require_once(UTILS_PATH . 'AjaxRequest.php');
 class AdminUserController extends AdminController{
 	const USER_PER_PAGE = 20;
 		
 		
-		function BaseAdminData(){
-			parent::BaseAdminData();
-			$this -> view -> title = 'Пользователи';
+		function __construct(){
+			parent::__construct("AdminUserView");
+			
 		}
-	
+		
+		private function makeUserList(&$info){
+			$request = Project::getRequest();
+			$model = new UserModel;
+			$pager = new DbPager($request -> pn, self::USER_PER_PAGE);
+			$model -> setPager($pager);
+			$info['user_list'] = $model -> loadPage();
+			$info['list_pager'] = $model -> getPager();
+			$info['list_controller'] = null;
+			$info['list_action'] = 'List';
+		}
 	
 		function ListAction(){
 			$this -> BaseAdminData();
-			$router = getManager('CRouter');
-			$this -> getUserList();
-			/*if ($id > 0){
-				$this -> view -> pager_params = array('id'=>$id);
-			}*/
+			$request = Project::getRequest();
+			$info = array();
+			$this -> makeUserList($info);
 			
+			$info['edit_controller'] = null;
+			$info['edit_action'] = 'Edit';
 			
-			$this -> setModel('User_types');
-			$list = $this -> model -> loadAll();
-			$this -> view -> content .= $this->view->render(VIEWS_PATH.'admin/users/list.tpl.php');
-			$this -> view -> display();
-			
-			
+			$this -> _view -> UserList($info);
+			$this -> _view -> parse();
 			
 			
 		}
@@ -34,87 +37,51 @@ class AdminUserController extends AdminController{
 		
 		
 		function EditAction(){
-			$id = (int)$this -> id;
-			$response = new AjaxResponse();
-			
-			$response -> hide('edit_user');
-			$response -> enable('users_list');
-			$this -> view -> cancel_param = $response -> getResponse();
-			$response -> clear();
 			
 			
-			$this -> view -> save_param = AjaxRequest::getJsonParam('AdminUser', 'Save', array('id'=>$id, 'form_id' => 'edit_user_form'), "POST");
-			$this -> setModel('Users');
-			$this -> model -> setUtf8();
-			$this -> model -> resetSql();
-			$data = $this -> model -> getById($id);
-			$this -> view -> edit_data = $data;
+			$request = Project::getRequest();
+			$this -> BaseAdminData();
+			$model = new UserModel;
+			$data = $model -> load($request -> id);
+			$info = array();
+			$info['edit_data'] = $data;
+			$info['save_controller'] = null;
+			$info['save_action'] = 'Save';
 			
-			//var_dump($data['login'], mb_detect_encoding($data['login']));die;
+			$type_model = new UserTypeModel;
 			
-			$this -> setModel('User_types');
-			$list = $this -> model -> loadAll();
-			$this -> view -> user_group_list = $list;
+			$info['user_group_list'] = $type_model -> loadAll();
 			
-			$response -> hide('user_list');
-			$response -> block('edit_user', true, $this -> view -> ajaxRender(VIEWS_PATH.'admin/users/edit.tpl.php'));
-			$response -> disable('users_list');
-			$this -> view -> response($response);
+			$this -> _view -> AjaxEdit($info);
+			$this -> _view -> ajax();
 		}
 		
 		function SaveAction(){
-			$router = getManager('CRouter');
-			$id = (int)$this -> id;
-			$this -> setModel('Users');
-			$this -> model -> resetSql();
-			$data = $this -> model -> getById($id);
-			$data['login'] = $this -> login;
-			$data['user_type_id'] = (int)$this -> user_group;
-			
-			$this -> model -> setData($data, true);
-			
-			$this -> model -> save();
-			
-			// RESPONSE HERE
-			$response = new AjaxResponse();
-			$response -> hide('edit_user');
-			$response -> enable('users_list');
-			$this -> view -> cancel_param = $response -> getResponse();
-			$response -> clear();
-			
-			
-			$this -> getUserList();
-			
-			$response -> hide('edit_user');
-			$response -> enable('users_list');
-			$response -> block('users_list', true, $this -> view -> ajaxRender(VIEWS_PATH.'admin/users/user_list_ajax.tpl.php'));
-			$this -> view -> response($response);
-			/*$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('AdminParameter', 'EditGroup', array('id' => $this -> controller_id)));*/
-		}
-		
-		private function getUserList(){
-			$router = getManager('CRouter');
-			$this -> setModel("Users");
-			$this -> model -> resetSql();
-			$number = self::USER_PER_PAGE;
-			$this -> model -> limit($number, (int)$this -> pn*$number);
-			$this -> model -> pager();
-			$this -> model -> cols('users.*, user_types.name as group_name');
-			$this -> model -> join('user_types', 'user_types.id=users.user_type_id', 'LEFT');
-			$list = $this -> model -> getAll();
-			foreach ($list as &$item){
-				$item['delete_link'] = $router->createUrl('AdminUser', 'Delete', array('id' => $item['id']));
-				$item['edit_link'] = AjaxRequest::getJsonParam('AdminUser', 'Edit', array('id'=>$item['id']));
+			$request = Project::getRequest();
+			$model = new UserModel;
+			$model -> load($request -> id);
+			$do_save = true;
+			if (!strlen(trim($request -> login))){
+				$this -> _view -> clearFlashMessages();
+				$this -> _view -> addFlashMessage(FM::ERROR, "Не заполнено поле логин");
+				$do_save = false;
 			}
-			$this -> view -> user_list = $list;
-			$all = $this -> model -> foundRows();
-			$this -> view -> pages_number = ceil($all / $number);
-			$this -> view -> current_page_number = (int)$this -> pn;
-			$this -> view -> current_controller = 'AdminUser';
-			$this -> view -> current_action = 'List';
+			if ($do_save){
+				$this -> _view -> clearFlashMessages();
+				$model -> login = $request -> login;
+				$model -> user_type_id = $request -> user_group;
+				$id = $model -> save();
+				$model = new UserTypeModel;
+				$info = array();
+				$info['group_list'] = $model -> loadAll();
+				$info['edit_controller'] = null;
+				$info['edit_action'] = 'Edit';
+				$this -> makeUserList($info);
+				$this -> _view -> AjaxList($info);
+			}
+			$this -> _view -> ajax();
 		}
-		
+
 		function DeleteAction(){
 			die(__METHOD__);
 			$router = getManager('CRouter');
