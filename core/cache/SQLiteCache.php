@@ -1,5 +1,5 @@
 <?php
-class SQLiteCache extends BaseCache implements ICache{
+class SQLiteCache extends BaseCache implements ICache, IManager{
 	private $_cache_table;
 		
 		public function initialize(IConfigParameter $configuration){

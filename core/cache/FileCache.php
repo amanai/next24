@@ -1,6 +1,5 @@
 <?php
-require_once(FRAMEWORK_CLASSES. 'Caches' . DIRECTORY_SEPARATOR . 'Cache_Lite.php');
-class FileCache extends BaseCache implements ICache{
+class FileCache extends BaseCache implements ICache, IManager{
 	
 	private $_engine;
 	
