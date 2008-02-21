@@ -6,9 +6,11 @@
 		const DEFAULT_ALBUM_PER_PAGE = 8;
 		const DEFAULT_PHOTO_PER_PAGE = 8;
 		
-		function __construct($View=null, $params = array(), $vars = array()){
-			$this -> setModel("Albums");
-			parent::__construct($View, $params, $vars);
+		function __construct($view_class = null){
+			if ($view_class === null){
+				$view_class = "AlbumView";
+			}
+			parent::__construct($view_class);
 		}
 		
 		
