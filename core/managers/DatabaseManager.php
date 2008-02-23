@@ -29,7 +29,7 @@ function myLogger($db, $sql){
   $caller = $db->findLibraryCaller();
   $tip = "at ".@$caller['file'].' line '.@$caller['line'];
   // Печатаем запрос (конечно, Debug_HackerConsole лучше)
-  //echo "<xmp title=\"$tip\">"; print_r($sql); echo "</xmp>";
+  echo "<xmp title=\"$tip\">"; print_r($sql); echo "</xmp>";
   //echo '~~~'.print_r($sql).'~~~';
   if ( ($logger = Project::get("logger")) !== null){
 		//$logger -> writeLog($tip."::".$sql);

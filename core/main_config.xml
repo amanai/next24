@@ -12,6 +12,7 @@
 										 app/models/new_version;
 										 app/views;
 										 app/views/admin;
+										 app/views/site;
 										 core/utils/dbsimple;" />
 		<param key="set_to_registry" value="false" />
 	</module>
@@ -50,12 +51,11 @@
 	<module id="request" class="HttpRequestManager">
 		<param key="rewrite" value="true"/>
 		<param key="request_key" value="_path"/>
-		<param key="controller_name_extension" value="html" enabled="false" />
 		<param key="param_delimiter" value="/" />
 		<param key="value_delimiter" value=":" />
-		<param key="request_service_key" value="sk" />
 		<param key="request_action_key" value="act" />
 		<param key="set_to_registry" value="false" />
+		<param key="base_host" value="next24" />
 	</module>
 	
 	<!-- Right manager module -->

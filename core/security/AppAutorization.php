@@ -41,69 +41,87 @@ class AppAutorization extends ApplicationManager implements IManager{
 				
 				$request = Project::getRequest();
 				
-				
-				$request_controller = $request -> getController();
-				$request_action = $request -> getAction();
-				//var_dump($request_controller, $request_action);die;
-				$controller_model = new ControllerModel;
-				$controller_model -> loadByKey($request_controller);
 				$load_default = false;
-				if ((int)$controller_model -> id > 0){
-					// Requested controller exists at list
-					$reflection = new ReflectionClass($controller_model -> name);
-					$action_model = new ActionModel;
-					$action_model -> loadByKey($controller_model -> id, $request_action);
-					if (($action_model -> id > 0) && $reflection -> hasMethod($request_action . 'Action')){
-						// Request action exists at database list and controller has method for it
-
-						if ($auth -> checkAccess($controller_model -> id, $action_model -> id) === true){
-							// We have access for requested controller and action
-							$this -> setData($controller_model, $action_model);
+				$request_action = $request -> getAction();
+				$action_model = new ActionModel;
+				$action_model -> loadByRequestKey($request_action);
+				if ((int)$action_model -> id > 0){
+					// requested action exists
+					$controller_model = new ControllerModel;
+					$controller_model -> load($action_model -> controller_id);
+					if ((int)$controller_model -> id > 0){
+						// controller exists
+						$reflection = new ReflectionClass($controller_model -> name);
+						if ($reflection -> hasMethod($action_model -> name . 'Action')){
+							// Action exists at controller
+							if ($auth -> checkAccess($controller_model -> id, $action_model -> id) === true){
+								// Have access to requested action
+								$this -> setData($controller_model, $action_model);
+							} else {
+								$this -> accessLog(__METHOD__, __LINE__, "No access to requested action: requested action - ".$request_action.";controller - ".$controller_model -> name);
+								// No access to action. try to get default action of controller
+								$action_model = new ActionModel;
+								$action_model -> loadDefault($controller_model -> id);
+								if ($action_model -> id > 0){
+									// Action exists at database
+									if ($reflection -> hasMethod($action_model -> name . 'Action')){
+										// Action method exists at controller class
+										if ($auth -> checkAccess($controller_model -> id, $action_model -> id) === true){
+											// Have access to default action of requested controller (by requested action)
+											$this -> setData($controller_model, $action_model);
+										} else {
+											// No access to default action : try to load default controller and action
+											$this -> accessLog(__METHOD__, __LINE__, "No access to default action of requested action's controller: default action - ".$action_model -> name.";controller - ".$controller_model -> name);
+											$load_default = true;
+										}
+									} else {
+										// Default action not exists at controller
+										$this -> accessLog(__METHOD__, __LINE__, "Default action method not exists at controller class: default action - ".$action_model -> name.";controller - ".$controller_model -> name);
+										$load_default = true;
+									}
+								} else {
+									// Default action not exists at database (default in controller of requested action)
+									$this -> accessLog(__METHOD__, __LINE__, "Default action not exists at database: controller - ".$controller_model -> name);
+									$load_default = true;
+								}
+							}
 						} else {
-							$this -> accessLog(__METHOD__, __LINE__, "No access to requested action of requested controller: requested controller - ".$request_controller.";requested action - ".$request_action);
-							// No access to action, try to get default action for this controller
+							// No access to requested action:: get default action of this controller
+							$this -> accessLog(__METHOD__, __LINE__, "Requested action method not exists at controller class: default action - ".$action_model -> name.";controller - ".$controller_model -> name);
 							$action_model = new ActionModel;
 							$action_model -> loadDefault($controller_model -> id);
-							if (($action_model -> id > 0) && $reflection -> hasMethod($action_model -> name . 'Action')){
-								// Default action is defined and exists
-								if ($auth -> checkAccess($controller_model -> id, $action_model -> id) === true){
-									// We have access for requestd controller and default action
-									$this -> setData($controller_model, $action_model);
+							if ($action_model -> id > 0){
+								// Action exists at database
+								if ($reflection -> hasMethod($action_model -> name . 'Action')){
+									// Action method exists at controller class
+									if ($auth -> checkAccess($controller_model -> id, $action_model -> id) === true){
+										// Have access to default action of requested controller (by requested action)
+										$this -> setData($controller_model, $action_model);
+									} else {
+										// No access to default action : try to load default controller and action
+										$this -> accessLog(__METHOD__, __LINE__, "No access to default action of requested action's controller: default action - ".$action_model -> name.";controller - ".$controller_model -> name);
+										$load_default = true;
+									}
 								} else {
-									// No access to default action
-									$this -> accessLog(__METHOD__, __LINE__, "No access to default action of requested controller: requested controller - ".$request_controller.";requested action - ".$request_action); 
+									// Default action not exists at controller
+									$this -> accessLog(__METHOD__, __LINE__, "Default action method not exists at controller class: default action - ".$action_model -> name.";controller - ".$controller_model -> name);
 									$load_default = true;
 								}
 							} else {
-								// No exists default action for requested controller
-								$this -> accessLog(__METHOD__, __LINE__, "No exists default action for requested controller: requested controller - ".$request_controller.";requested action - ".$request_action.";default action - ".$action_model -> name);
+								// Default action not exists at database (default in controller of requested action)
+								$this -> accessLog(__METHOD__, __LINE__, "Default action not exists at database: controller - ".$controller_model -> name);
 								$load_default = true;
 							}
 						}
 					} else {
-						// No exists action, try to get default action for this controller
-						$action_model = new ActionModel;
-						$action_model -> loadDefault($controller_model -> id);
-						if (($action_model -> id > 0) && $reflection -> hasMethod($action_model -> name . 'Action')){
-							// Default action is defined and exists
-							if ($auth -> checkAccess($controller_model -> id, $action_model -> id) === true){
-								// We have access for requestd controller and default action
-								$this -> setData($controller_model, $action_model);
-							} else {
-								// No access to default action of requested controller
-								$this -> accessLog(__METHOD__, __LINE__, "No access to default action for requested controller: requested controller - ".$request_controller.";requested action - ".$request_action.";default action - ".$action_model -> name);
-								$load_default = true;
-							}
-						} else {
-							// No default action for requested controller
-							$this -> accessLog(__METHOD__, __LINE__, "No default action for requested controller: requested controller - ".$request_controller.";requested action - ".$request_action);
-							$load_default = true;
-						}
+						// Controller not exists
+						$load_default = true;
+						$this -> accessLog(__METHOD__, __LINE__, "Controller not exists at database: requested action - ".$request_action);
 					}
 				} else {
-					// Requested controller not exists at list
-					$this -> accessLog(__METHOD__, __LINE__, "Requested controller not exists: requested controller - " . $request_controller);
+					// Requested action not exists
 					$load_default = true;
+					$this -> accessLog(__METHOD__, __LINE__, "Requested action not exists at database: requested action - ".$request_action);
 				}
 				
 				$get_login = false;
@@ -158,8 +176,9 @@ class AppAutorization extends ApplicationManager implements IManager{
 					}
 				}
 				
+				Project::getRequest() -> setController($controller_model -> request_key);
 				if (($controller_model -> id > 0) && ($action_model -> id > 0)){
-					if ( ($controller_model -> name != $request_controller) || ($action_model -> name != $request_action)){
+					if ( $action_model -> request_key != $request_action ){
 						//var_dump($get_login, $load_default,$controller_model -> name, $request_controller, $action_model -> name, $request_action);die;
 						if ($get_login || $load_default){
 							// If controllers is not equal to requested
@@ -173,6 +192,7 @@ class AppAutorization extends ApplicationManager implements IManager{
 			}
 			
 			private function accessLog($method, $line, $str){
+				
 				if ( ($logger = Project::get($this -> _config -> get('logger_id'))) !== null){
 					$logger -> writeLog($method."::".$line."::".$str);
 				}

@@ -12,6 +12,14 @@ class ActionModel extends BaseModel{
 			return $result;
 		}
 		
+		function loadByRequestKey($key){
+			$DE = Project::getDatabase();
+			$result = array();
+			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE LOWER(request_key)=LOWER(?) LIMIT 1", $key);
+			$this -> bind($result);
+			return $result;
+		}
+		
 		function loadDefault($controller_id){
 			$DE = Project::getDatabase();
 			$result = array();

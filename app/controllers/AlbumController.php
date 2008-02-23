@@ -2,7 +2,7 @@
 /**
  * Контролер для управления фотоальбомами
  */
-	class AlbumController extends CBaseController{
+	class AlbumController extends SiteController{
 		const DEFAULT_ALBUM_PER_PAGE = 8;
 		const DEFAULT_PHOTO_PER_PAGE = 8;
 		
@@ -340,33 +340,15 @@
 		 */
 		public function ListAction(){
 			
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
+			$this -> BaseSiteData();
+			$info = array();
 			
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				$user_id = (int)$user['id'];
-			} else {
-				// TODO:: user is not logged or something wrong at his session data
-				die("Нет доступа");
-			}
-			
-			
-			
-			$this -> model -> resetSql();
-			//$this -> model -> pager();
-			
-			$this -> model -> order("albums.creation_date DESC");
-			if ( ($number = $this -> getParam('own_albums_per_list', self::DEFAULT_ALBUM_PER_PAGE)) === 0){
-				$number = self::DEFAULT_ALBUM_PER_PAGE;
-			}
-			
-			//$this -> model -> limit($number, (int)$this -> pn*$number);
-			$this -> model -> cols('albums.id, albums.name, albums.access, albums.is_onmain, albums.thumbnail_id, photos.thumbnail');
-			$this -> model -> join('photos', 'photos.id=albums.thumbnail_id', 'LEFT');
-			$this -> model -> where('albums.user_id='.(int)$user_id);
-			$list = $this -> model -> getAll();
-			//$all = $this -> model -> foundRows();
+			$model = new AlbumModel();
+			$list = $model -> loadAll("creation_date", "DESC");
+			$info['album_list'] = $list;
+			$this -> _view -> AlbumList($info);
+			$this -> _view -> parse();
+			return;
 			$login = trim($user['login']);
 			foreach($list as $key => $value){
 				

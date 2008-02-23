@@ -19,6 +19,10 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 
 	private $_requestMethod;
 	
+	private $_username = null;
+	
+	private $_request_by_number = array();
+	
 		function __get($param){
 			return $this -> getKey($param);
 		}
@@ -38,30 +42,28 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			} else {
 				$this -> _request = array();
 			}
+			
+			$this -> _username = $this -> getSubDomain($configuration -> get('base_host'));
+			
+			
 			$this -> _rewrite = (bool)$configuration -> get('rewrite');
 			if ($this -> _rewrite){
 				$request_key = $configuration -> get('request_key');
 				$this -> _param_delimiter = $configuration -> get('param_delimiter');
 				$this -> _value_delimiter = $configuration -> get('value_delimiter');
 				$query = $_GET[$request_key];
-				$d = explode('/', $query);
+				$d = explode($this -> _param_delimiter, $query);
 				if (isset($d[0]) && strlen($d[0])){
-					$this -> _current_controller = trim($d[0]);
-					$this -> _controller_key_ext = $configuration -> get('controller_name_extension');
-					if ($this -> _controller_key_ext){
-						$p = pathinfo($this -> _current_controller);
-						$this -> _current_controller = $p['filename'];
-					}
+					$this -> _current_action = trim($d[0]);
 					unset($d[0]);// unset controller key
-					if (isset($d[1]) && strlen($d[1])){
-						$this -> _current_action = trim($d[1]);
-						unset($d[1]);// unset action key
-					} // TODO:: else we need to get default action for this controller from application
 					foreach($d as $item){
 						$tmp = explode($this -> _value_delimiter, $item);
 						if (isset($tmp[0])){
 							$v0 = trim($tmp[0]);
 							$v1 = isset($tmp[1])?trim($tmp[1]):null;
+							if (strlen($v0)){
+								$this -> _request_by_number[] = $v0;
+							}
 							if (strlen($v1 !== null)){
 								if (($this -> _requestMethod == 'GET') || (($this -> _requestMethod == 'POST') && !isset($this -> _request[$v0]))){
 									$this -> _request[$v0] = $v1;
@@ -72,6 +74,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 				
 				}
 			} else {
+				die(__METHOD__."::".__LINE__."::Non-rewrite mode need some changes after last modification this manager!!!!");
 				$this -> _request_controller_key = $configuration -> get('request_service_key'); // Only for non-rewrite mode
 				$this -> _request_action_key = $configuration -> get('request_action_key'); // Only for non-rewrite mode
 				if (!$this -> _request_controller_key) {
@@ -86,8 +89,12 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			$this -> _common_config($configuration);
 		}
 		
-		function getController(){
-			return $this -> _current_controller;
+		function getUsername(){
+			return $this -> _username;
+		}
+		
+		function setController($value){
+			$this -> _current_controller = $value;
 		}
 		
 		function getAction(){
@@ -106,6 +113,22 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 		 */
 		public function getKey($key, $default = null){
 			return isset($this -> _request[$key])?$this -> _request[$key]:$default;
+		}
+		
+		public function getKeyByNumber($number, $default = null){
+			if (isset($this -> _request_by_number[$number])){
+				return $this -> _request_by_number[$number];
+			} else {
+				return $default;
+			}
+		}
+		
+		public function getValueByNumber($number, $default = null){
+			if (isset($this -> _request_by_number[$number])){
+				return $this -> getKey($this -> _request_by_number[$number], $default);
+			} else {
+				return $default;
+			}
 		}
 		
 		/**
@@ -141,7 +164,18 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			return $this -> getBaseUrl() . $this -> getApplicationUrl();
 		}
 		
-		
+		public function getSubDomain($base_host){
+			$p = parse_url($this -> getBaseUrl());
+			if (($pos = strpos($p['host'], '.'.strtolower($base_host))) !== false) {
+				$subdomain = substr($p['host'], 0, $pos);
+				if (!strlen($subdomain)){
+					$subdomain = null;
+				}
+			} else {
+				$subdomain = null;
+			}
+			return $subdomain;
+		}
 		
 		/**
 		 * Get application base url
@@ -173,9 +207,28 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			}
 		}
 		
-		public function createUrl($service = null, $action = null, $parameters = null){
+		public function createUrl($service = null, $action = null, $parameters = null, $user = null){
 			if ($service === null){
 				$service = $this -> _current_controller;
+			}
+			
+			if ($action === null){
+				$action = $this -> _current_action;
+			}
+			// TODO:: need cache to service+action for getting request key!
+			$controller_model = new ControllerModel;
+			$controller_model -> loadByKey($service);
+			if ((int)$controller_model -> id <= 0 ){
+				throw new InvalidValueException("Can't create url, controller is not exists");
+			}
+			
+			$action_model = new ActionModel;
+			$action_model -> loadByKey($controller_model -> id, $action);
+			if ((int)$action_model -> id <= 0 ){
+				throw new InvalidValueException("Can't create url, action is not exists");
+			}
+			if (!strlen($action_model -> request_key)){
+				throw new InvalidValueException(__METHOD__."::". __LINE__.":: Bad request key: controller - ".$controller_model -> name."; action - ".$action_model -> name.";action ID=".$action_model -> id);
 			}
 			
 			if (!$this -> _rewrite){
@@ -191,10 +244,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			
 			$url = '';
 			if ($this -> _rewrite){
-				$url = $service . (($this -> _controller_key_ext !== null)?'.'.$this -> _controller_key_ext:null );
-				if ( $action !== null ) {
-					$url .= $this -> _param_delimiter . $action;
-				}
+				$url = $action_model -> request_key;
 			}
 			
 			if ($query){
@@ -202,7 +252,18 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 				$url .=  (($this -> _rewrite)?'/':'?') . $query . (($this -> _rewrite)?'/':null);
 			}
 			if ($this -> _rewrite){
-				$url = $this -> getHost() . $url;
+				if ($user === null){
+					if ($this -> _username !== null){
+						$user = $this -> _username;
+					}
+				}
+				if ($user !== null) {
+					$host = ($this -> IsSecure() ? "https://" : "http://") . $user . '.' . $this -> _config -> get('base_host') . '/';
+				} else {
+					
+					$host = $this -> getHost();
+				}
+				$url = $host . $url;
 			} else {
 				$url = $this -> getAbsoluteUrl() . $url;
 			}
