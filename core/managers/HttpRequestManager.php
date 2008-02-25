@@ -271,7 +271,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 					}
 				}
 				if ($user !== null) {
-					$host = ($this -> IsSecure() ? "https://" : "http://") . $user . '.' . $this -> _config -> get('base_host') . '/';
+					$host = ($this -> IsSecure() ? "https://" : "http://") . $user . (strlen($user)?'.':'') . $this -> _config -> get('base_host') . '/';
 				} else {
 					
 					$host = $this -> getHost();
