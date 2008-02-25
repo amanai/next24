@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__). DIRECTORY_SEPARATOR. 'interfaces' . DIRECTORY_SEPARATOR . 'IDatabase.php');
 abstract class BaseModel{
-	private $_pager = null;
+	protected $_pager = null;
 	protected $_countRecords = 0;
 	private $_ordering = false;
 	private $_orderColumn;

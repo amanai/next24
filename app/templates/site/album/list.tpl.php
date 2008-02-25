@@ -22,7 +22,7 @@
 																<h2><a href="<?php echo $this->createUrl('Photo', 'Album', array('id'=>$item['id']));?>"><?php echo $item['name'];?></a></h2>
 															</div>
 															<div style="width: 140px; height: 112px; text-align: center;">
-																<a href="<?php echo $this->createUrl('Photo', 'Album', array('id'=>$item['id']));?>"><img src="<?php echo ($item['thumbnail'] ===false)?IMG_URL.'noimage.gif' :BASE_URL.$item['thumbnail'];?>" width="140" /></a>
+																<a href="<?php echo $this->createUrl('Photo', 'Album', array('id'=>$item['id']));?>"><img src="<?php echo ($item['thumbnail'] ===false)?$this -> image_url.'noimage.gif' :BASE_URL.$item['thumbnail'];?>" width="140" /></a>
 															</div>
 															<div class="block_title2">
 																<a href="<?php echo  $this->createUrl('User', 'Profile', array('id'=>$item['user_id']));?>"><?php echo $item['login'];?></a><br />
@@ -37,6 +37,7 @@
 							</table>
 							<!-- листинг -->
 							<!-- TODO::INCLUDE PAGER HERE -->
+							<?php echo $this -> list_pager_html; ?>
 							<!-- /листинг -->
 						</td>
 					</tr>

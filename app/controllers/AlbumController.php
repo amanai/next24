@@ -336,22 +336,67 @@
 		}
 		
 		/**
-		 * Вывод списка альбомов текущего пользователя с возможностью редактирования
+		 * Вывод списка альбомов
 		 */
 		public function ListAction(){
-			
+			$request = Project::getRequest();
 			$this -> BaseSiteData();
 			$info = array();
-			
 			$model = new AlbumModel();
+			$ps = $this -> getParam('album_per_page', self::DEFAULT_ALBUM_PER_PAGE);
+			$pager = new DbPager($request -> pn, $ps);
+			$model -> setPager($pager);
 			$list = $model -> loadAll("creation_date", "DESC");
+			$info['list_pager'] = $model -> getPager();
+			$info['list_controller'] = 'Album';
+			$info['list_action'] = 'List';
+			$info['list_user'] = null;
+			
+			$this -> checkAlbumList($list);
 			$info['album_list'] = $list;
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
-			return;
-			$login = trim($user['login']);
+		}
+		
+		/**
+		 * Вывод топовых альбомов
+		 * Кол-во для вывода берется из конфиг параметров: параметр top_per_page
+		 */
+		public function TopListAction(){
+			$request = Project::getRequest();
+			$this -> BaseSiteData();
+			$info = array();
+			$model = new AlbumModel();
+			$ps = $this -> getParam('top_per_page', self::DEFAULT_ALBUM_PER_PAGE);
+			$pager = new DbPager($request -> pn, $ps);
+			$model -> setPager($pager);
+			$list = $model -> loadAll(true, true, "album_rating", "DESC");
+			$info['list_pager'] = $model -> getPager();
+			$info['list_controller'] = 'Album';
+			$info['list_action'] = 'TopList';
+			$info['list_user'] = null;
+			$this -> checkAlbumList($list);
+			$info['album_list'] = $list;
+			$this -> _view -> AlbumList($info);
+			$this -> _view -> parse();
+		}
+		
+		/**
+		 * Вывод списка последних альбомов.
+		 * Кол-во для вывода берется из конфиг параметров: параметр last_per_page
+		 */
+		public function LastListAction(){
+			$this -> ListAction();
+		}
+		
+
+		
+		
+		
+		
+		private function checkAlbumList(&$list){
 			foreach($list as $key => $value){
-				
+				$login = trim($value['login']);
 				$thumb = false;
 				if (strlen($login) > 0){
 					$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
@@ -370,7 +415,6 @@
 						$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
 						$ok = $this -> checkDir($thumbs);
 					}
-					
 					if ($ok === true){
 						$f = $thumbs . DIRECTORY_SEPARATOR . $value['thumbnail'];
 						if (file_exists($f) && is_file($f)){
@@ -383,70 +427,14 @@
 					
 				}
 				$list[$key]['thumbnail'] = $thumb;
-			} 
-			
-			$this -> view -> album_list = $list;
-			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/albums_edit_list.tpl.php');
-			$this->view->display();
-		}
-		
-		
-		/**
-		 * Вывод топовых альбомов
-		 * Кол-во для вывода берется из конфиг параметров: параметр top_per_page
-		 */
-		public function TopListAction(){
-			$this -> model -> resetSql();
-			$this -> model -> pager();
-			$this -> model -> cols('albums.id, albums.user_id, albums.name, albums.creation_date, users.login, photos.thumbnail, IF (rate.voices > 0, rate.rating/rate.voices, 0) as album_rating');
-			$this -> model -> join('users', 'users.id=albums.user_id', 'LEFT');
-			$this -> model -> join('photos', 'photos.id=albums.thumbnail_id AND photos.album_id=albums.id', 'LEFT');
-			$this -> model -> join('photos', 'rate.album_id = albums.id AND rate.is_rating > 0', 'LEFT', 'rate');
-			$this -> model -> where("albums.access>0");
-			$this -> model -> where("albums.is_onmain>0");
-			$this -> model -> group('albums.id');
-			$this -> model -> order("album_rating DESC");
-			if ( ($number = $this -> getParam('albums_per_page', self::DEFAULT_ALBUM_PER_PAGE)) === 0){
-				$number = self::DEFAULT_ALBUM_PER_PAGE;
 			}
-			$this -> model -> limit($number, (int)$this -> pn*$number);
-			$list = $this -> model -> getAll();
-			$all = $this -> model -> foundRows();
-			$this -> view -> pages_number = ceil($all / $number);
-			$this -> view -> current_page_number = (int)$this -> pn;
-			$this -> view -> current_controller = 'Album';
-			$this -> view -> current_action = 'TopList';
-			$this -> showAlbums($list);
 		}
 		
 		
-		/**
-		 * Вывод списка последних альбомов.
-		 * Кол-во для вывода берется из конфиг параметров: параметр last_per_page
-		 */
-		public function LastListAction(){
-			$this -> model -> resetSql();
-			$this -> model -> pager();
-			$this -> model -> cols('albums.id, albums.user_id, albums.name, albums.creation_date, users.login, photos.thumbnail');
-			$this -> model -> join('users', 'users.id=albums.user_id', 'LEFT');
-			$this -> model -> join('photos', 'photos.id=albums.thumbnail_id AND photos.album_id=albums.id', 'LEFT');
-			$this -> model -> where("albums.access>0");
-			$this -> model -> where("albums.is_onmain=1");
-			$this -> model -> order("albums.creation_date DESC");
-			if ( ($number = $this -> getParam('last_albums_per_page', self::DEFAULT_ALBUM_PER_PAGE)) === 0){
-				$number = self::DEFAULT_ALBUM_PER_PAGE;
-			}
-			$this -> model -> limit($number, (int)$this -> pn*$number);
-			$list = $this -> model -> getAll();
-			$all = $this -> model -> foundRows();
-			$this -> view -> pages_number = ceil($all / $number);
-			$this -> view -> current_page_number = (int)$this -> pn;
-			$this -> view -> current_controller = 'Album';
-			$this -> view -> current_action = 'LastList';
-			
-			
-			$this -> showAlbums($list);
-		}
+		
+		
+		
+		
 		
 		private function showAlbums(&$list){
 			foreach($list as $key => $value){
@@ -492,7 +480,6 @@
 		public function checkDir($dir){
 			clearstatcache();
 			if (!file_exists($dir) || !is_dir($dir)){
-				die(BACKTRACE());
 				if (mkdir($dir)){
 					chmod($dir, 0644);
 					return true;

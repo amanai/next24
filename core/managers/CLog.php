@@ -99,7 +99,6 @@ class CLog extends ApplicationManager implements IManager{
 		function writeLog($logString){
 			global $logNumber;
 			
-			
 			//depending on selected log mode...
 			//use only one log file, or one file per log instance
 			if($this->logMode=='oneFilePerLog'){

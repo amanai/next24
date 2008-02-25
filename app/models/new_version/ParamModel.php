@@ -28,14 +28,14 @@ class ParamModel extends BaseModel{
 				$sql = "SELECT param.value as value, param.php_type as php_type " .
 						" FROM param " .
 						" INNER JOIN param_group ON param_group.id = param.param_group_id AND LOWER(param_group.label)=LOWER(?) " .
-						" WHERE LOWER(params.name) = LOWER(?)";
+						" WHERE LOWER(param.name) = LOWER(?)";
 											
 				$rez = $DE -> selectRow($sql, $group_name, $param_name);
 			} else {
 				$sql = "SELECT * " .
 					   " FROM  param " .
-						" WHERE LOWER(params.name) = LOWER(?) " .
-						" AND CAST(params_group_id AS UNSIGNED) = 0";
+						" WHERE LOWER(param.name) = LOWER(?) " .
+						" AND CAST(param_group_id AS UNSIGNED) = 0";
 				$rez = $DE -> selectRow($sql, $param_name);
 			}
 			

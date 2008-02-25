@@ -4,27 +4,42 @@ class AlbumModel extends BaseModel{
 			parent::__construct('album');
 		}
 		
-		function login($login, $pwd){
+		function loadAll($access = true, $on_main = true, $sortName = 'a.creation_date', $sortOrder = 'DESC', $defaultSortName = "a.id"){
+			if (is_null($sortName)){
+				$sortName = $defaultSortName;
+			}
 			$DE = Project::getDatabase();
-			$result = array();
-			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE login=? AND pass=?", $login, $pwd);
-			if (count($result) > 0){
-				$this -> bind($result);
-				return true;
+			$this -> checkPager();
+			$sortOrder = $this -> getSortDirection($sortOrder);
+			if ($access === true){
+				$a = "a.access > 0";
 			} else {
-				return false;
+				$a = 1;
 			}
-		}
-		
-		/** 
-		 * Get user group object
-		 * */
-		function getUserType(){
-			$o = new UserTypeModel();
-			if ($this -> user_type_id > 0){
-				$o -> load($this -> user_type_id);
+			if ($on_main === true){
+				$om = "a.is_onmain = 1";
+			} else {
+				$om = 1;
 			}
-			return $o;
+			$sql = "SELECT " .
+						"a.id as id," .
+						"a.name as name," .
+						"a.creation_date as creation_date," .
+						"u.login as login," .
+						"p.thumbnail as thumbnail," .
+						"IF (rate.voices > 0, rate.rating/rate.voices, 0) as album_rating " .
+					" FROM album as a " .
+					" LEFT JOIN users u ON u.id=a.user_id " .
+					" LEFT JOIN photo p ON p.id=a.thumbnail_id AND p.album_id=a.id " .
+					" LEFT JOIN photo rate ON rate.album_id = a.id AND rate.is_rating > 0 " .
+					" WHERE " .
+					" " . $a . " " .
+					" AND " . $om . " " .
+					" GROUP BY id ".
+					" ORDER BY $sortName $sortOrder  LIMIT ?d, ?d ";
+			$result = $DE -> selectPage($this -> _countRecords, $sql, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
+			$this -> updatePagerAmount();
+			return $result;
 		}
 }
 ?>
