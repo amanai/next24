@@ -224,7 +224,7 @@ class Project{
 	    	return self::get('security_manager');
 	    }
 	    
-	     function setUser($object){
+	    function setUser($object){
 	    	self::set('current_user', $object);
 	    }
 	    
@@ -233,6 +233,14 @@ class Project{
 	    		throw new SecurityException("Security: current user not defined");
 	    	}
 	    	return $u;
+	    }
+	    
+	    function setBrowserUser($object){
+	    	self::set('browser_user', $object);
+	    }
+	    
+	    function getBrowserUser(){
+	    	return self::get('browser_user');
 	    }
 }
 ?>

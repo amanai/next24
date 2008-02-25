@@ -1,36 +1,17 @@
 <?php
 	class IndexController extends CBaseController{
 		
-		function __construct($View=null, $params = array(), $vars = array()){
-			parent::__construct($View, $params, $vars);
+		function __construct($view_class = null){
+			if ($view_class === null){
+				$view_class = "HomeView";
+			}
+			parent::__construct($view_class);
 		}
 		
 		public function IndexAction(){			
-			$this->view->display();
 			
-/*			echo "IndexController/IndexAction<br/><br/>";
-			echo "config:<br>";
-			
-			$params = getManager('CParams');
-			echo "param1 = " . $params->getParam("param1");
-			echo "<br/>test_group = ";
-			echo '<pre>';
-			print_r($params->getParamsGroup("test_group"));
-			echo '</pre>';
-			
-			echo "<br/><br/>GET/POST params - ";
-			echo '<pre>';
-			print_r($this->params);
-			echo '</pre>';
-			echo '
-			<form method="post" >
-				<input type="text" name="test"/>
-				<input type="submit" >
-			</form>';
-			
-*/				
-//			$this->runSubaction('sub1');
-//			$this->runSubaction('sub2');
+			$this -> _view -> Home();
+			$this -> _view -> parse();
 		}
 		
 		

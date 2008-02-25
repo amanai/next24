@@ -125,5 +125,62 @@ class HelpFunctions{
 			$str .= '</table>';
 			return $str;
 		}
+		
+		/**
+		 * Resize image
+		 */
+		private function _imageResize($fn, $new_fn, $toWidth){
+			$p = pathinfo($fn);
+			$ext = isset($p['extension'])?$p['extension']:null;
+			list($width, $height) = getimagesize($fn);
+			if ($toWidth < $width) {
+				$percent = (float)$toWidth/$width;
+				$newwidth = $width * $percent;
+				$newheight = $height * $percent;
+				$thumb = imagecreatetruecolor($newwidth, $newheight);
+				$source = self::ImageMake($fn, $ext);
+				if ($source == false){
+					//error creating image source
+					return false;
+				}
+				imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+				self::imageSave($thumb, $new_fn, $ext);
+			}
+		}
+		
+		function imageSave($resource, $name, $ext){
+			switch ($ext) {
+				case	'jpg'	:
+									imagejpeg($resource, $name);
+									break;
+				case	'png'	:
+									imagepng($resource, $name);
+									break;
+				case	'gif'	:
+									imagegif($resource, $name);
+									break;
+				default			:
+									break;
+			}
+		}
+		
+		function ImageMake($filename, $ext){
+			$ext = strtolower(trim($ext));
+			switch ($ext) {
+				case	'jpg'	:
+					$res = @imagecreatefromjpeg($filename);
+					break;
+				case	'png'	:
+					$res = @imagecreatefrompng($filename);
+					break;
+				case	'gif'	:
+					$res = @imagecreatefromgif($filename);
+					break;
+				default			:
+					$res = false;
+					break;
+			}
+			return $res;
+		}
 }
 ?>

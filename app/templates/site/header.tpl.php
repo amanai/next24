@@ -17,7 +17,7 @@
 			<td width="270"><a href="#"><img src="<?php echo $this -> image_url;?>logo.png" width="270" height="180" /></a></td>
 			<td class="header2" align="right">
 				<!-- Блок авторизации -->
-				<?php if(isset($this->userData['first_name'])) {?>
+				<?php if((int)$this->current_user->id > 0) {?>
 					<table width="210" height="125" cellpadding="0">
 					<tr>
 						<td class="user1"> </td>
@@ -25,14 +25,14 @@
 
 							<div class="user2_title">ДОБРО ПОЖАЛОВАТЬ</div>
 							<div class="user2_zz">
-								<a href="<?php echo $this->createUrl('User', 'Viewprofile')?>">Профиль</a><br />
-								<a href="<?php echo $this->createUrl('Album', 'User')?>">Фотоальбом</a><br />
+								<a href="<?php echo $this->createUrl('User', 'Profile')?>">Профиль</a><br />
+								<a href="<?php echo $this->createUrl('Album', 'List')?>">Фотоальбом</a><br />
 								<a href="#">Дневник</a><br />
 								<a href="#">Сообщения</a>
 							</div>
 
 							<div style="float: left;"><a href="#"><img src="<?php echo $this -> image_url;?>open.png" width="21" height="24" /></a></div>
-							<div align="right" style="padding-top: 7px;">Вы вошли как: <a href="<?php echo $this->createUrl('User', 'Viewprofile')?>"><?php echo $this->userData['login'];?></a></div>
+							<div align="right" style="padding-top: 7px;">Вы вошли как: <a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><?php echo $this->userData['login'];?></a></div>
 
 						</td>
 						<td class="user3"> </td>

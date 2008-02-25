@@ -238,9 +238,21 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 				$parameters = array_merge(array($this -> _request_controller_key=>$service), $parameters);
 			}
 			
-			
-			
-			$query = http_build_query(is_array($parameters)?$parameters:array(), '', $this -> _param_delimiter);
+			if (!is_array($parameters)){
+				$parameters = array();
+			}
+			$query = '';
+			foreach ($parameters as $k=>$v){
+				if (strlen($query)){
+					$query .= $this -> _param_delimiter; 
+				}
+				if (!is_numeric($k) && strlen($k)){
+					$query .= $k . $this -> _value_delimiter . $v;
+				} else {
+					$query .= $v;
+				}
+			}
+			//$query = http_build_query(is_array($parameters)?$parameters:array(), '', $this -> _param_delimiter);
 			
 			$url = '';
 			if ($this -> _rewrite){
@@ -248,7 +260,8 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			}
 			
 			if ($query){
-				$query = str_replace('=', $this -> _value_delimiter, $query);
+				//$query = str_replace('=', $this -> _value_delimiter, $query);
+				//$query = str_replace($this -> _param_delimiter.$this -> _value_delimiter, $this -> _param_delimiter, $query);
 				$url .=  (($this -> _rewrite)?'/':'?') . $query . (($this -> _rewrite)?'/':null);
 			}
 			if ($this -> _rewrite){

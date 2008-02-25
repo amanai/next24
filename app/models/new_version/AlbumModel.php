@@ -4,22 +4,23 @@ class AlbumModel extends BaseModel{
 			parent::__construct('album');
 		}
 		
-		function loadAll($access = true, $on_main = true, $sortName = 'a.creation_date', $sortOrder = 'DESC', $defaultSortName = "a.id"){
+		function loadAll($userid, $logged_user_id, $on_main = true, $sortName = 'a.creation_date', $sortOrder = 'DESC', $defaultSortName = "a.id"){
+			$userid = (int)$userid;
 			if (is_null($sortName)){
 				$sortName = $defaultSortName;
 			}
 			$DE = Project::getDatabase();
 			$this -> checkPager();
 			$sortOrder = $this -> getSortDirection($sortOrder);
-			if ($access === true){
-				$a = "a.access > 0";
-			} else {
-				$a = 1;
-			}
 			if ($on_main === true){
 				$om = "a.is_onmain = 1";
 			} else {
 				$om = 1;
+			}
+			if ($userid > 0){
+				$u = "a.user_id = ?d";
+			} else {
+				$u = 1;
 			}
 			$sql = "SELECT " .
 						"a.id as id," .
@@ -33,11 +34,12 @@ class AlbumModel extends BaseModel{
 					" LEFT JOIN photo p ON p.id=a.thumbnail_id AND p.album_id=a.id " .
 					" LEFT JOIN photo rate ON rate.album_id = a.id AND rate.is_rating > 0 " .
 					" WHERE " .
-					" " . $a . " " .
-					" AND " . $om . " " .
+					" " . $om . " " .
+					" AND " . $u . " " .
+					" AND ( (a.access=".ACCESS::ALL.") OR (?d AND a.access=".ACCESS::FRIEND.") OR (a.user_id=?d AND a.access=".ACCESS::MYSELF.") )" .
 					" GROUP BY id ".
 					" ORDER BY $sortName $sortOrder  LIMIT ?d, ?d ";
-			$result = $DE -> selectPage($this -> _countRecords, $sql, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
+			$result = $DE -> selectPage($this -> _countRecords, $sql, (int)$userid, (int)Project::getUser() -> isFriend(), $logged_user_id, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
 			$this -> updatePagerAmount();
 			return $result;
 		}

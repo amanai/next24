@@ -1,22 +1,12 @@
 <?php
-	class UserController extends CBaseController{
+	class UserController extends SiteController{
 		
-		function __construct($View=null, $params = array(), $vars = array()){
-			$this->setModel("Users");
-			parent::__construct($View, $params, $vars);
+		function __construct($view_class = null){
+			if ($view_class === null){
+				$view_class = "UserView";
+			}
+			parent::__construct($view_class);
 		}				
-		
-		public function ViewprofileAction(){
-			$this->view->userData['birth_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['birth_date']));
-			$this->view->userData['registration_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['registration_date']));
-			$this->view->userData['gender_formatted'] = 'мужской';
-			if($this->view->userData['gender'] == 1) $this->view->userData['gender_formatted'] = 'женский';
-			
-			
-			$this->model->set("userData", $this->view->userData);
-			$this->view->content .= $this->view->render(VIEWS_PATH.'user/view_profile.tpl.php');
-			$this->view->display();			
-		}
 		
 		public function EditprofileAction(){
 			$this->view->userData['birth_day'] = strftime("%d", strtotime($this->view->userData['birth_date']));
@@ -70,17 +60,35 @@
 		}
 		
 		public function LoginAction(){
-			$userManager = getManager('CUser');
-			$userManager->login($this->params['login'], $this->params['pass']);
-			$router = getManager('CRouter');		
-			$router->redirect($this->params['lastPath']);
+			$request = Project::getRequest();
+			if (Project::getSecurityManager() -> login($request -> login, $request -> pass)){
+				Project::getResponse() -> redirect(Project::getRequest() -> createUrl('User', 'Profile'));
+			} else {
+				$this -> _view -> assign('login_result', false);
+				$this -> _view -> Login();
+				$this -> _view -> parse();
+			}
+			
+		}
+		
+		public function ProfileAction(){
+			$this -> BaseSiteData();
+			$this -> _view -> Profile();
+			$this -> _view -> parse();
+			/*$this->view->userData['birth_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['birth_date']));
+			$this->view->userData['registration_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['registration_date']));
+			$this->view->userData['gender_formatted'] = 'мужской';
+			if($this->view->userData['gender'] == 1) $this->view->userData['gender_formatted'] = 'женский';
+			
+			
+			$this->model->set("userData", $this->view->userData);
+			$this->view->content .= $this->view->render(VIEWS_PATH.'user/view_profile.tpl.php');
+			$this->view->display();*/
 		}
 		
 		public function LogoutAction(){
-			$userManager = getManager('CUser');
-			$userManager->logout();
-			$router = getManager('CRouter');
-			$router->redirect($router->createUrl());
+			Project::getSecurityManager() -> logout();
+			Project::getResponse() -> redirect(Project::getRequest() -> createUrl('Index', 'Index'));
 		}
 		
 	}

@@ -2,6 +2,9 @@
 class AppUser{
 	private $_guest;
 	private $_dbUser;
+	private $_showed_user;
+	private $_is_my_area = false;
+	private $_is_friend = false;
 			function __construct(IManager $autorization){
 				$this -> _dbUser = new UserModel();
 				if ($autorization -> needAutorization() === true){
@@ -15,6 +18,24 @@ class AppUser{
 					}
 				} else {
 					$this -> _guest = true;
+				}
+				
+				
+				$username = Project::getRequest() -> getUsername();
+				$this -> _showed_user = new UserModel;
+				if ($username){
+					$this -> _showed_user -> loadByLogin($username);
+					if ((int)$this -> _showed_user > 0){
+						if ($this -> _showed_user -> id == $this -> _dbUser -> id){
+							$this -> _is_my_area = true;
+						}
+						
+						$friend_model = new FriendModel;
+						$friend_id = (int)$friend_model -> isFriend($this -> _showed_user -> id, $this -> _dbUser -> id);
+						if ($friend_id == $this -> _dbUser -> id){
+							$this -> _is_friend = true;
+						}
+					}
 				}
 			}
 			
@@ -48,6 +69,21 @@ class AppUser{
 			
 			function getDbUser(){
 				return $this -> _dbUser;
+			}
+			
+			/**
+			 * True only if showed subdomain is for current logged user
+			 */
+			function isMyArea(){
+				return $this -> _is_my_area;
+			}
+			
+			function getShowedUser(){
+				return $this -> _showed_user;
+			}
+			
+			function isFriend(){
+				return $this -> _is_friend;
 			}
 }
 ?>

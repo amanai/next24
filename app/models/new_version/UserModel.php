@@ -26,5 +26,12 @@ class UserModel extends BaseModel{
 			}
 			return $o;
 		}
+		
+		function loadByLogin($login){
+			$DE = Project::getDatabase();
+			$result = array();
+			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE login=? LIMIT 1", $login);
+			$this -> bind($result);
+		}
 }
 ?>

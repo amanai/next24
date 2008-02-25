@@ -363,20 +363,10 @@
 		 * Кол-во для вывода берется из конфиг параметров: параметр top_per_page
 		 */
 		public function TopListAction(){
-			$request = Project::getRequest();
+			
 			$this -> BaseSiteData();
 			$info = array();
-			$model = new AlbumModel();
-			$ps = $this -> getParam('top_per_page', self::DEFAULT_ALBUM_PER_PAGE);
-			$pager = new DbPager($request -> pn, $ps);
-			$model -> setPager($pager);
-			$list = $model -> loadAll(true, true, "album_rating", "DESC");
-			$info['list_pager'] = $model -> getPager();
-			$info['list_controller'] = 'Album';
-			$info['list_action'] = 'TopList';
-			$info['list_user'] = null;
-			$this -> checkAlbumList($list);
-			$info['album_list'] = $list;
+			$this -> _list($info, true, "album_rating", "DESC", $this -> getParam('top_per_page', self::DEFAULT_ALBUM_PER_PAGE));
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
 		}
@@ -389,6 +379,26 @@
 			$this -> ListAction();
 		}
 		
+		
+		private function _list(&$info, $onmain, $sortname, $sortorder, $per_page){
+			$request = Project::getRequest();
+			
+			if (Project::getUser() -> isMyArea()){
+				$info['show_control_panel'] = true;
+			} else {
+				$info['show_control_panel'] = false;
+			}
+			$model = new AlbumModel();
+			$pager = new DbPager($request -> getValueByNumber(0), $per_page);
+			$model -> setPager($pager);
+			$list = $model -> loadAll(Project::getUser() -> getShowedUser() -> id, Project::getUser() -> getDbUser() -> id, $onmain, $sortname, $sortorder);
+			$info['list_pager'] = $model -> getPager();
+			$info['list_controller'] = 'Album';
+			$info['list_action'] = 'TopList';
+			$info['list_user'] = null;
+			$this -> checkAlbumList($list);
+			$info['album_list'] = $list;
+		}
 
 		
 		
@@ -430,53 +440,6 @@
 			}
 		}
 		
-		
-		
-		
-		
-		
-		
-		private function showAlbums(&$list){
-			foreach($list as $key => $value){
-				$login = trim($value['login']);
-				$thumb = false;
-				if (strlen($login) > 0){
-					$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $value['login'];
-					$err = false;
-					$ok = $this -> checkDir($dir);
-					if ($ok === true){
-						$album = $dir . DIRECTORY_SEPARATOR . 'album';
-						$ok = $this -> checkDir($album);
-					}
-					if ($ok === true){
-						$images = $album . DIRECTORY_SEPARATOR . 'images';
-						$ok = $this -> checkDir($images);
-					}
-					
-					if ($ok === true){
-						$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
-						$ok = $this -> checkDir($thumbs);
-					}
-					
-					if ($ok === true){
-						$f = $thumbs . DIRECTORY_SEPARATOR . $value['thumbnail'];
-						if (file_exists($f) && is_file($f)){
-							$thumb = $f;
-							// Replace back slashes
-							$thumb = str_replace("\\", "/", $thumb);
-						}
-					}
-					
-					
-				}
-				$list[$key]['thumbnail'] = $thumb;
-			} 
-			$this -> view -> album_list = $list;
-			$this -> view -> content .= $this->view->render(VIEWS_PATH.'albums/albums_list.tpl.php');
-			$this->view->display();
-			
-		}
-		
 		public function checkDir($dir){
 			clearstatcache();
 			if (!file_exists($dir) || !is_dir($dir)){
@@ -488,63 +451,6 @@
 				}
 			}
 			return true;
-		}
-		
-		/**
-		 * Resize image
-		 */
-		private function _imageResize($fn, $new_fn, $toWidth){
-			$p = pathinfo($fn);
-			$ext = isset($p['extension'])?$p['extension']:null;
-			list($width, $height) = getimagesize($fn);
-			if ($toWidth < $width) {
-				$percent = (float)$toWidth/$width;
-				$newwidth = $width * $percent;
-				$newheight = $height * $percent;
-				$thumb = imagecreatetruecolor($newwidth, $newheight);
-				$source = self::ImageMake($fn, $ext);
-				if ($source == false){
-					//error creating image source
-					return false;
-				}
-				imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-				self::imageSave($thumb, $new_fn, $ext);
-			}
-		}
-		
-		function imageSave($resource, $name, $ext){
-			switch ($ext) {
-				case	'jpg'	:
-									imagejpeg($resource, $name);
-									break;
-				case	'png'	:
-									imagepng($resource, $name);
-									break;
-				case	'gif'	:
-									imagegif($resource, $name);
-									break;
-				default			:
-									break;
-			}
-		}
-		
-		function ImageMake($filename, $ext){
-			$ext = strtolower(trim($ext));
-			switch ($ext) {
-				case	'jpg'	:
-					$res = @imagecreatefromjpeg($filename);
-					break;
-				case	'png'	:
-					$res = @imagecreatefrompng($filename);
-					break;
-				case	'gif'	:
-					$res = @imagecreatefromgif($filename);
-					break;
-				default			:
-					$res = false;
-					break;
-			}
-			return $res;
 		}
 	}
 ?>
