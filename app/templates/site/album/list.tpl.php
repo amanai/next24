@@ -4,7 +4,7 @@
 				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
 
 				<div class="tab-page">
-					<h2 class="tab">Последние альбомы</h2>
+					<h2 class="tab"><?php echo $this -> tab_name;?></h2>
 					<!-- ПРОФИЛЬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
@@ -19,13 +19,13 @@
 													<div class="block_ee3">
 														<div class="block_ee4">
 															<div class="block_title">
-																<h2><a href="<?php echo $this->createUrl('Photo', 'Album', array('id'=>$item['id']));?>"><?php echo $item['name'];?></a></h2>
+																<h2><a href="<?php echo PhotoController::getAlbumUrl($item['id'], $item['login']);?>"><?php echo $item['name'];?></a></h2>
 															</div>
 															<div style="width: 140px; height: 112px; text-align: center;">
-																<a href="<?php echo $this->createUrl('Photo', 'Album', array('id'=>$item['id']));?>"><img src="<?php echo ($item['thumbnail'] ===false)?$this -> image_url.'noimage.gif' :BASE_URL.$item['thumbnail'];?>" width="140" /></a>
+																<a href="<?php echo PhotoController::getAlbumUrl($item['id'], $item['login']);?>"><img src="<?php echo ($item['thumbnail'] ===false)?$this -> image_url.'noimage.gif' :$item['thumbnail'];?>" width="140" /></a>
 															</div>
 															<div class="block_title2">
-																<a href="<?php echo  $this->createUrl('User', 'Profile', array('id'=>$item['user_id']));?>"><?php echo $item['login'];?></a><br />
+																<a href="<?php echo  UserController::getProfileUrl($item['login']);?>"><?php echo $item['login'];?></a><br />
 																<span id="micro"><?php echo date("j F Y", strtotime($item['creation_date']));?></span>
 															</div>
 														</div>

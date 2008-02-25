@@ -32,7 +32,7 @@
 							</div>
 
 							<div style="float: left;"><a href="#"><img src="<?php echo $this -> image_url;?>open.png" width="21" height="24" /></a></div>
-							<div align="right" style="padding-top: 7px;">Вы вошли как: <a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><?php echo $this->userData['login'];?></a></div>
+							<div align="right" style="padding-top: 7px;">Вы вошли как: <a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><?php echo $this->current_user->login;?></a></div>
 
 						</td>
 						<td class="user3"> </td>

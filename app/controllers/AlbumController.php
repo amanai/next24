@@ -339,21 +339,10 @@
 		 * Вывод списка альбомов
 		 */
 		public function ListAction(){
-			$request = Project::getRequest();
 			$this -> BaseSiteData();
 			$info = array();
-			$model = new AlbumModel();
-			$ps = $this -> getParam('album_per_page', self::DEFAULT_ALBUM_PER_PAGE);
-			$pager = new DbPager($request -> pn, $ps);
-			$model -> setPager($pager);
-			$list = $model -> loadAll("creation_date", "DESC");
-			$info['list_pager'] = $model -> getPager();
-			$info['list_controller'] = 'Album';
-			$info['list_action'] = 'List';
-			$info['list_user'] = null;
-			
-			$this -> checkAlbumList($list);
-			$info['album_list'] = $list;
+			$info['tab_name'] = 'Последние альбомы';
+			$this -> _list($info, "creation_date", "DESC", $this -> getParam('album_per_page', self::DEFAULT_ALBUM_PER_PAGE));
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
 		}
@@ -366,7 +355,8 @@
 			
 			$this -> BaseSiteData();
 			$info = array();
-			$this -> _list($info, true, "album_rating", "DESC", $this -> getParam('top_per_page', self::DEFAULT_ALBUM_PER_PAGE));
+			$info['tab_name'] = 'Топ альбомов';
+			$this -> _list($info, "album_rating", "DESC", $this -> getParam('top_per_page', self::DEFAULT_ALBUM_PER_PAGE));
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
 		}
@@ -380,7 +370,7 @@
 		}
 		
 		
-		private function _list(&$info, $onmain, $sortname, $sortorder, $per_page){
+		private function _list(&$info, $sortname, $sortorder, $per_page){
 			$request = Project::getRequest();
 			
 			if (Project::getUser() -> isMyArea()){
@@ -391,7 +381,7 @@
 			$model = new AlbumModel();
 			$pager = new DbPager($request -> getValueByNumber(0), $per_page);
 			$model -> setPager($pager);
-			$list = $model -> loadAll(Project::getUser() -> getShowedUser() -> id, Project::getUser() -> getDbUser() -> id, $onmain, $sortname, $sortorder);
+			$list = $model -> loadAll(Project::getUser() -> getShowedUser() -> id, Project::getUser() -> getDbUser() -> id, $sortname, $sortorder);
 			$info['list_pager'] = $model -> getPager();
 			$info['list_controller'] = 'Album';
 			$info['list_action'] = 'TopList';
@@ -399,16 +389,47 @@
 			$this -> checkAlbumList($list);
 			$info['album_list'] = $list;
 		}
+		
+		
+		protected function BaseAlbumData(&$info, $album_id){
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			if ($request_user_id === $user_id) {
+				$v = new AlbumView();
+				$v -> ControlPanel();
+				$info['control_panel'] = $v -> parse();
+			} else {
+				$info['control_panel'] = null;
+			}
+			
+			$tmp = array();
+			$album_model = new AlbumModel();
+			$tmp['album_menu_list'] = $album_model -> loadByUser($request_user_id, $user_id);
+			$tmp['album_id'] = $album_id;
+			if ($request_user_id === $user_id) {
+				$tmp['album_owner'] = true;
+			}
+			$v = new AlbumView();
+			$v -> AlbumMenu($tmp);
+			$info['album_menu'] = $v -> parse();
+			
+			
+			
+			
+			
+		}
 
 		
 		
 		
 		
-		private function checkAlbumList(&$list){
+		protected function checkAlbumList(&$list){
+			
 			foreach($list as $key => $value){
 				$login = trim($value['login']);
 				$thumb = false;
 				if (strlen($login) > 0){
+					
 					$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
 					$err = false;
 					$ok = $this -> checkDir($dir);
@@ -428,9 +449,7 @@
 					if ($ok === true){
 						$f = $thumbs . DIRECTORY_SEPARATOR . $value['thumbnail'];
 						if (file_exists($f) && is_file($f)){
-							$thumb = $f;
-							// Replace back slashes
-							$thumb = str_replace("\\", "/", $thumb);
+							$thumb = Project::getRequest() -> getHost() . 'users/'.$login.'/album/thumbs/'.$value['thumbnail'];
 						}
 					}
 					

@@ -6,7 +6,11 @@
 				$view_class = "UserView";
 			}
 			parent::__construct($view_class);
-		}				
+		}			
+		
+		static public function getProfileUrl($username){
+			return Project::getRequest() -> createUrl('User', 'Profile', null, $username);
+		}	
 		
 		public function EditprofileAction(){
 			$this->view->userData['birth_day'] = strftime("%d", strtotime($this->view->userData['birth_date']));

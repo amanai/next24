@@ -1,4 +1,5 @@
 <?php
+	define('USER_UPLOAD_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'users');
 	error_reporting(E_ALL);
 	include 'core' . DIRECTORY_SEPARATOR . 'Project.php';
 	include 'core' . DIRECTORY_SEPARATOR . 'CApp.php';

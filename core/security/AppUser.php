@@ -25,7 +25,7 @@ class AppUser{
 				$this -> _showed_user = new UserModel;
 				if ($username){
 					$this -> _showed_user -> loadByLogin($username);
-					if ((int)$this -> _showed_user > 0){
+					if ((int)$this -> _showed_user -> id > 0){
 						if ($this -> _showed_user -> id == $this -> _dbUser -> id){
 							$this -> _is_my_area = true;
 						}

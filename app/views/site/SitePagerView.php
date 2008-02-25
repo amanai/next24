@@ -7,7 +7,7 @@ class SitePagerView extends BaseSiteView{
 			$this -> assign('current_action', $action);
 			$this -> assign('current_user', $user);
 			$this -> assign('pager_params', $params);
-			$this -> assign('pages_number', $pager -> getPageCount());
+			$this -> assign('pages_number', (int)$pager -> getPageCount());
 			$this -> assign('current_page_number', $pager -> getPageNumber());
 			return $this -> parse();
 		}

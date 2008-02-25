@@ -5,10 +5,25 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
  */
 	class PhotoController extends AlbumController{
 		const DEFAULT_PHOTO_PER_PAGE = 8;
-		function __construct($View=null, $params = array(), $vars = array()){
-			$this->setModel("Photos");
-			parent::__construct($View, $params, $vars);
+		
+
+
+		function __construct($view_class = null){
+			if ($view_class === null){
+				$view_class = "PhotoView";
+			}
+			parent::__construct($view_class);
 		}
+		
+		
+		static public function getAlbumUrl($album_id, $username){
+			return Project::getRequest() -> createUrl('Photo', 'Album', array($album_id), $username);
+		}
+		
+		static public function getAlbumEditUrl($album_id, $username){
+			return Project::getRequest() -> createUrl('Photo', 'Edit', array($album_id), $username);
+		}
+		
 		
 		
 		public function UploadFormAction(){
@@ -363,44 +378,37 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			
 		}
 		
-		
 		public function AlbumAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
+			$this -> BaseSiteData();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			$album_id = (int)Project::getRequest() -> getKeyByNumber(0);
+			
+			$info = array();
+			
+			$this -> BaseAlbumData($info, $album_id);
 			
 			
-			$this->setModel("Albums");
-			$this -> model -> resetSql();
 			
-			$this -> model -> cols('user_id');
-			$this -> model -> where('id='.(int)$this -> id);
-			$o = $this -> model -> getOne();
-			$owner_id = (int)$o['user_id'];
 			
-			$this->setModel("Users");
-			$this -> model -> resetSql();
-			$this -> model -> where('id='.(int)$owner_id);
-			$user = $this -> model -> getOne();
 			
-			if (isset($user['login'])) {
-				$login = trim($user['login']);
-				if (strlen($login) == 0){
-					// TODO:: something wrong - no user login, so we can't get directory with him uploads
-				}
-			}
-			
-			$this->setModel("Photos");
-			$this -> model -> resetSql();
-			$this -> model -> where('album_id='.(int)$this -> id);
-			$this -> model -> where('user_id='.(int)$owner_id);
-			if ($owner_id != $user_id){
-				$this -> model -> where('access>0');
-			}
-			$list = $this -> model -> getAll();
-			
-
+			$photo_model = new PhotoModel;
+			$pager = new DbPager(Project::getRequest() -> getValueByNumber(1), $this -> getParam('photo_per_page', self::DEFAULT_PHOTO_PER_PAGE));
+			$photo_model -> setPager($pager);
+			$list = $photo_model -> loadByAlbumUser($request_user_id, $album_id);
+			$this -> checkImages($list);
+			$info['photo_list'] = $list;
+			$info['list_pager'] = $photo_model -> getPager();
+			$info['list_controller'] = 'Photo';
+			$info['list_action'] = 'Album';
+			$info['list_user'] = null;
+			$this -> _view -> PhotoList($info);
+			$this -> _view -> parse();
+		}
+		
+		/*private function checkImages(&$list){
 			foreach($list as $key => $value){
+				$login = $value['login'];
 				$thumb = false;
 				$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
 				$err = false;
@@ -430,24 +438,11 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 				}
 				$list[$key]['thumbnail'] = $thumb;
 			}
-			
-			$this -> view -> photo_list = $list;
-			
-			
-			$this->setModel("Albums");
-			$this -> model -> resetSql();
-			$this -> model -> where('user_id='.(int)$owner_id);
-			if ($owner_id != $user_id){
-				$this -> model -> where('access>0');
-			} else {
-				$this -> view -> album_owner = true;
-			}
-			$this -> view -> album_list = $this -> model -> getAll();
-			$this -> view -> album_id = (int)$this -> id;
-			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photos_of_album.tpl.php');
-			$this->view->display();
-			
+		}*/
+		private function checkImages(&$list){
+			parent::checkAlbumList($list);
 		}
+		
 		
 		/**
 		 * Вывод топовых фотографий
