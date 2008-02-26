@@ -31,6 +31,7 @@ class PhotoModel extends BaseModel{
 					" GROUP BY id ".
 					" ORDER BY $sortName $sortOrder  LIMIT ?d, ?d ";
 			$DE = Project::getDatabase();
+			$this -> checkPager();
 			$result = $DE -> selectPage($this -> _countRecords, $sql, $user_id, $album_id, $is_friend, $logged_user_id, $is_friend, $logged_user_id, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
 			$this -> updatePagerAmount();
 			return $result;

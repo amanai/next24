@@ -53,7 +53,11 @@ class DbPager implements IDbPager{
 			}
 			
 			public function getEndLimit(){
-				return ($this -> _pageSize*($this -> _pageNumber + 1));
+				$end = (int)($this -> _pageSize*($this -> _pageNumber + 1));
+				if ($end === 0){
+					$end = 99999999;
+				}
+				return $end;
 			}
 }
 ?>

@@ -459,7 +459,7 @@
 			}
 		}
 		
-		public function checkDir($dir){
+		static public function checkDir($dir){
 			clearstatcache();
 			if (!file_exists($dir) || !is_dir($dir)){
 				if (mkdir($dir)){

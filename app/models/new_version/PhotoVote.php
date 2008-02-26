@@ -26,6 +26,9 @@ class PhotoVote extends BaseModel{
 				$this -> photo_id = (int)$photo_id;
 				$this -> ip = $remote_addr;
 				$this -> save();
+				return true;
+			} else {
+				return false;
 			}
 		}
 		

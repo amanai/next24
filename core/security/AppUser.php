@@ -31,6 +31,7 @@ class AppUser{
 							$this -> _is_friend = true;
 						} else {
 							$friend_model = new FriendModel;
+
 							$friend_id = (int)$friend_model -> isFriend($this -> _showed_user -> id, $this -> _dbUser -> id);
 							if ($friend_id == $this -> _dbUser -> id){
 								$this -> _is_friend = true;

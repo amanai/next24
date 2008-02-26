@@ -28,8 +28,6 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			return Project::getRequest() -> createUrl('Photo', 'View', array($photo_id), $username);
 		}
 		
-		
-		
 		public function UploadFormAction(){
 			$session = getManager('CSession');
 			$user = unserialize($session->read('user'));
@@ -55,7 +53,14 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		public function RatePhotoAction(){
 			$photo_id = (int)Project::getRequest() -> id;
 			$vote_model = new PhotoVote;
-			$vote_model -> addVote((int)Project::getUser() -> getDbUser() -> id, $photo_id, $_SERVER['REMOTE_ADDR']);
+			$photo_model = new PhotoModel;
+			$photo_model -> load($photo_id);
+			if (((int)$photo_model -> id > 0) && $vote_model -> addVote((int)Project::getUser() -> getDbUser() -> id, $photo_id, $_SERVER['REMOTE_ADDR'])){
+				$photo_model -> rating += (int)Project::getRequest() -> rate_value;
+				$photo_model -> voices++;
+				$photo_model -> save();
+				
+			}
 			Project::getResponse() -> redirect($this -> getPhotoUrl($photo_id, Project::getUser() -> getShowedUser() -> login));
 		}
 		
@@ -71,7 +76,6 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			
 			$model = new PhotoModel;
 			$model -> load($photo_id);
-			
 			$this -> BaseAlbumData($info, $model -> album_id);
 			
 			$album_model = new AlbumModel;
@@ -87,32 +91,51 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$info['photo_file'] = $this -> checkFile($login, $model -> path, false);
 			$info['photo_owner_login'] = $login;
 			$info['can_vote'] = PhotoVote::canVote($user_id, $photo_id);
-			 
+			$info['bottom_list'] = $this -> getPhotoBottomList($request_user_id, $model -> album_id, $login);
+			$info['comment_list'] = $this -> getCommentList($request_user_id, $user_id, $model -> id, $login);
+			$info['rate_url'] = Project::getRequest() -> createUrl('Photo', 'RatePhoto');
+			$info['element_id'] = $model -> id;
 			$this -> _view -> Photo($info);
 			$this -> _view -> parse();
 			return;
 		}
 		
+		static public function getCommentList($request_user_id, $user_id, $photo_id, $login){
+			
+		}
 		
-		protected function checkFile($login, $fname, $thumb_file = false){
+		static public function getPhotoBottomList($user_id, $album_id, $login){
+			$photo_model = new PhotoModel;
+			$list = $photo_model -> loadByAlbumUser($user_id, $album_id);
+			foreach ($list as &$item){
+				$item['thumbnail'] = self::checkFile($login, $item['thumbnail'], $thumb_file = true);
+			}
+			$info = array();
+			$info['photo_list'] = $list;
+			$view = new PhotoView;
+			$view -> BottomList($info);
+			return $view -> parse();
+		}
+		
+		static public function checkFile($login, $fname, $thumb_file = false){
 			
 			$ret = false;
 			if (strlen($login) > 0){
 				$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
 				$err = false;
-				$ok = $this -> checkDir($dir);
+				$ok = self::checkDir($dir);
 				if ($ok === true){
 					$album = $dir . DIRECTORY_SEPARATOR . 'album';
-					$ok = $this -> checkDir($album);
+					$ok = self::checkDir($album);
 				}
 				if ($ok === true){
 					$images = $album . DIRECTORY_SEPARATOR . 'images';
-					$ok = $this -> checkDir($images);
+					$ok = self::checkDir($images);
 				}
 				
 				if (($ok === true) && ($thumb_file === true)){
 					$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
-					$ok = $this -> checkDir($thumbs);
+					$ok = self::checkDir($thumbs);
 				}
 				if ($ok === true){
 					if ($thumb_file === true){
@@ -328,40 +351,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$this -> _view -> PhotoList($info);
 			$this -> _view -> parse();
 		}
-		
-		/*private function checkImages(&$list){
-			foreach($list as $key => $value){
-				$login = $value['login'];
-				$thumb = false;
-				$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
-				$err = false;
-				$ok = $this -> checkDir($dir);
-				if ($ok === true){
-					$album = $dir . DIRECTORY_SEPARATOR . 'album';
-					$ok = $this -> checkDir($album);
-				}
-				if ($ok === true){
-					$images = $album . DIRECTORY_SEPARATOR . 'images';
-					$ok = $this -> checkDir($images);
-				}
-				
-				if ($ok === true){
-					$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
-					$ok = $this -> checkDir($thumbs);
-				}
-				
-				if ($ok === true){
-					
-					$f = $thumbs . DIRECTORY_SEPARATOR . $value['thumbnail'];
-					if (file_exists($f) && is_file($f)){
-						$thumb = $f;
-						// Replace back slashes
-						$thumb = str_replace("\\", "/", $thumb);
-					}
-				}
-				$list[$key]['thumbnail'] = $thumb;
-			}
-		}*/
+
 		private function checkImages(&$list){
 			parent::checkAlbumList($list);
 		}

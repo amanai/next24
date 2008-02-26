@@ -14,5 +14,10 @@ class PhotoView extends BaseSiteView{
 			$this -> setTemplate(null, 'photo_view.tpl.php');
 			$this -> set($info);
 		}
+		
+		function BottomList($info){
+			$this -> setTemplate(null, 'photo_bottom_list.tpl.php');
+			$this -> set($info);
+		}
 }
 ?>
