@@ -65,14 +65,14 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		}
 		
 		public function ViewAction(){
-			
+			$request = Project::getRequest();
 			$info = array();
 			$this -> BaseSiteData();
 			
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
-			$photo_id = (int)Project::getRequest() -> getKeyByNumber(0);
-			$login = Project::getRequest() -> getUsername();
+			$photo_id = (int)$request -> getKeyByNumber(0);
+			$login = $request -> getUsername();
 			
 			$model = new PhotoModel;
 			$model -> load($photo_id);
@@ -92,18 +92,27 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$info['photo_owner_login'] = $login;
 			$info['can_vote'] = PhotoVote::canVote($user_id, $photo_id);
 			$info['bottom_list'] = $this -> getPhotoBottomList($request_user_id, $model -> album_id, $login);
-			$info['comment_list'] = $this -> getCommentList($model -> id, Project::getRequest() -> getKeyByNumber(1), $this -> getParam('comment_per_page'));
-			$info['rate_url'] = Project::getRequest() -> createUrl('Photo', 'RatePhoto');
-			$info['add_comment_url'] = Project::getRequest() -> createUrl('Photo', 'Comment');
+			
+			$controller = new BaseCommentController();
+			$info['comment_list'] = $controller -> CommentList(
+																'PhotoCommentModel', // Model for getting comments 
+																$model -> id,  // Id of comment item
+																$request -> getKeyByNumber(1), // current page number
+																$this -> getParam('comment_per_page'),  // page size
+																'Photo', 'View', array($model -> id), // current view params
+																'Photo', 'CommentDelete' // parameters for delete action
+																);
+			
+			
+			$info['rate_url'] = $request -> createUrl('Photo', 'RatePhoto');
+			$info['add_comment_url'] = $request -> createUrl('Photo', 'Comment');
+			$info['add_comment_element_id'] = $model -> id;
+			$info['add_comment_id'] = 0;
+
 			$info['element_id'] = $model -> id;
 			$this -> _view -> Photo($info);
 			$this -> _view -> parse();
 			return;
-		}
-		
-		public function getCommentList($photo_id, $page_number, $page_size){
-			$controller = new BaseCommentController();
-			return $controller -> CommentList('PhotoComment', $photo_id, $page_number, $page_size, 'Photo', 'CommentDelete');
 		}
 		
 		static public function getPhotoBottomList($user_id, $album_id, $login){
@@ -153,32 +162,49 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			return $ret;
 		}
 		
+		
+		/**
+		 * Delete comment
+		 */
 		public function CommentDeleteAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
+			$request = Project::getRequest();
 			
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			
+			$photo_id = $request -> getKeyByNumber(0);
+			$comment_id = $request -> getKeyByNumber(1);
+			$comment_model = new PhotoCommentModel($comment_id);
+			$photo_model = new PhotoModel;
+			$photo_model -> load($photo_id);
+			
+			if (($comment_model -> id > 0) && ($photo_model -> id > 0) && ($comment_model -> photo_id == $photo_model -> id)){
+				if (($comment_model -> user_id == $user_id) || ($photo_model -> user_id == $user_id)){
+					$comment_model -> delete($comment_model -> user_id, $comment_id);
+				}
+			}
+			Project::getResponse() -> redirect($this -> getPhotoUrl($photo_id, Project::getUser() -> getShowedUser() -> login));
 			//TODO::avatar?warning?mood?
-			$this -> setModel("PhotoComment");
-			$this -> model -> delete($user_id, $this->id);
-			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Photo', 'View', array('id'=>$this->photo_id)));
-			
 		}
 		
+		/**
+		 * Add or edit comment
+		 */
 		public function CommentAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			
-			//TODO::avatar?warning?mood?
-			$this -> setModel("PhotoComment");
-			$this -> model -> addComment($user_id, 0, 0, $this -> id, $this -> comment, 0);
+			$request = Project::getRequest();
+			$comment_id = (int)$request -> id;
+			$photo_id = (int)$request -> element_id;
+			$text = $request -> comment;
 			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Photo', 'View', array('id'=>$this->id)));
-
+			$photo_model = new PhotoModel;
+			$photo_model -> load($photo_id);
+			$comment_model = new PhotoCommentModel($comment_id);
+			if ($photo_model -> id > 0){
+				$comment_model -> addComment($user_id, 0, 0, $photo_id, $text, 0);
+			}
+			Project::getResponse() -> redirect($this -> getPhotoUrl($photo_id, Project::getUser() -> getShowedUser() -> login));
 		}
 		
 		public function SaveAction(){

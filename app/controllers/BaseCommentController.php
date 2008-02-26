@@ -14,7 +14,7 @@ class BaseCommentController extends CBaseController{
 		/**
 		 * 
 		 */
-		public function CommentList($model_class, $item_id, $page_number = 0, $page_size = 0, $del_controller, $del_action){
+		public function CommentList($model_class, $item_id, $page_number, $page_size, $cur_controller, $cur_action, $params, $del_controller, $del_action){
 			if ((int)$page_size <= 0){
 				$page_size = self::DEFAULT_COMMENT_PER_PAGE;
 			}
@@ -34,6 +34,11 @@ class BaseCommentController extends CBaseController{
 				}
 			}
 			$info['comment_list'] = $list;
+			$pager_view = new SitePagerView();
+			$info['comment_list_pager'] = $pager_view -> show2($model -> getPager(), $cur_controller, $cur_action, $params);
+			
+			
+			
 			$this -> _view -> CommentList($info);
 			return $this -> _view -> parse();
 		}

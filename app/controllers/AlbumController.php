@@ -379,13 +379,11 @@
 				$info['show_control_panel'] = false;
 			}
 			$model = new AlbumModel();
-			$pager = new DbPager($request -> getValueByNumber(0), $per_page);
+			$pager = new DbPager($request -> getKeyByNumber(0), $per_page);
 			$model -> setPager($pager);
 			$list = $model -> loadAll(Project::getUser() -> getShowedUser() -> id, Project::getUser() -> getDbUser() -> id, $sortname, $sortorder);
-			$info['list_pager'] = $model -> getPager();
-			$info['list_controller'] = 'Album';
-			$info['list_action'] = 'TopList';
-			$info['list_user'] = null;
+			$pager_view = new SitePagerView();
+			$info['album_list_pager'] = $pager_view -> show2($model -> getPager(), 'Album', 'TopList');
 			$this -> checkAlbumList($list);
 			$info['album_list'] = $list;
 		}

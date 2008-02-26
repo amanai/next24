@@ -25,3 +25,4 @@
 		</div>
 	</div>
 <?php }?>
+<? echo $this -> comment_list_pager;?>

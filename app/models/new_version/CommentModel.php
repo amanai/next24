@@ -69,16 +69,20 @@ abstract class CommentModel extends BaseModel{
 		 * Добавление комментария
 		 */
 		public function addComment($user_id, $avatar_id, $warning_id, $field_id, $text, $mood, $adm_redacted = 0){
-			$fn = $this -> _object_field_name;
-			$this -> user_id = (int)$user_id;
-			$this -> avatar_id = (int)$avatar_id;
-			$this -> warning_id = (int)$warning_id;
-			$this -> $fn = $field_id;
-			$this -> text = $text;
-			$this -> mood = (int)$mood;
-			$this -> creation_date = date("Y-m-d H:i:s");
-			$this -> adm_redacted = (int)$adm_redacted;
-			return $this -> save();
+			if ((int)$user_id > 0){
+				$fn = $this -> _object_field_name;
+				$this -> user_id = (int)$user_id;
+				$this -> avatar_id = (int)$avatar_id;
+				$this -> warning_id = (int)$warning_id;
+				$this -> $fn = $field_id;
+				$this -> text = $text;
+				$this -> mood = (int)$mood;
+				$this -> creation_date = date("Y-m-d H:i:s");
+				$this -> adm_redacted = (int)$adm_redacted;
+				return $this -> save();
+			} else {
+				return false;
+			}
 		}
 		
 		/**

@@ -37,7 +37,7 @@
 							</table>
 							<!-- листинг -->
 							<!-- TODO::INCLUDE PAGER HERE -->
-							<?php echo $this -> list_pager_html; ?>
+							<?php echo $this -> album_list_pager; ?>
 							<!-- /листинг -->
 						</td>
 					</tr>
