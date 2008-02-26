@@ -1,7 +1,7 @@
 <?php
 class PhotoModel extends BaseModel{
 		function __construct(){
-			parent::__construct('album');
+			parent::__construct('photo');
 		}
 		
 		function loadByAlbumUser($user_id, $album_id, $sortName = 'creation_date', $sortOrder = 'DESC', $defaultSortName = 'id'){
@@ -25,12 +25,13 @@ class PhotoModel extends BaseModel{
 					" INNER JOIN users u ON u.id=p.user_id " .
 					" WHERE " .
 					" p.user_id = ?d " .
+					" AND p.album_id = ?d " .
 					" AND ( (a.access=".ACCESS::ALL.") OR (?d AND a.access=".ACCESS::FRIEND.") OR (a.user_id=?d AND a.access=".ACCESS::MYSELF.") )" .
 					" AND ( (p.access=".ACCESS::ALL.") OR (?d AND p.access=".ACCESS::FRIEND.") OR (p.user_id=?d AND p.access=".ACCESS::MYSELF.") )" .
 					" GROUP BY id ".
 					" ORDER BY $sortName $sortOrder  LIMIT ?d, ?d ";
 			$DE = Project::getDatabase();
-			$result = $DE -> selectPage($this -> _countRecords, $sql, $user_id, $is_friend, $logged_user_id, $is_friend, $logged_user_id, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
+			$result = $DE -> selectPage($this -> _countRecords, $sql, $user_id, $album_id, $is_friend, $logged_user_id, $is_friend, $logged_user_id, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
 			$this -> updatePagerAmount();
 			return $result;
 		}

@@ -24,6 +24,10 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			return Project::getRequest() -> createUrl('Photo', 'Edit', array($album_id), $username);
 		}
 		
+		static public function getPhotoUrl($photo_id, $username){
+			return Project::getRequest() -> createUrl('Photo', 'View', array($photo_id), $username);
+		}
+		
 		
 		
 		public function UploadFormAction(){
@@ -72,84 +76,32 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		}
 		
 		public function ViewAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
 			
-			$this->setModel("Photos");
-			$this -> model -> resetSql();
-			$this -> model -> load($this -> id);
-			$photo = $this -> model -> getData();
-			if (count($photo) == 0){
-				// TODO:: No foto id or wrong id (isn't already exists)
-				die("No foto info");
-			}
+			$info = array();
+			$this -> BaseSiteData();
 			
-			if (isset($photo['album_id']) && ((int)$photo['album_id'] > 0)){
-				$this->setModel("Albums");
-				$this -> model -> resetSql();
-				$this -> model -> load($photo['album_id']);
-				if ((int)$this -> model -> id <= 0){
-					// TODO:: id is not exists at DB
-					die("No album");
-				}
-				$album_id = (int)$photo['album_id'];
-			} else {
-				// TODO:: wrong relation to album
-				die("No album");
-			}
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			$photo_id = (int)Project::getRequest() -> getKeyByNumber(0);
+			$login = Project::getRequest() -> getUsername();
 			
-			$this -> view -> album_info = $this -> model -> getData();
+			$model = new PhotoModel;
+			$model -> load($photo_id);
 			
-			if (isset($photo['user_id']) && ((int)$photo['user_id'] > 0)){
-				$user_id = (int)$photo['user_id'];
-			} else {
-				// TODO:: No user id assigned to this photo or photo is not exists???
-				die("No user");
-			}
+			$this -> BaseAlbumData($info, $model -> album_id);
 			
+			$album_model = new AlbumModel;
+			$album_model -> load($model -> album_id);
 			
-			if ($photo['user_id'] == $user['id']){
-				$this -> view -> photo_owner = true;
-			}
-			$this->setModel("Users");
-			$this -> model -> resetSql();
-			$this -> model -> where('id='.(int)$user_id);
-			$user = $this -> model -> getOne();
-			if (isset($user['login'])) {
-				$login = trim($user['login']);
-				if (strlen($login) == 0){
-					// TODO:: something wrong - no user login, so we can't get directory with him uploads
-					die("No user data folder");
-				}
-			}
-			
-			$image = false;
-			$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
-			$err = false;
-			$ok = $this -> checkDir($dir);
-			if ($ok === true){
-				$album = $dir . DIRECTORY_SEPARATOR . 'album';
-				$ok = $this -> checkDir($album);
-			}
-			if ($ok === true){
-				$images = $album . DIRECTORY_SEPARATOR . 'images';
-				$ok = $this -> checkDir($images);
-			}
-			
-			if ($ok === true){
-				$f = $images . DIRECTORY_SEPARATOR . $photo['path'];
-				if (file_exists($f) && is_file($f)){
-					$image = $f;
-					// Replace back slashes
-					$image = str_replace("\\", "/", $image);
-				}
-			}
-			$photo['path'] = $image;
-			
-			
-			
-			
-			$this -> view -> photo_info = $photo;
+			$info['album_name'] = $album_model -> name;
+			$info['album_id'] = $album_model -> id;
+			$info['photo_name'] = $model -> name;
+			$info['photo_creation_date'] = $model -> creation_date;
+			$info['photo_file'] = $this -> checkFile($login, $model -> path, false);
+			$info['photo_owner_login'] = $login;
+			$this -> _view -> Photo($info);
+			$this -> _view -> parse();
+			return;
 			
 			$this->setModel("PhotoVotes");
 			$this -> view -> can_rate = $this -> model -> canVote($user_id, $this -> id);;
@@ -199,6 +151,41 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$this -> view -> comment_list = $list;
 			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photos_view.tpl.php');
 			$this->view->display();
+		}
+		
+		
+		protected function checkFile($login, $fname, $thumb_file = false){
+			
+			$ret = false;
+			if (strlen($login) > 0){
+				$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
+				$err = false;
+				$ok = $this -> checkDir($dir);
+				if ($ok === true){
+					$album = $dir . DIRECTORY_SEPARATOR . 'album';
+					$ok = $this -> checkDir($album);
+				}
+				if ($ok === true){
+					$images = $album . DIRECTORY_SEPARATOR . 'images';
+					$ok = $this -> checkDir($images);
+				}
+				
+				if (($ok === true) && ($thumb_file === true)){
+					$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
+					$ok = $this -> checkDir($thumbs);
+				}
+				if ($ok === true){
+					if ($thumb_file === true){
+						$f = $thumbs . DIRECTORY_SEPARATOR . $fname;
+					} else {
+						$f = $images . DIRECTORY_SEPARATOR . $fname;
+					}
+					if (file_exists($f) && is_file($f)){
+						$ret = Project::getRequest() -> getHost() . 'users/'.$login.'/album/'. ( ($thumb_file === true) ? 'thumbs' : 'images' ) . '/' . $fname;
+					}
+				}
+			}
+			return $ret;
 		}
 		
 		public function CommentDeleteAction(){
@@ -385,13 +372,9 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$album_id = (int)Project::getRequest() -> getKeyByNumber(0);
 			
 			$info = array();
-			
 			$this -> BaseAlbumData($info, $album_id);
-			
-			
-			
-			
-			
+
+		
 			$photo_model = new PhotoModel;
 			$pager = new DbPager(Project::getRequest() -> getValueByNumber(1), $this -> getParam('photo_per_page', self::DEFAULT_PHOTO_PER_PAGE));
 			$photo_model -> setPager($pager);
