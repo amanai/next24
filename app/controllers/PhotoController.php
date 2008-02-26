@@ -92,16 +92,18 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$info['photo_owner_login'] = $login;
 			$info['can_vote'] = PhotoVote::canVote($user_id, $photo_id);
 			$info['bottom_list'] = $this -> getPhotoBottomList($request_user_id, $model -> album_id, $login);
-			$info['comment_list'] = $this -> getCommentList($request_user_id, $user_id, $model -> id, $login);
+			$info['comment_list'] = $this -> getCommentList($model -> id, Project::getRequest() -> getKeyByNumber(1), $this -> getParam('comment_per_page'));
 			$info['rate_url'] = Project::getRequest() -> createUrl('Photo', 'RatePhoto');
+			$info['add_comment_url'] = Project::getRequest() -> createUrl('Photo', 'Comment');
 			$info['element_id'] = $model -> id;
 			$this -> _view -> Photo($info);
 			$this -> _view -> parse();
 			return;
 		}
 		
-		static public function getCommentList($request_user_id, $user_id, $photo_id, $login){
-			
+		public function getCommentList($photo_id, $page_number, $page_size){
+			$controller = new BaseCommentController();
+			return $controller -> CommentList('PhotoComment', $photo_id, $page_number, $page_size, 'Photo', 'CommentDelete');
 		}
 		
 		static public function getPhotoBottomList($user_id, $album_id, $login){

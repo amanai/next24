@@ -8,7 +8,10 @@
 							<h2><a href="<?php echo UserController::getProfileUrl($item['login']);?>"><?php echo $item['login'];?></a></h2>
 						</div>
 						<div class="block_title_right">
-							<span class="dellink"> (<a href="<?php echo $this->createUrl('Photo', 'CommentDelete', array('photo_id'=>$item['photo_id'],'id'=>$item['id']));?>" >Удалить комментарий</a>)</span><?php echo date("j F Y H:i", strtotime($item['creation_date']));?>
+							<?php if ($item['del_link'] !== false) { ?>
+								<span class="dellink"> (<a href="<?php echo $item['del_link'];?>" >Удалить комментарий</a>)</span>
+							<?php } ?>
+							<?php echo date("j F Y H:i", strtotime($item['creation_date']));?>
 						</div>
 					</div>
 				</div>

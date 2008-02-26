@@ -24,6 +24,11 @@
 
 			$this -> _view -> assign('title', $this -> _action_model -> page_title);
 			$this -> _view -> assign('current_user', Project::getUser() -> getDbUser());
+			if ((int)Project::getUser() -> getDbUser() -> id > 0){
+				$this -> _view -> assign('is_logged', true);
+			} else {
+				$this -> _view -> assign('is_logged', false);
+			}
 			// TODO:: read logged user information
 		}
 

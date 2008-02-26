@@ -1,4 +1,4 @@
-<form action="<?php echo $this->createUrl('Photo', 'Comment');?>" method="post">
+<form action="<?php echo $this -> add_comment_url;?>" method="post">
 	    <input type="hidden" name="id" value="<?php echo $this->photo_info['id'];?>" />
 		<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 			<table width="100%">

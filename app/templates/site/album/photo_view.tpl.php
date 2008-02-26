@@ -66,6 +66,12 @@
 							<?php echo $this -> bottom_list;?>
 					<!-- Комменты -->
 							<?php echo $this -> comment_list;?>
+							<?php 
+								if ($this -> is_logged){
+									include($this -> _include('../form_add_comment.tpl.php'));
+								}
+								  
+							?>
 					<!-- /ПРОФИЛЬ -->
 				</div>
 
