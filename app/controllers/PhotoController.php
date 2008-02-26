@@ -53,26 +53,10 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		
 		
 		public function RatePhotoAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
-			
-			$this->setModel("PhotoVotes");
-			$can_rate = $this -> model -> canVote($user_id, $this -> id);;
-			
-			if ($can_rate = true){
-				$this -> model -> addVote($user_id, $this -> id);
-				
-				$this -> setModel("Photos");
-				$this -> model -> resetSql();
-				$this -> model -> load($this -> id);
-				$this -> model -> set('voices', ($this -> model -> get('voices') + 1));
-				$this -> model -> set('rating', ($this -> model -> get('rating') + $this -> rate_value));
-				$this -> model -> save();
-			}
-			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Photo', 'View', array('id' => $this -> id)));
+			$photo_id = (int)Project::getRequest() -> id;
+			$vote_model = new PhotoVote;
+			$vote_model -> addVote((int)Project::getUser() -> getDbUser() -> id, $photo_id, $_SERVER['REMOTE_ADDR']);
+			Project::getResponse() -> redirect($this -> getPhotoUrl($photo_id, Project::getUser() -> getShowedUser() -> login));
 		}
 		
 		public function ViewAction(){
@@ -95,62 +79,18 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			
 			$info['album_name'] = $album_model -> name;
 			$info['album_id'] = $album_model -> id;
+			$info['photo_id'] = $model -> id;
 			$info['photo_name'] = $model -> name;
+			$info['photo_rating'] = ($model -> voices > 0)? $model -> rating/$model -> voices : 0;
+			$info['photo_voices'] = $model -> voices;
 			$info['photo_creation_date'] = $model -> creation_date;
 			$info['photo_file'] = $this -> checkFile($login, $model -> path, false);
 			$info['photo_owner_login'] = $login;
+			$info['can_vote'] = PhotoVote::canVote($user_id, $photo_id);
+			 
 			$this -> _view -> Photo($info);
 			$this -> _view -> parse();
 			return;
-			
-			$this->setModel("PhotoVotes");
-			$this -> view -> can_rate = $this -> model -> canVote($user_id, $this -> id);;
-			
-			
-			
-			if ($ok === true){
-				$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
-				$ok = $this -> checkDir($thumbs);
-			}
-			$this->setModel("Photos");
-			$this -> model -> resetSql();
-			$this -> model -> where('album_id='.(int)$album_id);
-			if ($photo['user_id'] != $user['id']){
-				$this -> model -> where('access>0');
-			}
-			$list = $this -> model -> getAll();
-			foreach($list as $key => $value){
-				$thumb = false;
-				if ($ok === true){
-					$f = $thumbs . DIRECTORY_SEPARATOR . $value['thumbnail'];
-					if (file_exists($f) && is_file($f)){
-						$thumb = $f;
-						// Replace back slashes
-						$thumb = str_replace("\\", "/", $thumb);
-					}
-				}
-				$list[$key]['thumbnail'] = $thumb;
-			}
-			
-			$this -> view -> photo_list = $list;
-			
-			$this->setModel("Albums");
-			$this -> model -> resetSql();
-			$this -> model -> where('user_id='.(int)$user_id);
-			if ($photo['user_id'] != $user['id']){
-				$this -> model -> where('access>0');
-			}
-			$this -> view -> album_list = $this -> model -> getAll();
-			$this -> view -> album_id = (int)$this -> id;
-			
-			
-			
-			$this->setModel("PhotoComment");
-			$this -> model -> resetSql();
-			$list = $this -> model -> loadByItem($this -> id);
-			$this -> view -> comment_list = $list;
-			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photos_view.tpl.php');
-			$this->view->display();
 		}
 		
 		

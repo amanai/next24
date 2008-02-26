@@ -28,13 +28,13 @@
 													<div class="block_ee3">
 														<div class="block_ee4">
 															<div class="block_title">
-																<h2><a href="<?php echo BASE_URL;?>Photo/View/id:<?php echo $item['id'];?>"><?php echo $item['name'];?></a></h2>
+																<h2><a href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>"><?php echo $item['name'];?></a></h2>
 															</div>
 															<div style="width: 140px; height: 112px; text-align: center;">
-																<a href="<?php echo BASE_URL;?>Photo/View/id:<?php echo $item['id'];?>"><img src="<?php echo ($item['thumbnail'] ===false)?$this -> image_url.'noimage.gif' :$item['thumbnail'];?>" width="140" /></a>
+																<a href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>"><img src="<?php echo ($item['thumbnail'] ===false)?$this -> image_url.'noimage.gif' :$item['thumbnail'];?>" width="140" /></a>
 															</div>
 															<div class="block_title2">
-																<a href="#ССылка на profile пользователя"><?php echo $item['login'];?></a><br />
+																<a href="<?php echo UserController::getProfileUrl($item['login']);?>"><?php echo $item['login'];?></a><br />
 																<span id="micro"><?php echo date("j F Y", strtotime($item['creation_date']));?></span>
 															</div>
 														</div>
@@ -47,28 +47,7 @@
 							
 							<br/><br/><br/>
 
-							<div class="block_ee1">
-								<div class="block_ee2">
-									<div class="block_ee3">
-										<div class="block_ee4">
-											<table class="neighbours">
-												<?php foreach($this->album_list as $key => $item){ ?>
-													<?php if ($key%5 == 0){ ?><tr><?php } ?>
-														<td class="neigh1">
-															<?php if ($this->album_id != $item['id']){ ?>
-																<a href="<?php echo BASE_URL;?>Photo/Album/id:<?php echo $item['id'];?>"><?php echo $item['name'];?></a>
-															<?php } else { ?>
-																<b><?php echo $item['name'];?></b>
-															<?php } ?>
-															<br/>
-															<div class="ndate"><?php echo date("j F Y", strtotime($item['creation_date']));?></div>
-														</td>
-												<?php }?>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
+							
 						</td>
 					</tr>
 					</table>
