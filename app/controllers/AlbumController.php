@@ -129,23 +129,39 @@
 		
 		public function UploadAction(){
 			// TODO:: album_id - проверять, этого ли пользователя альбом
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
-			$login = trim($user['login']);
 			
-			$this->setModel("Albums");
-			$this -> model -> resetSql();
-			$this -> model -> load($this -> album_id);
-			$album = $this -> model -> getData();
-			if (!isset($album['id']) || !isset($album['user_id']) || ((int)$album['id'] !== (int)$user_id)){
-				// TODO:: current user try to add foto to album of another user.
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			$request = Project::getRequest();
+			$login = Project::getUser() -> getDbUser() -> login;
+			
+			$album_id = (int)$request -> album_id;
+			$access = (int)$request -> pic_access;
+			$onmain = $request -> on_main ? 1 : 0;
+			$rating = $request -> rating ? 1 : 0;
+			$name = trim($request -> pic_name);
+			
+			
+			$album_model = new AlbumModel();
+			$album_model -> load($album_id);
+			if ((int)$album_model -> user_id !== $user_id){
+				// This album not of current user - so can't upload photo in somebody else album
+				$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка доступа к загрузке фотографий");
+				$this -> UploadFormAction($request -> getKeys());
+				return;
+			}
+			
+			if (!strlen($name)){
+				$this -> _view -> addFlashMessage(FM::ERROR, "Введите название фотографии");
+				$this -> UploadFormAction($request -> getKeys());
+				return;
 			}
 			
 			if (!isset($_FILES['picture'])){
-				// TODO:: error uploading picture - handle error hear
+				$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка загрузки изображения на сервер");
+				$this -> UploadFormAction($request -> getKeys());
+				return;
 			}
-			//TODO:: check type of uploaded images
 			
 			
 			$uploadfile = false;
@@ -167,6 +183,13 @@
 				$ok_thumb = $this -> checkDir($thumbs);
 			}
 			
+			if (!$ok || !$ok_thumb){
+				$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка загрузки изображения в директорию пользователя");
+				$this -> UploadFormAction($request -> getKeys());
+				return;
+			}
+			
+			
 			$p = pathinfo($_FILES['picture']['name']);
 			$ext = strtolower(trim(isset($p['extension'])?$p['extension']:null));
 			$fn = md5(uniqid(rand(), true)). ".".$ext;
@@ -175,66 +198,50 @@
 			if ($ok === true){
 				$f = $images . DIRECTORY_SEPARATOR . $fn;
 				if (move_uploaded_file($_FILES['picture']['tmp_name'], $f)) {
-					$uploaded = true;
-					// TODO:: write ti log if thumb size no specified
+					// TODO:: write tщ log if thumb size no specified
 					$width = $this -> getParam('thumb_size', 99999);
 					if ($width <= 0){
 						$width = 100;
 					}
 					if ($ok_thumb === true){
-						if ($this -> _imageResize($f, $thumbs . DIRECTORY_SEPARATOR . $fn, $width)){
+						if (HelpFunctions::_imageResize($f, $thumbs . DIRECTORY_SEPARATOR . $fn, $width)){
 							$thumb = true;
 						} else {
 							// TODO:: error resizing image
 						}
 					}
 				} else {
-					// TODO:: error uploading file
+					$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка загрузки изображения");
+					$this -> UploadFormAction($request -> getKeys());
+					return;
 				}
 			}
 			
-			if ($uploaded) {
-				$this->setModel("Photos");
-				$this -> model -> resetSql();
-				$this -> model -> set('user_id', $user_id);
-				$this -> model -> set('album_id', $this -> album_id);
-				$this -> model -> set('name', $this -> pic_name);
-				$this -> model -> set('path', $fn);
-				$this -> model -> set('thumbnail', $fn);
-				$this -> model -> set('is_rating', ($this -> rating == 'on')?1:0);
-				$this -> model -> set('is_onmain', ($this -> on_main == 'on')?1:0);
-				$this -> model -> set('access', (int)$this -> access);
-				$this -> model -> set('voices', 0);
-				$this -> model -> set('rating', 0);
-				$this -> model -> set('creation_date', date("Y-m-d H:i:s"));
-				$this -> model -> set('id', null);
-				$this -> model -> save();
-			}
-			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Album', 'UploadForm'));
+			$photo_model = new PhotoModel;
+			$photo_model -> user_id = $user_id;
+			$photo_model -> album_id = $album_id;
+			$photo_model -> name = $name;
+			$photo_model -> path = $fn;
+			$photo_model -> thumbnail = $fn;
+			$photo_model -> is_onmain = $onmain;
+			$photo_model -> is_rating = $rating;
+			$photo_model -> access = $access;
+			$photo_model -> voices = 0;
+			$photo_model -> rating = 0;
+			$photo_model -> creation_date = date("Y-m-d H:i:s");
+			$photo_model -> save();
+			Project::getResponse() -> redirect($request -> createUrl('Album', 'UploadForm'));
 		}
 		
 		
 		/**
 		 * Форма загрузки фотографии
 		 */
-		public function UploadFormAction(){
-			
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
-			
-			$this -> model -> resetSql();
-			$this -> model -> order("albums.creation_date DESC");
-			$this -> model -> where('albums.user_id='.(int)$user_id);
-			$list = $this -> model -> getAll();
-			$this -> view -> album_list = $list;
-			
-			
-			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/upload_form.tpl.php');
-			$this->view->display();
-			
+		public function UploadFormAction($info = array()){
+			$this -> BaseSiteData();
+			$this -> BaseAlbumData($info, 0, 'album_list');
+			$this -> _view -> UploadForm($info);
+			$this -> _view -> parse();
 		}
 		
 		
@@ -296,7 +303,7 @@
 		 */
 		public function CreateFormAction($info = array()){
 			$this -> BaseSiteData();
-			$this -> BaseAlbumData($info);
+			$this -> BaseAlbumData($info, 0);
 			$this -> _view -> CreateForm($info);
 			$this -> _view -> parse();
 		}
@@ -406,7 +413,7 @@
 		}
 		
 		
-		protected function BaseAlbumData(&$info, $album_id){
+		protected function BaseAlbumData(&$info, $album_id, $album_list = false){
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			if ($request_user_id === $user_id) {
@@ -427,6 +434,9 @@
 			$v = new AlbumView();
 			$v -> AlbumMenu($tmp);
 			$info['album_menu'] = $v -> parse();
+			if ($album_list !== false){
+				$info[$album_list] = $tmp['album_menu_list'];
+			}
 		}
 
 		

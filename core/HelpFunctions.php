@@ -137,7 +137,7 @@ class HelpFunctions{
 		/**
 		 * Resize image
 		 */
-		private function _imageResize($fn, $new_fn, $toWidth){
+		static public function _imageResize($fn, $new_fn, $toWidth){
 			$p = pathinfo($fn);
 			$ext = isset($p['extension'])?$p['extension']:null;
 			list($width, $height) = getimagesize($fn);
@@ -156,7 +156,7 @@ class HelpFunctions{
 			}
 		}
 		
-		function imageSave($resource, $name, $ext){
+		static public function imageSave($resource, $name, $ext){
 			switch ($ext) {
 				case	'jpg'	:
 									imagejpeg($resource, $name);
@@ -172,7 +172,7 @@ class HelpFunctions{
 			}
 		}
 		
-		function ImageMake($filename, $ext){
+		static public function ImageMake($filename, $ext){
 			$ext = strtolower(trim($ext));
 			switch ($ext) {
 				case	'jpg'	:

@@ -24,5 +24,12 @@ class AlbumView extends BaseSiteView{
 			$this -> setTemplate(null, 'create_album.tpl.php');
 			$this -> set($info);
 		}
+		
+		function UploadForm($info){
+			$info['tab_name'] = 'Загрузка фотографий';
+			$info['access_list'] = HelpFunctions::getAccessList();
+			$this -> setTemplate(null, 'upload_photo.tpl.php');
+			$this -> set($info);
+		}
 }
 ?>
