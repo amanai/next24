@@ -242,46 +242,63 @@
 		 * Создание нового альбома (обработка сабмита)
 		 */
 		public function CreateAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
-			$login = trim($user['login']);
-			
-			$this -> setModel("Albums");
-			$this -> model -> resetSql();
-			$this -> model -> set('user_id', $user_id);
-			$this -> model -> set('name', $this -> album_name);
-			$this -> model -> set('access', (int)$this -> album_access);
-			$this -> model -> set('is_onmain', 0);
-			$this -> model -> set('thumbnail_id', 0);
-			$this -> model -> set('creation_date', date("Y-m-d H:i:s"));
-			
-			$this -> model -> save();
-			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Album', 'CreateForm'));
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			$request = Project::getRequest();
+			if ($user_id === $request_user_id){
+				// Album is for user - so can add/update
+				$id = (int)$request -> id;
+				$onmain = $request -> is_onmain;
+				if ($onmain !== null){
+					$onmain = 1;
+				} else {
+					$onmain = 0;
+				}
+				$name = trim($request -> album_name);
+				$access = (int)$request -> album_access;
+				$can_update = true;
+				if (!strlen($name)){
+					$can_update = false;
+					$this -> _view -> addFlashMessage(FM::ERROR, "Название альбома не заполнено");
+				}
+				
+				if ($can_update === true){
+					$album_model = new AlbumModel;
+					$album_model -> load($id);
+					if ($album_model -> id <= 0){
+						// For new albums no thumbnail
+						$album_model -> thumbnail_id = 0;
+					}
+					$album_model -> user_id = $user_id;
+					$album_model -> name = $name;
+					$album_model -> access = $access;
+					$album_model -> is_onmain = $onmain;
+					$album_model -> creation_date = date("Y-m-d H:i:s");
+					$album_model -> save();
+					Project::getResponse() -> redirect($request -> createUrl('Album', 'CreateForm'));
+				} else {
+					$info = array();
+					$info['album_name'] = $name;
+					$info['album_access'] = $access;
+					$info['album_is_onmain'] = $onmain;
+					$this -> CreateFormAction($info);
+				}
+			} else {
+				$this -> _view -> addFlashMessage(FM::ERROR, "Нет доступа");
+				$this -> CreateFormAction();
+			}
+			return;
 		}
 		
 		
 		/**
 		 * Форма создания нового альбома
 		 */
-		public function CreateFormAction(){
-			
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
-			
-			$this -> model -> resetSql();
-			$this -> model -> order("albums.creation_date DESC");
-			$this -> model -> where('albums.user_id='.(int)$user_id);
-			$list = $this -> model -> getAll();
-			$this -> view -> album_list = $list;
-			
-			
-			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/create_form.tpl.php');
-			$this->view->display();
-			
+		public function CreateFormAction($info = array()){
+			$this -> BaseSiteData();
+			$this -> BaseAlbumData($info);
+			$this -> _view -> CreateForm($info);
+			$this -> _view -> parse();
 		}
 		
 		public function ListSaveAction(){
@@ -410,11 +427,6 @@
 			$v = new AlbumView();
 			$v -> AlbumMenu($tmp);
 			$info['album_menu'] = $v -> parse();
-			
-			
-			
-			
-			
 		}
 
 		

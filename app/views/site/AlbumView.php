@@ -17,5 +17,12 @@ class AlbumView extends BaseSiteView{
 		function ControlPanel(){
 			$this -> setTemplate(null, 'control_panel.tpl.php');
 		}
+		
+		function CreateForm($info){
+			$info['tab_name'] = 'Создание фотоальбома';
+			$info['access_list'] = HelpFunctions::getAccessList();
+			$this -> setTemplate(null, 'create_album.tpl.php');
+			$this -> set($info);
+		}
 }
 ?>

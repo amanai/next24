@@ -2,6 +2,14 @@
 class HelpFunctions{
 
 		
+		static function getAccessList(){
+			return  array(
+						ACCESS::ALL => 'для всех',
+						ACCESS::FRIEND => 'только для друзей',
+						ACCESS::MYSELF => 'только для себя'
+						);
+		}
+		
 		static function encode($str){
 			return strtr($str, array('<'=>'&lt;','>'=>'&gt;','"'=>'&quot;'));
 		}
