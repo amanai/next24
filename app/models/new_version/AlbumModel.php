@@ -51,7 +51,9 @@ class AlbumModel extends BaseModel{
 						"u.login as login," .
 						"p.thumbnail as thumbnail," .
 						"IF (rate.voices > 0, rate.rating/rate.voices, 0) as album_rating," .
-						"a.user_id as user_id " .
+						"a.user_id as user_id," .
+						"a.access as access," .
+						"a.is_onmain as is_onmain " .
 					" FROM album as a " .
 					" LEFT JOIN users u ON u.id=a.user_id " .
 					" LEFT JOIN photo p ON p.id=a.thumbnail_id AND p.album_id=a.id " .

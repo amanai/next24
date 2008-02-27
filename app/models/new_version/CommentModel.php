@@ -104,6 +104,15 @@ abstract class CommentModel extends BaseModel{
 		}
 		
 		/**
+		 * Удаление всех комментариев объекта
+		 */
+		public function deleteAllByItem($field_id){
+			$sql = "DELETE FROM `" . $this->_table . "`
+					WHERE `".$this -> _object_field_name."` = ?d";
+			Project::getDatabase() -> query($sql, (int)$field_id);
+		}
+		
+		/**
 		 * Удаление все комментарии пользователя
 		 */
 		public function deleteByOwner($user_id){

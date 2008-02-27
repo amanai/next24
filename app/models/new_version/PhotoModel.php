@@ -37,6 +37,10 @@ class PhotoModel extends BaseModel{
 			return $result;
 		}
 		
+		function loadByAlbum($album_id){
+			return Project::getDatabase() -> select("SELECT * FROM photo WHERE album_id=?d ", (int)$album_id);
+		}
+		
 		function loadAll($userid, $logged_user_id, $sortName = 'a.creation_date', $sortOrder = 'DESC', $defaultSortName = "a.id"){
 			$userid = (int)$userid;
 			if (is_null($sortName)){

@@ -14,119 +14,6 @@
 		}
 		
 		
-		
-		public function UserAction(){
-			
-			
-			$request_user_id = (int)$this -> id;
-			
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				// TODO:: user is not logged or something wrong at his session data
-				$user_id = (int)$user['id'];
-			} else {
-				die("Нет доступа");
-			}
-			
-			if (($request_user_id == 0) || ($request_user_id == $user_id)){
-				// В своих  альбомах - показывать все, без каких либо фильтров и установить слева панель управления альбомами, + кнопки редактирования
-				$owner = $user_id;
-			} else {
-				$owner = false;
-			}
-			
-			$this->setModel("Albums");
-			$this -> model -> resetSql();
-			$this -> model -> where('user_id='.($request_user_id > 0?$request_user_id:$user_id));
-			if ($owner === false){
-				$this -> model -> where('access > 0');
-			}
-			$this -> view -> album_list = $this -> model -> getAll();
-			
-			
-			$this->setModel("Photos");
-			$this -> model -> resetSql();
-			$this -> model -> pager();
-			$this -> model -> cols('photos.user_id, 
-								      photos.name,
-								      photos.id as photos_id,
-								      albums.name as album_name,
-								      photos.album_id as album_id,
-								      photos.creation_date, 
-								      photos.thumbnail,
-								      photos.voices as v,
-								      photos.rating as r,
-								      IF ((photos.voices > 0) AND (photos.is_rating > 0), photos.rating/photos.voices, 0) as photos_rating');
-			$this -> model -> join('albums', 'albums.id=photos.album_id', 'LEFT');
-			if ($owner === false){
-				$this -> model -> where('photos.access > 0');
-			}
-			$this -> model -> where('photos.user_id = '.(int)($request_user_id > 0 ? $request_user_id : $user_id));
-			$this -> model -> order("photos.creation_date DESC");
-			
-			if ( ($number = $this -> getParam('last_photo_per_page', self::DEFAULT_PHOTO_PER_PAGE)) === 0){
-				$number = self::DEFAULT_PHOTO_PER_PAGE;
-			}
-			
-			$this -> model -> limit($number, (int)$this -> pn*$number);
-			$list = $this -> model -> getAll();
-			$all = $this -> model -> foundRows();
-			$this -> view -> pages_number = ceil($all / $number);
-			$this -> view -> current_page_number = (int)$this -> pn;
-			
-			$login = trim($user['login']);
-			
-			foreach($list as $key => $value){
-				$thumb = false;
-				if (strlen($login) > 0){
-					$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
-					$err = false;
-					$ok = $this -> checkDir($dir);
-					if ($ok === true){
-						$album = $dir . DIRECTORY_SEPARATOR . 'album';
-						$ok = $this -> checkDir($album);
-					}
-					if ($ok === true){
-						$images = $album . DIRECTORY_SEPARATOR . 'images';
-						$ok = $this -> checkDir($images);
-					}
-					
-					if ($ok === true){
-						$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
-						$ok = $this -> checkDir($thumbs);
-					}
-					
-					if ($ok === true){
-						
-						$f = $thumbs . DIRECTORY_SEPARATOR . $value['thumbnail'];
-						
-						if (file_exists($f) && is_file($f)){
-							
-							$thumb = $f;
-							// Replace back slashes
-							$thumb = str_replace("\\", "/", $thumb);
-						}
-					}
-					
-					
-				}
-				$list[$key]['thumbnail'] = $thumb;
-			}
-			$this -> view -> photo_list = $list;
-			
-			
-			
-			$this -> view -> album_owner = $owner;
-			$this -> view -> album_owner_id = (int)($request_user_id > 0 ? $request_user_id : $user_id);
-			
-			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photo_last_list.tpl.php');
-			$this->view->display();
-		}
-		
-		
 		public function UploadAction(){
 			// TODO:: album_id - проверять, этого ли пользователя альбом
 			
@@ -310,26 +197,34 @@
 		
 		public function ListSaveAction(){
 			
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
-			$login = trim($user['login']);
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			$login = Project::getUser() -> getDbUser() -> login;
+			$request = Project::getRequest();
+			
+			if ($user_id !== $request_user_id){
+				// Can't save somebody's album
+				$this -> ListAction();
+				return;
+			}
+			
+			
+			
 			$album = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login . DIRECTORY_SEPARATOR . 'album' . DIRECTORY_SEPARATOR;
 			$thumbs = $album . 'thumbs' . DIRECTORY_SEPARATOR;
 			$images = $album . 'images' . DIRECTORY_SEPARATOR;
 			clearstatcache();
-			if (is_array($this -> album_id)){
-				foreach ($this -> album_id as $album_id){
-					$this->setModel("Albums");
-					$this -> model -> resetSql();
-					$this -> model -> load($album_id);
+			if (is_array($request -> album_id)){
+				foreach ($request -> album_id as $album_id){
+					$album_model = new AlbumModel;
+					$album_model -> load($album_id);
 					// Проверка, является ли пользователем владельцем альбома
-					if (((int)$this -> model -> id > 0) && ((int)$this -> model -> get('user_id') === $user_id)){
-						if (isset($this -> delete[$album_id]) && ($this -> delete[$album_id] == "on")){
+					if (((int)$album_model -> id > 0) && ((int)$album_model -> user_id === $user_id)){
+						if (isset($request -> delete[$album_id])){
 							// Delete album
-							$this -> setModel("Photos");
-							$this -> model -> where('album_id='.(int)$album_id);
-							$list = $this -> model -> getAll();
+							$photo_model = new PhotoModel;
+							
+							$list = $photo_model -> loadByAlbum($album_id);
 							foreach($list as $item){
 								$f = $thumbs . $item['path'];
 								if (file_exists($f) && is_file($f)){
@@ -339,34 +234,39 @@
 								if (file_exists($f) && is_file($f)){
 									unlink($f);
 								}
-								$this -> model -> id = $item['id'];
-								$this -> model -> delete();
+								$photo_model -> delete($item['id']);
+								$comment_model = new PhotoCommentModel;
+								$comment_model -> deleteAllByItem($item['id']);
 							}
-							$this->setModel("Albums");
-							$this -> model -> id = $album_id;
-							$this -> model -> delete();
+							$album_model -> delete($album_id);
 						} else {
-							$this -> model -> set('access', (isset($this -> access[$album_id])?$this -> access[$album_id]:0));
-							$this -> model -> set('name', (isset($this -> album_name[$album_id])?$this -> album_name[$album_id]:$this -> model -> get('name')));
-							$this -> model -> save();
+							$album_model -> is_onmain = isset($request -> is_onmain[$album_id])?1:0;
+							$album_model -> access = isset($request -> album_access[$album_id])?$request -> album_access[$album_id]:(ACCESS::MYSELF);
+							$album_model -> name = isset($request -> album_name[$album_id])?$request -> album_name[$album_id] : $album_model -> name;
+							$album_model -> save();
+							
 						}
 					}
-					
 				}
 			}
-			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Album', 'List'));
+			Project::getResponse() -> redirect($request -> createUrl('Album', 'List'));
 		}
 		
 		/**
 		 * Вывод списка альбомов
 		 */
 		public function ListAction(){
-			$this -> BaseSiteData();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			
+			
 			$info = array();
-			$info['tab_name'] = 'Последние альбомы';
-			$this -> _list($info, "creation_date", "DESC", $this -> getParam('album_per_page', self::DEFAULT_ALBUM_PER_PAGE));
+			$info['tab_name'] = 'Фотоальбомы';
+			if ($request_user_id === $user_id){
+				$info['can_edit'] = true;
+				$info['access_list'] = HelpFunctions::getAccessList();
+			}
+			$this -> _list($info, "creation_date", "DESC", $this -> getParam('album_per_page', self::DEFAULT_ALBUM_PER_PAGE), 'List');
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
 		}
@@ -377,10 +277,9 @@
 		 */
 		public function TopListAction(){
 			
-			$this -> BaseSiteData();
 			$info = array();
 			$info['tab_name'] = 'Топ альбомов';
-			$this -> _list($info, "album_rating", "DESC", $this -> getParam('top_per_page', self::DEFAULT_ALBUM_PER_PAGE));
+			$this -> _list($info, "album_rating", "DESC", $this -> getParam('top_per_page', self::DEFAULT_ALBUM_PER_PAGE), 'TopList');
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
 		}
@@ -390,11 +289,16 @@
 		 * Кол-во для вывода берется из конфиг параметров: параметр last_per_page
 		 */
 		public function LastListAction(){
-			$this -> ListAction();
+
+			$info = array();
+			$info['tab_name'] = 'Последние альбомы';
+			$this -> _list($info, "creation_date", "DESC", $this -> getParam('album_per_page', self::DEFAULT_ALBUM_PER_PAGE), 'LastList');
+			$this -> _view -> AlbumList($info);
+			$this -> _view -> parse();
 		}
 		
 		
-		private function _list(&$info, $sortname, $sortorder, $per_page){
+		private function _list(&$info, $sortname, $sortorder, $per_page, $action){
 			$request = Project::getRequest();
 			
 			if (Project::getUser() -> isMyArea()){
@@ -407,9 +311,11 @@
 			$model -> setPager($pager);
 			$list = $model -> loadAll(Project::getUser() -> getShowedUser() -> id, Project::getUser() -> getDbUser() -> id, $sortname, $sortorder);
 			$pager_view = new SitePagerView();
-			$info['album_list_pager'] = $pager_view -> show2($model -> getPager(), 'Album', 'TopList');
+			$info['album_list_pager'] = $pager_view -> show2($model -> getPager(), 'Album', $action);
 			$this -> checkAlbumList($list);
 			$info['album_list'] = $list;
+			$this -> BaseAlbumData($info, 0);
+			$this -> BaseSiteData();
 		}
 		
 		
