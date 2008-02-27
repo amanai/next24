@@ -38,10 +38,12 @@
 													<div class="block_title_right"><?php echo date("j F Y", strtotime($this->photo_creation_date));?></div>
 												</div>
 												<center>
+													<?php if ($this -> have_rating === true) {?>
 													<div class="photoRating">
 														Рейтинг фотографии: <?php echo round($this->photo_rating, 2); ?><br>
 														Количество голосов: <?php echo $this->photo_voices; ?>
 													</div>
+													<?php } ?>
 													<div>
 														<?php if ($this->photo_info['path'] !== false) { ?>
 														<img src="<?php echo $this->photo_file; ?>" id="iborder"/>
@@ -50,11 +52,15 @@
 														<?php } ?>
 													</div>
 													<div>
-														<?php if ($this -> can_vote === true){
-															include($this -> _include('../form_vote.tpl.php'));
-														} else {
-															echo 'Ваш голос принят';
-														}?>
+														<?php
+															if ($this -> have_rating === true) { 
+																if ($this -> can_vote === true){
+																	include($this -> _include('../form_vote.tpl.php'));
+																} else {
+																	echo 'Ваш голос принят';
+																}
+															}
+														?>
 													</div>
 												</center>
 											

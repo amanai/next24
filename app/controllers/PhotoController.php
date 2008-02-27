@@ -90,6 +90,11 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$info['photo_creation_date'] = $model -> creation_date;
 			$info['photo_file'] = $this -> checkFile($login, $model -> path, false);
 			$info['photo_owner_login'] = $login;
+			if ((int)$model -> is_rating == 1){
+				$info['have_rating'] = true;
+			} else {
+				$info['have_rating'] = false;
+			}
 			$info['can_vote'] = PhotoVote::canVote($user_id, $photo_id);
 			$info['bottom_list'] = $this -> getPhotoBottomList($request_user_id, $model -> album_id, $login);
 			
