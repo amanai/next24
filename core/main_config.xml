@@ -63,8 +63,8 @@
 		<!-- Params such as system user class, password rules etc auth rules etc. -->
 		<param key="user" value="AppUser"/>
 		<param key="set_to_registry" value="false" />
-		<param key="login_controller" value="Admin" />
-		<param key="login_action" value="LoginForm" />
+		<param key="login_controller" value="Index" />
+		<param key="login_action" value="Index" />
 		<param key="logger_id" value="logger" />
 		<param key="autorization" value="true" />
 	</module>
