@@ -269,101 +269,18 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		}
 		
 		public function EditAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
-			
-			
-			$this->setModel("Albums");
-			$this -> model -> resetSql();
-			
-			$this -> model -> cols('user_id, thumbnail_id');
-			$this -> model -> where('id='.(int)$this -> id);
-			$o = $this -> model -> getOne();
-			$owner_id = (int)$o['user_id'];
-			$this -> view -> album_thumbnail_id = (int)$o['thumbnail_id'];
-			$this->setModel("Users");
-			$this -> model -> resetSql();
-			$this -> model -> where('id='.(int)$owner_id);
-			$user = $this -> model -> getOne();
-			
-			if (isset($user['login'])) {
-				$login = trim($user['login']);
-				if (strlen($login) == 0){
-					// TODO:: something wrong - no user login, so we can't get directory with him uploads
-				}
-			}
-			
-			$this->setModel("Photos");
-			$this -> model -> resetSql();
-			$this -> model -> where('album_id='.(int)$this -> id);
-			$this -> model -> where('user_id='.(int)$owner_id);
-			if ($owner_id != $user_id){
-				$this -> model -> where('access>0');
-			}
-			$list = $this -> model -> getAll();
-			
-
-			foreach($list as $key => $value){
-				$thumb = false;
-				$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
-				$err = false;
-				$ok = $this -> checkDir($dir);
-				if ($ok === true){
-					$album = $dir . DIRECTORY_SEPARATOR . 'album';
-					$ok = $this -> checkDir($album);
-				}
-				if ($ok === true){
-					$images = $album . DIRECTORY_SEPARATOR . 'images';
-					$ok = $this -> checkDir($images);
-				}
-				
-				if ($ok === true){
-					$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
-					$ok = $this -> checkDir($thumbs);
-				}
-				
-				if ($ok === true){
-					
-					$f = $thumbs . DIRECTORY_SEPARATOR . $value['thumbnail'];
-					if (file_exists($f) && is_file($f)){
-						$thumb = $f;
-						// Replace back slashes
-						$thumb = str_replace("\\", "/", $thumb);
-					}
-				}
-				$list[$key]['thumbnail'] = $thumb;
-			}
-			
-			$this -> view -> photo_list = $list;
-			
-			
-			$this->setModel("Albums");
-			$this -> model -> resetSql();
-			$this -> model -> where('user_id='.(int)$owner_id);
-			if ($owner_id != $user_id){
-				$this -> model -> where('access>0');
-			} else {
-				$this -> view -> album_owner = true;
-			}
-			$this -> view -> album_list = $this -> model -> getAll();
-			$this -> view -> album_id = (int)$this -> id;
-			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photos_of_album_edit.tpl.php');
-			$this->view->display();
-			
+			$this -> AlbumAction($edit = true);
 		}
 		
-		public function AlbumAction($album_id = 0){
+		public function AlbumAction($edit = false){
 			$this -> BaseSiteData();
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
-			if ($album_id <= 0){
-				$album_id = (int)Project::getRequest() -> getKeyByNumber(0);
-			}
+			$album_id = (int)Project::getRequest() -> getKeyByNumber(0);
 			$info = array();
 			
 			
-			if ($request_user_id === $user_id){
+			if (($request_user_id === $user_id) && ($edit === true)){
 				$info['can_edit'] = true;
 				$info['access_list'] = HelpFunctions::getAccessList();
 			}
