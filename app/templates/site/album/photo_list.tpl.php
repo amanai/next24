@@ -74,7 +74,7 @@
 											</div>
 										</td>
 								<?php }?>
-								<?php if ($this -> can_edit) { ?>
+								<?php if ($this -> can_edit && count($this->photo_list)) { ?>
 										<tr><td><input type="submit" value="Сохранить" /></td></tr>
 									</form>
 								<?php } ?>
