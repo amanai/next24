@@ -235,8 +235,6 @@
 									unlink($f);
 								}
 								$photo_model -> delete($item['id']);
-								$comment_model = new PhotoCommentModel;
-								$comment_model -> deleteAllByItem($item['id']);
 							}
 							$album_model -> delete($album_id);
 						} else {

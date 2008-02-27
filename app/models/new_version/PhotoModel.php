@@ -18,6 +18,9 @@ class PhotoModel extends BaseModel{
 						"p.creation_date as creation_date," .
 						"p.path as path," .
 						"p.thumbnail as thumbnail," .
+						"p.is_rating as is_rating," .
+						"p.is_onmain as is_onmain," .
+						"p.access as access," .
 						"IF (p.voices > 0, p.rating/p.voices, 0) as photo_rating," .
 						"u.login as login " .
 					" FROM photo as p " .
@@ -80,6 +83,12 @@ class PhotoModel extends BaseModel{
 			$result = $DE -> selectPage($this -> _countRecords, $sql, (int)Project::getUser() -> isFriend(), $logged_user_id, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
 			$this -> updatePagerAmount();
 			return $result;
+		}
+		
+		function delete($id){
+			parent::delete($id);
+			$comment_model = new PhotoCommentModel;
+			$comment_model -> deleteAllByItem($id);
 		}
 }
 ?>

@@ -213,45 +213,44 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		}
 		
 		public function SaveAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = (int)$user['id'];
-			$login = trim($user['login']);
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			$login = Project::getUser() -> getDbUser() -> login;
+			$request = Project::getRequest();
+			
 			$album = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login . DIRECTORY_SEPARATOR . 'album' . DIRECTORY_SEPARATOR;
 			$thumbs = $album . 'thumbs' . DIRECTORY_SEPARATOR;
 			$images = $album . 'images' . DIRECTORY_SEPARATOR;
 			clearstatcache();
 			$album_id = 0;
-			if (is_array($this -> photo_ids)){
-				foreach ($this -> photo_ids as $photo_id){
+			if (is_array($request -> photo_id)){
+				foreach ($request -> photo_id as $photo_id){
 					$photo_id = (int)$photo_id;
-					$this->setModel("Photos");
-					$this -> model -> resetSql();
-					$this -> model -> load($photo_id);
-					$photo_info = $this -> model -> getData();
+					$photo_model = new PhotoModel;
+					$photo_model -> load($photo_id);
+					
 					// Проверка, является ли пользователем владельцем альбома
-					if (((int)$this -> model -> id > 0) && ((int)$this -> model -> get('user_id') === $user_id)){
-						if (isset($this -> photo_del[$photo_id]) && ($this -> photo_del[$photo_id] == "on")){
+					if (((int)$photo_model -> id > 0) && ((int)$photo_model -> user_id === $user_id)){
+						if (isset($request -> photo_del[$photo_id])){
 							// Delete album
-							$this -> setModel("PhotoComment");
-							$this -> model -> deleteByItem($user_id, $photo_id);
-							$f = $thumbs . $photo_info['path'];
+							
+							$f = $thumbs . $photo_model -> path;
 							if (file_exists($f) && is_file($f)){
 								unlink($f);
 							}
-							$f = $images . $photo_info['thumbnail'];
+							$f = $images . $photo_model -> thumbnail;
 							if (file_exists($f) && is_file($f)){
 								unlink($f);
 							}
-							$this -> setModel("Photos");
-							$this -> model -> id = $photo_id;
-							$this -> model -> delete();
+							$photo_model -> delete($photo_id);
 						} else {
-							$this -> model -> set('is_rating', (isset($this -> photo_rating[$photo_id])?1:0));
-							$this -> model -> set('name', (isset($this -> photo_name[$photo_id])?$this -> photo_name[$photo_id]:$this -> model -> get('name')));
-							$this -> model -> save();
+							$photo_model -> is_rating = isset($request -> is_rating[$photo_id])?1:0;
+							$photo_model -> is_onmain = isset($request -> is_onmain[$photo_id])?1:0;
+							$photo_model -> access = (int)$request -> photo_access[$photo_id];
+							$photo_model -> name = isset($request -> photo_name[$photo_id])?$request -> photo_name[$photo_id]:$photo_model -> name;
+							$photo_model -> save();
 							if ($album_id == 0){
-								$album_id = (int)$this -> model -> get('album_id');
+								$album_id = (int)$photo_model -> album_id;
 							}
 						}
 					}
@@ -260,20 +259,13 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			}
 			
 			if ($album_id > 0){
-				$this -> setModel("Albums");
-				$this -> model -> load($album_id);
-				$this -> model -> set('thumbnail_id', (int)$this -> thumb_photo);
-				$this -> model -> save();
+				$album_model = new AlbumModel;
+				$album_model -> load($album_id);
+				$album_model -> thumbnail_id = (int)$request -> thumb_photo;
+				$album_model -> save();
 			}
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Photo', 'Edit', array('id'=>$album_id)));
-			/*echo '<pre>';
-			print_r($this -> thumb_photo);
-			print_r($this -> photo_ids);
-			print_r($this -> photo_rating);
-			print_r($this -> photo_del);
-			print_r($this -> photo_name);
-			die;*/
+			Project::getResponse() -> redirect($this -> getAlbumUrl($album_id, $login));
+			
 		}
 		
 		public function EditAction(){
@@ -361,13 +353,25 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			
 		}
 		
-		public function AlbumAction(){
+		public function AlbumAction($album_id = 0){
 			$this -> BaseSiteData();
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
-			$album_id = (int)Project::getRequest() -> getKeyByNumber(0);
-			
+			if ($album_id <= 0){
+				$album_id = (int)Project::getRequest() -> getKeyByNumber(0);
+			}
 			$info = array();
+			
+			
+			if ($request_user_id === $user_id){
+				$info['can_edit'] = true;
+				$info['access_list'] = HelpFunctions::getAccessList();
+			}
+			
+			$album_model = new AlbumModel;
+			$album_model -> load($album_id);
+			$info['thumbnail_id'] = (int)$album_model -> thumbnail_id;
+			
 			$this -> BaseAlbumData($info, $album_id);
 
 		
