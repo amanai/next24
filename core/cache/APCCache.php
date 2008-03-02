@@ -15,18 +15,18 @@ class APCCache extends BaseCache implements ICache, IManager{
 		}
 		
 		public function add($key, $value, $ttl = false){
-			return $this -> set($key, $value, $ttl);
+			return $this -> set($this -> getUniqueKey($key), $value, $ttl);
 		}
 	
 		public function set($key, $value, $ttl = false){
-			return apc_store($key, $value, $ttl);
+			return apc_store($this -> getUniqueKey($key), $value, $ttl);
 		}
 	    public function get($key, $default = null){
-	    	$value = apc_fetch($key);
+	    	$value = apc_fetch($this -> getUniqueKey($key));
 	    	return ($value === false) ? $default : $value;
 	    }
 	    public function delete($key){
-	    	return apc_delete($key);
+	    	return apc_delete($this -> getUniqueKey($key));
 	    }
 	    
 	    public function clear(){
