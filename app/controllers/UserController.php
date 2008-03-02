@@ -78,6 +78,15 @@
 		public function ProfileAction(){
 			$this -> BaseSiteData();
 			$info = array();
+			
+			$user = Project::getUser() -> getShowedUser();
+			
+			$friend_model = new FriendModel;
+			$info['friend_list'] = $friend_model -> getFriends($user -> id);
+			$info['in_friend_list'] = $friend_model -> getInFriends($user -> id);
+			
+			$info['user_profile'] = $user -> data();
+			
 			$this -> _view -> Profile($info);
 			$this -> _view -> parse();
 			/*$this->view->userData['birth_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['birth_date']));
