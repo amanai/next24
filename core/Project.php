@@ -153,6 +153,10 @@ class Project{
 	    	self::set('database_engine', $de);
 	    }
 	    
+	    function getDatabaseManager(){
+	    	return self::get('database_engine');
+	    }
+	    
 	    function getDatabase(){
 	    	$de = self::get('database_engine');
 	    	if ($de === null){
@@ -241,6 +245,19 @@ class Project{
 	    
 	    function getBrowserUser(){
 	    	return self::get('browser_user');
+	    }
+	    
+	    
+	    function setCacheManager(IManager $cache){
+	    	self::set('cache_manager', $cache);
+	    }
+	    
+	    function getCacheManager(){
+	    	$cm = self::get('cache_manager');
+	    	if ($cm === null){
+	    		throw new ConfigurationException("Cache is not configured or initialized");
+	    	}
+	    	return $cm;
 	    }
 }
 ?>

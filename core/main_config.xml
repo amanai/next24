@@ -5,6 +5,7 @@
 		<param key="include_path" value="core;
 										 core/managers;
 										 core/utils;
+										 core/cache;
 										 app/controllers;
 										 app/includes;
 										 core/interfaces;
@@ -15,6 +16,18 @@
 										 app/views/site;
 										 core/utils/dbsimple;" />
 		<param key="set_to_registry" value="false" />
+	</module>
+	
+	
+	<!-- APC cache module -->
+	<module id="cache_manager"  class="CacheManager">
+		<param key="set_to_registry" value="false" />
+	</module>
+	
+	<!-- APC cache module -->
+	<module id="APC"  class="APCCache">
+		<param key="expire" value="3600" />
+		<param key="prefix" value="next24" />
 	</module>
 	
 	<!-- Application logger -->
@@ -36,9 +49,12 @@
 	<!-- Error handler module -->
 	<module id="database"  class="DatabaseManager">
 		<param key="connection_file" value="core/connection.xml" />
-		<param key="native_logger" value="myLogger" enabled="false" />
+		<param key="native_logger" value="myLogger" enabled="true" />
 		<param key="logger_id" value="logger" />
 		<param key="set_to_registry" value="false" />
+		<param key="caching" value="true" />
+		<param key="cache_module_id" value="APC" />
+		<param key="cache_prefix" value="database_models" />
 	</module>
 	
 	
