@@ -28,7 +28,7 @@ class HttpSessionManager extends ApplicationManager implements IManager, Countab
 						$this -> setSessionName($session_name);
 					}
 					session_name($session_name);
-					if (($sid = Project::getRequest() -> nextsk) !== null){
+					if (($sid = Project::getRequest() -> $session_name) !== null){
 						session_id($sid);
 					}
 					session_start();  
