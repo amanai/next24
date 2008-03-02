@@ -5,6 +5,10 @@ class DatabaseManager extends ApplicationManager implements IManager{
 	
 	private $_DSN;
 	
+	private $_caching = false;
+	private $_cache_prefix = '__db__';
+	private $_cache_module_id = null;
+	
 			function initialize(IConfigParameter $configuration){
 				$dsn = $configuration -> get('DSN');
 				if (!$dsn){
@@ -24,6 +28,21 @@ class DatabaseManager extends ApplicationManager implements IManager{
 						throw new DbException("DSN not exitsts at connection file");
 					}
 				}
+				
+				$this -> _caching = $configuration -> get('caching');
+				if ($configuration -> get('cache_prefix')){
+					$this -> _cache_prefix = $configuration -> get('cache_prefix');
+				}
+				
+				if ($configuration -> get('cache_module_id')){
+					$this -> _cache_module_id = $configuration -> get('cache_module_id');
+				} else {
+					// No cache module defined
+					// TODO:: write NOTICE to log
+					$this -> _caching = false;
+				}
+				
+				
 				$this -> _DSN = $dsn;
 				$this -> _common_config($configuration);
 				$this -> _driver = DbSimple_Generic::connect($this -> _DSN);
@@ -34,6 +53,23 @@ class DatabaseManager extends ApplicationManager implements IManager{
 				$this -> _driver -> setLogger($configuration -> get('native_logger'));
 				//$this -> _driver -> setLogger('myLogger');
 				Project::setDatabase($this);
+				
+			}
+			
+			function hasCache(){
+				return $this -> _caching;
+			}
+			
+			function cachePrefix(){
+				return $this -> _cache_prefix;
+			}
+			
+			function getCache(){
+				if ($this -> hasCache()){
+					return Project::getCacheManager() -> get($this -> _cache_module_id);
+				} else {
+					return null;
+				}
 			}
 			
 			function getDriver(){
@@ -47,7 +83,8 @@ function myLogger($db, $sql){
   $caller = $db->findLibraryCaller();
   $tip = "at ".@$caller['file'].' line '.@$caller['line'];
   // Печатаем запрос (конечно, Debug_HackerConsole лучше)
-  echo "<xmp title=\"$tip\">"; print_r($sql); echo "</xmp>";
+  //echo "<xmp title=\"$tip\">"; print_r($sql); echo "</xmp>";
+  $GLOBALS['query_counter']++;
   //echo '~~~'.print_r($sql).'~~~';
   if ( ($logger = Project::get("logger")) !== null){
 		//$logger -> writeLog($tip."::".$sql);

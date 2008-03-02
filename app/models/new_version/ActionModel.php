@@ -2,13 +2,25 @@
 class ActionModel extends BaseModel{
 		function __construct(){
 			parent::__construct('action');
+			$this -> _caches(true, true, true);
 		}
 		
 		function loadByKey($controller_id, $key){
+			$cache = Project::getDatabaseManager() -> getCache();
+			if ($cache !== null){
+				$result = $cache -> get($this -> getCachePrefix('_action_by_key_'.$controller_id.$key));
+				if ($result !== null){
+					$this -> bind($result);
+					return $result;
+				}
+			}
 			$DE = Project::getDatabase();
 			$result = array();
 			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE LOWER(name)=LOWER(?) AND controller_id=?d LIMIT 1", $key, (int)$controller_id);
 			$this -> bind($result);
+			if ($cache !== null){
+				$cache -> set($this -> getCachePrefix('_action_by_key_'.$controller_id.$key), $result);
+			}
 			return $result;
 		}
 		

@@ -15,6 +15,14 @@ abstract class BaseModel{
 	
 	
 	
+	protected $_load_cache = false;
+	protected $_load_all_cache = false;
+	protected $_load_page_cache = false;
+	protected $_cache_prefix = false;
+	
+	
+	
+	
 	/**
 	 * Table name
 	 */
@@ -22,18 +30,44 @@ abstract class BaseModel{
 	protected $_prefix = null;
 	protected $_data;
 	protected $_client_id;
+	
+	
 		function __construct($table, $prefix = null){
 			$this -> _table = $table;
 			$this -> _prefix = $prefix;
 			$this -> clear();
 		}
+		
+		function _caches($load = false, $all = false, $page = false){
+			$DM = Project::getDatabaseManager();
+			$this -> _load_cache = (bool)$load && $DM -> hasCache();
+			$this -> _load_all_cahce = (bool)$all && $DM -> hasCache();
+			$this -> _load_page_cache = (bool)$page && $DM -> hasCache();
+		}
 						
 		function load($id){
 			$id = (int)$id;
+			
+			if ($this -> _load_cache === true){
+				$cache = Project::getDatabaseManager() -> getCache();
+				if ($cache !== null){
+					$result = $cache -> get($this -> getCachePrefix('_' . $id));
+					if (is_array($result)){
+						$this -> bind($result);
+						return $result;
+					}
+				}
+			}
 			$DE = Project::getDatabase(); // Get DB driver
 			$result = array();
 			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE id = ?d", $id); // Load 1 row
 			$this -> bind($result); // Bind to internal variables at class
+			if ($this -> _load_cache === true){
+				$cache = Project::getDatabaseManager() -> getCache();
+				if ($cache !== null){
+					$cache -> set($this -> getCachePrefix('_' . $id), $result);
+				}
+			}
 			return $result;
 		}
 		
@@ -41,12 +75,32 @@ abstract class BaseModel{
 			if (is_null($sortName)){
 				$sortName = $defaultSortName;
 			}
+			
+			if ($this -> _load_all_cahce === true){
+				$cache = Project::getDatabaseManager() -> getCache();
+				if ($cache !== null){
+					$list = $cache -> get($this -> getCachePrefix('_list'));
+					if (is_array($list)){
+						return $list;
+					}
+				}
+			}
 			$DE = Project::getDatabase();
 			$this -> checkPager();
 			$sortOrder = $this -> getSortDirection($sortOrder);
 			$result = $DE -> selectPage($this -> _countRecords, "SELECT * FROM ".$this -> _table." ORDER BY $sortName $sortOrder ");
 			$this -> updatePagerAmount();
+			if ($this -> _load_all_cahce === true){
+				$cache = Project::getDatabaseManager() -> getCache();
+				if ($cache !== null){
+					$cache -> set($this -> getCachePrefix('_list'), $result);
+				}
+			}
 			return $result;
+		}
+		
+		protected function getCachePrefix($data_key){
+			return Project::getDatabaseManager() -> cachePrefix() . get_class($this) . $data_key;
 		}
 		
 		
@@ -73,6 +127,15 @@ abstract class BaseModel{
 		}
 		
 		function save(){
+			if ($this -> _load_cache === true){
+				$cache = Project::getDatabaseManager() -> getCache();
+				if ($cache !== null){
+					if ((int)$this -> id > 0){
+						$cache -> delete($this -> getCachePrefix('_' . $this -> id));
+					}
+					$cache -> delete($this -> getCachePrefix('_list'));
+				}
+			}
 			$DE = Project::getDatabase();
 			if ((int)$this -> id > 0){
 				$DE -> query('UPDATE '.$this -> _table.' SET ?a WHERE id = ?d', $this -> _data, $this -> id);

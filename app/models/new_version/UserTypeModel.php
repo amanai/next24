@@ -3,6 +3,7 @@ class UserTypeModel extends BaseModel{
 	
 		function __construct(){
 			parent::__construct('user_type');
+			$this -> _caches(true, true, true);
 		}
 		
 		function save(){

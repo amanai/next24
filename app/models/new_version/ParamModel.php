@@ -2,18 +2,27 @@
 class ParamModel extends BaseModel{
 		function __construct(){
 			parent::__construct('param');
+			$this -> _caches(true, true, true);
+		}
+		
+		function save(){
+			parent::save();
+			$cache = Project::getDatabaseManager() -> getCache();
+			if ($cache !== null){
+				
+			}
 		}
 		
 		function getByGroup($group_name){
-			$DE = Project::getDatabase();
-			return $DE -> select("SELECT param.name as name, param.value as value, param.php_type as php_type from param 
+			$result = Project::getDatabase() -> select("SELECT param.name as name, param.value as value, param.php_type as php_type from param 
 									INNER JOIN param_group ON param_group.id = param.param_group_id AND LOWER(param_group.label)=LOWER(?)", $group_name);
+			return $result;
 		}
 		
 		function getByGroupId($group_id){
-			$DE = Project::getDatabase();
-			return $DE -> select("SELECT param.id as id, param.name as name, param.value as value, param.php_type as php_type from param 
+			$result = Project::getDatabase() -> select("SELECT param.id as id, param.name as name, param.value as value, param.php_type as php_type from param 
 									INNER JOIN param_group ON param_group.id = param.param_group_id AND param_group.id=?d", $group_id);
+			return $result;
 		}
 		
 		function count($group_id){
@@ -21,6 +30,8 @@ class ParamModel extends BaseModel{
 		}
 		
 		public function getParam($group_name, $param_name){
+	
+				
 			$DE = Project::getDatabase();
 			if ($group_name !== null){
 				// TODO:: need caching
@@ -72,6 +83,7 @@ class ParamModel extends BaseModel{
 						break;
 					
 			}
+
 			return $ret;
 		}
 		
