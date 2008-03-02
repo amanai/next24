@@ -6,7 +6,25 @@ class DatabaseManager extends ApplicationManager implements IManager{
 	private $_DSN;
 	
 			function initialize(IConfigParameter $configuration){
-				$this -> _DSN = $configuration -> get('DSN');
+				$dsn = $configuration -> get('DSN');
+				if (!$dsn){
+					$connection_file = $configuration -> get('connection_file');
+					if (!$connection_file){
+						throw new DbException("Connection file not defined");
+					}
+					$p = pathinfo($connection_file);
+					$dir = Project::NS() -> path($p['dirname']);
+					$f = $dir . $p['basename'];
+					if (!file_exists($f) || !is_file($f)){
+						throw new DbException("Connection file not exists");
+					}
+					$config = new ConfigParameter(file_get_contents($f));
+					$dsn = $config -> get('DSN');
+					if (!$dsn){
+						throw new DbException("DSN not exitsts at connection file");
+					}
+				}
+				$this -> _DSN = $dsn;
 				$this -> _common_config($configuration);
 				$this -> _driver = DbSimple_Generic::connect($this -> _DSN);
 				if (!is_object($this -> _driver)){

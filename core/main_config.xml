@@ -35,17 +35,12 @@
 	
 	<!-- Error handler module -->
 	<module id="database"  class="DatabaseManager">
-		<param key="DSN" value="mysql://root:pass@localhost/next24" />
+		<param key="connection_file" value="core/connection.xml" />
 		<param key="native_logger" value="myLogger" enabled="false" />
 		<param key="logger_id" value="logger" />
 		<param key="set_to_registry" value="false" />
 	</module>
 	
-	<!-- Sesion module -->
-	<module id="session"  class="HttpSessionManager" >
-		<!-- Params such as session live time, name etc. -->
-		<param key="set_to_registry" value="false" />
-	</module>
 	
 	<!-- Http request handling -->
 	<module id="request" class="HttpRequestManager">
@@ -56,6 +51,12 @@
 		<param key="request_action_key" value="act" />
 		<param key="set_to_registry" value="false" />
 		<param key="base_host" value="next24" />
+	</module>
+	
+	<!-- Sesion module -->
+	<module id="session"  class="HttpSessionManager" >
+		<!-- Params such as session live time, name etc. -->
+		<param key="set_to_registry" value="false" />
 	</module>
 	
 	<!-- Right manager module -->
