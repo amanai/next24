@@ -256,8 +256,7 @@
 		public function ListAction(){
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
-			
-			
+
 			$info = array();
 			$info['tab_name'] = 'Фотоальбомы';
 			if ($request_user_id === $user_id){

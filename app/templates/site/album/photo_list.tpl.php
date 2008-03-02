@@ -39,7 +39,7 @@
 																<?php } ?>
 															</div>
 															<div style="width: 140px; height: 112px; text-align: center;">
-																<a href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>"><img src="<?php echo ($item['thumbnail'] ===false)?$this -> image_url.'noimage.gif' :$item['thumbnail'];?>" width="140" /></a>
+																<a href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>"><img src="<?php echo ($item['thumbnail'] ===false)?$this -> image_url.'noimage.gif' :$item['thumbnail'];?>" /></a>
 															</div>
 															<div class="block_title2">
 																<a href="<?php echo UserController::getProfileUrl($item['login']);?>"><?php echo $item['login'];?></a><br />
