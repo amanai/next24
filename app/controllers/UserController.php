@@ -77,7 +77,8 @@
 		
 		public function ProfileAction(){
 			$this -> BaseSiteData();
-			$this -> _view -> Profile();
+			$info = array();
+			$this -> _view -> Profile($info);
 			$this -> _view -> parse();
 			/*$this->view->userData['birth_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['birth_date']));
 			$this->view->userData['registration_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['registration_date']));
