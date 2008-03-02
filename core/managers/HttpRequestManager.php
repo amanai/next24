@@ -241,6 +241,12 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			if (!is_array($parameters)){
 				$parameters = array();
 			}
+			
+			if ($this -> _username != $user){
+				$sid = Project::getSession() -> getSID();
+				$parameters['PHPSESSID'] = $sid;
+			}
+			
 			$query = '';
 			foreach ($parameters as $k=>$v){
 				if (strlen($query)){

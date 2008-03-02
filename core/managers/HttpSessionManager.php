@@ -24,7 +24,11 @@ class HttpSessionManager extends ApplicationManager implements IManager, Countab
 		public function open(){
 			if (!$this -> _started){
 				if(ini_get('session.auto_start')!=='1'){
-					session_start();
+					if (($sid = Project::getRequest() -> PHPSESSID) !== null){
+						session_id($sid);
+					}
+					session_start();  
+					
 				}
 				$this -> _started=true;
 			}
