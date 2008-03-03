@@ -26,7 +26,7 @@ class AlbumModel extends BaseModel{
 			return Project::getDatabase() -> select($sql, (int)$userid, (int)Project::getUser() -> isFriend(), $logged_user_id);
 		}
 		
-		function loadAll($userid, $logged_user_id, $sortName = 'a.creation_date', $sortOrder = 'DESC', $defaultSortName = "a.id"){
+		function loadAll($userid, $logged_user_id, $sortName = 'a.creation_date', $sortOrder = 'DESC', $defaultSortName = "id", $filter_ids = array()){
 			$userid = (int)$userid;
 			if (is_null($sortName)){
 				$sortName = $defaultSortName;

@@ -24,10 +24,7 @@
 			
 			$album_id = (int)$request -> album_id;
 			$access = (int)$request -> pic_access;
-			$onmain = $request -> on_main ? 1 : 0;
-			$rating = $request -> rating ? 1 : 0;
-			$name = trim($request -> pic_name);
-			
+		
 			
 			$album_model = new AlbumModel();
 			$album_model -> load($album_id);
@@ -38,86 +35,86 @@
 				return;
 			}
 			
-			if (!strlen($name)){
-				$this -> _view -> addFlashMessage(FM::ERROR, "Введите название фотографии");
+			if (!count($_FILES)){
+				$this -> _view -> addFlashMessage(FM::ERROR, "Нет изображений для загрузки");
 				$this -> UploadFormAction($request -> getKeys());
 				return;
 			}
-			
-			if (!isset($_FILES['picture'])){
-				$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка загрузки изображения на сервер");
-				$this -> UploadFormAction($request -> getKeys());
-				return;
-			}
-			
-			
-			$uploadfile = false;
-			$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
-			$err = false;
-			$ok = $this -> checkDir($dir);
-			if ($ok === true){
-				$album = $dir . DIRECTORY_SEPARATOR . 'album';
-				$ok = $this -> checkDir($album);
-			}
-			if ($ok === true){
-				$images = $album . DIRECTORY_SEPARATOR . 'images';
-				$ok = $this -> checkDir($images);
-			}
-			
-			$ok_thumb = false;
-			if ($ok === true){
-				$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
-				$ok_thumb = $this -> checkDir($thumbs);
-			}
-			
-			if (!$ok || !$ok_thumb){
-				$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка загрузки изображения в директорию пользователя");
-				$this -> UploadFormAction($request -> getKeys());
-				return;
-			}
-			
-			
-			$p = pathinfo($_FILES['picture']['name']);
-			$ext = strtolower(trim(isset($p['extension'])?$p['extension']:null));
-			$fn = md5(uniqid(rand(), true)). ".".$ext;
-			$thumb = false;
-			$uploaded = false;
-			if ($ok === true){
-				$f = $images . DIRECTORY_SEPARATOR . $fn;
-				if (move_uploaded_file($_FILES['picture']['tmp_name'], $f)) {
-					// TODO:: write tщ log if thumb size no specified
-					$width = $this -> getParam('thumb_size', 99999);
-					if ($width <= 0){
-						$width = 100;
-					}
-					if ($ok_thumb === true){
-						if (HelpFunctions::_imageResize($f, $thumbs . DIRECTORY_SEPARATOR . $fn, $width)){
-							$thumb = true;
-						} else {
-							// TODO:: error resizing image
-						}
-					}
-				} else {
-					$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка загрузки изображения");
+			$ids = array();
+			foreach ($_FILES as $post_file){
+				$uploadfile = false;
+				$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
+				$err = false;
+				$ok = $this -> checkDir($dir);
+				if ($ok === true){
+					$album = $dir . DIRECTORY_SEPARATOR . 'album';
+					$ok = $this -> checkDir($album);
+				}
+				if ($ok === true){
+					$images = $album . DIRECTORY_SEPARATOR . 'images';
+					$ok = $this -> checkDir($images);
+				}
+				
+				$ok_thumb = false;
+				if ($ok === true){
+					$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
+					$ok_thumb = $this -> checkDir($thumbs);
+				}
+				
+				if (!$ok || !$ok_thumb){
+					$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка загрузки изображения в директорию пользователя");
 					$this -> UploadFormAction($request -> getKeys());
 					return;
 				}
+				
+				
+				$p = pathinfo($post_file['name']);
+				$ext = strtolower(trim(isset($p['extension'])?$p['extension']:null));
+				$fn = md5(uniqid(rand(), true)). ".".$ext;
+				$thumb = false;
+				$uploaded = false;
+				if ($ok === true){
+					$f = $images . DIRECTORY_SEPARATOR . $fn;
+					if (move_uploaded_file($post_file['tmp_name'], $f)) {
+						// TODO:: write tщ log if thumb size no specified
+						$width = $this -> getParam('thumb_size', 99999);
+						if ($width <= 0){
+							$width = 100;
+						}
+						if ($ok_thumb === true){
+							if (HelpFunctions::_imageResize($f, $thumbs . DIRECTORY_SEPARATOR . $fn, $width)){
+								$thumb = true;
+							} else {
+								// TODO:: error resizing image
+							}
+						}
+					} else {
+						$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка загрузки изображения");
+						$this -> UploadFormAction($request -> getKeys());
+						return;
+					}
+				}
+				
+				$photo_model = new PhotoModel;
+				$photo_model -> user_id = $user_id;
+				$photo_model -> album_id = $album_id;
+				$photo_model -> path = $fn;
+				$photo_model -> thumbnail = $fn;
+				$photo_model -> access = $access;
+
+				$photo_model -> name = '';
+				$photo_model -> is_onmain = 0;
+				$photo_model -> is_rating = 0;
+				$photo_model -> voices = 0;
+				$photo_model -> rating = 0;
+				$photo_model -> creation_date = date("Y-m-d H:i:s");
+				$ids[] = $photo_model -> save();
 			}
+			$c = new PhotoController;
+			$c -> EditAction($ids, $album_id);
+			$this -> setContent($c -> getContent());
+			//Project::getResponse() -> redirect($request -> createUrl('Album', 'UploadForm'));
 			
-			$photo_model = new PhotoModel;
-			$photo_model -> user_id = $user_id;
-			$photo_model -> album_id = $album_id;
-			$photo_model -> name = $name;
-			$photo_model -> path = $fn;
-			$photo_model -> thumbnail = $fn;
-			$photo_model -> is_onmain = $onmain;
-			$photo_model -> is_rating = $rating;
-			$photo_model -> access = $access;
-			$photo_model -> voices = 0;
-			$photo_model -> rating = 0;
-			$photo_model -> creation_date = date("Y-m-d H:i:s");
-			$photo_model -> save();
-			Project::getResponse() -> redirect($request -> createUrl('Album', 'UploadForm'));
 		}
 		
 		

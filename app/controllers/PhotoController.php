@@ -28,28 +28,6 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			return Project::getRequest() -> createUrl('Photo', 'View', array($photo_id), $username);
 		}
 		
-		public function UploadFormAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			
-			if (!isset($user['id']) || ((int)$user['id'] <= 0)){
-				// TODO:: user is not logged or something wrong at his session data
-				
-			}
-			$user_id = (int)$user['id'];
-			$login = trim($user['login']);
-			
-			$this->setModel("Albums");
-			$this -> model -> resetSql();
-			$this -> model -> where('user_id='.(int)$user_id);
-			$list = $this -> model -> getAll();
-			$this -> view -> album_list = $list;
-			
-			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/user_albums.tpl.php');
-			$this->view->display();
-		}
-		
-		
 		public function RatePhotoAction(){
 			$photo_id = (int)Project::getRequest() -> id;
 			$vote_model = new PhotoVote;
@@ -268,15 +246,15 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			
 		}
 		
-		public function EditAction(){
-			$this -> AlbumAction($edit = true);
+		public function EditAction($filter = array(), $album_id = null){
+			$this -> AlbumAction($edit = true, $filter, $album_id);
 		}
 		
-		public function AlbumAction($edit = false){
+		public function AlbumAction($edit = false, $filter = array(), $album_id = null){
 			$this -> BaseSiteData();
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
-			$album_id = (int)Project::getRequest() -> getKeyByNumber(0);
+			$album_id = ((int)$album_id > 0) ? $album_id : (int)Project::getRequest() -> getKeyByNumber(0);
 			$info = array();
 			
 			
@@ -293,6 +271,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 
 		
 			$photo_model = new PhotoModel;
+			$photo_model -> filter = $filter;
 			$pager = new DbPager(Project::getRequest() -> getValueByNumber(1), $this -> getParam('photo_per_page', self::DEFAULT_PHOTO_PER_PAGE));
 			$photo_model -> setPager($pager);
 			$list = $photo_model -> loadByAlbumUser($request_user_id, $album_id);

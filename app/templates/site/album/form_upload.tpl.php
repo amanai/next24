@@ -1,20 +1,66 @@
+<script type="text/javascript">
+<!--
+var fc=2;
+function More()
+	{
+	// Создание нового элемента
+	var newElem = document.createElement("div");
+	newElem.id="field_"+fc;
+	newElem.innerHTML='<input type="file" name="photo_file_'+fc+'" style="width: 300px;" />';
+	fc++;
+	// Получение элемента-контейнера
+	var cont = document.getElementById("f_cont");
+	// Добавление контейнеру нового элемента
+	cont.appendChild(newElem);
+	// Ссылки
+	ShowHideLinks();
+	}
+	
+function Del()
+	{
+	// Получение элемента-контейнера
+	if (fc>2)
+		{
+		var elem = document.getElementById("field_"+(fc-1));
+		var cont = document.getElementById("f_cont");
+		cont.removeChild(elem);
+		fc--;
+		}
+	// Ссылки
+	ShowHideLinks();
+	}
+	
+function ShowHideLinks()
+	{
+	var elem = document.getElementById("del_link");
+	if (fc>2)
+		{
+		elem.style.display='inline';
+		elem.style.visibility='visible';
+		}
+	else
+		{
+		elem.style.display='none';
+		elem.style.visibility='hidden';
+		}
+	}
+-->
+</script>
 <form action="<?php echo $this->createUrl('Album', 'Upload');?>" method="post" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<td width="100">Файл</td>
-			<td><input type="file" style="width: 300px;" name="picture" /><br /></td>
-		</tr>
-		<tr>
-			<td width="100">Название</td>
-			<td><input type="text" style="width: 300px;" name="pic_name" value="<?php echo $this -> pic_name;?>" /><br /></td>
-		</tr>
-		<tr>
-			<td width="100">В рейтинге</td>
-			<td><input type="checkbox" name="rating" <?php if ($this -> rating) echo 'checked';?>  /><br /></td>
-		</tr>
-		<tr>
-			<td width="100">На главной</td>
-			<td><input type="checkbox" name="on_main" <?php if ($this -> on_main) echo 'checked';?> /><br /></td>
+			<td>
+				<div id="f_cont">
+					<div id="field_1">
+						<input type="file" name="photo_file_1" style="width: 300px;" />
+					</div>
+				</div>
+				<div style="text-align: right;">
+					<a href="#" onClick="More(); return false;" id="add_link">Добавить еще поле</a>
+					<a href="#" onClick="Del(); return false;" id="del_link" style="display: none; visibility: hidden;">Убрать поле</a>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td valign="top">Уровень доступа</td>

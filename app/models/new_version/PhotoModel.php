@@ -12,6 +12,12 @@ class PhotoModel extends BaseModel{
 			$album_id = (int)$album_id;
 			$is_friend = (int)Project::getUser() -> isFriend();
 			$logged_user_id = (int)Project::getUser() -> getDbUser() -> id;
+			if (!is_array($this -> filter) || !count($this -> filter)){
+				$filter = false;
+			} else {
+				$filter = $this -> filter;
+			}
+			$this -> filter = null;
 			$sql = "SELECT " .
 						"p.id as id," .
 						"p.name as name," .
@@ -29,6 +35,7 @@ class PhotoModel extends BaseModel{
 					" WHERE " .
 					" p.user_id = ?d " .
 					" AND p.album_id = ?d " .
+					(($filter !== false) ? " AND p.id IN (".implode(',', $filter).")":"" ). 
 					" AND ( (a.access=".ACCESS::ALL.") OR (?d AND a.access=".ACCESS::FRIEND.") OR (a.user_id=?d AND a.access=".ACCESS::MYSELF.") )" .
 					" AND ( (p.access=".ACCESS::ALL.") OR (?d AND p.access=".ACCESS::FRIEND.") OR (p.user_id=?d AND p.access=".ACCESS::MYSELF.") )" .
 					" GROUP BY id ".
@@ -36,6 +43,7 @@ class PhotoModel extends BaseModel{
 			$DE = Project::getDatabase();
 			$this -> checkPager();
 			$result = $DE -> selectPage($this -> _countRecords, $sql, $user_id, $album_id, $is_friend, $logged_user_id, $is_friend, $logged_user_id, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
+			
 			$this -> updatePagerAmount();
 			return $result;
 		}
