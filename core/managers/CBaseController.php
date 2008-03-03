@@ -20,6 +20,10 @@ class CBaseController {
 	public function getContent() {
 		return $this->_view->getContent();
 	}
+	
+	public function setContent($content) {
+		return $this->_view->setContent($content);
+	}
 
 	/**
 	 * Get default url for this controller: create as current controller name+default action
