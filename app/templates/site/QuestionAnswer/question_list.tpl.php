@@ -31,7 +31,7 @@
 													<tr id=<?php if($key%2==0) { ?>"cmod_tab2"<?php } else { ?>"cmod_tab1"<?php } ?>>
 														<td style="text-align: left; white-space: normal;">
 															<img src="img/faq.png" width="14" height="14" id="ico2" />
-															<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array(id=>$item['id']))?>"><?=$item['q_text']?></a>
+															<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array('id'=>$item['id']))?>"><?=$item['q_text']?></a>
 														</td>
 														<td><a href="#"><?=$item['login']?></a></td><!-- TODO: User profile -->
 														<td><?=$item['a_count']?></td>
