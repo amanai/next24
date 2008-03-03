@@ -8,15 +8,17 @@
 					<!-- ПРОФИЛЬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
-						<td class="next24_right">
-								<table width="100%" height="100%" cellpadding="0">
-									<tr>
-										<td class="next24u_left">
-										<!-- левый блок -->
-											<?php echo $this -> album_menu;?>
-											<?php echo $this -> control_panel;?>
-										<!-- /левый блок -->
-						</td>
+						<?php if ($this -> left_panel === true) { ?>
+							<td class="next24_right">
+									<table width="100%" height="100%" cellpadding="0">
+										<tr>
+											<td class="next24u_left">
+											<!-- левый блок -->
+												<?php echo $this -> album_menu;?>
+												<?php echo $this -> control_panel;?>
+											<!-- /левый блок -->
+							</td>
+						<?php } ?>
 						<td class="next24u_right">
 							<table class="photo_table">
 								<?php if ($this -> can_edit) { ?>

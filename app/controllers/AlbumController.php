@@ -286,6 +286,9 @@
 
 			$info = array();
 			$info['tab_name'] = 'Последние альбомы';
+			if ((int)Project::getUser() -> getShowedUser() -> id <= 0){
+				$info['left_panel'] = false;
+			}
 			$this -> _list($info, "creation_date", "DESC", $this -> getParam('album_per_page', self::DEFAULT_ALBUM_PER_PAGE), 'LastList');
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
