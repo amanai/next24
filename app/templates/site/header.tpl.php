@@ -79,7 +79,7 @@
 						<a href="#">Статьи</a><br />
 						<a href="#">Найти знакомых</a><br />
 						<a href="#">Дневники</a><br />
-						<a href="#">Вопрос-ответ</a><br />
+						<a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false)?>">Вопрос-ответ</a><br />
 						<a href="<?php echo $this->createUrl('Album', 'LastList', null, false);?>">Фотоальбомы</a><br />
 						<a href="#">Топы</a>
 					</td>
