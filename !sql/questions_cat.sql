@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `questions_cat` (
   `name` varchar(100) NOT NULL,
   `sortfield` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- 
 -- Дамп данных таблицы `questions_cat`

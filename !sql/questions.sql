@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `q_text` text NOT NULL,
   `creation_date` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=62 DEFAULT CHARSET=cp1251 AUTO_INCREMENT=62 ;
+) ENGINE=MyISAM AUTO_INCREMENT=62 DEFAULT CHARSET=utf8 AUTO_INCREMENT=62 ;
 
 -- 
 -- Дамп данных таблицы `questions`

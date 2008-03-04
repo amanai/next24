@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `question_tags` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`),
   FULLTEXT KEY `name_2` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 -- 
 -- Дамп данных таблицы `question_tags`

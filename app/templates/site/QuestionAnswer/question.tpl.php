@@ -25,6 +25,15 @@
 					</div>
 				</div>								
 				<?=$this->comment_list?>
+				<pre>
+				<?php 
+				
+				print_r(Project::getRequest());
+					if ($this -> is_logged){
+						include($this -> _include('../form_add_comment.tpl.php'));
+					}				  
+				?>
+				</pre>
 			</div>
 		</div>
 		

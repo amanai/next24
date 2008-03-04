@@ -54,6 +54,9 @@ class QuestionAnswerController extends SiteController {
 																'QuestionAnswer', 'ViewQuestion', array($request->id), 
 																'QuestionAnswer', 'AnswerDelete'
 																);
+			$data['add_comment_url'] = $request -> createUrl('QuestionAnswer', 'AddAnswer');
+			$data['add_comment_element_id'] = $question_model->id;
+			$data['add_comment_id'] = 0;
 			$this->_view->ViewQuestion($data);
 			$this->_view->parse();
 		}
@@ -67,6 +70,10 @@ class QuestionAnswerController extends SiteController {
 	
 	public function AddAnswerAction() {
 		
+	}
+	
+	public function AnswerDeleteAction() {
+		//TODO:
 	}
 	
 }
