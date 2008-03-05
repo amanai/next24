@@ -10,7 +10,7 @@
 		
 		public function IndexAction(){			
 			
-			$this -> _view -> Home();
+			$this -> _view -> Home(array());
 			$this -> _view -> parse();
 		}
 		

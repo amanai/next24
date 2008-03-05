@@ -22,7 +22,7 @@
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 						<div class="block_title">
 								<div class="block_title_left"><h2>Профиль пользователя</h2></div>
-								<div class="block_title_right"><img src="<?php echo IMG_URL?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" /></div>
+								<div class="block_title_right"><img src="<?php echo $this -> image_url;?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" /></div>
 						</div>
 
 						<div id="user_profile_js">
@@ -41,7 +41,7 @@
 								<td><?php echo $this->user_profile['registration_date'];?></td>
 							</tr>
 								<td><b>Пол</b></td>
-								<td><?php echo $this->user_profile['gender_formatted'];?></td>
+								<td><?php echo isset($this->user_profile['gender_formatted'])?$this->user_profile['gender_formatted']:null;?></td>
 							</tr>
 								<td><b>Расположение</b></td>
 								<td><?php echo $this->user_profile['city'];?></td>

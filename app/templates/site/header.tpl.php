@@ -18,7 +18,7 @@
 			<td width="270"><a href="#"><img src="<?php echo $this -> image_url;?>logo.png" width="270" height="180" /></a></td>
 			<td class="header2" align="right">
 				<!-- Блок авторизации -->
-				<?php if((int)$this->current_user->id > 0) {?>
+				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
 					<table width="210" height="125" cellpadding="0">
 					<tr>
 						<td class="user1"> </td>
