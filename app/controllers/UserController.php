@@ -66,7 +66,7 @@
 		public function LoginAction(){
 			$request = Project::getRequest();
 			if (Project::getSecurityManager() -> login($request -> login, $request -> pass)){
-				Project::getResponse() -> redirect(Project::getRequest() -> createUrl('User', 'Profile'));
+				Project::getResponse() -> redirect(Project::getRequest() -> createUrl('User', 'Profile', null, $request -> login));
 			} else {
 				$this -> _view -> assign('login_result', false);
 				$this -> _view -> Login();
@@ -102,7 +102,7 @@
 		
 		public function LogoutAction(){
 			Project::getSecurityManager() -> logout();
-			Project::getResponse() -> redirect(Project::getRequest() -> createUrl('Index', 'Index'));
+			Project::getResponse() -> redirect(Project::getRequest() -> createUrl('Index', 'Index', null, false));
 		}
 		
 	}
