@@ -1,20 +1,25 @@
-# MySQL-Front 3.2  (Build 6.11)
+-- phpMyAdmin SQL Dump
+-- version 2.11.3
+-- http://www.phpmyadmin.net
+--
+-- ’ÓÒÚ: localhost
+-- ¬ÂÏˇ ÒÓÁ‰‡ÌËˇ: Ã‡ 05 2008 „., 18:12
+-- ¬ÂÒËˇ ÒÂ‚Â‡: 5.0.45
+-- ¬ÂÒËˇ PHP: 5.2.5
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES 'utf8' */;
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
-# Host: localhost    Database: next24
-# ------------------------------------------------------
-# Server version 5.0.45-community-nt
+--
+-- ¡‡Á‡ ‰‡ÌÌ˚ı: `next24`
+--
 
-#
-# Table structure for table action
-#
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `action`;
-CREATE TABLE `action` (
+--
+-- —ÚÛÍÚÛ‡ Ú‡·ÎËˆ˚ `action`
+--
+
+CREATE TABLE IF NOT EXISTS `action` (
   `id` int(11) NOT NULL auto_increment,
   `controller_id` int(11) default NULL,
   `name` varchar(50) character set cp1251 default NULL,
@@ -22,83 +27,81 @@ CREATE TABLE `action` (
   `page_title` varchar(255) default NULL,
   `request_key` varchar(80) default NULL,
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `–ù–æ–≤—ã–π –∏–Ω–¥–µ–∫—Å` (`request_key`),
+  UNIQUE KEY `ÕÓ‚˚È ËÌ‰ÂÍÒ` (`request_key`),
   KEY `controller_idIdx` (`controller_id`),
   KEY `nameIdx` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=71 ;
 
-#
-# Dumping data for table action
-#
+--
+-- ƒ‡ÏÔ ‰‡ÌÌ˚ı Ú‡·ÎËˆ˚ `action`
+--
 
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (1,1,'Index',1,NULL,'home');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (2,2,'Index',0,NULL,'');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (3,2,'Delete',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (4,2,'Edit',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (5,2,'Add',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (6,2,'Save',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (8,3,'Login',NULL,NULL,'site_login');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (9,3,'Logout',NULL,NULL,'site_logout');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (10,4,'Index',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (11,4,'Save',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (12,3,'Viewprofile',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (13,7,'CommentList',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (14,3,'PhotoAlbum',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (15,8,'LastList',NULL,NULL,'last_albums');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (16,8,'TopList',NULL,NULL,'top_albums');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (17,9,'TopList',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (18,9,'Album',NULL,NULL,'albums_photo');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (19,9,'View',NULL,NULL,'view_photo');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (20,9,'User',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (21,8,'User',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (22,8,'Create',NULL,NULL,'save_album');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (23,8,'Upload',NULL,NULL,'upload_photo_form');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (24,8,'Save',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (25,8,'UploadForm',NULL,NULL,'upload_pic');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (26,8,'CreateForm',NULL,NULL,'create_album');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (27,8,'Create',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (28,8,'List',NULL,NULL,'albums');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (29,9,'Edit',NULL,NULL,'edit_photo');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (30,9,'Comment',NULL,NULL,'comment_photo');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (31,8,'ListSave',NULL,NULL,'save_album_list');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (32,9,'RatePhoto',NULL,NULL,'vote_photo');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (33,9,'CommentDelete',NULL,NULL,'del_photo_comment');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (34,9,'Save',NULL,NULL,'save_photo_list');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (35,10,'Edit',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (36,10,'Save',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (37,10,'EditBranch',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (38,10,'SaveBranch',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (39,10,'Post',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (40,10,'Comments',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (41,10,'SaveComment',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (42,10,'EditComment',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (43,10,'DeleteComment',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (44,10,'PostEdit',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (45,10,'PostSave',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (46,10,'PostDelete',NULL,NULL,NULL);
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (47,11,'Login',NULL,NULL,'login');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (48,11,'LoginForm',NULL,NULL,'loginform');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (49,11,'Desktop',1,NULL,'desktop');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (50,11,'Logout',NULL,NULL,'logout');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (51,12,'GroupList',1,NULL,'param_group_list');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (52,12,'EditGroup',NULL,NULL,'admin_edit_group');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (53,12,'SaveParams',NULL,NULL,'admin_save_param');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (54,12,'DeleteParam',NULL,NULL,'admin_del_param');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (55,13,'Delete',NULL,NULL,'admin_user_delete');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (56,13,'List',NULL,NULL,'admin_user_list');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (57,13,'Edit',NULL,NULL,'admin_user_edit');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (58,13,'Save',NULL,NULL,'admin_user_save');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (59,14,'List',1,NULL,'admin_user_group');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (60,14,'Edit',NULL,NULL,'admin_user_group_edit');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (61,14,'Save',NULL,NULL,'admin_user_group_save');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (62,14,'Controllers',NULL,NULL,'admin_group_controllers');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (63,14,'ActionList',NULL,NULL,'admin_group_action_list');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (64,14,'ChangeAccess',NULL,NULL,'admin_user_change_access');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (65,3,'Profile',NULL,NULL,'user_profile');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (67,15,'List',NULL,'–†‚Äô–†—ï–†—ó–°–Ç–†—ï–°–É–°‚Äπ-–†—ï–°‚Äö–†–Ü–†¬µ–°‚Äö–°‚Äπ','user_questions');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (68,15,'ViewQuestion',NULL,'–†‚Äô–†—ï–†—ó–°–Ç–†—ï–°–É –†—ó–†—ï–†¬ª–°–ä–†¬∑–†—ï–†–Ü–†¬∞–°‚Äö–†¬µ–†¬ª–°–è','view_question');
-INSERT INTO `action` (`id`,`controller_id`,`name`,`default`,`page_title`,`request_key`) VALUES (69,15,'AnswerDelete',NULL,'–†–à–†“ë–†¬∞–†¬ª–†—ë–°‚Äö–°–ä –†—ï–°‚Äö–†–Ü–†¬µ–°‚Äö','delete_answer');
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+INSERT INTO `action` (`id`, `controller_id`, `name`, `default`, `page_title`, `request_key`) VALUES
+(1, 1, 'Index', 1, NULL, 'home'),
+(2, 2, 'Index', 0, NULL, ''),
+(3, 2, 'Delete', NULL, NULL, NULL),
+(4, 2, 'Edit', NULL, NULL, NULL),
+(5, 2, 'Add', NULL, NULL, NULL),
+(6, 2, 'Save', NULL, NULL, NULL),
+(8, 3, 'Login', NULL, NULL, 'site_login'),
+(9, 3, 'Logout', NULL, NULL, 'site_logout'),
+(10, 4, 'Index', NULL, NULL, NULL),
+(11, 4, 'Save', NULL, NULL, NULL),
+(12, 3, 'Viewprofile', NULL, NULL, NULL),
+(13, 7, 'CommentList', NULL, NULL, NULL),
+(14, 3, 'PhotoAlbum', NULL, NULL, NULL),
+(15, 8, 'LastList', NULL, NULL, 'last_albums'),
+(16, 8, 'TopList', NULL, NULL, 'top_albums'),
+(17, 9, 'TopList', NULL, NULL, 'top_photo'),
+(18, 9, 'Album', NULL, NULL, 'albums_photo'),
+(19, 9, 'View', NULL, NULL, 'view_photo'),
+(20, 9, 'User', NULL, NULL, NULL),
+(21, 8, 'User', NULL, NULL, NULL),
+(22, 8, 'Create', NULL, NULL, 'save_album'),
+(23, 8, 'Upload', NULL, NULL, 'upload_photo_form'),
+(24, 8, 'Save', NULL, NULL, NULL),
+(25, 8, 'UploadForm', NULL, NULL, 'upload_pic'),
+(26, 8, 'CreateForm', NULL, NULL, 'create_album'),
+(27, 8, 'Create', NULL, NULL, NULL),
+(28, 8, 'List', NULL, NULL, 'albums'),
+(29, 9, 'Edit', NULL, NULL, 'edit_photo'),
+(30, 9, 'Comment', NULL, NULL, 'comment_photo'),
+(31, 8, 'ListSave', NULL, NULL, 'save_album_list'),
+(32, 9, 'RatePhoto', NULL, NULL, 'vote_photo'),
+(33, 9, 'CommentDelete', NULL, NULL, 'del_photo_comment'),
+(34, 9, 'Save', NULL, NULL, 'save_photo_list'),
+(35, 10, 'Edit', NULL, NULL, NULL),
+(36, 10, 'Save', NULL, NULL, NULL),
+(37, 10, 'EditBranch', NULL, NULL, NULL),
+(38, 10, 'SaveBranch', NULL, NULL, NULL),
+(39, 10, 'Post', NULL, NULL, NULL),
+(40, 10, 'Comments', NULL, NULL, NULL),
+(41, 10, 'SaveComment', NULL, NULL, NULL),
+(42, 10, 'EditComment', NULL, NULL, NULL),
+(43, 10, 'DeleteComment', NULL, NULL, NULL),
+(44, 10, 'PostEdit', NULL, NULL, NULL),
+(45, 10, 'PostSave', NULL, NULL, NULL),
+(46, 10, 'PostDelete', NULL, NULL, NULL),
+(47, 11, 'Login', NULL, NULL, 'login'),
+(48, 11, 'LoginForm', NULL, NULL, 'loginform'),
+(49, 11, 'Desktop', 1, NULL, 'desktop'),
+(50, 11, 'Logout', NULL, NULL, 'logout'),
+(51, 12, 'GroupList', 1, NULL, 'param_group_list'),
+(52, 12, 'EditGroup', NULL, NULL, 'admin_edit_group'),
+(53, 12, 'SaveParams', NULL, NULL, 'admin_save_param'),
+(54, 12, 'DeleteParam', NULL, NULL, 'admin_del_param'),
+(55, 13, 'Delete', NULL, NULL, 'admin_user_delete'),
+(56, 13, 'List', NULL, NULL, 'admin_user_list'),
+(57, 13, 'Edit', NULL, NULL, 'admin_user_edit'),
+(58, 13, 'Save', NULL, NULL, 'admin_user_save'),
+(59, 14, 'List', 1, NULL, 'admin_user_group'),
+(60, 14, 'Edit', NULL, NULL, 'admin_user_group_edit'),
+(61, 14, 'Save', NULL, NULL, 'admin_user_group_save'),
+(62, 14, 'Controllers', NULL, NULL, 'admin_group_controllers'),
+(63, 14, 'ActionList', NULL, NULL, 'admin_group_action_list'),
+(64, 14, 'ChangeAccess', NULL, NULL, 'admin_user_change_access'),
+(65, 3, 'Profile', NULL, NULL, 'user_profile'),
+(67, 15, 'List', NULL, '–í–æ–ø—Ä–æ—Å—ã-–æ—Ç–≤–µ—Ç—ã', 'user_questions'),
+(68, 15, 'ViewQuestion', NULL, '–í–æ–ø—Ä–æ—Å –ø–æ–ª—å–∑–æ–≤–∞—Ç–µ–ª—è', 'view_question'),
+(69, 15, 'AnswerDelete', NULL, '–£–¥–∞–ª–∏—Ç—å –æ—Ç–≤–µ—Ç', 'delete_answer'),
+(70, 9, 'LastList', NULL, NULL, 'last_photo');
