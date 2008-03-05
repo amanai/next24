@@ -332,9 +332,12 @@
 				$v = new AlbumView();
 				$v -> ControlPanel();
 				$info['control_panel'] = $v -> parse();
-				$info['tab_list'] = TabController::getOwnTabs(false, true);
 			} else {
 				$info['control_panel'] = null;
+			}
+			
+			if ($request_user_id > 0){
+				$info['tab_list'] = TabController::getOwnTabs(false, true);
 			}
 			
 			
