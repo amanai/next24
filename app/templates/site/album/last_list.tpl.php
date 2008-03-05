@@ -7,6 +7,7 @@
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<tr>
+							<?php if ($this -> left_panel === true) { ?>
 							<td class="next24_right">
 								<table width="100%" height="100%" cellpadding="0">
 									<tr>
@@ -15,7 +16,8 @@
 											<?php echo $this -> album_menu;?>
 											<?php echo $this -> control_panel;?>
 										<!-- /левый блок -->
-						</td>
+							</td>
+						<?php } ?>
 						<td class="next24u_right">
 							<table class="photo_table">
 								<?php foreach($this->photo_list as $key => $item){ ?>

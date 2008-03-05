@@ -294,7 +294,11 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		}
 		
 		function LastListAction($info = array()){
+			
 			$this -> BaseSiteData();
+			$this -> BaseAlbumData($info);
+			$info['tab_list'] = TabController:: getMainAlbumTabs(false, true, false);
+			
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			$album_id = ((int)$album_id > 0) ? $album_id : (int)Project::getRequest() -> getKeyByNumber(0);
@@ -311,6 +315,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$list = $photo_model -> loadAll($request_user_id, $album_id);
 			$this -> checkImages($list);
 			$info['photo_list'] = $list;
+			
 			$info['list_pager'] = $photo_model -> getPager();
 			$info['list_controller'] = 'Photo';
 			$info['list_action'] = 'Album';
