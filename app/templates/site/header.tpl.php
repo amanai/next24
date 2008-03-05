@@ -5,7 +5,8 @@
 	<link href="<?php echo $this -> css_url;?>style.css" type="text/css" rel="StyleSheet" />
 	<link href="<?php echo $this -> css_url;?>tabpane.css" type="text/css" rel="StyleSheet"	/>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>tabpane.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>sys.js"></script>		
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>sys.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>		
 </head>
 <body>
 <table width="100%" height="100%" cellpadding="0">

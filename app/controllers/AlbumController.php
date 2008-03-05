@@ -13,7 +13,6 @@
 			parent::__construct($view_class);
 		}
 		
-		
 		public function UploadAction(){
 			// TODO:: album_id - проверять, этого ли пользователя альбом
 			
@@ -272,7 +271,13 @@
 		public function TopListAction(){
 			
 			$info = array();
-			$info['tab_name'] = 'Топ альбомов';
+			if ((int)Project::getUser() -> getShowedUser() -> id <= 0){
+				$tabs = TabController::getMainAlbumTabs(false, false, true);
+			} else {
+				$tabs = TabController::getOwnTabs(false, true);
+			}
+			$info['tab_list'] = $tabs;
+			$info['left_panel'] = false;
 			$this -> _list($info, "album_rating", "DESC", $this -> getParam('top_per_page', self::DEFAULT_ALBUM_PER_PAGE), 'TopList');
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
@@ -285,10 +290,14 @@
 		public function LastListAction(){
 
 			$info = array();
-			$info['tab_name'] = 'Последние альбомы';
 			if ((int)Project::getUser() -> getShowedUser() -> id <= 0){
 				$info['left_panel'] = false;
+				$tabs = TabController::getMainAlbumTabs(true);
+			} else {
+				$tabs = TabController::getOwnTabs(false, true);
 			}
+
+			$info['tab_list'] = $tabs;
 			$this -> _list($info, "creation_date", "DESC", $this -> getParam('album_per_page', self::DEFAULT_ALBUM_PER_PAGE), 'LastList');
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
@@ -323,9 +332,11 @@
 				$v = new AlbumView();
 				$v -> ControlPanel();
 				$info['control_panel'] = $v -> parse();
+				$info['tab_list'] = TabController::getOwnTabs(false, true);
 			} else {
 				$info['control_panel'] = null;
 			}
+			
 			
 			$tmp = array();
 			$album_model = new AlbumModel();
@@ -340,6 +351,9 @@
 			if ($album_list !== false){
 				$info[$album_list] = $tmp['album_menu_list'];
 			}
+			
+			
+			
 		}
 
 		

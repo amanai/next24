@@ -262,6 +262,13 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 				$info['access_list'] = HelpFunctions::getAccessList();
 			}
 			
+			if ((int)Project::getUser() -> getShowedUser() -> id <= 0){
+				$tabs = TabController::getMainAlbumTabs(false, false, true);
+			} else {
+				$tabs = TabController::getOwnTabs(false, true);
+			}
+			$info['tab_list'] = $tabs;
+			
 			$album_model = new AlbumModel;
 			$album_model -> load($album_id);
 			$info['thumbnail_id'] = (int)$album_model -> thumbnail_id;
@@ -286,15 +293,16 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$this -> _view -> parse();
 		}
 		
-		function LastListAction(){
+		function LastListAction($info = array()){
 			$this -> BaseSiteData();
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			$album_id = ((int)$album_id > 0) ? $album_id : (int)Project::getRequest() -> getKeyByNumber(0);
-			$info = array();
 
 			
 			$this -> BaseAlbumData($info, $album_id);
+			
+			
 
 		
 			$photo_model = new PhotoModel;
@@ -320,68 +328,9 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		 * Вывод топовых фотографий
 		 */
 		public function TopListAction(){
-			$this -> model -> resetSql();
-			$this -> setModel('Photos');
-			$this -> model -> pager();
-			$this -> model -> cols('photos.id, 
-								      photos.user_id, 
-								      photos.name, 
-								      photos.creation_date, 
-								      users.login, 
-								      photos.thumbnail,
-								      photos.voices as v,
-								      photos.rating as r,
-								      IF (photos.voices > 0, photos.rating/photos.voices, 0) as photos_rating');
-			$this -> model -> join('users', 'users.id=photos.user_id ', 'LEFT');
-			$this -> model -> join('albums', 'albums.id=photos.album_id', 'LEFT');
-			$this -> model -> where("photos.access>0");
-			$this -> model -> where("photos.is_rating=1");
-			$this -> model -> where("photos.is_onmain=1");
-			$this -> model -> order("photos_rating DESC");
-			if ( ($number = $this -> getParam('top_per_page', self::DEFAULT_PHOTO_PER_PAGE)) === 0){
-				$number = self::DEFAULT_PHOTO_PER_PAGE;
-			}
-			$this -> model -> limit($number, (int)$this -> pn*$number);
-			$list = $this -> model -> getAll();
-			$all = $this -> model -> foundRows();
-			$this -> view -> pages_number = ceil($all / $number);
-			$this -> view -> current_page_number = (int)$this -> pn;
-			
-			foreach($list as $key => $value){
-				$login = trim($value['login']);
-				$thumb = false;
-				if (strlen($login) > 0){
-					$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $value['login'];
-					$err = false;
-					$ok = $this -> checkDir($dir);
-					if ($ok === true){
-						$album = $dir . DIRECTORY_SEPARATOR . 'album';
-						$ok = $this -> checkDir($album);
-					}
-					if ($ok === true){
-						$images = $album . DIRECTORY_SEPARATOR . 'images';
-						$ok = $this -> checkDir($images);
-					}
-					
-					if ($ok === true){
-						$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
-						$ok = $this -> checkDir($thumbs);
-					}
-					
-					if ($ok === true){
-						$f = $thumbs . DIRECTORY_SEPARATOR . $value['thumbnail'];
-						if (file_exists($f) && is_file($f)){
-							$thumb = $f;
-							// Replace back slashes
-							$thumb = str_replace("\\", "/", $thumb);
-						}
-					}
-				}
-				$list[$key]['thumbnail'] = $thumb;
-			}
-			$this -> view -> photo_list = $list;
-			$this->view->content .= $this->view->render(VIEWS_PATH.'albums/photo_top_list.tpl.php');
-			$this->view->display();
+			$info = array();
+			$info['left_panel'] = false;
+			$this -> LastListAction($info);
 		}
 	}
 ?>

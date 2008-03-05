@@ -1,10 +1,8 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 <!-- Главный блок, с вкладками (Контент) -->
 			<div class="tab-page" id="modules-cpanel">
-				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
-
-				<div class="tab-page">
-					<h2 class="tab"><?php echo $this -> tab_name;?></h2>
+				<?php include($this -> _include('../tab_panel.tpl.php')); ?>
+				<div class="tab-page tab-page-selected">
 					<!-- ПРОФИЛЬ -->
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
