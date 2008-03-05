@@ -81,13 +81,11 @@ class UserRightModel extends BaseModel{
 		
 		function save(){
 			parent::save();
-			if ($this -> _load_all_cahce === true){
-				$cache = Project::getDatabaseManager() -> getCache();
-				if ($cache !== null){
-					$cache -> delete($this -> getCachePrefix('_list_user_type_'.$this -> user_type_id));
-					$cache -> delete($this -> getCachePrefix('_list_controller_user_type_'.$this -> user_type_id));
-					$cache -> delete($this -> getCachePrefix('_list_controller_action_user_type_'.$this -> user_type_id.$this -> controller_id.$this->action_id));
-				}
+			$cache = Project::getDatabaseManager() -> getCache();
+			if ($cache !== null){
+				$cache -> delete($this -> getCachePrefix('_list_user_type_'.$this -> user_type_id));
+				$cache -> delete($this -> getCachePrefix('_list_controller_user_type_'.$this -> user_type_id));
+				$cache -> delete($this -> getCachePrefix('_list_controller_action_user_type_'.$this -> user_type_id.$this -> controller_id.$this->action_id));
 			}
 		}
 }
