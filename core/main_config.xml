@@ -58,13 +58,6 @@
 	</module>
 	
 	
-	<!-- Sesion module -->
-	<module id="session"  class="HttpSessionManager" >
-		<!-- Params such as session live time, name etc. -->
-		<param key="set_to_registry" value="false" />
-		<param key="session_name" value="nextsk11" />
-	</module>
-	
 	<!-- Http request handling -->
 	<module id="request" class="HttpRequestManager">
 		<param key="rewrite" value="true"/>
@@ -75,6 +68,16 @@
 		<param key="set_to_registry" value="false" />
 		<param key="base_host" value="next24" />
 	</module>
+	
+	<!-- Sesion module -->
+	<module id="session"  class="HttpSessionManager" >
+		<!-- Params such as session live time, name etc. -->
+		<param key="set_to_registry" value="false" />
+		<param key="session_name" value="nextsk11" />
+		<param key="autoStart" value="true" />
+	</module>
+	
+	
 	
 	<!-- Right manager module -->
 	<module id="security_manager"  class="SecurityManager" >

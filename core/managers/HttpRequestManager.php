@@ -23,6 +23,8 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 	
 	private $_request_by_number = array();
 	
+	private $_after_init_process = false;
+	
 		function __get($param){
 			return $this -> getKey($param);
 		}
@@ -34,6 +36,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 				HelpFunctions::strips($_COOKIE);
 				HelpFunctions::strips($_REQUEST);
 			}
+			
 			$this -> _requestMethod = $_SERVER['REQUEST_METHOD'];
 			if ($this -> _requestMethod == 'GET'){
 				$this -> _request = $_GET;
@@ -84,6 +87,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 					$this -> _current_controller = $this -> _request[$this -> _request_controller_key];
 				}
 			}
+
 			$this -> _files = $_FILES;
 			Project::setRequest($this);
 			$this -> _common_config($configuration);
@@ -105,6 +109,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 		 * Get all request array
 		 */
 		public function getKeys(){
+			$this -> afterInitProcess();
 			return $this -> _request;
 		}
 		
@@ -112,10 +117,12 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 		 * Get specified key value from request
 		 */
 		public function getKey($key, $default = null){
+			$this -> afterInitProcess();
 			return isset($this -> _request[$key])?$this -> _request[$key]:$default;
 		}
 		
 		public function getKeyByNumber($number, $default = null){
+			$this -> afterInitProcess();
 			if (isset($this -> _request_by_number[$number])){
 				return $this -> _request_by_number[$number];
 			} else {
@@ -124,10 +131,29 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 		}
 		
 		public function getValueByNumber($number, $default = null){
+			$this -> afterInitProcess();
 			if (isset($this -> _request_by_number[$number])){
 				return $this -> getKey($this -> _request_by_number[$number], $default);
 			} else {
 				return $default;
+			}
+		}
+		
+		private function afterInitProcess(){
+			if (!$this -> _after_init_process){
+				$session_name = Project::getSession() -> getSessionName();
+				if (isset($this -> _request[$session_name])){
+					$n_key = array_search($session_name, $this -> _request_by_number);
+					if ($n_key !== false){
+						// Unset from keys, sorted by number
+						unset($this -> _request_by_number[$n_key]);
+						// Rebuild indexes in right order
+						$this -> _request_by_number = array_values($this -> _request_by_number);
+					}
+					// unset from request variables list
+					unset($this -> _request[$session_name]);
+				}
+				$this -> _after_init_process = true;
 			}
 		}
 		

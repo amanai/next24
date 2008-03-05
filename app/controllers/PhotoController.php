@@ -256,8 +256,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			$album_id = ((int)$album_id > 0) ? $album_id : (int)Project::getRequest() -> getKeyByNumber(0);
 			$info = array();
-			
-			
+
 			if (($request_user_id === $user_id) && ($edit === true)){
 				$info['can_edit'] = true;
 				$info['access_list'] = HelpFunctions::getAccessList();
@@ -272,9 +271,11 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		
 			$photo_model = new PhotoModel;
 			$photo_model -> filter = $filter;
-			$pager = new DbPager(Project::getRequest() -> getValueByNumber(1), $this -> getParam('photo_per_page', self::DEFAULT_PHOTO_PER_PAGE));
+			
+			$pager = new DbPager(Project::getRequest() -> getKeyByNumber(1), $this -> getParam('photo_per_page', self::DEFAULT_PHOTO_PER_PAGE));
 			$photo_model -> setPager($pager);
 			$list = $photo_model -> loadByAlbumUser($request_user_id, $album_id);
+
 			$this -> checkImages($list);
 			$info['photo_list'] = $list;
 			$info['list_pager'] = $photo_model -> getPager();
@@ -282,6 +283,31 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$info['list_action'] = 'Album';
 			$info['list_user'] = null;
 			$this -> _view -> PhotoList($info);
+			$this -> _view -> parse();
+		}
+		
+		function LastListAction(){
+			$this -> BaseSiteData();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			$album_id = ((int)$album_id > 0) ? $album_id : (int)Project::getRequest() -> getKeyByNumber(0);
+			$info = array();
+
+			
+			$this -> BaseAlbumData($info, $album_id);
+
+		
+			$photo_model = new PhotoModel;
+			$pager = new DbPager(Project::getRequest() -> getValueByNumber(1), $this -> getParam('last_photo_per_page', self::DEFAULT_PHOTO_PER_PAGE));
+			$photo_model -> setPager($pager);
+			$list = $photo_model -> loadAll($request_user_id, $album_id);
+			$this -> checkImages($list);
+			$info['photo_list'] = $list;
+			$info['list_pager'] = $photo_model -> getPager();
+			$info['list_controller'] = 'Photo';
+			$info['list_action'] = 'Album';
+			$info['list_user'] = null;
+			$this -> _view -> LastList($info);
 			$this -> _view -> parse();
 		}
 

@@ -9,12 +9,12 @@ class HttpSessionManager extends ApplicationManager implements IManager, Countab
 
 		
 		public function initialize(IConfigParameter $configuration){
-			
-			if($this -> _autoStart){
+			$this -> _common_config($configuration);
+			$this -> _autoStart = $configuration ->get('autoStart');
+			if($this -> _autoStart === true){
 				$this->open();
 			}
 			Project::setSession($this);
-			$this -> _common_config($configuration);
 		}
 
 	

@@ -70,25 +70,26 @@ class PhotoModel extends BaseModel{
 			} else {
 				$u = 1;
 			}
+			$is_friend = (int)Project::getUser() -> isFriend();
 			$sql = "SELECT " .
-						"a.id as id," .
-						"a.name as name," .
-						"a.creation_date as creation_date," .
+						"p.id as id," .
+						"p.name as name," .
+						"p.creation_date as creation_date," .
 						"u.login as login," .
-						"p.thumbnail as thumbnail," .
-						"IF (rate.voices > 0, rate.rating/rate.voices, 0) as album_rating," .
-						"a.user_id as user_id " .
-					" FROM album as a " .
-					" LEFT JOIN users u ON u.id=a.user_id " .
-					" LEFT JOIN photo p ON p.id=a.thumbnail_id AND p.album_id=a.id " .
-					" LEFT JOIN photo rate ON rate.album_id = a.id AND rate.is_rating > 0 " .
+						"a.name as album_name, " .
+						"p.user_id as user_id " .
+					" FROM photo as p " .
+					" LEFT JOIN album a ON a.id=p.album_id " .
+					" LEFT JOIN users u ON u.id=p.user_id " .
 					" WHERE " .
 					" " . $om . " " .
 					" AND " . $u . " " .
 					" AND ( (a.access=".ACCESS::ALL.") OR (?d AND a.access=".ACCESS::FRIEND.") OR (a.user_id=?d AND a.access=".ACCESS::MYSELF.") )" .
+					" AND ( (p.access=".ACCESS::ALL.") OR (?d AND p.access=".ACCESS::FRIEND.") OR (p.user_id=?d AND p.access=".ACCESS::MYSELF.") )" .
 					" GROUP BY id ".
 					" ORDER BY $sortName $sortOrder  LIMIT ?d, ?d ";
-			$result = $DE -> selectPage($this -> _countRecords, $sql, (int)Project::getUser() -> isFriend(), $logged_user_id, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
+			$result = $DE -> selectPage($this -> _countRecords, $sql, $is_friend, $logged_user_id, $is_friend, $logged_user_id, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
+			
 			$this -> updatePagerAmount();
 			return $result;
 		}

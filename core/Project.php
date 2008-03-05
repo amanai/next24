@@ -201,7 +201,7 @@ class Project{
 	     */
 	    function getSession(){
 	    	if (($session = self::get('session')) === null){
-	    		$session = new HttpSession();
+	    		$session = new HttpSessionManager();
 	    		$session -> initialize(new ConfigParameter(array()));
 	    		self::setSession($session);
 	    	}
