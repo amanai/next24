@@ -386,7 +386,7 @@
 						$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
 						$ok = $this -> checkDir($thumbs);
 					}
-					if ($ok === true){
+					if (($ok === true) && isset($value['thumbnail'])){
 						$f = $thumbs . DIRECTORY_SEPARATOR . $value['thumbnail'];
 						if (file_exists($f) && is_file($f)){
 							$thumb = Project::getRequest() -> getHost() . 'users/'.$login.'/album/thumbs/'.$value['thumbnail'];

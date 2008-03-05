@@ -73,6 +73,8 @@ class PhotoModel extends BaseModel{
 			$is_friend = (int)Project::getUser() -> isFriend();
 			$sql = "SELECT " .
 						"p.id as id," .
+						"p.thumbnail as thumbnail," .
+						"p.album_id as album_id," .
 						"p.name as name," .
 						"p.creation_date as creation_date," .
 						"u.login as login," .

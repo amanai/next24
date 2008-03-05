@@ -296,12 +296,12 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 		function LastListAction($info = array()){
 			
 			$this -> BaseSiteData();
-			$this -> BaseAlbumData($info);
+			
 			$info['tab_list'] = TabController:: getMainAlbumTabs(false, true, false);
 			
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
-			$album_id = ((int)$album_id > 0) ? $album_id : (int)Project::getRequest() -> getKeyByNumber(0);
+			$album_id = (isset($album_id) && ((int)$album_id > 0)) ? $album_id : (int)Project::getRequest() -> getKeyByNumber(0);
 
 			
 			$this -> BaseAlbumData($info, $album_id);
