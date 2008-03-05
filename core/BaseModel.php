@@ -41,7 +41,7 @@ abstract class BaseModel{
 		function _caches($load = false, $all = false, $page = false){
 			$DM = Project::getDatabaseManager();
 			$this -> _load_cache = (bool)$load && $DM -> hasCache();
-			$this -> _load_all_cahce = (bool)$all && $DM -> hasCache();
+			$this -> _load_all_cache = (bool)$all && $DM -> hasCache();
 			$this -> _load_page_cache = (bool)$page && $DM -> hasCache();
 		}
 						
@@ -76,7 +76,7 @@ abstract class BaseModel{
 				$sortName = $defaultSortName;
 			}
 			
-			if ($this -> _load_all_cahce === true){
+			if ($this -> _load_all_cache === true){
 				$cache = Project::getDatabaseManager() -> getCache();
 				if ($cache !== null){
 					$list = $cache -> get($this -> getCachePrefix('_list'));
@@ -90,7 +90,7 @@ abstract class BaseModel{
 			$sortOrder = $this -> getSortDirection($sortOrder);
 			$result = $DE -> selectPage($this -> _countRecords, "SELECT * FROM ".$this -> _table." ORDER BY $sortName $sortOrder ");
 			$this -> updatePagerAmount();
-			if ($this -> _load_all_cahce === true){
+			if ($this -> _load_all_cache === true){
 				$cache = Project::getDatabaseManager() -> getCache();
 				if ($cache !== null){
 					$cache -> set($this -> getCachePrefix('_list'), $result);
