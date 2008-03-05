@@ -86,7 +86,7 @@
 			$info['in_friend_list'] = $friend_model -> getInFriends($user -> id);
 			
 			$info['user_profile'] = $user -> data();
-			
+			$info['tab_list'] = TabController::getOwnTabs(true);
 			$this -> _view -> Profile($info);
 			$this -> _view -> parse();
 			/*$this->view->userData['birth_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['birth_date']));
