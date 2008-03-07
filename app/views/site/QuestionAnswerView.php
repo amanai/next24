@@ -14,6 +14,16 @@ class QuestionAnswerView extends BaseSiteView {
 		
 	}
 	
+	public function ManagedQuestion($data) {
+		$this->setTemplate(null, 'add_question.tpl.php');
+		$this->set($data);
+	}
+	
+	public function MyQuestionList($data) {
+		$this->setTemplate(null, "my_question_list.tpl.php");
+		$this->set($data);
+	}
+	
 	
 	
 }
