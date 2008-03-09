@@ -28,7 +28,7 @@ class Node extends BasicNode{
 			}
 		}
 	//methods
-		function getBranch(){
+		function getBranch($field = null, $value = null){
 			return Project::getDatabase() -> select(
 				" select
 					id
@@ -38,7 +38,7 @@ class Node extends BasicNode{
 				from
 					{$this->tablename}
 				where
-					`key` like '{$this->key}%'
+					`key` like '{$this->key}%' 
 				order by
 					`key`
 				"

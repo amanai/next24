@@ -3,56 +3,136 @@
 /**
  * Контроллер для работы с блогами
  */
-	class BlogController extends SiteController{
-		const DEFAULT_POST_PER_PAGE = 8;
-		const DEFAULT_COMMENT_PER_PAGE = 8;
-		
-		private $_is_subscribed_to_log = false;
-		
+class BlogAdminController extends AdminController{
+		const CATALOG_PER_PAGE = 3;
+		const TAG_PER_PAGE = 3;
 		function __construct($view_class = null){
 			if ($view_class === null){
-				$view_class = "BlogView";
+				$view_class = "BlogAdminView";
 			}
 			parent::__construct($view_class);
-			
 		}
 		
-		function BaseBlogData(&$info){
+		function CatalogListAction(){
 			$request = Project::getRequest();
-			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
-			if ($request_user_id <= 0){
-				Project::getResponse() -> redirect($request -> createUrl('Index', 'Index', null, false));
-			}
-			$user_id = (int)Project::getUser() -> getDbUser() -> id;
-			
-			
-			if ($request_user_id === $user_id) {
-				$v = new BlogView();
-				$v -> ControlPanel();
-				$info['control_panel'] = $v -> parse();
-			} else {
-				$info['control_panel'] = null;
-			}
-			$info['tab_list'] = TabController::getOwnTabs(false, false, false, false, false, false, true);
-			// User blog tree
-			$blog_model = Project::getUser() -> getShowedUser() -> getBlog();
-			$tree_model = new BlogTreeModel;
-			$info['branch_list'] = $tree_model -> getBranchList($blog_model -> id, $user_id);
-		}
-		
-		function PostListAction(){
-			$request = Project::getRequest();
-			$this -> BaseSiteData();
+			$this -> BaseAdminData();
 			$info = array();
-			$this -> BaseBlogData($info);
+			$catalog_model = new BlogCatalogModel;
+			$pager = new DbPager($request -> getKeyByNumber(0), self::CATALOG_PER_PAGE);
+			$catalog_model -> setPager($pager);
+			$list = $catalog_model -> loadPage();
+			$info['catalog_list'] = $list;
+			$info['edit_controller'] = 'BlogAdmin';
+			$info['edit_action'] = 'CatalogEdit';
+			$info['page_number'] = $request -> getKeyByNumber(0);
+			$pager_view = new SitePagerView();
+			$info['list_pager_html'] = $pager_view -> show2($catalog_model -> getPager(), 'BlogAdmin', 'CatalogList');
 			
-			$id = $request -> getKeyByNumber(0);
-			
-			$post_model = new BlogPostModel;
-			
-			$this -> _view -> PostList($info);
+			$this -> _view -> CatalogList($info);
 			$this -> _view -> parse();
 		}
+		
+		function CatalogEditAction(){
+			$request = Project::getRequest();
+			$this -> BaseAdminData();
+			$info = array();
+			
+			$catalog_id = (int)$request -> getKeyByNumber(0);
+			$page_number = (int)$request -> getKeyByNumber(1);
+			$tag_page_number = (int)$request -> getKeyByNumber(2);
+			
+			$catalog_model = new BlogCatalogModel;
+			
+			
+			$info['edit_data'] = $catalog_model -> load($catalog_id);
+
+			$tag_model = new BlogTagModel;
+			$pager = new DbPager($tag_page_number, self::TAG_PER_PAGE);
+			$tag_model -> setPager($pager);
+			$info['tag_list'] = $tag_model -> loadList($catalog_id);
+			$info['edit_tag_controller'] = 'BlogAdmin';
+			$info['edit_tag_action'] = 'TagEdit';
+			$pager_view = new SitePagerView();
+			$info['tag_pager_html'] = $pager_view -> show2($tag_model -> getPager(), 'BlogAdmin', 'CatalogEdit', array($catalog_id, $page_number));
+			
+			$info['common_param'] =  array($catalog_id, $page_number, $tag_page_number);
+			$info['cancel_param'] = $request -> createUrl('BlogAdmin', 'CatalogList', array($page_number));
+			$info['save_param'] = $request -> createUrl('BlogAdmin', 'CatalogSave', array($catalog_id, $page_number, $tag_page_number));
+			$info['save_tag_action'] = $request -> createUrl('BlogAdmin', 'CatalogSaveTags', array($catalog_id, $page_number, $tag_page_number));
+			
+			
+			$this -> _view -> CatalogEdit($info);
+			$this -> _view -> parse();
+		}
+		
+		function CatalogSaveAction(){
+			$request = Project::getRequest();
+			$name = $request -> name;
+			$id = (int)$request -> id;
+			$catalog_model = new BlogCatalogModel;
+			$catalog_model -> load($id);
+			$catalog_model -> name = $name;
+			// TODO:: name validation
+			$catalog_model -> save();
+			
+			$catalog_id = (int)$request -> getKeyByNumber(0);
+			$page_number = (int)$request -> getKeyByNumber(1);
+			$tag_page_number = (int)$request -> getKeyByNumber(2);
+			$param = array($catalog_id, $page_number, $tag_page_number);
+
+			Project::getResponse() -> redirect($request -> createUrl('BlogAdmin', 'CatalogEdit', $param));
+		}
+		
+		function CatalogSaveTagsAction(){
+			$request = Project::getRequest();
+			$catalog_id = (int)$request -> getKeyByNumber(0);
+			$page_number = (int)$request -> getKeyByNumber(1);
+			$tag_page_number = (int)$request -> getKeyByNumber(2);
+			// TODO::sortfield checking
+			if (is_array($request -> ids) && count($request -> ids)){
+				foreach ($request -> ids as $tag_id){
+					// TODO:: check for exists
+					if (isset($request -> tag_name[$tag_id]) && strlen($request -> tag_name[$tag_id])){
+						$tag_model = new BlogTagModel;
+						$tag_model -> load($tag_id);
+						$tag_model -> name = $request -> tag_name[$tag_id];
+						if ($tag_model -> id <= 0){
+							$tag_model -> posts_num = 0;
+							$tag_model -> sortfield = 0;
+						}
+						if (isset($request -> active[$tag_id])){
+							if ($request -> active[$tag_id] == 1){
+								$tag_model -> active = 1;
+							} else {
+								if ($tag_id > 0){
+									$tag_model -> delete($tag_id);
+								}
+								continue;
+							}
+						} else {
+							$tag_model -> active = 1;
+						}
+						$tag_model -> blog_catalog_id = $catalog_id;
+						$tag_model -> save();
+					}
+					
+					
+				}
+			}
+			Project::getResponse() -> redirect($request -> createUrl('BlogAdmin', 'CatalogEdit', array($catalog_id, $page_number, $tag_page_number)));
+		}
+		
+		function CatalogDeleteTagAction(){
+			$request = Project::getRequest();
+			$catalog_id = (int)$request -> getKeyByNumber(0);
+			$page_number = (int)$request -> getKeyByNumber(1);
+			$tag_page_number = (int)$request -> getKeyByNumber(2);
+			$tag_id = (int)$request -> getKeyByNumber(3);
+			$tag_model = new BlogTagModel;
+			$tag_model -> delete($tag_id);
+			Project::getResponse() -> redirect($request -> createUrl('BlogAdmin', 'CatalogEdit', array($catalog_id, $page_number, $tag_page_number)));
+		}
+		
 		
 		private function checkBranchAccess($branch_id, $user_id){
 			if ($branch_id > 0){

@@ -36,9 +36,6 @@ class BaseCommentController extends CBaseController{
 			$info['comment_list'] = $list;
 			$pager_view = new SitePagerView();
 			$info['comment_list_pager'] = $pager_view -> show2($model -> getPager(), $cur_controller, $cur_action, $params);
-			
-			
-			
 			$this -> _view -> CommentList($info);
 			return $this -> _view -> parse();
 		}
