@@ -37,7 +37,7 @@ class QuestionModel extends BaseModel {
 					 	}
 					 }
 					 $sql.=" ORDER BY questions.`creation_date` DESC LIMIT ?d, ?d";
-				
+				//die($sql);
 		$this->checkPager();
 		$params = array();
 		$params[] = $this->_countRecords;
