@@ -1,5 +1,4 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-	<div class="list">
  	    <div style="float: left;"><h3>Категории</h3></div><!-- TODO: descript -->
  	    <div class="list">
 				<div class="options">
@@ -20,7 +19,6 @@
 						<td>
 							Действия
 						</td>
-						<td class="last" rowspan="100">&nbsp;</td>
 					</tr>
 					<?php $num = 1;
 					?>

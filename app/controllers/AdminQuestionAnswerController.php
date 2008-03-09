@@ -95,9 +95,67 @@ class AdminQuestionAnswerController extends AdminController {
 		$pager_view = new SitePagerView();
 		$data['pager'] = $pager_view->show($question_model->getPager(), 'AdminQuestionAnswer', 'QuestionList', $param);
 		$this->BaseAdminData();
-		$this->_view->QuestionList();
+		$this->_view->QuestionList($data);
 		$this->_view->parse();
 	}
+	
+	public function DeleteQuestionAction() {
+		$request = Project::getRequest();
+		if($request->getKeyByNumber(0) > 0) {
+			$model = new QuestionModel();
+			$model->delete((int)$request->getKeyByNumber(0));
+		}
+		Project::getResponse()->Redirect($request->createUrl('AdminQuestionAnswer','QuestionList'));		
+	}
+	
+	public function EditQuestionAction() {
+		$request = Project::getRequest();
+		$id = $request->getKeyByNumber(0);
+		$data = array();
+		if(!$request->save) {
+			if($id > 0) {
+				$model = new QuestionModel();
+				$cat_model = new QuestionCatModel();
+				$tag_model = new QuestionTagModel();
+				$data['question'] = $model->load($id);
+				$data['cat_list'] = $cat_model->loadAll();
+				$data['tags'] = $tag_model->loadWhere(null, null, $id);
+				$this->BaseAdminData();
+				$this->_view->EditQuestion($data);
+				$this->parse();
+			}
+		} else {
+			if($id > 0) {
+				$model = new QuestionModel();
+				$model->load($id);
+				$model->q_text = $request->question_text;
+				$model->questions_cat_id = (int)$request->cat_id;
+				$id = $model->save();
+				$tag_model = new QuestionTagModel();
+				$question_tag_model = new QTagModel();
+				$tags_ar = array();
+				$tags_ar = explode(",", $request->tags);
+				foreach ($tags_ar as $tag) {
+					$tag = trim($tag);	
+					if(count($tag_model->loadWhere(null, $tag)) == 0) {
+						$tag_model->name = $tag;
+						$tag_id = $tag_model->save();
+						$tag_model->clear();	
+						$question_tag_model->question_id = $id;
+						$question_tag_model->question_tag_id = $tag_id;
+						$question_tag_model->save();
+						$question_tag_model->clear();				
+					} else {
+						$question_tag_model->question_id = $id;
+						$question_tag_model->question_tag_id = $tag_model->id;
+						$question_tag_model->save();
+						$question_tag_model->clear();
+					}
+				}
+			}
+		}
+	}
+	
 	
 	
 	

@@ -6,18 +6,19 @@ class QuestionTagModel extends BaseModel {
 		parent::__construct('question_tags');
 	}
 	
-	public function loadWhere($catId = null, $tagName = null) {
+	public function loadWhere($catId = null, $tagName = null, $questionId = null) {
 		$sql =  "SELECT ".
 				"t.id, t.name ".
 				"FROM question_tags AS t ".
 				"JOIN qq_tags AS qt ON qt.question_tag_id = t.id ".
 				"JOIN questions AS q ON q.id = qt.question_id ";
-				($catId !== null) ? $sql.="WHERE q.questions_cat_id=?d " . (($tagName !== null) ? "AND LOWER(t.name)=LOWER(?s)" : "") : (($tagName !== null) ? $sql.="WHERE LOWER(t.name)=LOWER(?s)" : "");
+				($catId !== null) ? $sql.="WHERE q.questions_cat_id=?d " . (($tagName !== null) ? "AND LOWER(t.name)=LOWER(?s)" : "") . (($questionId !== null) ? "AND qt.question_id = ?d" : "") : (($tagName !== null) ? $sql.="WHERE LOWER(t.name)=LOWER(?s)" : ($questionId !== null) ? "WHERE qt.question_id = ?d" : "");
 		$sql.=  " LIMIT 1";
 		$params = array();
 		$params[] = $sql;
 		if($catId !== null) $params[] = $catId;
 		if($tagName !== null) $params[] = $tagName;
+		if($questionId !== null) $params[] = $questionId;
 		$result = call_user_func_array(array(Project::getDatabase(), 'selectRow'), $params);	
 		//die($sql);
 		$this->bind($result);

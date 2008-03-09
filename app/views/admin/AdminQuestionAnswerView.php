@@ -17,6 +17,11 @@ class AdminQuestionAnswerView extends BaseAdminView {
 		$this->set($data);
 	}
 	
+	public function QuestionList($data) {
+		$this->setTemplate($this->_dir, "question_list.tpl.php");
+		$this->set($data);
+	}
+	
 }
 
 ?>
