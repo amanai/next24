@@ -3,13 +3,51 @@
 /**
  * Контроллер для работы с блогами
  */
-	class BlogController extends CBaseController{
+	class BlogController extends SiteController{
 		const DEFAULT_POST_PER_PAGE = 8;
 		const DEFAULT_COMMENT_PER_PAGE = 8;
 		
-		function __construct($View=null, $params = array(), $vars = array()){
-			$this -> setModel("Blogs");
-			parent::__construct($View, $params, $vars);
+		function __construct($view_class = null){
+			if ($view_class === null){
+				$view_class = "BlogView";
+			}
+			parent::__construct($view_class);
+		}
+		
+		function BaseBlogData(&$info){
+			$request = Project::getRequest();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			if ($request_user_id <= 0){
+				Project::getResponse() -> redirect($request -> createUrl('Index', 'Index', null, false));
+			}
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			if ($request_user_id === $user_id) {
+				$v = new BlogView();
+				$v -> ControlPanel();
+				$info['control_panel'] = $v -> parse();
+			} else {
+				$info['control_panel'] = null;
+			}
+			
+			// User blog tree
+			$blog_model = Project::getUser() -> getShowedUser() -> getBlog();
+			
+			$n = Node::by_key(1, 'ub_tree');
+			$branch_list =  $n->getBranch();
+			echo '<pre>';
+			print_r($branch_list);
+			die;
+			die();
+			
+		}
+		
+		function PostListAction(){
+			$this -> BaseSiteData();
+			$info = array();
+			$this -> BaseBlogData($info);
+			$info['tab_list'] = TabController::getOwnTabs(false, false, false, false, false, false, true);
+			$this -> _view -> PostList($info);
+			$this -> _view -> parse();
 		}
 		
 		private function checkBranchAccess($branch_id, $user_id){

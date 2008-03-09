@@ -9,6 +9,7 @@
 	<link href="<?php echo $this -> css_url;?>dialog.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo $this -> css_url;?>ajax.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo $this -> css_url;?>datepicker.css" type="text/css" rel="StyleSheet"/>
+	<link href="<?php echo $this -> css_url;?>dialog.css" type="text/css" rel="StyleSheet"/>
 	
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery_pngfix.js"></script>

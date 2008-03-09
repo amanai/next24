@@ -150,7 +150,7 @@
 
 		// deleteing
 			function delete(){
-				Mysql::query(
+				Project::getDatabase() -> query(
 					"delete
 					from
 						{$this->tablename}

@@ -26,7 +26,7 @@ class TabController{
 			return $tabs;
 		}
 		
-		function getOwnTabs($selected_profile = false, $selected_album = false, $selected_diary = false, $selected_arch_diary = false, $friends = false, $pm = false){
+		function getOwnTabs($selected_profile = false, $selected_album = false, $selected_diary = false, $selected_arch_diary = false, $friends = false, $pm = false, $blog = false){
 			$request = Project::getRequest();
 			$tabs = array();
 			$tabs[] = array(
@@ -41,6 +41,12 @@ class TabController{
 							'title' => 'Фотоальбом',
 							'selected' => $selected_album,
 						 	'url' => $request -> createUrl('Album', 'List')
+							);
+			$tabs[] = array(
+							'name' => 'Блог',
+							'title' => 'Блог',
+							'selected' => $blog,
+						 	'url' => $request -> createUrl('Blog', 'PostList')
 							);
 			$tabs[] = array(
 							'name' => 'Дневник',

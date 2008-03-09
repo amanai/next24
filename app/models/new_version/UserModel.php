@@ -33,5 +33,11 @@ class UserModel extends BaseModel{
 			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE login=? LIMIT 1", $login);
 			$this -> bind($result);
 		}
+		
+		function &getBlog(){
+			$blog_model = new BlogModel;
+			$blog_model -> loadByUserId($this -> id);
+			return $blog_model;
+		}
 }
 ?>

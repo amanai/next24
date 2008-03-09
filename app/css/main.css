@@ -323,3 +323,51 @@ a
 {
 	color: #5c5c5c;
 }
+
+/* Листинг */
+
+.listing
+{
+	display: inline;
+}
+.listing a
+{
+	padding: 1px 4px;
+	background: #D4E9F9;
+	border: 1px solid #79A4C5;
+	color: #7D92B3;
+	text-decoration: none;
+}
+.listing a:hover
+{
+	background: #DEE6EC;
+	border: 1px solid #959DA3;
+	color: #899197;
+	text-decoration: none;
+}
+.listing a.active
+{
+	background: #82A7C7;
+	border: 1px solid #4A6493;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.listing_div_c
+{
+	text-align: center;
+	margin: 20px 14px 14px 14px;
+	clear: both;
+}
+.listing_div_l
+{
+	text-align: left;
+	margin: 4px 4px 14px 4px;
+	clear: both;
+}
+.listing_div_r
+{
+	text-align: right;
+	margin: 14px 4px 4px 4px;
+	clear: both;
+}

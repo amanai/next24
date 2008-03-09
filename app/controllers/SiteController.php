@@ -14,15 +14,8 @@
 
 		protected function BaseSiteData(){
 			$router = Project::getRequest();
-			// TODO:: hardcoded menu
-			$this -> _view -> assign('main_menu', array(
-														array('link'=>$router -> createUrl('Admin', 'Desktop'), 'name'=>'Рабочий стол'),
-														array('link'=>$router -> createUrl('AdminParameter', 'GroupList'), 'name'=>'Параметры системы'),
-														array('link'=>$router -> createUrl('AdminUser', 'List'), 'name'=>'Пользователи'),
-														array('link'=>$router -> createUrl('UserType', 'List'), 'name'=>'Группы и права доступа')
-														));
 
-			$this -> _view -> assign('title', $this -> _action_model -> page_title);
+			//$this -> _view -> assign('title', $this -> _action_model -> page_title);
 			$this -> _view -> assign('current_user', Project::getUser() -> getDbUser());
 			if ((int)Project::getUser() -> getDbUser() -> id > 0){
 				$this -> _view -> assign('is_logged', true);
