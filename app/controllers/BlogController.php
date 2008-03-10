@@ -6,7 +6,7 @@
 	class BlogController extends SiteController{
 		const DEFAULT_POST_PER_PAGE = 2;
 		const DEFAULT_COMMENT_PER_PAGE = 8;
-		
+		const DEFAULT_SUBSCRIBE_TAG = 'subscribe';
 		private $_is_subscribed_to_log = false;
 		
 		function __construct($view_class = null){
@@ -56,7 +56,11 @@
 			$post_model -> setPager(new DbPager($page_number, $this -> getParam('post_per_page', self::DEFAULT_POST_PER_PAGE)));
 			
 			$subcribe_model = new BlogSubscribeModel;
-			$info['post_list'] = $post_model -> loadList($request_user_id, $user_id, $tree_id, $subcribe_model -> isSubscribed($user_id, $tree_id));
+			$list = $post_model -> loadList($request_user_id, $user_id, $tree_id, $subcribe_model -> isSubscribed($user_id, $tree_id));
+			foreach ($list as &$item){
+				$item['comment_link'] = $request -> createUrl('Blog', 'Comments', array($item['id'], $page_number, 0));
+			}
+			$info['post_list'] = $list;
 			
 			$pager_view = new SitePagerView();
 			$info['post_list_pager'] = $pager_view -> show2($post_model -> getPager(), 'Blog', 'PostList', array($tree_id));
@@ -233,79 +237,58 @@
 		}
 		
 		public function CommentsAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				$user_id = (int)$user['id'];
+			
+			
+			$request = Project::getRequest();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			
+			$this -> BaseSiteData();
+			$info = array();
+			$this -> BaseBlogData($info);
+			
+			$post_id = (int)$request -> getKeyByNumber(0);
+			$post_page_number = (int)$request -> getKeyByNumber(1);
+			$page_number = (int)$request -> getKeyByNumber(2);
+			
+			
+			
+			
+			$controller = new BaseCommentController();
+			$info['comment_list'] = $controller -> CommentList(
+																'BlogCommentModel', // Model for getting comments 
+																$post_id,  // Id of comment item
+																$page_number, // current page number
+																$this -> getParam('comment_per_page'),  // page size
+																'Blog', 'Comments', array($post_id, $post_page_number), // current view params
+																'Blog', 'DeleteComment' // parameters for delete action
+																);
+			
+			
+			
+			$post_model = new BlogPostModel;
+			$post_model -> load($post_id);
+			$info['full_text'] = ($request_user_id === $user_id ) ? $this -> PostPreprocess($post_model -> full_text, $user_id, $post_model -> ub_tree_id) : $post_model -> full_text;
+			$info['post_title'] = $post_model -> title;
+			$info['post_creation_date'] = $post_model -> creation_date;
+			$tag_model = new BlogTagModel;
+			$tag_model -> load($post_model -> bc_tag_id);
+			$info['post_tag'] = $tag_model -> name;
+			
+			$this -> _view -> CommentList($info);
+			$this -> _view -> parse();
+		}
+		
+		public function PostPreprocess($text, $user_id, $tree_id){
+			$subscribe_model = new BlogSubscribeModel;
+			if (!$subscribe_model -> isSubscribed($user_id, $tree_id)){
+				$subscribe_tag = $this -> getParam('subscribe_tag', self::DEFAULT_SUBSCRIBE_TAG);
+				$startTag = '\<' . $subscribe_tag . '\>';
+				$endTag = '\<\/' . $subscribe_tag . '\>';
+				$token  = '/'.$startTag.'([^?]+)'.$endTag.'/i'; // Modified i make case insensitive replacing
+				$text = preg_replace($token, $this -> _view -> UnsubscribedText(), $text);
 			}
-			
-			$id = $this -> id;
-			$this -> setModel('BlogPosts');
-			$this -> model -> resetSql();
-			$this -> model -> load($id);
-			
-			$post_data = $this -> model -> getData();
-			$blog_id = (int)$this -> model -> get('blog_id');
-			$branch_id = (int)$this -> model -> get('ub_tree_id');
-			$blog__check_id = $this -> checkBranchAccess($branch_id, $user_id);
-			if ($blog__check_id != $blog_id){
-				// TODO:: something wring: blog id from post != blog id from ub tree
-				die('Something wrong->Check blog ID (ub_tree.blog_id) <> blog id from post(blog_post.blog_id)');
-			}
-			
-			$this -> setModel("BlogPosts");
-			$this -> model -> load($id);
-			$post_data = $this -> model -> getData();
-			$this -> view -> post_info =  $post_data;
-			$post_data['views']++;
-			$this -> model -> setData($post_data);
-			$this -> model -> save();
-			
-			$n = Node::by_key('', 'ub_tree');
-			$this -> view -> branch_list =  $n->getBranch();
-			
-			if ( ($number = $this -> getParam('post_comments_per_page', self::DEFAULT_COMMENT_PER_PAGE)) === 0){
-				$number = self::DEFAULT_COMMENT_PER_PAGE;
-			}
-			
-			$this -> setModel('BlogComments');
-			$this -> model -> resetSql();
-			$list = $this -> model -> loadByItem($id, false,(int)$this -> pn*$number,  $number);
-			
-			foreach ($list as $key=>$value){
-				if ($value['user_id'] == $user_id){
-					$list[$key]['comment_owner'] = true;
-				}
-				$list[$key]['delete_comment_param'] = array('id'=>$value['id']);
-			}
-			
-			$this -> view -> delete_comment_controller = 'Blog';
-			$this -> view -> delete_comment_action = 'DeleteComment';
-			
-			
-			$all = $this -> model -> foundRows();
-			$this -> view -> pages_number = ceil($all / $number);
-			$this -> view -> current_page_number = (int)$this -> pn;
-			$this -> view -> current_controller = 'Blog';
-			$this -> view -> current_action = 'Comments';
-			if ($id > 0){
-				$this -> view -> pager_params = array('id'=>$id);
-			}
-			
-			$this -> view -> allow_add_comment = ($user_id > 0) ? true : false;
-			$this -> view -> add_comment_controller = 'Blog';
-			$this -> view -> add_comment_action = 'SaveComment';
-			$this -> view -> add_comment_item_id = $id;
-			$this -> view -> add_comment_page_number = (int)$this -> pn;
-			
-			$this -> view -> comment_list = $list;
-			
-			
-			
-			
-			$this->view->content .= $this->view->render(VIEWS_PATH.'blogs/post_comments.tpl.php');
-			$this->view->display();
+			return $text;
 		}
 		
 		public function SaveCommentAction(){

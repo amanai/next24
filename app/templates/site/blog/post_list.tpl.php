@@ -3,7 +3,7 @@
 <div class="tab-page" id="modules-cpanel">
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 	<div class="tab-page tab-page-selected">
-		<!-- ПРОФИЛЬ -->
+		<!-- Блог::список постов -->
 		<table width="100%" height="100%" cellpadding="0">
 		<tr>
 			<td class="next24u_left">
@@ -34,8 +34,8 @@
 										<div>
 											<?php echo $item['small_text']; ?><br><br>
 											<div style="text-align: left;">
-												<span><a href="<?php echo $this->createUrl('Blog', 'Comments', array($item['id']));?>#comments">комментировать</a></span>&nbsp;&nbsp;
-												<span><a href="<?php echo $this->createUrl('Blog', 'Comments', array($item['id']));?>">читать комментарии (<?php echo $item['comments_count'];?>)</a></span>&nbsp;&nbsp;
+												<span><a href="<?php echo $item['comment_link'];?>#comments">комментировать</a></span>&nbsp;&nbsp;
+												<span><a href="<?php echo $item['comment_link'];?>">читать комментарии (<?php echo $item['comments_count'];?>)</a></span>&nbsp;&nbsp;
 												<?php if ($item['owner'] === true) { ?>
 													<span><a href="<?php echo $this->createUrl('Blog', 'PostEdit', array($item['id']));?>">редактировать</a></span>&nbsp;&nbsp;
 													<span><a href="<?php echo $this->createUrl('Blog', 'PostDelete', array($item['id']));?>" class="redlink">удалить</a></span>
@@ -56,7 +56,7 @@
 			</td>
 		</tr>
 		</table>
-		<!-- /ПРОФИЛЬ -->
+		<!-- /Блог::список постов -->
 	</div>
 
 </div>
