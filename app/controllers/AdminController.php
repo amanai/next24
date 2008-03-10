@@ -20,7 +20,8 @@
 														array('link'=>$router -> createUrl('AdminParameter', 'GroupList'), 'name'=>'Параметры системы'),
 														array('link'=>$router -> createUrl('AdminUser', 'List'), 'name'=>'Пользователи'),
 														array('link'=>$router -> createUrl('UserType', 'List'), 'name'=>'Группы и права доступа'),
-														array('link'=>$router -> createUrl('BlogAdmin', 'CatalogList'), 'name'=>'Блоги')
+														array('link'=>$router -> createUrl('BlogAdmin', 'CatalogList'), 'name'=>'Блоги'),
+														array('link'=>$router -> createUrl('AdminQuestionAnswer', 'Index'), 'name'=>'Вопросы-ответы')
 														));
 
 			$this -> _view -> assign('title', $this -> _action_model -> page_title);
