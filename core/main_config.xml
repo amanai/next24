@@ -14,7 +14,8 @@
 										 app/views;
 										 app/views/admin;
 										 app/views/site;
-										 core/utils/dbsimple;" />
+										 core/utils/dbsimple;
+										 app/js/fckeditor;" />
 		<param key="set_to_registry" value="false" />
 	</module>
 	
@@ -49,7 +50,7 @@
 	<!-- Error handler module -->
 	<module id="database"  class="DatabaseManager">
 		<param key="connection_file" value="core/connection.xml" />
-		<param key="native_logger" value="myLogger" enabled="false" />
+		<param key="native_logger" value="myLogger" enabled="true" />
 		<param key="logger_id" value="logger" />
 		<param key="set_to_registry" value="false" />
 		<param key="caching" value="true" />

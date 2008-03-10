@@ -7,6 +7,11 @@
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>tabpane.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>sys.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>		
+	
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>xpath.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>blockUI.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>ajax.js"></script>
 </head>
 <body>
 <table width="100%" height="100%" cellpadding="0">

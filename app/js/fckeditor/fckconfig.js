@@ -1,4 +1,4 @@
-﻿/*
+/*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
  * Copyright (C) 2003-2007 Frederico Caldeira Knabben
  *
@@ -24,7 +24,7 @@
  * http://wiki.fckeditor.net/Developer%27s_Guide/Configuration/Configurations_Settings
  */
 
-FCKConfig.CustomConfigurationsPath = '' ;
+FCKConfig.CustomConfigurationsPath = '../myconfig.js' ;
 
 FCKConfig.EditorAreaCSS = FCKConfig.BasePath + 'css/fck_editorarea.css' ;
 FCKConfig.EditorAreaStyles = '' ;

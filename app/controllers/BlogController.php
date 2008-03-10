@@ -59,6 +59,9 @@
 			$list = $post_model -> loadList($request_user_id, $user_id, $tree_id, $subcribe_model -> isSubscribed($user_id, $tree_id));
 			foreach ($list as &$item){
 				$item['comment_link'] = $request -> createUrl('Blog', 'Comments', array($item['id'], $page_number, 0));
+				if ($request_user_id === $user_id) {
+					$item['edit_link'] = $request -> createUrl('Blog', 'PostEdit', array($item['id'], $page_number));
+				}
 			}
 			$info['post_list'] = $list;
 			
@@ -134,106 +137,130 @@
 			}
 		}
 		
+		public function AjaxChangeBranchAction(){
+			$request = Project::getRequest();
+			$info = array();
+			
+			$post_model = new BlogPostModel;
+			$post_model -> load($request -> getKeyByNumber(0));
+			$tag_model = new BlogTagModel;
+			$tag_model -> load($post_model -> bc_tag_id);
+			$info['post_tag_id'] = $tag_model -> id;
+			
+			$tree_model = new BlogTreeModel;
+			$tree_model -> load($request -> getKeyByNumber(1));
+			
+			$info['tag_list'] = $tag_model -> loadList($tree_model -> blog_catalog_id, true);
+			$this -> _view -> AjaxChangeBranch($info);
+			$this -> _view -> ajax();
+		}
+		
+		
+		/**
+		 * Edit post action
+		 */
 		public function PostEditAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				$user_id = (int)$user['id'];
+			
+			$request = Project::getRequest();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			
+			$this -> BaseSiteData();
+			$info = array();
+			$this -> BaseBlogData($info);
+			
+			$post_id = (int)$request -> getKeyByNumber(0);
+			$page_number = (int)$request -> getKeyByNumber(1);
+			
+			$post_model = new BlogPostModel;
+			$post_model -> load($post_id);
+			
+			$info['post_id'] = (int)$post_model -> id;
+			$info['full_text'] = $post_model -> full_text;
+			$info['post_title'] = $post_model -> title;
+			$info['post_creation_date'] = $post_model -> creation_date;
+			$info['post_tree_id'] = (int)$post_model -> ub_tree_id;
+			$info['post_mood'] = (int)$post_model -> mood;
+			$info['post_access'] = (int)$post_model -> access;
+			$info['post_allow_comments'] = (int)$post_model -> allowcomments;
+			$info['best_post'] = (int)$post_model -> bbp_status;
+			
+			$tag_model = new BlogTagModel;
+			$tag_model -> load($post_model -> bc_tag_id);
+			$info['post_tag'] = $tag_model -> name;
+			$info['post_tag_id'] = $tag_model -> id;
+			$info['post_page_number'] = $page_number;
+			
+			
+			
+			$info['access_list'] = HelpFunctions::getBlogAccessList();
+			
+			$mood_model = new MoodModel;
+			$info['mood_list'] = $mood_model -> getList($request_user_id);
+			
+			$tree_model = new BlogTreeModel;
+			$tree_model -> load($post_model -> ub_tree_id);
+			
+			$info['tag_list'] = $tag_model -> loadList($tree_model -> blog_catalog_id, true);
+			
+			
+			
+			
+			foreach($info['branch_list'] as &$item){
+				$item['change_branch_param'] = AjaxRequest::getJsonParam('Blog', 'AjaxChangeBranch', array($post_id, $item['id']));
 			}
 			
-			$id = (int)$this -> id;
-			$this -> setModel("BlogPosts");
-			$this -> model -> load($id);
-			$this -> view -> post_info =  $this -> model -> getData();
-			/*if ((int)$this -> model -> id <= 0){
-				// TODO:: no post
-				$router = getManager('CRouter');
-				$router -> redirect($router -> createUrl('Blog', 'Post'));
-			}*/
-			
-			$n = Node::by_key('', 'ub_tree');
-			$this -> view -> branch_list =  $n->getBranch();
-			
-			
-			$branch_id = (int)$this -> model -> get('ub_tree_id');
-			
-			$this -> setModel('BlogsModel');
-			$this -> model -> resetSql();
-			$this -> model -> where('user_id = '.$user_id);
-			$this -> model -> setData($this -> model -> getOne());
-			$this -> blog_id = $this -> model -> get('id');
-			
-			$blog_id = $this -> checkBranchAccess($branch_id, $user_id);
-			
-			$this -> setModel('Moods');
-			$this -> model -> resetSql();
-			$this -> model -> where('user_id='.(int)$user_id);
-			$this -> view -> mood_list =  $this -> model -> getAll();
-			
-			$this->view->content .= $this->view->render(VIEWS_PATH.'blogs/edit_post.tpl.php');
-			$this->view->display();
-			
+			$this -> _view -> PostEdit($info);
+			$this -> _view -> parse();
+			return;
 		}
 		
 		function PostSaveAction(){
-
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				$user_id = (int)$user['id'];
-			}
-			$id = (int)$this -> post_id;
-			$this -> setModel('BlogPosts');
-			$this -> model -> resetSql();
-			$this -> model -> load($id);
-			$post_data = $this -> model -> getData();
-			$branch_id = (int)$this -> model -> get('ub_tree_id');
+			$request = Project::getRequest();
+			 
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			
 			
-			$this -> setModel('BlogsModel');
-			$this -> model -> resetSql();
-			$this -> model -> where('user_id = '.$user_id);
-			$this -> model -> setData($this -> model -> getOne());
-			$blog_id  = (int)$this -> model -> get('id');
-
-			$this -> blog_id = $blog_id;
-			$blog__check_id = $this -> checkBranchAccess($branch_id, $user_id);
-			if ($blog__check_id != $blog_id){
-				// TODO:: something wring: blog id from post != blog id from ub tree
-				die('Something wrong->Check blog ID (ub_tree.blog_id) <> blog id from post(blog_post.blog_id)');
-			}
-			$post_data['blog_id'] = $blog_id;
-			$post_data['title'] = $this -> post_name;
-			$post_data['ub_tree_id'] = (int)$this -> post_branch;
-			$post_data['access'] = (int)$this -> post_access;
-			$post_data['small_text'] = $this -> small_text;
-			$post_data['full_text'] = $this -> full_text;
-			if ($this -> allowcomments == 'on'){
-				$post_data['allowcomments'] = 1;
+			$post_id = (int)$request -> id;
+			$page_number = (int)$request -> page_number;
+			
+			
+			$post_model = new BlogPostModel;
+			$post_model -> load($request -> id);
+			$post_model -> title = $request -> post_title;
+			$post_model -> full_text = $request -> post_full_text;
+			$post_model -> small_text = substr($request -> post_full_text, 200);
+			$post_model -> full_text = $request -> post_full_text;
+			$post_model -> ub_tree_id = $request -> post_branch;
+			$post_model -> bc_tag_id = $request -> post_tag;
+			if ($request -> allow_comments){
+				$post_model -> allowcomments = 1;
 			} else {
-				$post_data['allowcomments'] = 0;
+				$post_model -> allowcomments = 0;
 			}
-			$post_data['mood'] = (int)$this -> post_mood;
-			$post_data['bbp_status'] = (int)$this -> post_best_status;
-			$post_data['creation_date'] = date("Y-m-d");
-			$post_data['bc_tags_id'] = 0; // TODO::tag handling
-			$post_data['avatar_id'] = 0; // TODO:: avatar handling
-			if ($id == 0){
-				$post_data['comments'] = 0;
-				$post_data['views'] = 0;
-				$post_data['creation_ip'] = $_SERVER['REMOTE_ADDR'];
+			if ($request -> best_post){
+				if ((int)$post_model -> bbp_status === BEST_POST_STATUS::NO){
+					$post_model -> bbp_status = BEST_POST_STATUS::MODERATION;
+				}
+			} else {
+				if (!$post_model -> bbp_status){
+					$post_model -> bbp_status = BEST_POST_STATUS::NO;
+				}
 			}
+			$post_model -> access = (int)$request -> post_access;
+			$post_model -> mood = (int)$request -> post_mood;
+			$post_model -> avatar_id = (int)$request -> post_avatar;
 			
-			$this -> setModel('BlogPosts');
-			$this -> model -> resetSql();
-			$this -> model -> setData($post_data);
-			$this -> model -> id = $id;
-			$id = $this -> model -> save();
+			if ($post_model -> id <= 0){
+				$post_model -> creation_date = date("Y-m-d");
+				$post_model -> creation_ip = $_SERVER['REMOTE_ADDR'];
+				$post_model -> comments = 0;
+				$post_model -> views = 0;
+			}
+			$post_id = $post_model -> save();
 			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Blog', 'PostEdit', array('id'=>$id)));
+			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostEdit', array($post_id, $page_number)));
 		}
 		
 		public function CommentsAction(){
@@ -268,9 +295,10 @@
 			
 			$post_model = new BlogPostModel;
 			$post_model -> load($post_id);
-			$info['full_text'] = ($request_user_id === $user_id ) ? $this -> PostPreprocess($post_model -> full_text, $user_id, $post_model -> ub_tree_id) : $post_model -> full_text;
+			$info['full_text'] = ($request_user_id !== $user_id ) ? $this -> PostPreprocess($post_model -> full_text, $user_id, $post_model -> ub_tree_id) : $post_model -> full_text;
 			$info['post_title'] = $post_model -> title;
 			$info['post_creation_date'] = $post_model -> creation_date;
+			$info['post_allowcomments'] = (int)$post_model -> allowcomments;
 			$tag_model = new BlogTagModel;
 			$tag_model -> load($post_model -> bc_tag_id);
 			$info['post_tag'] = $tag_model -> name;

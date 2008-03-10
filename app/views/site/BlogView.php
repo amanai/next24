@@ -23,5 +23,16 @@ class BlogView extends BaseSiteView{
 			return $this -> parse();
 		}
 		
+		function PostEdit($info){
+			$this -> setTemplate($this -> _dir, 'post_edit.tpl.php');
+			$this -> set($info);
+		}
+		
+		function AjaxChangeBranch($info = array()){
+			$response = Project::getAjaxResponse();
+			$this -> set($info);
+			$this -> setTemplate($this -> _dir, 'post_tag.tpl.php');
+			$response -> block('tag_list', true, $this -> parse());
+		}
 }
 ?>

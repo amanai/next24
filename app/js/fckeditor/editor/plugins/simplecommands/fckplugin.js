@@ -1,4 +1,4 @@
-﻿/*
+/*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
  * Copyright (C) 2003-2007 Frederico Caldeira Knabben
  *
@@ -21,7 +21,6 @@
  * This plugin register Toolbar items for the combos modifying the style to
  * not show the box.
  */
-
 FCKToolbarItems.RegisterItem( 'SourceSimple'	, new FCKToolbarButton( 'Source', FCKLang.Source, null, FCK_TOOLBARITEM_ONLYICON, true, true, 1 ) ) ;
 FCKToolbarItems.RegisterItem( 'StyleSimple'		, new FCKToolbarStyleCombo( null, FCK_TOOLBARITEM_ONLYTEXT ) ) ;
 FCKToolbarItems.RegisterItem( 'FontNameSimple'	, new FCKToolbarFontsCombo( null, FCK_TOOLBARITEM_ONLYTEXT ) ) ;

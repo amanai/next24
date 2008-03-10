@@ -10,6 +10,17 @@ class HelpFunctions{
 						);
 		}
 		
+		static function getBlogAccessList(){
+			return  array(
+						ACCESS::ALL => 'для всех',
+						ACCESS::FRIEND => 'только для друзей',
+						ACCESS::MYSELF => 'только для себя',
+						ACCESS::SUBSCRIBE => 'требовать подписки'
+						);
+		}
+		
+		
+		
 		static function encode($str){
 			return strtr($str, array('<'=>'&lt;','>'=>'&gt;','"'=>'&quot;'));
 		}
