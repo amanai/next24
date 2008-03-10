@@ -298,10 +298,13 @@
 			$info['full_text'] = ($request_user_id !== $user_id ) ? $this -> PostPreprocess($post_model -> full_text, $user_id, $post_model -> ub_tree_id) : $post_model -> full_text;
 			$info['post_title'] = $post_model -> title;
 			$info['post_creation_date'] = $post_model -> creation_date;
-			$info['post_allowcomments'] = (int)$post_model -> allowcomments;
+			$info['post_allow_comments'] = (int)$post_model -> allowcomments;
 			$tag_model = new BlogTagModel;
 			$tag_model -> load($post_model -> bc_tag_id);
 			$info['post_tag'] = $tag_model -> name;
+			
+			
+			$info['add_comment_url'] = $request -> createUrl('Blog', 'SaveComment', array($post_id, $post_page_number, $page_number));
 			
 			$this -> _view -> CommentList($info);
 			$this -> _view -> parse();
@@ -320,71 +323,45 @@
 		}
 		
 		public function SaveCommentAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				$user_id = (int)$user['id'];
+			$request = Project::getRequest();
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			
+			$post_id = (int)$request -> getKeyByNumber(0);
+			$post_page_number = (int)$request -> getKeyByNumber(1);
+			$page_number = (int)$request -> getKeyByNumber(2);
+			
+			$post_model = new BlogPostModel;
+			$post_model -> load($post_id);
+			
+			$comment_model = new BlogCommentModel($request -> id);
+			if ($post_model -> id > 0){
+				$comment_model -> addComment($user_id, 0, 0, $post_id, $request -> comment, 0);
 			}
-			
-			$this -> setModel('BlogComments');
-			$this -> model -> addComment($user_id, 0, 0, $this -> id, $this -> comment, '');
-			
-			$this -> setModel("BlogPosts");
-			$this -> model -> load($this -> id);
-			$post_data = $this -> model -> getData();
-			$this -> view -> post_info =  $post_data;
-			$post_data['comments']++;
-			$this -> model -> setData($post_data);
-			$this -> model -> save();
-			
-			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Blog', 'Comments', array('id'=>$this -> id, 'pn' => (int)$this -> pn)));
+			Project::getResponse() -> redirect($request -> createUrl('Blog', 'Comments', array($post_id, $post_page_number, $page_number)));
 		}
 		
+		/**
+		 * Delete comment
+		 */
 		public function DeleteCommentAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				$user_id = (int)$user['id'];
+			$request = Project::getRequest();
+			
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			
+			$post_id = $request -> getKeyByNumber(0);
+			$comment_id = $request -> getKeyByNumber(1);
+			
+			$comment_model = new BlogCommentModel($comment_id);
+			$post_model = new BlogPostModel;
+			$post_model -> load($post_id);
+			if (($comment_model -> id > 0) && ($post_model -> id > 0) && ($comment_model -> blog_post_id == $post_model -> id)){
+				if (($comment_model -> user_id == $user_id) || ($post_model -> user_id == $user_id)){
+					$comment_model -> delete($comment_model -> user_id, $comment_id);
+				}
 			}
-			$id = (int)$this -> id;
-			$this -> setModel('BlogComments');
-			$this -> model -> resetSql();
-			$this -> model -> load($id);
-			$post_id = $this -> model -> get('blog_post_id');
-			
-			$this -> setModel('BlogPosts');
-			$this -> model -> resetSql();
-			$this -> model -> load($post_id);
-			$post_data = $this -> model -> getData();
-			$blog_id = (int)$this -> model -> get('blog_id');
-			$branch_id = (int)$this -> model -> get('ub_tree_id');
-			$blog__check_id = $this -> checkBranchAccess($branch_id, $user_id);
-			if ($blog__check_id != $blog_id){
-				// TODO:: something wring: blog id from post != blog id from ub tree
-				die('Something wrong->Check blog ID (ub_tree.blog_id) <> blog id from post(blog_post.blog_id)');
-			}
-			
-			$this -> setModel('BlogComments');
-			$this -> model -> resetSql();
-			$this -> model -> delete($user_id, $id);
-			
-			// Update comments number
-			$this -> setModel('BlogPosts');
-			$this -> model -> resetSql();
-			$this -> model -> load($post_id);
-			$n = $this -> model -> get('comments');
-			$this -> model -> set('comments', $n - 1);
-			$this -> model -> save();
-			
-			// TODO:: need to delete warnings?
-			
-			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Blog', 'Comments', array('id'=>$post_id)));
+			Project::getResponse() -> redirect($request -> createUrl('Blog', 'Comments', array($post_id)));
+			//TODO::avatar?warning?mood?
 		}
 		
 		/**
