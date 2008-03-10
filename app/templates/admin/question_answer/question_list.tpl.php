@@ -5,7 +5,7 @@
 				<div class="options">
 					<div>
 					Категория: 
-						<select name="cat_id" onchange="window.location.href=<?=$this->createUrl('AdminQuestionAnswer','QuestionList')?>+this.options[this.selectedIndex].value">
+						<select name="cat_id" onchange="window.location.href='<?=$this->createUrl('AdminQuestionAnswer','QuestionList').'/'?>'+this.options[this.selectedIndex].value">
 							<option value="0">-- Все --</option>
 						   	<?foreach ($this->cat_list as $cat):?>
 						   		<option value="<?=$cat['id']?>" <?=(Project::getRequest()->getKeyByNumber(0) == $cat['id']) ? "selected" : "" ?>><?=$cat['name']?></option>
