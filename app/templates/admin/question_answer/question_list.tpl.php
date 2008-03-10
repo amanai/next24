@@ -38,7 +38,7 @@
 						<td><?=$question['login']?></td>						
 						<td><?=$question['a_count']?></td>
 						<td><?=$question['creation_date']?></td>
-						<td><a href="<?=$this->createUrl('AdminQuestionAnswer','EditQuestion',array($question['id']))?>">[edit]</a> <a href="<?=$this->createUrl('AdminQuestionAnswer','EditQuestion',array($question['id']))?>">[delete]</a></td>
+						<td><a href="<?=$this->createUrl('AdminQuestionAnswer','EditQuestion',array($question['id']))?>">[edit]</a> <a href="<?=$this->createUrl('AdminQuestionAnswer','DeleteQuestion',array($question['id']))?>">[delete]</a></td>
 					</tr>
 				<?endforeach;?>
 				</table>

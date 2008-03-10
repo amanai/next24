@@ -8,12 +8,11 @@
 								arsort($this->question_tag_list);
 								$this->question_tag_list=array_slice($this->question_tag_list,0,40);
 								asort($this->question_tag_list);
-								$i = 1; $dif = count ($this->question_tag_list);
-								foreach ( $this->question_tag_list as $cont => $tag) {
-									$prc = ceil(($i * 100) / $dif);
-									$size = ceil($prc/2) + 100;
-									$tags_set[$tag['name']] = '<a style="font-size: '.$size.'%" href="'.$tag['id'].'">'.$tag['name'].'</a>';
-									$i++;
+								$dif = count ($this->question_tag_list);
+								foreach ( $this->question_tag_list as $key => $tag) {
+									$prc = ceil(($tag['count'] * 100) / $dif);
+									 $size = $prc + 100;
+									 $tags_set[$tag['name']] = '<a style="font-size: '.$size.'%" href="'.$tag['id'].'">'.$tag['name'].'</a>';
 								}
 								ksort($tags_set);							
 							?>
