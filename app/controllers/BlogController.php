@@ -42,13 +42,20 @@
 		
 		function PostListAction(){
 			$request = Project::getRequest();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			
 			$this -> BaseSiteData();
 			$info = array();
 			$this -> BaseBlogData($info);
 			
-			$id = $request -> getKeyByNumber(0);
+			$tree_id = (int)$request -> getKeyByNumber(0);
 			
 			$post_model = new BlogPostModel;
+			$post_model -> setPager(new DbPager(0, 10));
+			
+			$subcribe_model = new BlogSubscribeModel;
+			$info['post_list'] = $post_model -> loadList($request_user_id, $user_id, $tree_id, $subcribe_model -> isSubscribed($user_id, $tree_id));
 			
 			$this -> _view -> PostList($info);
 			$this -> _view -> parse();

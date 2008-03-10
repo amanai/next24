@@ -29,16 +29,16 @@
 									<?php foreach ($this->post_list as $key=>$item){?>
 										<div class="block_title" id="record_93">
 											<div class="block_title_left"><h2><?php echo $item['title']; ?></h2></div>
-											<div class="block_title_right"><?php echo date("j F Y", strtotime($item['creation_date']));?> | <span class="tags"><a href="#taglink" class="astable">_TAG_</a></span></div>
+											<div class="block_title_right"><?php echo date("j F Y", strtotime($item['creation_date']));?> | <span class="tags"><a href="#taglink" class="astable"><?php echo $item['tag_name']; ?></a></span></div>
 										</div>
 										<div>
 											<?php echo $item['small_text']; ?><br><br>
 											<div style="text-align: left;">
-												<span><a href="<?php echo $this->router->createUrl('Blog', 'Comments', array('id'=>$item['id']));?>#comments">комментировать</a></span>&nbsp;&nbsp;
-												<span><a href="<?php echo $this->router->createUrl('Blog', 'Comments', array('id'=>$item['id']));?>">читать комментарии (<?php echo $item['comments_count'];?>)</a></span>&nbsp;&nbsp;
+												<span><a href="<?php echo $this->createUrl('Blog', 'Comments', array($item['id']));?>#comments">комментировать</a></span>&nbsp;&nbsp;
+												<span><a href="<?php echo $this->createUrl('Blog', 'Comments', array($item['id']));?>">читать комментарии (<?php echo $item['comments_count'];?>)</a></span>&nbsp;&nbsp;
 												<?php if ($item['owner'] === true) { ?>
-													<span><a href="<?php echo $this->router->createUrl('Blog', 'PostEdit', array('id'=>$item['id']));?>">редактировать</a></span>&nbsp;&nbsp;
-													<span><a href="<?php echo $this->router->createUrl('Blog', 'PostDelete', array('id'=>$item['id']));?>" class="redlink">удалить</a></span>
+													<span><a href="<?php echo $this->createUrl('Blog', 'PostEdit', array($item['id']));?>">редактировать</a></span>&nbsp;&nbsp;
+													<span><a href="<?php echo $this->createUrl('Blog', 'PostDelete', array($item['id']));?>" class="redlink">удалить</a></span>
 												<? } ?>
 											</div>
 										</div>
