@@ -4,7 +4,7 @@
  * Контроллер для работы с блогами
  */
 	class BlogController extends SiteController{
-		const DEFAULT_POST_PER_PAGE = 8;
+		const DEFAULT_POST_PER_PAGE = 2;
 		const DEFAULT_COMMENT_PER_PAGE = 8;
 		
 		private $_is_subscribed_to_log = false;
@@ -50,12 +50,17 @@
 			$this -> BaseBlogData($info);
 			
 			$tree_id = (int)$request -> getKeyByNumber(0);
+			$page_number = (int)$request -> getKeyByNumber(1);
 			
 			$post_model = new BlogPostModel;
-			$post_model -> setPager(new DbPager(0, 10));
+			$post_model -> setPager(new DbPager($page_number, $this -> getParam('post_per_page', self::DEFAULT_POST_PER_PAGE)));
 			
 			$subcribe_model = new BlogSubscribeModel;
 			$info['post_list'] = $post_model -> loadList($request_user_id, $user_id, $tree_id, $subcribe_model -> isSubscribed($user_id, $tree_id));
+			
+			$pager_view = new SitePagerView();
+			$info['post_list_pager'] = $pager_view -> show2($post_model -> getPager(), 'Blog', 'PostList', array($tree_id));
+			 
 			
 			$this -> _view -> PostList($info);
 			$this -> _view -> parse();
