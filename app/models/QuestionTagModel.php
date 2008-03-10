@@ -40,7 +40,7 @@ class QuestionTagModel extends BaseModel {
 	/********************/
 	
 	public function loadTags($catId) {
-		$sql = "select  count(qt.question_tag_id) as count, t.name as name from question_tags as t join qq_tags as qt on qt.question_tag_id = t.id join questions as qs on qs.id = qt.question_id where qs.questions_cat_id = ?d group by qt.question_tag_id";
+		$sql = "select  count(qt.question_tag_id) as count, t.id, t.name as name from question_tags as t join qq_tags as qt on qt.question_tag_id = t.id join questions as qs on qs.id = qt.question_id where qs.questions_cat_id = ?d group by qt.question_tag_id";
 		return Project::getDatabase()->select($sql, $catId);
 	}
 	
