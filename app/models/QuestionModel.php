@@ -7,6 +7,9 @@ class QuestionModel extends BaseModel {
 	}
 	
 	public function loadWhere($catId = null, $tagId = null, $userId = null) {
+		$catId = (int)$catId;
+		$tagId = (int)$tagId;
+		$userId = (int)$userId;		
 		$sql = "SELECT ".
 					 "questions.`id`,". 
 					 "questions.`questions_cat_id`,".
@@ -18,20 +21,20 @@ class QuestionModel extends BaseModel {
 					 "FROM questions ".
 					 "LEFT JOIN users ".
 					 "ON questions.`user_id` = users.`id` ";
-					 if($tagId !== null) {
+					 if($tagId > 0) {
 					 	$sql.=  "JOIN qq_tags ".
 					 			"ON qq_tags.`question_id` = questions.`id` ".
 					 			"JOIN question_tags ".
 					 			"ON question_tags.`id` = qq_tags.`question_tag_id` ".
 					 			"WHERE question_tags.`id` = ?d";
-					 	($catId !== null) ? $sql.=" AND questions.questions_cat_id = ?d" : "";
-					    ($userId !== null) ? $sql.=" AND questions.user_id = ?d" : "";
+					 	($catId > 0) ? $sql.=" AND questions.questions_cat_id = ?d" : "";
+					    ($userId > 0) ? $sql.=" AND questions.user_id = ?d" : "";
 					 } else {
-					 	if ($catId !== null) {
+					 	if ($catId > 0) {
 					 		$sql.=" WHERE questions.questions_cat_id = ?d";	
-					 		($userId !== null) ? $sql.=" AND questions.user_id = ?d" : "";
+					 		($userId > 0) ? $sql.=" AND questions.user_id = ?d" : "";
 					 	} else {
-					 		if($userId !== null) {
+					 		if($userId > 0) {
 					 			$sql.=" WHERE questions.user_id = ?d";
 					 		}
 					 	}
@@ -42,9 +45,9 @@ class QuestionModel extends BaseModel {
 		$params = array();
 		$params[] = $this->_countRecords;
 		$params[] = $sql;
-		if($tagId !== null) $params[] = $tagId;
-		if($catId !== null) $params[] = $catId;
-		if($userId !== null) $params[] = $userId;
+		if($tagId > 0) $params[] = $tagId;
+		if($catId > 0) $params[] = $catId;
+		if($userId > 0) $params[] = $userId;
 		$params[] = $this->_pager->getStartLimit();
 		$params[] = $this->_pager->getPageSize();
 		$result = call_user_func_array(array(Project::getDatabase(), 'selectPage'), $params);
@@ -66,6 +69,7 @@ class QuestionModel extends BaseModel {
 					 "LEFT JOIN users ".
 					 "ON questions.`user_id` = users.id ".
 					 "WHERE questions.`id` = ?d";
+					 //die($sql);
 		$result = Project::getDatabase()->selectRow($sql, $id);
 		$this->bind($result);
 		return $result;

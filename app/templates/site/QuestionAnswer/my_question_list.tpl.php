@@ -38,7 +38,7 @@
 													<tr id=<?php if($key%2==0) { ?>"cmod_tab2"<?php } else { ?>"cmod_tab1"<?php } ?>>
 														<td style="text-align: left; white-space: normal;">
 															<img src="img/faq.png" width="14" height="14" id="ico2" />
-															<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array('q_id'=>$item['id']))?>"><?=$item['q_text']?></a>
+															<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>"><?=$item['q_text']?></a>
 														</td>
 														<td><a href="#"><?=$item['login']?></a></td><!-- TODO: User profile -->
 														<td><?=$item['a_count']?></td>
@@ -46,8 +46,8 @@
 														<td>
 														<?=$this->question['user_id']?>
 														<?php if($item['user_id'] == Project::getUser()->getDbUser()->id) { ?>
-															<a href=<?=$this->createUrl('QuestionAnswer','Delete',array('q_id' => $item['id']))?>>[Удалить]</a> 
-															<a href="<?=$this->createUrl('QuestionAnswer','ManagedQuestion',array('q_id' => $item['id']))?>">[Редактировать]</a></td>
+															<a href=<?=$this->createUrl('QuestionAnswer','Delete',array($item['id']))?>>[Удалить]</a> 
+															<a href="<?=$this->createUrl('QuestionAnswer','ManagedQuestion',array($item['id']))?>">[Редактировать]</a></td>
 														<?php } ?>
 														
 													</tr>

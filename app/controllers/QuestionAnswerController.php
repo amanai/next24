@@ -12,48 +12,61 @@ class QuestionAnswerController extends SiteController {
 	public function ListAction() {
 		$request = Project::getRequest();
 		$data = array();
+		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1));
+		$this->BaseSiteData();
+		$data['tab_name'] = 'Каталог вопросов';
+		$data['action'] = 'List';
+		$this->_view->QuestionList($data);	
+		$this->_view->parse();
+	}
+	
+	public function UserQuestionsAction() {
+		$request = Project::getRequest();
+		$data = array();
+		$this->_list($data, 'UserQuestions', $request->getKeyByNumber(0), $request->getKeyByNumber(1), Project::getUser()->getDbUser()->id);
+		$this->BaseSiteData();
+		$data['tab_name'] = 'Мои вопросы';
+		$data['action'] = 'UserQuestions';
+		$this->_view->MyQuestionList($data);	
+		$this->_view->parse();
+	}
+	
+	protected function _list(&$data, $action, $catId = null, $tagId = null, $userId = null) {
+		$param = Project::getRequest()->getKeys();
+		array_shift($param);
 		$question_model = new QuestionModel();
 		$question_cat_model = new QuestionCatModel();
-		
-		if($request->cat_id !== null) {
+		if($catId > 0) {
 			$tag_model = new QuestionTagModel();
-			$data['question_tag_list'] = $tag_model->loadTags((int)$request->cat_id);
+			$data['question_tag_list'] = $tag_model->loadTags($catId);
 		}
 		$pager = new DbPager($request->pn, 20); //TODO: pageSize
 		$question_model->setPager($pager);		
-		$data['question_list'] = $question_model->loadWhere($request->cat_id, $request->tag_id, $request->u_id);
+		$data['question_list'] = $question_model->loadWhere($catId, $tagId, $userId);
 		$data['question_cat_list'] = $question_cat_model->loadAll();
 		$pager_view = new SitePagerView();
-		$data['question_list_pager'] = $pager_view->show($question_model->getPager(), 'QuestionAnswer', 'List', $param);
-		$this->BaseSiteData();
-		if($request->u_id !== null) {
-			$data['tab_name'] = 'Мои вопросы';
-			$this->_view->MyQuestionList($data);
-		} else {
-			$data['tab_name'] = 'Каталог вопросов';
-			$this->_view->QuestionList($data);	
-		}
-		$this->_view->parse();
+		$data['question_list_pager'] = $pager_view->show($question_model->getPager(), 'QuestionAnswer', $action, $param);
 	}
 	
 
 	public function ViewQuestionAction() { 
 		$request = Project::getRequest();
 		$this->BaseSiteData();
-		if($request->q_id !== null) {
+		$id = (int)$request->getKeyByNumber(0);
+		if($id > 0) {
 			$question_model = new QuestionModel();
-			$data['question'] = $question_model->loadQuestion($request->q_id);
+			$data['question'] = $question_model->loadQuestion($id);
 			$controller = new BaseCommentController();
 			$data['comment_list'] = $controller -> CommentList(
 																'AnswerModel', 
-																$request->q_id,  
+																$id,  
 																$request -> getKeyByNumber(0), 	//TODO: page
 																20,  							//TODO: page
-																'QuestionAnswer', 'ViewQuestion', array($request->q_id), 
+																'QuestionAnswer', 'ViewQuestion', array($id), 
 																'QuestionAnswer', 'AnswerDelete'
 																);
 			$data['add_comment_url'] = $request -> createUrl('QuestionAnswer', 'AddAnswer');
-			$data['add_comment_element_id'] = $request->q_id;
+			$data['add_comment_element_id'] = $id;
 			$data['add_comment_id'] = 0;
 			if($question_model->user_id == Project::getUser()->getDbUser()->id) $data['managed'] = true;
 			$this->_view->ViewQuestion($data);
@@ -67,18 +80,22 @@ class QuestionAnswerController extends SiteController {
 		$request = Project::getRequest();
 		$data = array();
 		$question_model = new QuestionModel();
+		$id = (int)$request->getKeyByNumber(0);
 		if(!$request->submit) {
+			
 			$question_cat_model = new QuestionCatModel();
-			if($request->q_id > 0) {
-				$data['question'] = $question_model->load($request->q_id);
+			if($id > 0) {
+				$data['question'] = $question_model->loadQuestion($id);
+				$tags_model = new QuestionTagModel();
+				$data['tags'] = $tags_model->loadWhere(null, null, $id);
 			}
 			$data['question_cat'] = $question_cat_model->loadAll();
 			$this->BaseSiteData();
 			$this->_view->ManagedQuestion($data);
 			$this->_view->parse();
 		} else {
-			if($request->q_id > 0) {
-				$data['question'] = $question_model->load($request->q_id);
+			if($id > 0) {
+				$data['question'] = $question_model->load($id);
 			}	
 			$question_model->q_text = $request->question_text;
 			$question_model->questions_cat_id = (int)$request->cat_id;
@@ -91,7 +108,7 @@ class QuestionAnswerController extends SiteController {
 			$tags_ar = explode(",", $request->tags);
 			foreach ($tags_ar as $tag) {
 				$tag = trim($tag);	
-				if(count($tag_model->loadWhere(null, $tag)) == 0) {
+				if(count($tag_model->loadByName($tag)) == 0) {
 					$tag_model->name = $tag;
 					$tag_id = $tag_model->save();
 					$tag_model->clear();	
@@ -147,9 +164,9 @@ class QuestionAnswerController extends SiteController {
 		$request = Project::getRequest();
 		$user_id = (int)Project::getUser()->getDbUser()->id;
 		$question_model = new QuestionModel();
-		$question_model->load($request->q_id);
+		$question_model->load($request->getKeyByNumber(0));
 		if ($question_model->user_id == $user_id) {
-			$question_model->delete($request->q_id);
+			$question_model->delete($request->getKeyByNumber(0));
 		}
 		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'List', array('u_id'=>Project::getUser()->getDbUser()->id)));
 	}

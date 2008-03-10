@@ -5,13 +5,9 @@
 		<div id="tabs">
 		<?php $request = Project::getRequest(); ?>
 			<div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$request->createUrl('QuestionAnswer','List')?>">Последние вопросы</a></div>
-			<?php if($this->current_user && $this->current_user->id > 0) { 
-			 	$par = $request->getKeys();
-			 	array_shift($par);
-			 	$par['u_id'] = $this->current_user->id;
-			?>
-				<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$request->createUrl('QuestionAnswer','List', $par)?>" title="Мои вопросы">Мои вопросы</a></div> 
-			<?php } unset($par['u_id']); ?>
+			<?php if($this->current_user && $this->current_user->id > 0) { ?>
+				<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$request->createUrl('QuestionAnswer','UserQuestions')?>" title="Мои вопросы">Мои вопросы</a></div> 
+			<?php } ?>
 			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion')?>" title="Задать вопрос">Задать вопрос</a></div>
 			<div class="tab-page tab-page-selected">
 				<!-- Вопросы пользователей -->
@@ -41,7 +37,7 @@
 													<tr id=<?php if($key%2==0) { ?>"cmod_tab2"<?php } else { ?>"cmod_tab1"<?php } ?>>
 														<td style="text-align: left; white-space: normal;">
 															<img src="img/faq.png" width="14" height="14" id="ico2" />
-															<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array('q_id'=>$item['id']))?>"><?=$item['q_text']?></a>
+															<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>"><?=$item['q_text']?></a>
 														</td>
 														<td><a href="#"><?=$item['login']?></a></td><!-- TODO: User profile -->
 														<td><?=$item['a_count']?></td>

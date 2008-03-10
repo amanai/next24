@@ -12,7 +12,7 @@
 								foreach ( $this->question_tag_list as $cont => $tag) {
 									$prc = ceil(($i * 100) / $dif);
 									$size = ceil($prc/2) + 100;
-									$tags_set[$tag['name']] = '<a style="font-size: '.$size.'%" href="tag_id:'.$tag['id'].'">'.$tag['name'].'</a>';
+									$tags_set[$tag['name']] = '<a style="font-size: '.$size.'%" href="'.$tag['id'].'">'.$tag['name'].'</a>';
 									$i++;
 								}
 								ksort($tags_set);							

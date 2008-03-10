@@ -36,7 +36,7 @@
 							</tr>
 							<tr>
 								<td>Теги вопроса</td>
-								<td><input type="text" name="tags" style="width: 100%;"></td>
+								<td><input type="text"  value="" name="tags" style="width: 100%;"></td> <!--TODO: load tags-->
 							</tr>
 							<tr>
 								<td colspan="2" align="right" style="padding-right: 6px;"><input type="submit" name="submit" value="Отправить"></td>

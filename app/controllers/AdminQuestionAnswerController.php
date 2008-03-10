@@ -84,11 +84,11 @@ class AdminQuestionAnswerController extends AdminController {
 		$data = array();
 		$question_model = new QuestionModel();
 		$question_cat_model = new QuestionCatModel();
-		if ($request->getKeyByNumber(0) !== null) {
+		if ($request->getKeyByNumber(0) > 0) {
 			$tag_model = new QuestionTagModel();
 			$data['tag_list'] = $tag_model->loadTags($request->getKeyByNumber(0));
 		}
-		$data['question_cat_list'] = $question_cat_model->loadAll();
+		$data['cat_list'] = $question_cat_model->loadAll();
 		$pager = new DbPager($request->pn, 20); //TODO: pageSize
 		$question_model->setPager($pager);		
 		$data['question_list'] = $question_model->loadWhere($request->getKeyByNumber(0), $request->getKeyByNumber(1));
@@ -122,7 +122,7 @@ class AdminQuestionAnswerController extends AdminController {
 				$data['tags'] = $tag_model->loadWhere(null, null, $id);
 				$this->BaseAdminData();
 				$this->_view->EditQuestion($data);
-				$this->parse();
+				$this->_view->parse();
 			}
 		} else {
 			if($id > 0) {
@@ -137,7 +137,7 @@ class AdminQuestionAnswerController extends AdminController {
 				$tags_ar = explode(",", $request->tags);
 				foreach ($tags_ar as $tag) {
 					$tag = trim($tag);	
-					if(count($tag_model->loadWhere(null, $tag)) == 0) {
+					if(count($tag_model->loadByName($tag)) == 0) {
 						$tag_model->name = $tag;
 						$tag_id = $tag_model->save();
 						$tag_model->clear();	
@@ -153,6 +153,7 @@ class AdminQuestionAnswerController extends AdminController {
 					}
 				}
 			}
+			Project::getResponse()->Redirect($request->createUrl('AdminQuestionAnswer','QuestionList'));
 		}
 	}
 	

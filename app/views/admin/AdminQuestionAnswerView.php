@@ -22,6 +22,10 @@ class AdminQuestionAnswerView extends BaseAdminView {
 		$this->set($data);
 	}
 	
+	public function EditQuestion($data) {
+		$this->setTemplate($this->_dir, "edit_question.tpl.php");
+		$this->set($data);
+	}
 }
 
 ?>
