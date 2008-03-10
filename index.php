@@ -11,7 +11,7 @@
 	$controller = $app -> run();
 	$app -> complete($controller);
 	$t2 = microtime(true);
-	var_dump(($t2 - $t1));
+	//var_dump(($t2 - $t1));
 	
-	echo '<br>count queries='.$GLOBALS['query_counter'];
+	//echo '<br>count queries='.$GLOBALS['query_counter'];
 ?>
