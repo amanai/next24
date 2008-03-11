@@ -38,7 +38,8 @@
 						<td><?=$question['login']?></td>						
 						<td><?=$question['a_count']?></td>
 						<td><?=$question['creation_date']?></td>
-						<td><a href="<?=$this->createUrl('AdminQuestionAnswer','EditQuestion',array($question['id']))?>">[edit]</a> <a href="<?=$this->createUrl('AdminQuestionAnswer','DeleteQuestion',array($question['id']))?>">[delete]</a></td>
+						<td><div class="button bsmall" style="float: left;"><a href="<?=$this->createUrl('AdminQuestionAnswer','EditQuestion',array($question['id']))?>"><img src="<?=$this -> image_url?>icons/small_edit.gif" alt="Правка"/></a></div> 
+						<div class="button bsmall" style="float: left;"><a href="<?=$this->createUrl('AdminQuestionAnswer','DeleteQuestion',array($question['id']))?>"><img src="<?=$this -> image_url?>icons/small_del.gif" alt="Удалить"/></a></div></td>
 					</tr>
 				<?endforeach;?>
 				</table>

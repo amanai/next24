@@ -48,8 +48,10 @@ class AdminQuestionAnswerController extends AdminController {
 		$data = array();
 		$model = new QuestionCatModel();
 		$id = $request->getKeyByNumber(0);
-		if(!$request->save) {
+		if(!$request->getKeyByNumber(1)) {
+			$data['action_name'] = "Создать категорию";
 			if($id > 0) {
+				$data['action_name'] = "Редактировать категорию";
 				$data['cat'] = $model->load($id);
 			}
 			$data['cat_list'] = $model->loadAll('sortfield');
@@ -112,14 +114,19 @@ class AdminQuestionAnswerController extends AdminController {
 		$request = Project::getRequest();
 		$id = $request->getKeyByNumber(0);
 		$data = array();
-		if(!$request->save) {
+		if(!$request->getKeyByNumber(1)) {
 			if($id > 0) {
 				$model = new QuestionModel();
 				$cat_model = new QuestionCatModel();
 				$tag_model = new QuestionTagModel();
 				$data['question'] = $model->load($id);
 				$data['cat_list'] = $cat_model->loadAll();
-				$data['tags'] = $tag_model->loadWhere(null, null, $id);
+				$tags_model = new QuestionTagModel();
+				$tags = $tags_model->loadWhere(null, null, $id);
+				foreach ($tags as $tag) {
+					$data['tags'].= $tag['name'].', ';
+				}
+				$data['tags'] = rtrim($data['tags'], ', ');
 				$this->BaseAdminData();
 				$this->_view->EditQuestion($data);
 				$this->_view->parse();
