@@ -13,6 +13,7 @@
 			<div class="block_ee3">
 				<div class="block_ee4">
 					<div class="block_title"><h2><?=$this->tab_manage_question_name?></h2></div>
+					<?php if($this->current_user && $this->current_user->id > 0) { ?>
 					<form action="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion', array($this->question['id']))?>">
 						<table width="100%" cellpadding="2">
 							<tr>
@@ -38,6 +39,9 @@
 							</tr>
 						</table>
 					</form>
+					<?php } else { ?>
+						Задавать вопросы могут только зарегестрированные пользователи
+					<?php } ?>
 					
 				</div>
 			</div>

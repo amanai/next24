@@ -60,7 +60,7 @@ class QuestionAnswerController extends SiteController {
 			$data['comment_list'] = $controller -> CommentList(
 																'AnswerModel', 
 																$id,  
-																$request -> getKeyByNumber(0), 	//TODO: page
+																$request -> getKeyByNumber(1), 	//TODO: page
 																20,  							//TODO: page
 																'QuestionAnswer', 'ViewQuestion', array($id), 
 																'QuestionAnswer', 'AnswerDelete'
