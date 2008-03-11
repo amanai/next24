@@ -13,8 +13,7 @@ class QuestionAnswerController extends SiteController {
 		$request = Project::getRequest();
 		$data = array();
 		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1));
-		$this->BaseSiteData();
-		$data['tab_name'] = 'Каталог вопросов';
+		$this->BaseSiteData($data);
 		$data['action'] = 'List';
 		$this->_view->QuestionList($data);	
 		$this->_view->parse();
@@ -24,8 +23,7 @@ class QuestionAnswerController extends SiteController {
 		$request = Project::getRequest();
 		$data = array();
 		$this->_list($data, 'UserQuestions', $request->getKeyByNumber(0), $request->getKeyByNumber(1), Project::getUser()->getDbUser()->id);
-		$this->BaseSiteData();
-		$data['tab_name'] = 'Мои вопросы';
+		$this->BaseSiteData($data);
 		$data['action'] = 'UserQuestions';
 		$this->_view->MyQuestionList($data);	
 		$this->_view->parse();
@@ -51,11 +49,13 @@ class QuestionAnswerController extends SiteController {
 
 	public function ViewQuestionAction() { 
 		$request = Project::getRequest();
-		$this->BaseSiteData();
+		$this->BaseSiteData($data);
 		$id = (int)$request->getKeyByNumber(0);
 		if($id > 0) {
 			$question_model = new QuestionModel();
 			$data['question'] = $question_model->loadQuestion($id);
+			$data['question_tab'] = substr($question_model->q_text, 0, 100);
+			count($question_model->q_text) > 100 ? $data['question_tab'] .= "..." : "";
 			$controller = new BaseCommentController();
 			$data['comment_list'] = $controller -> CommentList(
 																'AnswerModel', 
@@ -68,7 +68,7 @@ class QuestionAnswerController extends SiteController {
 			$data['add_comment_url'] = $request -> createUrl('QuestionAnswer', 'AddAnswer');
 			$data['add_comment_element_id'] = $id;
 			$data['add_comment_id'] = 0;
-			if($question_model->user_id == Project::getUser()->getDbUser()->id) $data['managed'] = true;
+//			if($question_model->user_id == Project::getUser()->getDbUser()->id) $data['managed'] = true;
 			$this->_view->ViewQuestion($data);
 			$this->_view->parse();
 		} else {
@@ -87,15 +87,23 @@ class QuestionAnswerController extends SiteController {
 			if($id > 0) {
 				$data['question'] = $question_model->loadQuestion($id);
 				$tags_model = new QuestionTagModel();
-				$data['tags'] = $tags_model->loadWhere(null, null, $id);
+				$tags = $tags_model->loadWhere(null, null, $id);
+				foreach ($tags as $tag) {
+					$data['question_tag_list'].= $tag['name'].', ';
+				}
+				$data['question_tag_list'] = rtrim($data['question_tag_list'], ', ');
+				$data['tab_manage_question_name'] = "Редактирование вопроса";
 			}
 			$data['question_cat'] = $question_cat_model->loadAll();
-			$this->BaseSiteData();
+			$this->BaseSiteData($data);
 			$this->_view->ManagedQuestion($data);
 			$this->_view->parse();
 		} else {
 			if($id > 0) {
 				$data['question'] = $question_model->load($id);
+				if($question_model->user_id != Project::getUser()->getDbUser()->id) {
+					Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
+				}
 			}	
 			$question_model->q_text = $request->question_text;
 			$question_model->questions_cat_id = (int)$request->cat_id;
@@ -169,6 +177,13 @@ class QuestionAnswerController extends SiteController {
 			$question_model->delete($request->getKeyByNumber(0));
 		}
 		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'List', array('u_id'=>Project::getUser()->getDbUser()->id)));
+	}
+	
+	public function BaseSiteData(&$data) {
+		$data['tab_list_name'] = "Каталог вопросов";
+		$data['tab_my_list_name'] = "Мои вопросы";
+		$data['tab_manage_question_name'] = "Задать вопрос";
+		parent::BaseSiteData();
 	}
 }
 

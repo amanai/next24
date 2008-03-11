@@ -4,11 +4,11 @@
 
 		<div id="tabs">
 		<?php $request = Project::getRequest(); ?>
-			<div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$request->createUrl('QuestionAnswer','List')?>">Последние вопросы</a></div>
+			<div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$request->createUrl('QuestionAnswer','List')?>"><?=$this->tab_list_name?></a></div>
 			<?php if($this->current_user && $this->current_user->id > 0) { ?>
-				<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$request->createUrl('QuestionAnswer','UserQuestions')?>" title="Мои вопросы">Мои вопросы</a></div> 
+				<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$request->createUrl('QuestionAnswer','UserQuestions')?>" title="Мои вопросы"><?=$this->tab_my_list_name?></a></div> 
 			<?php } ?>
-			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion')?>" title="Задать вопрос">Задать вопрос</a></div>
+			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion')?>" title="Задать вопрос"><?=$this->tab_manage_question_name?></a></div>
 			<div class="tab-page tab-page-selected">
 				<!-- Вопросы пользователей -->
 				
@@ -28,15 +28,15 @@
 											<div style="margin: 0px -10px;">
 												<table class="questions">
 													<tr>
-														<td style="width: 100%; text-align: left;"><img src="img/open.png" width="21" height="24" align="absmiddle" /> <a href="#"><b>Вопросы пользователей</b></a><b></td>
-														<td><img src="img/open.png" width="21" height="24" align="absmiddle" /> <a href="#"><b>Автор</b></a></td>
-														<td><img src="img/open.png" width="21" height="24" align="absmiddle" /> <a href="#"><b>Ответов</b></a></td>
-														<td><img src="img/open.png" width="21" height="24" align="absmiddle" /> <a href="#"><b>Дата создания</b></a></td>
+														<td style="width: 100%; text-align: left;"><b>Вопросы пользователей</b><b></td>
+														<td><b>Автор</b></td>
+														<td><b>Ответов</b></td>
+														<td><b>Дата создания</b></td>
 													</tr>
 													<?php foreach($this->question_list as $key => $item) { ?>
 													<tr id=<?php if($key%2==0) { ?>"cmod_tab2"<?php } else { ?>"cmod_tab1"<?php } ?>>
 														<td style="text-align: left; white-space: normal;">
-															<img src="img/faq.png" width="14" height="14" id="ico2" />
+															<img src="<?=$this -> image_url; ?>faq.png" width="14" height="14" id="ico2" />
 															<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>"><?=$item['q_text']?></a>
 														</td>
 														<td><a href="#"><?=$item['login']?></a></td><!-- TODO: User profile -->
