@@ -105,7 +105,7 @@ class HelpFunctions{
 		static function strips(&$el) {
 			if (is_array($el)){
 				foreach($el as $k=>$v){
-					$this -> strips($el[$k]);
+					self::strips($el[$k]);
 				}
 			} else {
 				$el = stripslashes($el);
