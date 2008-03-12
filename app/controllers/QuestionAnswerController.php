@@ -125,10 +125,12 @@ class QuestionAnswerController extends SiteController {
 					$question_tag_model->save();
 					$question_tag_model->clear();				
 				} else {
-					$question_tag_model->question_id = $q_id;
-					$question_tag_model->question_tag_id = $tag_model->id;
-					$question_tag_model->save();
-					$question_tag_model->clear();
+					if(count($question_tag_model->loadWhere($q_id, $t_id)) == 0) {			
+						$question_tag_model->question_id = $q_id;
+						$question_tag_model->question_tag_id = $tag_model->id;
+						$question_tag_model->save();
+						$question_tag_model->clear();
+					}
 				}
 			}
 			Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'List'));
