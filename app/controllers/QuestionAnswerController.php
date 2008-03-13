@@ -116,24 +116,25 @@ class QuestionAnswerController extends SiteController {
 			$tags_ar = explode(",", $request->tags);
 			foreach ($tags_ar as $tag) {
 				$tag = trim($tag);	
-				if(count($tag_model->loadByName($tag)) == 0) {
+				if(count($tag_model->loadByName($tag)) > 0) {
+					if(count($question_tag_model->loadWhere($q_id, $tag_model->id)) <=0) {
+						$question_tag_model->question_id = $q_id;
+						$question_tag_model->question_tag_id = $tag_model->id;
+						$question_tag_model->save();
+						$question_tag_model->clear();	
+					}			
+				} else {
 					$tag_model->name = $tag;
 					$tag_id = $tag_model->save();
 					$tag_model->clear();	
 					$question_tag_model->question_id = $q_id;
 					$question_tag_model->question_tag_id = $tag_id;
 					$question_tag_model->save();
-					$question_tag_model->clear();				
-				} else {
-					if(count($question_tag_model->loadWhere($q_id, $t_id)) == 0) {			
-						$question_tag_model->question_id = $q_id;
-						$question_tag_model->question_tag_id = $tag_model->id;
-						$question_tag_model->save();
-						$question_tag_model->clear();
-					}
+					$question_tag_model->clear();
 				}
+				
 			}
-			Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'List'));
+			Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
 		}
 	}
 	

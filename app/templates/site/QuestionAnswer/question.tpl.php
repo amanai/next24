@@ -5,7 +5,7 @@
 		<div id="tabs">
 			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=Project::getRequest()->createUrl('QuestionAnswer','List')?>"><?=$this->tab_list_name?></a></div>
 			<?php if($this->current_user && $this->current_user->id > 0) { ?>
-				<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('QuestionAnswer', 'List', array($this->current_user->id))?>" ><?=$this->tab_my_list_name?></a></div> 
+				<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('QuestionAnswer', 'UserQuestions')?>" ><?=$this->tab_my_list_name?></a></div> 
 			<?php } ?>
 			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('QuestionAnswer','ManagedQuestion')?>" ><?=$this->tab_manage_question_name?></a></div>
 			<div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="#"><?=$this->question_tab?></a></div>
