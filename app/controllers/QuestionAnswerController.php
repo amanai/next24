@@ -117,7 +117,7 @@ class QuestionAnswerController extends SiteController {
 			foreach ($tags_ar as $tag) {
 				$tag = trim($tag);	
 				if(count($tag_model->loadByName($tag)) > 0) {
-					if(count($question_tag_model->loadWhere($q_id, $tag_model->id)) <=0) {
+					if(count($question_tag_model->loadWhere($q_id, $tag_model->id)) <= 0) {
 						$question_tag_model->question_id = $q_id;
 						$question_tag_model->question_tag_id = $tag_model->id;
 						$question_tag_model->save();

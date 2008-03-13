@@ -132,7 +132,7 @@ class AdminQuestionAnswerController extends AdminController {
 				$this->_view->parse();
 			}
 		} else {
-			if($id > 0) {
+			if($id > 0) {				
 				$model = new QuestionModel();
 				$model->load($id);
 				$model->q_text = $request->question_text;
@@ -144,19 +144,22 @@ class AdminQuestionAnswerController extends AdminController {
 				$tags_ar = explode(",", $request->tags);
 				foreach ($tags_ar as $tag) {
 					$tag = trim($tag);	
-					if(count($tag_model->loadByName($tag)) == 0) {
+					if(count($tag_model->loadByName($tag)) > 0) {
+						if(count($question_tag_model->loadWhere($id, $tag_model->id)) <= 0) {
+							$question_tag_model->question_id = $id;
+							$question_tag_model->question_tag_id = $tag_model->id;
+							$question_tag_model->save();
+							$question_tag_model->clear();
+						}		
+					} else {
+
 						$tag_model->name = $tag;
 						$tag_id = $tag_model->save();
 						$tag_model->clear();	
 						$question_tag_model->question_id = $id;
 						$question_tag_model->question_tag_id = $tag_id;
 						$question_tag_model->save();
-						$question_tag_model->clear();				
-					} else {
-						$question_tag_model->question_id = $id;
-						$question_tag_model->question_tag_id = $tag_model->id;
-						$question_tag_model->save();
-						$question_tag_model->clear();
+						$question_tag_model->clear();	
 					}
 				}
 			}
