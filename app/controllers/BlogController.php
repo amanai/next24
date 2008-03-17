@@ -191,6 +191,7 @@
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			if (($request_user_id != $user_id) || !$user_id){
+				die("~~~");
 				Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
 			}
 			
@@ -204,6 +205,7 @@
 			$blog_model -> title = $request -> blog_title;
 			$blog_model -> access = $request -> blog_access;
 			$blog_model -> save();
+			die("~~~");
 			Project::getResponse() -> redirect($request -> createUrl('Blog', 'Edit'));
 		}
 		
