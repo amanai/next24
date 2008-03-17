@@ -7,12 +7,16 @@
 			<?php } ?>
 			<div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="#"><?=$this->tab_manage_question_name?></a></div>
 			<div class="tab-page tab-page-selected">
-
+<div><?foreach ($this->error as $error):?>
+<?=$error?><br />
+<?endforeach;?>
+</div>
 	<div class="block_ee1">
 		<div class="block_ee2">
 			<div class="block_ee3">
 				<div class="block_ee4">
 					<div class="block_title"><h2><?=$this->tab_manage_question_name?></h2></div>
+					
 					<?php if($this->current_user && $this->current_user->id > 0) { ?>
 					<form action="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion', array($this->question['id']))?>">
 						<table width="100%" cellpadding="2">
@@ -25,7 +29,7 @@
 								<td>
 									<select name="cat_id">
 								        	<?foreach ($this->question_cat as $cat):?>
-								        		<option value="<?=$cat['id']?>"><?=$cat['name']?></option>
+								        		<option value="<?=$cat['id']?>" <?if($cat['id']==$this->question['questions_cat_id']) { ?> selected <? } ?>><?=$cat['name']?></option>
 								        	<?endforeach;?>
 							        </select>
 								</td>

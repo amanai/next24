@@ -16,6 +16,12 @@ class QTagModel extends BaseModel {
 		return $result;
 	}
 	
+	public function deleteByQuestionId($id) {
+		$id = (int) $id;
+		$sql = "DELETE FROM qq_tags WHERE question_id = ?d";
+		Project::getDatabase()->query($sql, $id);
+	}
+	
 }
 
 

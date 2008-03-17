@@ -43,7 +43,7 @@ class QuestionAnswerController extends SiteController {
 		$data['question_list'] = $question_model->loadWhere($catId, $tagId, $userId);
 		$data['question_cat_list'] = $question_cat_model->loadAll();
 		$pager_view = new SitePagerView();
-		$data['question_list_pager'] = $pager_view->show($question_model->getPager(), 'QuestionAnswer', $action, $param);
+		$data['question_list_pager'] = $pager_view->show2($question_model->getPager(), 'QuestionAnswer', $action, $param);
 	}
 	
 
@@ -105,6 +105,22 @@ class QuestionAnswerController extends SiteController {
 					Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
 				}
 			}	
+			
+			if($request->question_text == null) {		//TODO validator
+				$data['error'][] = "Заполните текст вопроса";
+				$question_cat_model = new QuestionCatModel();
+				$data['question_cat'] = $question_cat_model->loadAll();
+				$data['question_tag_list'] = $request->tags;
+				$data['question']['q_text'] = $request->question_text;
+				$data['question']['question_cat_id'] = (int)$request->cat_id;
+				$data['question']['user_id'] = Project::getUser()->getDbUser()->id;
+				$data['question']['creation_date'] = date("Y-m-d H:i:s");
+				$this->BaseSiteData($data);
+				$this->_view->ManagedQuestion($data);
+				$this->_view->parse();
+				return;
+			}
+			
 			$question_model->q_text = $request->question_text;
 			$question_model->questions_cat_id = (int)$request->cat_id;
 			$question_model->user_id = Project::getUser()->getDbUser()->id;
@@ -112,27 +128,28 @@ class QuestionAnswerController extends SiteController {
 			$q_id = $question_model->save();
 			$tag_model = new QuestionTagModel();
 			$question_tag_model = new QTagModel();
+			$question_tag_model->deleteByQuestionId($id);    	//TODO: revamp
 			$tags_ar = array();
 			$tags_ar = explode(",", $request->tags);
 			foreach ($tags_ar as $tag) {
 				$tag = trim($tag);	
-				if(count($tag_model->loadByName($tag)) > 0) {
-					if(count($question_tag_model->loadWhere($q_id, $tag_model->id)) <= 0) {
+				if(count($tag_model->loadByName($tag)) <= 0) {
+					$tag_model->name = $tag;
+					$tag_id = $tag_model->save();
+					/*if(count($question_tag_model->loadWhere($q_id, $tag_model->id)) <= 0) {
 						$question_tag_model->question_id = $q_id;
 						$question_tag_model->question_tag_id = $tag_model->id;
 						$question_tag_model->save();
 						$question_tag_model->clear();	
-					}			
+					}*/
 				} else {
-					$tag_model->name = $tag;
-					$tag_id = $tag_model->save();
+					$tag_id = $tag_model->id;
+				}
 					$tag_model->clear();	
 					$question_tag_model->question_id = $q_id;
 					$question_tag_model->question_tag_id = $tag_id;
 					$question_tag_model->save();
 					$question_tag_model->clear();
-				}
-				
 			}
 			Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
 		}
@@ -149,7 +166,7 @@ class QuestionAnswerController extends SiteController {
 			$question_model->save();
 			
 		} //TODO:...
-		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'ViewQuestion', array('q_id'=>$question_model->id)));
+		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'ViewQuestion', array($question_model->id)));
 	}
 	
 	public function AnswerDeleteAction() {
@@ -179,7 +196,7 @@ class QuestionAnswerController extends SiteController {
 		if ($question_model->user_id == $user_id) {
 			$question_model->delete($request->getKeyByNumber(0));
 		}
-		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'List', array('u_id'=>Project::getUser()->getDbUser()->id)));
+		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
 	}
 	
 	public function BaseSiteData(&$data) {
