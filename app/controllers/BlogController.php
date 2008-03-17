@@ -25,13 +25,14 @@
 			}
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			
-			
 			if ($request_user_id === $user_id) {
 				$v = new BlogView();
 				$v -> ControlPanel();
 				$info['control_panel'] = $v -> parse();
+				$info['blog_owner'] = true;
 			} else {
 				$info['control_panel'] = null;
+				$info['blog_owner'] = false;
 			}
 			$info['tab_list'] = TabController::getOwnTabs(false, false, false, false, false, false, true);
 			// User blog tree
@@ -204,8 +205,6 @@
 			$info['tag_list'] = $tag_model -> loadList($tree_model -> blog_catalog_id, true);
 			
 			
-			
-			
 			foreach($info['branch_list'] as &$item){
 				$item['change_branch_param'] = AjaxRequest::getJsonParam('Blog', 'AjaxChangeBranch', array($post_id, $item['id']));
 			}
@@ -213,6 +212,57 @@
 			$this -> _view -> PostEdit($info);
 			$this -> _view -> parse();
 			return;
+		}
+		
+		/**
+		 * Edit blog info action
+		 */
+		function EditAction(){
+			$request = Project::getRequest();
+			$info = array();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			if (($request_user_id != $user_id) || !$user_id){
+				Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+			}
+			
+			$blog_model = new BlogModel;
+			$blog_model -> loadByUserId($user_id);
+			
+			$info['blog_title'] = $blog_model -> title;
+			$info['blog_access'] = $blog_model -> access;
+			$info['access_list'] = HelpFunctions::getBlogAccessList();
+
+			$this -> BaseSiteData();
+			$this -> BaseBlogData($info);
+			
+			$this -> _view -> BlogEdit($info);
+			$this -> _view -> parse();
+		}
+		
+		/**
+		 * Save blog info action
+		 */
+		function SaveAction(){
+			$request = Project::getRequest();
+			$info = array();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			if (($request_user_id != $user_id) || !$user_id){
+				Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+			}
+			
+			$blog_model = new BlogModel;
+			$blog_model -> loadByUserId($user_id);
+			
+			if ($blog_model -> id <= 0){
+				$blog_model -> creation_date = date("Y-m-d");
+				$blog_model -> creation_ip = $_SERVER['REMOTE_ADDR'];
+			}
+			$blog_model -> title = $request -> blog_title;
+			$blog_model -> access = $request -> blog_access;
+			$blog_model -> save();
+			Project::getResponse() -> redirect($request -> createUrl('Blog', 'Edit'));
 		}
 		
 		function PostSaveAction(){
@@ -264,8 +314,6 @@
 		}
 		
 		public function CommentsAction(){
-			
-			
 			$request = Project::getRequest();
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
@@ -364,86 +412,7 @@
 			//TODO::avatar?warning?mood?
 		}
 		
-		/**
-		 * 
-		 */
-		public function PostAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				$user_id = (int)$user['id'];
-			}
-			
-			
-			$n = Node::by_key('', 'ub_tree');
-			$this -> view -> branch_list =  $n->getBranch();
-			
-			$id = (int)$this -> id;
-			if ($id > 0){
-				$this -> setModel("BlogTree");
-				$this -> model -> resetSql();
-				$this -> model -> load($id);
-				$blog_id = (int)$this -> model -> get('blog_id');
-				$this -> view -> blog_owner = $this -> checkOwner($blog_id, $user_id);
-				$this -> setModel("BlogsModel");
-				$this -> model -> resetSql();
-				$this -> model -> load($blog_id);
-				$blog_data = $this -> model -> getData();
-			} else {
-				$this -> view -> blog_owner = true;
-				$this -> setModel("BlogsModel");
-				$this -> model -> resetSql();
-				$this -> model -> where('user_id='.(int)$user_id);
-				$blog_data = $this -> model -> getOne();
-				$blog_id = (int)$blog_data['blog_id'];
-			}
-			if ($blog_id == 0){
-				//TODO:: no blog exists
-			}
-			$this -> blog_id = $blog_id;
-			$this -> checkBranchAccess($id, $user_id);
-			
-			if ( ($number = $this -> getParam('post_per_page', self::DEFAULT_POST_PER_PAGE)) === 0){
-				$number = self::DEFAULT_POST_PER_PAGE;
-			}
-			
-			$this -> setModel("BlogPosts");
-			$this -> model -> resetSql();
-			$this -> model -> pager();
-			$this -> model -> cols('blog_posts.*, count(blog_comments.id) as comments_count, blogs.user_id as user_id');
-			$this -> model -> join('blog_comments', 'blog_comments.blog_post_id=blog_posts.id', 'LEFT');
-			$this -> model -> join('blogs', 'blogs.id=blog_posts.blog_id', 'LEFT');
-			$this -> model -> where("blog_posts.access>0");
-			$this -> model -> where("blog_posts.blog_id=".(int)$blog_id);
-			$this -> model -> group('blog_posts.id');
-			if ($id > 0){
-				$this -> model -> where("blog_posts.ub_tree_id=".(int)$id);
-			}
-			// TODO:: parameters by group?
-			$this -> model -> limit($number, (int)$this -> pn*$number);
-			$list = $this -> model -> getAll();
-			$all = $this -> model -> foundRows();
-			$this -> view -> pages_number = ceil($all / $number);
-			$this -> view -> current_page_number = (int)$this -> pn;
-			$this -> view -> current_controller = 'Blog';
-			$this -> view -> current_action = 'Post';
-			if ($id > 0){
-				$this -> view -> pager_params = array('id'=>$id);
-			}
-			
-			foreach ($list as $key=>$value){
-				if ($value['user_id'] == $user_id){
-					$list[$key]['owner'] = true;
-				} else {
-					$list[$key]['owner'] = false;
-				}
-				
-			}
-			$this -> view -> post_list = $list;
-			$this->view->content .= $this->view->render(VIEWS_PATH.'blogs/posts.tpl.php');
-			$this->view->display();
-		}
+		
 		
 		/**
 		 * Удаление поста из раздела блога
@@ -486,87 +455,125 @@
 		/**
 		 * 
 		 */
-		public function EditBranchAction(){
+		public function EditBranchAction($id = null){
 			
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
+			$request = Project::getRequest();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				$user_id = (int)$user['id'];
+			$this -> BaseSiteData();
+			$info = array();
+			$this -> BaseBlogData($info);
+			
+			$branch_id = ($id !== null)?(int)$id:(int)$request -> getKeyByNumber(0);
+			
+			$blog_model = new BlogModel;
+			$blog_model -> loadByUserId($user_id);
+			$blog_id = (int)$blog_model -> id;
+			if ($blog_id <= 0){
+				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Post'));
 			}
 			
-			$branch_id = (int)$this -> id;
+			$tree_model = new BlogTreeModel;
+			$tree_model -> load($branch_id);
+			$info['branch_id'] = $tree_model -> id;
+			$info['branch_name'] = $tree_model -> name;
+			$info['branch_access'] = $tree_model -> access;
+			$info['blog_catalog_id'] = $tree_model -> blog_catalog_id;
+			$info['access_list'] = HelpFunctions::getBlogAccessList();
 			
-			$blog_id = $this -> checkBranchAccess($branch_id, $user_id);
+			$catalog_model = new BlogCatalogModel;
+			$info['catalog_list'] = $catalog_model -> loadAll();
 			
-			$this -> setModel("BlogTree");
-			$this -> model -> resetSql();
-			$this -> model -> load($branch_id);
-			$this -> view -> branch_info = $this -> model -> getData();
 			
-			$n = Node::by_key('', 'ub_tree');
-			$this -> view -> branch_list =  $n->getBranch();
-	
-			$this -> setModel("BlogsCatalog");
-			$this -> model -> resetSql();
-			$this -> model -> order("`name` ASC");
-			$this -> view -> catalog_list =  $this -> model -> getAll();
-
-			$this->view->content .= $this->view->render(VIEWS_PATH.'blogs/edit_branch.tpl.php');
-			$this->view->display();
+			$n = $tree_model -> getNode();
+			if ($n instanceof Node){
+				$child =  $n -> getLastChildKey();
+				$parent = $n -> key -> getParent();
+				$info['parent_key'] = $parent -> __toString();
+			} else {
+				$child = null;
+				$info['parent_key'] = null;
+			}
+			if ($child){
+				$info['parent_list'] = 1;
+			} else {
+				$info['parent_list'] = $tree_model -> getParentList($blog_id, $tree_model -> id);
+			}
 			
+			$this -> _view -> BranchEdit($info);
+			$this -> _view -> parse();
 		}
 		
 		function SaveBranchAction(){
-			//var_dump($this -> branch_name, $this -> branch_access, $this -> branch_parent, $this -> branch_catalog);
+			$request = Project::getRequest();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			
+			$branch_id = (int)$request -> branch_id;
+			$name = $request -> branch_name;
+			$catalog_id = (int)$request -> blog_catalog;
+			$parent_id = (int)$request -> parent_branch;
+			$access = (int)$request -> branch_access;
 			
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
+			$this -> BaseSiteData();
+			$info = array();
+			$this -> BaseBlogData($info);
 			
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				$user_id = (int)$user['id'];
+			$blog_model = new BlogModel;
+			$blog_model -> loadByUserId($user_id);
+			$blog_id = (int)$blog_model -> id;
+			if ($blog_id <= 0){
+				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Post'));
 			}
 			
-			$this -> setModel("BlogsModel"); 
-			$this -> model -> resetSql();
-			$this -> model -> where('user_id = '.$user_id);
-			$this -> model -> setData($this -> model -> getOne());
-			// Set blog id for rightly check Branch Access
-			$this -> blog_id = (int)$this -> model -> get('id');
-			$branch_id = (int)$this -> branch_id;
-
-			$this -> checkBranchAccess($branch_id, $user_id);
+			$parent_tree_model = new BlogTreeModel;
+			$parent_tree_model -> load($parent_id);
+			$parent_node = $parent_tree_model -> getNode();
+			if ($parent_tree_model -> level > 1){
+				$this -> _view -> addFlashMessage(FM::ERROR, "Неверно выбран родительский раздел");
+				$this -> EditBranchAction($branch_id);
+				return;
+			}
 			
-			$this -> setModel("BlogTree");
-			$this -> model -> load($branch_id);
-			$branch_data = $this -> model -> getData();
 			
-			// Set data to tree model
-			$this -> setModel("BlogTree");
-			$this -> model -> resetSql();
-			$this -> model -> set('id', (isset($branch_data['id'])?(int)$branch_data['id']:null));
-			$this -> model -> set('blog_id', $this -> blog_id);
-			$this -> model -> set('name', $this -> branch_name);
-			$this -> model -> set('access', (int)$this -> branch_access);
-			$this -> model -> set('blogs_catalog_id', (int)$this -> branch_catalog);
-			$this -> model -> set('blog_banner_id', 0); // TODO::0
-			//$this -> model -> set('key', '');
-			if (!count($branch_data)){
-				$this -> model -> set('key', '');
+			
+			$tree_model = new BlogTreeModel;
+			$tree_model -> load($branch_id);
+			$n = $tree_model -> getNode();
+			if ($n instanceof Node){
+				$child =  $n -> getLastChildKey();
 			} else {
+				$child = null;
 			}
-			$this -> model -> set('level', 0);
-			$branch_id = (int)$this -> model -> save();
+			if ($child){
+				$this -> _view -> addFlashMessage(FM::ERROR, "Невозможно переместить раздел: есть зависимые разделы");
+				$this -> EditBranchAction($branch_id);
+				return;
+			}
 			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Blog', 'EditBranch', array('id'=>$branch_id)));
-
+			$tree_model -> name = $name;
+			$tree_model -> blog_id = $blog_id;
+			$tree_model -> access = $access;
+			$tree_model -> blog_catalog_id = $catalog_id;
+			$tree_model -> blog_banner_id = 0;
+			if (!$n){
+				$n = new Node(new Key($tree_model -> id), 'ub_tree');
+			}
+			if (!$parent_node || !$tree_model -> id){
+				$n = new Node(new Key($tree_model -> id), 'ub_tree');
+				$tree_model -> key = $n -> getNewChildKey() -> __toString();
+				$tree_model -> level = 1;
+			} 
+			
+			$branch_id = $tree_model -> save();
+			$n = $tree_model -> getNode();
+			if ($parent_node){
+				$n -> changeParent($parent_node);
+			}
+			Project::getResponse() -> redirect($request -> createUrl('Blog', 'EditBranch', array($branch_id)));
+			
 		}
-		
-		
 		
 		function show_tree($vars){
 			$n = Node::by_key('', 'sitemap');

@@ -51,6 +51,7 @@
 					return null;
 				}
 			}
+			
 			function getNewChildKey($k = false){
 				if (!$k){
 					$k = $this->getLastChildKey();
@@ -82,7 +83,7 @@
 				$this->key = $new_key;
 			}				
 			function changeParent(BasicNode $new_parent){
-				$new_key = $new_parent->getNewChildKey();			
+				$new_key = $new_parent->getNewChildKey();
 				$this->moveTo($new_key);
 			}
 			function moveUp(){

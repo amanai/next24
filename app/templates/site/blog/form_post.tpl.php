@@ -1,4 +1,3 @@
-<script type="text/javascript" src="<?php echo $this -> js_url;?>fckeditor/editor/js/fckeditorcode_gecko.js"/>
 <form action="<?php echo $this->createUrl('Blog', 'PostSave');?>" method="post">
 	<input type="hidden" name="id" value="<?php echo $this -> post_id;?>"><br />
 	<input type="hidden" name="page_number" value="<?php echo $this -> post_page_number;?>"><br />
@@ -28,7 +27,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td valign="top">Уровень доступа</td>
+		<td valign="top">Раздел</td>
 		<td>
 			<select style="width: 300px;" name="post_branch" >
 				<option value="0">---</option>
@@ -36,7 +35,7 @@
 					<option onClick='ajax(<?php echo $item['change_branch_param']; ?>);' value="<?php echo $item['id'];?>" <?php if ((int)$item['id'] === (int)$this -> post_tree_id) {echo 'selected';} ?> style="padding-left:<?php echo $item['level']*20; ?>px"><?php echo $item['name'];?></option>
 				<?php } ?>
 			</select><br />
-			<span id="micro2">Кто сможет смотреть и комментировать этот пост.</span>
+			<span id="micro2">Раздел, в котором находится блог.</span>
 		</td>
 	</tr>
 	<tr>

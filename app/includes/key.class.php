@@ -27,7 +27,7 @@
 			return $res;
 		}
 		function __get($name){
-			if ($name == level){ 
+			if ($name == "level"){ 
 				return count($this);
 			}else{
 				return null;

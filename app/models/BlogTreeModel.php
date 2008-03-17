@@ -5,7 +5,14 @@ class BlogTreeModel extends BaseModel{
 				parent::__construct('ub_tree');
 			}
 			
-			function getBranchList($blog_id, $logged_user_id){
+			function loadByKey($key){
+				$result = array();
+				$result = Project::getDatabase() -> selectRow("SELECT * FROM ".$this -> _table." WHERE LOWER(key) = LOWER(?)", $key);
+				$this -> bind($result);
+				return $result;
+			}
+			
+			function getBranchList($blog_id, $logged_user_id, $level = null){
 				$isFriend = (int)Project::getUser() -> isFriend();
 				$sql = "SELECT " .
 						" ubt.* " .
@@ -16,8 +23,17 @@ class BlogTreeModel extends BaseModel{
 					" ubt.blog_id = ?d " .
 					" AND ( (b.access=".ACCESS::ALL.") OR (?d AND ubt.access=". ACCESS::FRIEND .") OR (b.user_id=?d AND b.access=".ACCESS::MYSELF.") )" .
 					" AND ( (ubt.access=".ACCESS::ALL.") OR (?d AND ubt.access=".ACCESS::FRIEND.") OR (b.user_id=?d AND ubt.access=".ACCESS::MYSELF.") OR (b.user_id = bs.user_id AND ubt.access=".ACCESS::SUBSCRIBE.") )" .
+					(($level === null)? "": " AND ubt.level= ".(int)$level . " ") .
 					" ORDER BY `key`";
 				return Project::getDatabase() -> select($sql, $logged_user_id, (int)$blog_id, $isFriend, $logged_user_id, $isFriend, $logged_user_id);
+			}
+			
+			function getNode(){
+				return Node::by_id($this -> id, 'ub_tree');
+			}
+			
+			function getParentList($blog_id, $except_id = 0){
+				return Project::getDatabase() -> select("SELECT * FROM ub_tree WHERE blog_id=?d AND level=1 AND id <> ?d", (int)$blog_id, (int)$except_id);
 			}
 	}
 ?>

@@ -34,5 +34,16 @@ class BlogView extends BaseSiteView{
 			$this -> setTemplate($this -> _dir, 'post_tag.tpl.php');
 			$response -> block('tag_list', true, $this -> parse());
 		}
+		
+		function BlogEdit($info){
+			$this -> setTemplate($this -> _dir, 'blog_edit.tpl.php');
+			$this -> set($info);
+		}
+		
+		function BranchEdit($info){
+			$this -> setTemplate($this -> _dir, 'branch_edit.tpl.php');
+			$this -> set($info);
+		}
+		
 }
 ?>

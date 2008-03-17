@@ -27,6 +27,8 @@ class Node extends BasicNode{
 				return new Node(new Key($key) ,$tablename);
 			}
 		}
+		
+		
 	//methods
 		function getBranch($field = null, $value = null){
 			return Project::getDatabase() -> select(
