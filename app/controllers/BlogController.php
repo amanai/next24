@@ -178,6 +178,7 @@
 			
 			$info['post_id'] = (int)$post_model -> id;
 			$info['full_text'] = $post_model -> full_text;
+			$info['small_text'] = $post_model -> small_text;
 			$info['post_title'] = $post_model -> title;
 			$info['post_creation_date'] = $post_model -> creation_date;
 			$info['post_tree_id'] = (int)$post_model -> ub_tree_id;
@@ -280,8 +281,7 @@
 			$post_model -> load($request -> id);
 			$post_model -> title = $request -> post_title;
 			$post_model -> full_text = $request -> post_full_text;
-			$post_model -> small_text = substr($request -> post_full_text, 200);
-			$post_model -> full_text = $request -> post_full_text;
+			$post_model -> small_text = $request -> post_small_text;
 			$post_model -> ub_tree_id = $request -> post_branch;
 			$post_model -> bc_tag_id = $request -> post_tag;
 			if ($request -> allow_comments){

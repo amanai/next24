@@ -14,6 +14,19 @@
 		</td>
 	</tr>
 	<tr>
+		<td width="100" valign="top">Анонс</td>
+		<td>
+			<?php
+				$oFCKeditor = new FCKeditor('post_small_text') ;
+				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
+				$oFCKeditor -> Value = $this -> small_text;
+				$oFCKeditor -> Width = 600;
+				$oFCKeditor -> Create() ;
+			?>
+			<span id="micro2">Текст, отображаемый при просмотре списка постов.</span>
+		</td>
+	</tr>
+	<tr>
 		<td width="100" valign="top">Текст</td>
 		<td>
 			<?php
@@ -23,7 +36,7 @@
 				$oFCKeditor -> Width = 600;
 				$oFCKeditor -> Create() ;
 			?>
-			<span id="micro2">Текст, отображаемый при просмотре списка постов.</span>
+			<span id="micro2">Полный текст сообщения.</span>
 		</td>
 	</tr>
 	<tr>
