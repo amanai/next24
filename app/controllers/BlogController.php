@@ -62,6 +62,8 @@
 				$item['comment_link'] = $request -> createUrl('Blog', 'Comments', array($item['id'], $page_number, 0));
 				if ($request_user_id === $user_id) {
 					$item['edit_link'] = $request -> createUrl('Blog', 'PostEdit', array($item['id'], $page_number));
+					$item['del_link'] = $request -> createUrl('Blog', 'PostDelete', array($item['id'], $page_number));
+					
 				}
 			}
 			$info['post_list'] = $list;
@@ -74,69 +76,8 @@
 			$this -> _view -> parse();
 		}
 		
-		private function checkBranchAccess($branch_id, $user_id){
-			if ($branch_id > 0){
-				$this -> setModel("BlogTree");
-				$this -> model -> resetSql();
-				$this -> model -> load($branch_id);
-				$blog_id = (int)$this -> model -> get('blog_id');
-				if ($blog_id == 0){
-					// Branch is not connected to any blogs
-					$router = getManager('CRouter');
-					$router -> redirect($router -> createUrl('Blog', 'Post'));
-				}
-				$this -> setModel("BlogsModel");
-				$this -> model -> resetSql();
-				$this -> model -> load($blog_id);
-				$owner_id = (int)$this -> model -> get('user_id');
-				
-				$this -> view -> blog_info = $this -> model -> getData();
-				
-				if (($owner_id === 0) || ($owner_id !== $user_id)) {
-					// User not logged or is not owner of blog
-					die('is not owner');
-					$router = getManager('CRouter');
-					$router -> redirect($router -> createUrl('Blog', 'Post'));
-				}
-				$this -> view -> new_branch = false;
-			} else {
-				$blog_id = (int)$this -> blog_id;
-				$this -> view -> new_branch = true;
-				if ($blog_id > 0){
-					$this -> setModel("BlogsModel");
-					$this -> model -> resetSql();
-					$this -> model -> load($blog_id);
-					$owner_id = (int)$this -> model -> get('user_id');
-					if (($owner_id === 0) || ($owner_id !== $user_id)) {
-						// User not logged or is not owner of blog
-						die('is not owner 2');
-						$router = getManager('CRouter');
-						$router -> redirect($router -> createUrl('Blog', 'Post'));
-					}
-					$this -> view -> blog_info = $this -> model -> getData();
-				} else {
-					// Can't create branch out of blog
-					die('out of blog');
-					$router = getManager('CRouter');
-					$router -> redirect($router -> createUrl('Blog', 'Post'));
-				}
-				
-			}
-			$this -> view -> blog_owner = true;
-			return $blog_id;
-		}
 		
 		
-		public function checkOwner($blog_id, $user_id){
-			$this -> setModel("BlogModel");
-			$this -> model -> resetSql();
-			$data = $this -> model -> load($blog_id);
-			if (isset($data['user_id']) && ($user_id == $data['user_id'])){
-				return true;
-			} else {
-				return false;
-			}
-		}
 		
 		public function AjaxChangeBranchAction(){
 			$request = Project::getRequest();
@@ -418,38 +359,31 @@
 		 * Удаление поста из раздела блога
 		 */
 		public function PostDeleteAction(){
-			$session = getManager('CSession');
-			$user = unserialize($session->read('user'));
-			$user_id = 0;
-			if (isset($user['id']) && ((int)$user['id'] > 0)){
-				$user_id = (int)$user['id'];
-			}
-			$id = (int)$this -> id;
-			$this -> setModel('BlogPosts');
-			$this -> model -> resetSql();
-			$this -> model -> load($id);
-			$post_data = $this -> model -> getData();
-			$blog_id = (int)$this -> model -> get('blog_id');
-			$branch_id = (int)$this -> model -> get('ub_tree_id');
-			$blog__check_id = $this -> checkBranchAccess($branch_id, $user_id);
-			if ($blog__check_id != $blog_id){
-				// TODO:: something wring: blog id from post != blog id from ub tree
-				die('Something wrong->Check blog ID (ub_tree.blog_id) <> blog id from post(blog_post.blog_id)');
-			}
-			$this -> setModel('BlogComments');
-			$this -> model -> resetSql();
-			$this -> model -> deleteByItem($user_id, $id);
+			$request = Project::getRequest();
 			
-			$this -> setModel('BlogPosts');
-			$this -> model -> resetSql();
-			$this -> model -> id = $id;
-			$this -> model -> delete();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			
+			$post_id = $request -> getKeyByNumber(0);
+			$page_number = $request -> getKeyByNumber(1);
+			
+			// Delete comments
+			$comment_model = new BlogCommentModel();
+			$comment_model -> deleteByItem($user_id, $post_id);
+			// Delete posts
+			$post_model = new BlogPostModel;
+			$post_model -> load($post_id);
+			$tree_id = $post_model -> ub_tree_id;
+			$post_model -> delete($post_id);
+			
+			
+			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList', array($tree_id , $page_number)));
+			
 			
 			// TODO:: need to delete warnings?
 			
 			
-			$router = getManager('CRouter');
-			$router -> redirect($router -> createUrl('Blog', 'Post', array('id'=>$branch_id)));
+			
 		}
 		
 		/**
@@ -574,32 +508,5 @@
 			Project::getResponse() -> redirect($request -> createUrl('Blog', 'EditBranch', array($branch_id)));
 			
 		}
-		
-		function show_tree($vars){
-			$n = Node::by_key('', 'sitemap');
-			$this->data['tree'] = $n->getBranch();
-			$this->template_name = 'tree_test.tpl';
-		}
-		function move_up($vars){
-			$n = Node::by_id($vars['id'], 'sitemap');
-			$n->moveUp();
-			$this->go_page();
-		}
-		function move_down($vars){
-			$n = Node::by_id($vars['id'], 'sitemap');
-			$n->moveDown();
-			$this->go_page();
-		}
-		function delete($vars){
-			$n = Node::by_id($vars['id'], 'sitemap');
-			$n->delete();
-			$this->go_page();
-		}
-		function change_parent($vars){
-			$n = Node::by_id($vars['id'], 'sitemap');
-			$parent = Node::by_id($vars['parent_id'], 'sitemap');
-			$n->changeParent($parent);
-			$this->go_page();
-		}
-	}
+}
 ?>

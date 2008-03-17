@@ -29,7 +29,10 @@
 									<?php foreach ($this->post_list as $key=>$item){?>
 										<div class="block_title" id="record_93">
 											<div class="block_title_left"><h2><?php echo $item['title']; ?></h2></div>
-											<div class="block_title_right"><?php if ($item['edit_link']) {echo '<a href="'.$item['edit_link'] . '">Редактировать</a> | ';}?><?php echo date("j F Y", strtotime($item['creation_date']));?> | <span class="tags"><a href="#taglink" class="astable"><?php echo $item['tag_name']; ?></a></span></div>
+											<div class="block_title_right">
+											<?php if ($item['edit_link']) {echo '<a href="'.$item['edit_link'] . '">Редактировать</a> | ';}?>
+											<?php if ($item['del_link']) {echo '<a href="'.$item['del_link'] . '">Удалить</a> | ';}?>
+											<?php echo date("j F Y", strtotime($item['creation_date']));?> | <span class="tags"><a href="#taglink" class="astable"><?php echo $item['tag_name']; ?></a></span></div>
 										</div>
 										<div>
 											<?php echo $item['small_text']; ?><br><br>
