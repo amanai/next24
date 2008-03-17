@@ -38,7 +38,7 @@ class BlogTreeModel extends BaseModel{
 			}
 			
 			function loadByCatalog($catalog_id, $level = 1){
-				return Project::getDatabase() -> select("SELECT * FROM ub_tree WHERE blog_catalog_id=?d AND level=?d", (int)$catalog_id, (int)$level);
+				return Project::getDatabase() -> select("SELECT * FROM ub_tree WHERE blog_catalog_id=?d", (int)$catalog_id, (int)$level);
 			}
 			
 			function loadListByParentId($id){

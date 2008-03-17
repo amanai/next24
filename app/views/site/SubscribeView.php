@@ -4,11 +4,6 @@ class SubscribeView extends BaseSiteView{
 	
 	
 		function SubscribeList($info){
-			$request = Project::getRequest();
-			foreach($info['blog_catalog'] as &$item){
-				$item['ajax_param'] = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogCatalogTree', array($item['id'], $info['level']));
-				$item['count_subitems'] = 10;
-			}
 			$this -> setTemplate($this -> _dir, 'list.tpl.php');
 			$this -> set($info);
 		}
@@ -17,7 +12,7 @@ class SubscribeView extends BaseSiteView{
 			
 			
 			foreach($info['blog_catalog'] as &$item){
-				$item['ajax_param'] = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogTree', array($item['id'], $info['level']));
+				$item['ajax_param'] = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogTree', array($item['id'], $info['level'], $info['filter']));
 				$item['subscribe_param'] = AjaxRequest::getJsonParam('Subscribe', 'Change', array($item['id']));
 				
 			}

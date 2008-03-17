@@ -9,6 +9,7 @@
 			<td class="next24u_right">
 				<!-- Список подписок -->
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+					<div><a href="<?php echo $this -> only_subscribed_link; ?>" <?php if ($this -> only_subscribed === true) echo 'style="background-color:#ffff00;"';?>>отобразить только подписанные</a> | <a href="<?php echo $this -> all_link; ?>" <?php if ($this -> all_tree === true) echo 'style="background-color:#ffff00;"';?>>отобразить все</a></div>
 					<?php include($this -> _include('blog_tree.tpl.php')); ?>
 						
 				</div></div></div></div>
