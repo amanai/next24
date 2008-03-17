@@ -46,5 +46,15 @@ class Node extends BasicNode{
 				"
 			);
 		}
+		
+		function countSubItems(){
+			$sql = " select " .
+					" count(id) as counter " .
+				" from {$this->tablename} " .
+				" where " .
+				" `key` like '{$this->key}%' LIMIT 1";
+			$counter = Project::getDatabase() -> selectCell($sql);
+			return (int)$counter;
+		}
 }
 ?>

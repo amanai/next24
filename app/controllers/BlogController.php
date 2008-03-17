@@ -492,10 +492,10 @@
 			$tree_model -> blog_catalog_id = $catalog_id;
 			$tree_model -> blog_banner_id = 0;
 			if (!$n){
-				$n = new Node(new Key($tree_model -> id), 'ub_tree');
+				$n = $tree_model -> getNode();
 			}
 			if (!$parent_node || !$tree_model -> id){
-				$n = new Node(new Key($tree_model -> id), 'ub_tree');
+				$n = $tree_model -> getNode();
 				$tree_model -> key = $n -> getNewChildKey() -> __toString();
 				$tree_model -> level = 1;
 			} 
