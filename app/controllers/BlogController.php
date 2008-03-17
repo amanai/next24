@@ -191,7 +191,6 @@
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			if (($request_user_id != $user_id) || !$user_id){
-				die("~~~");
 				Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
 			}
 			
@@ -205,7 +204,6 @@
 			$blog_model -> title = $request -> blog_title;
 			$blog_model -> access = $request -> blog_access;
 			$blog_model -> save();
-			die("~~~");
 			Project::getResponse() -> redirect($request -> createUrl('Blog', 'Edit'));
 		}
 		
@@ -460,6 +458,7 @@
 			$blog_model -> loadByUserId($user_id);
 			$blog_id = (int)$blog_model -> id;
 			if ($blog_id <= 0){
+				die("~~~");
 				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Post'));
 			}
 			
@@ -507,6 +506,7 @@
 			if ($parent_node){
 				$n -> changeParent($parent_node);
 			}
+			die("~!~");
 			Project::getResponse() -> redirect($request -> createUrl('Blog', 'EditBranch', array($branch_id)));
 			
 		}
