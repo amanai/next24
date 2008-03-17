@@ -491,17 +491,26 @@
 			$tree_model -> access = $access;
 			$tree_model -> blog_catalog_id = $catalog_id;
 			$tree_model -> blog_banner_id = 0;
+			$n = $tree_model -> getNode();
 			if (!$n){
-				$n = $tree_model -> getNode();
+				$tree_model -> key = '';
+				if ($parent_node){
+					$tree_model -> level = 2;
+				} else {
+					$tree_model -> level = 1;
+				}
+				$branch_id = $tree_model -> save();
+				$n = new Node(new Key($branch_id), 'ub_tree');
+				$tree_model -> key = $n -> key -> __toString();
 			}
-			if (!$parent_node || !$tree_model -> id){
-				$n = $tree_model -> getNode();
-				$tree_model -> key = $n -> getNewChildKey() -> __toString();
+			
+			if (!$parent_node){
+				$node = new Node(new Key($tree_model -> id), 'ub_tree');
+				$tree_model -> key = $node -> key -> __toString();
 				$tree_model -> level = 1;
-			} 
+			}
 			
 			$branch_id = $tree_model -> save();
-			$n = $tree_model -> getNode();
 			if ($parent_node){
 				$n -> changeParent($parent_node);
 			}
