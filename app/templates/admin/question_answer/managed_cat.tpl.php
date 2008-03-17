@@ -1,4 +1,5 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
+
 	<div class="list">
 			<table class="dialog">
 				<tr>
@@ -22,7 +23,8 @@
 					<td class="c_cen">
 					
 						<!-- САМ ДИАЛОГ -->
-						<form id="form_managed" action="<?=$this->createUrl('AdminQuestionAnswer', 'ManagedCat', array(Project::getRequest()->getKeyByNumber(0), 1))?>" method="POST">
+						<form id="form_managed" action="<?=$this->createUrl('AdminQuestionAnswer', 'ManagedCat', array(Project::getRequest()->getKeyByNumber(0)))?>" method="POST">
+						<input type="hidden" id="sub" value="0" name="sub">
 						<table cellspacing="0" cellpadding="0" border="0">
 							<tr>
 								<td class="left_col">
@@ -55,7 +57,7 @@
 					<td class="b_left">&nbsp;</td>
 					<td class="b_cen"><div class="b_delim">
 						<div class="button bbig" style="float: right;"><a href="#">Отмена</a></div>
-						<div class="button bbig" style="float: right;"><a href="#" name="submit" onclick='document.getElementById("form_managed").submit();'>Сохранить</a></div>
+						<div class="button bbig" style="float: right;"><a href="#" name="submit" onclick='document.getElementById("sub").value=1;document.getElementById("form_managed").submit();'>Сохранить</a></div>
 					</div></td>
 					<td class="b_right">&nbsp;</td>
 				</tr>

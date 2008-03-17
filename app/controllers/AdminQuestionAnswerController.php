@@ -48,7 +48,7 @@ class AdminQuestionAnswerController extends AdminController {
 		$data = array();
 		$model = new QuestionCatModel();
 		$id = $request->getKeyByNumber(0);
-		if(!$request->getKeyByNumber(1)) {
+		if($request->sub == 0) {
 			$data['action_name'] = "Создать категорию";
 			if($id > 0) {
 				$data['action_name'] = "Редактировать категорию";
