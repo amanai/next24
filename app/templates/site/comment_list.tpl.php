@@ -14,10 +14,7 @@
 							<?php echo date("j F Y H:i", strtotime($item['creation_date']));?>
 						</div>
 					</div>
-				</div>
-					
-				<div>
-					<?php echo $item['text'];?>					
+					<?php echo $item['text'];?>
 				</div>
 				<div class="rmb14">
 				</div>
