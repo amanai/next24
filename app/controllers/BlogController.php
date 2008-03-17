@@ -458,7 +458,6 @@
 			$blog_model -> loadByUserId($user_id);
 			$blog_id = (int)$blog_model -> id;
 			if ($blog_id <= 0){
-				die("~~~");
 				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Post'));
 			}
 			
@@ -506,7 +505,6 @@
 			if ($parent_node){
 				$n -> changeParent($parent_node);
 			}
-			die("~!~");
 			Project::getResponse() -> redirect($request -> createUrl('Blog', 'EditBranch', array($branch_id)));
 			
 		}
