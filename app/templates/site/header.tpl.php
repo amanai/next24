@@ -6,8 +6,8 @@
 	<link href="<?php echo $this -> css_url;?>tabpane.css" type="text/css" rel="StyleSheet"	/>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>tabpane.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>sys.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>		
-	
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
+
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>xpath.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>blockUI.js"></script>
@@ -20,7 +20,7 @@
 		<!-- HEADER -->
 		<table width="100%" height="180" cellpadding="0">
 		<tr>
-			<td width="270"><a href="#"><img src="<?php echo $this -> image_url;?>logo.png" width="270" height="180" /></a></td>
+			<td width="270"><a href="/"><img src="<?php echo $this -> image_url;?>logo.png" width="270" height="180" /></a></td>
 			<td class="header2" align="right">
 				<!-- Блок авторизации -->
 				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
@@ -44,7 +44,7 @@
 						<td class="user3"> </td>
 						<td width="20"><a href="<?php echo $this->createUrl('User', 'Logout')?>"><img src="<?php echo $this -> image_url;?>exit.png" width="20" height="63" /></a></td>
 					</tr>
-					</table>					
+					</table>
 				<?php } else { ?>
 					<table width="220" height="125" cellpadding="0">
 					<tr>
@@ -69,10 +69,10 @@
 						</td>
 						<td class="user3"> </td>
 					</tr>
-					</table>	
-				<?php } ?>		
+					</table>
+				<?php } ?>
 				<!-- /Блок авторизации -->
-			
+
 							</td>
 			<td width="170">
 				<!-- Навигация -->
@@ -94,7 +94,7 @@
 				<!-- /Навигация -->
 			</td>
 		</tr>
-		</table>		
+		</table>
 		<!-- /HEADER -->
 	</td>
 </tr>
