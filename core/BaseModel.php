@@ -86,6 +86,7 @@ abstract class BaseModel{
 				}
 			}
 			$DE = Project::getDatabase();
+			$this -> checkPager();
 			$sortOrder = $this -> getSortDirection($sortOrder);
 			$result = $DE -> selectPage($this -> _countRecords, "SELECT * FROM ".$this -> _table." ORDER BY $sortName $sortOrder ");
 			$this -> updatePagerAmount();
