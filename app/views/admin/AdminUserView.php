@@ -34,7 +34,7 @@ class AdminUserView extends BaseAdminView{
 			$this -> setTemplate($this -> _dir, 'list.tpl.php');
 			$response -> clearBlock('edit_block');
 			$response -> hide('edit_block');
-			$response -> enable('list_block');
+			//$response -> enable('list_block');
 			$response -> block('list_block', true, $this -> parse());
 		}
 		
@@ -51,7 +51,7 @@ class AdminUserView extends BaseAdminView{
 			$this -> set($info);
 			$this -> setTemplate($this -> _dir, 'edit.tpl.php');
 			$response -> block('edit_block', true, $this -> parse());
-			$response -> disable('list_block');
+			//$response -> disable('list_block');
 		}
 		
 		function AjaxControllerList($info){
