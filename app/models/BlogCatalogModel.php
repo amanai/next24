@@ -6,7 +6,8 @@ class BlogCatalogModel extends BaseModel{
 			
 			function loadSubscribedPage($user_id){
 				$sql = "SELECT " .
-							" bc.* " .
+							" bc.*," .
+							" count(bs.id) as count_subitems " .
 						" FROM blog_catalog bc " .
 						" INNER JOIN ub_tree ubt ON ubt.blog_catalog_id=bc.id " .
 						" INNER JOIN blog_subscribe bs ON bs.ub_tree_id= ubt.id AND bs.user_id = ?d " .
