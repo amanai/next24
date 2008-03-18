@@ -44,13 +44,12 @@ class SubscribeController extends SiteController{
 			if ($filter === 1){
 				$info['blog_catalog'] = $blog_catalog_model -> loadSubscribedPage($user_id);
 			} else {
-				$info['blog_catalog'] = $blog_catalog_model -> loadPage();
+				$info['blog_catalog'] = $blog_catalog_model -> loadAll();
 			}
 			$info['level'] = 0;
 			
 			foreach($info['blog_catalog'] as &$item){
 				$item['ajax_param'] = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogCatalogTree', array($item['id'], $info['level'], $filter, 1));
-				$item['count_subitems'] = 10;
 			}
 			$info['direction'] = 1;
 			$this -> _view -> SubscribeList($info);
