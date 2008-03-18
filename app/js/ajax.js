@@ -80,6 +80,21 @@ function handleResponse(msg){
 					//}
 		          });
 		    }
+		    if (p.effects){
+		    	$.each(p.effects, function(i, item){
+		    		if (item.name == 'blur'){
+		    			$("#"+item.id).blur();
+		    		} else if (item.name == 'focus'){
+		    			$("#"+item.id).focus();
+		    		} else if (item.name == 'revert') {
+		    			if ($("#"+item.id).attr('checked') == true){
+		    				$("#"+item.id).attr('checked', false);
+		    			} else {
+			    			$("#"+item.id).attr('checked', true);
+		    			}
+		    		}
+		    	});
+		    }
 		    cancel(msg);
 		}
 	}
