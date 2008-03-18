@@ -9,6 +9,10 @@ class SubscribeController extends SiteController{
 			parent::__construct($view_class);
 			
 		}
+		function BaseSubscribeData(&$info){
+			$info['tab_list'] = TabController::getOwnTabs(false, false, false, false, false, false, false, true);
+		}
+		
 		
 		function ListAction(){
 			$request = Project::getRequest();
@@ -18,7 +22,7 @@ class SubscribeController extends SiteController{
 			
 			$this -> BaseSiteData();
 			$info = array();
-			
+			$this -> BaseSubscribeData($info);
 			
 			
 			
@@ -45,10 +49,10 @@ class SubscribeController extends SiteController{
 			$info['level'] = 0;
 			
 			foreach($info['blog_catalog'] as &$item){
-				$item['ajax_param'] = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogCatalogTree', array($item['id'], $info['level'], $filter));
+				$item['ajax_param'] = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogCatalogTree', array($item['id'], $info['level'], $filter, 1));
 				$item['count_subitems'] = 10;
 			}
-			
+			$info['direction'] = 1;
 			$this -> _view -> SubscribeList($info);
 			$this -> _view -> parse();
 		}
@@ -63,23 +67,30 @@ class SubscribeController extends SiteController{
 			$catalog_id = (int)$request -> getKeyByNumber(0);
 			$level = (int)$request -> getKeyByNumber(1);
 			$filter = (int)$request -> getKeyByNumber(2);
-			
-			$tree_model = new BlogTreeModel;
-			$info['blog_catalog'] = $tree_model -> loadByCatalog($catalog_id);
-			$subscribe_model = new BlogSubscribeModel;
-			foreach ($info['blog_catalog'] as $key => &$item){
-				$subscribed = $subscribe_model -> isSubscribed($user_id, $item['id']);
-				$count_subitems = $tree_model -> countSubItems($item['key']);
-				if (!$filter ||  $subscribed || $count_subitems){
-					$item['count_subitems'] = $count_subitems;
-					$item['need_subscribe'] = true;
-					$item['subscribed'] = $subscribed;
-				} else {
-					unset($info['blog_catalog'][$key]);
+			$direction = (int)$request -> getKeyByNumber(3);
+			if ($direction === 1){
+				$tree_model = new BlogTreeModel;
+				$info['blog_catalog'] = $tree_model -> loadByCatalog($catalog_id);
+				$subscribe_model = new BlogSubscribeModel;
+				foreach ($info['blog_catalog'] as $key => &$item){
+					$subscribed = $subscribe_model -> isSubscribed($user_id, $item['id']);
+					$count_subitems = $tree_model -> countSubItems($item['key']);
+					if (!$filter ||  $subscribed || $count_subitems){
+						$item['count_subitems'] = $count_subitems;
+						$item['need_subscribe'] = true;
+						$item['subscribed'] = $subscribed;
+					} else {
+						unset($info['blog_catalog'][$key]);
+					}
 				}
+				$info['level'] = $level + 1;
+			} else {
+				$info['level'] = $level;
 			}
+			//var_dump($info['level']);die;
+			$info['direction'] = $direction;
 			$info['id'] = $catalog_id;
-			$info['level'] = $level + 1;
+			
 			$info['filter'] = $filter;
 			$this -> _view -> AjaxBlogCatalogTree($info);
 			$this -> _view -> ajax();
@@ -95,28 +106,34 @@ class SubscribeController extends SiteController{
 			$tree_id = (int)$request -> getKeyByNumber(0);
 			$level = (int)$request -> getKeyByNumber(1);
 			$filter = (int)$request -> getKeyByNumber(2);
+			$direction = (int)$request -> getKeyByNumber(3);
 			$tree_model = new BlogTreeModel;
 			$info['blog_catalog'] = $tree_model -> loadListByParentId($tree_id);
 			
 			$subscribe_model = new BlogSubscribeModel;
-			
-			foreach ($info['blog_catalog'] as $key => &$item){
-				$subscribed = $subscribe_model -> isSubscribed($user_id, $item['id']);
-				$count_subitems = $tree_model -> countSubItems($item['key']);
-				if (!$filter ||  $subscribed || $count_subitems){
-					if ($level >= 1){
-						$count_subitems = 0;
+			if ($direction === 1){
+				foreach ($info['blog_catalog'] as $key => &$item){
+					$subscribed = $subscribe_model -> isSubscribed($user_id, $item['id']);
+					$count_subitems = $tree_model -> countSubItems($item['key']);
+					if (!$filter ||  $subscribed || $count_subitems){
+						if ($level >= 1){
+							$count_subitems = 0;
+						}
+						$item['count_subitems'] = $count_subitems;
+						$item['need_subscribe'] = true;
+						$item['subscribed'] = $subscribed;
+					} else {
+						unset($info['blog_catalog'][$key]);
 					}
-					$item['count_subitems'] = $count_subitems;
-					$item['need_subscribe'] = true;
-					$item['subscribed'] = $subscribed;
-				} else {
-					unset($info['blog_catalog'][$key]);
+					
 				}
-				
+				$info['level'] = $level + 1;
+			} else {
+				$info['level'] = $level;
 			}
 			$info['id'] = $tree_id;
-			$info['level'] = $level + 1;
+			$info['direction'] = $direction;
+			$info['filter'] = $filter;
 			$this -> _view -> AjaxBlogTree($info);
 			$this -> _view -> ajax();
 		}
