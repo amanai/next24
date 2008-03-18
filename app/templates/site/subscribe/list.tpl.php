@@ -18,9 +18,6 @@
 				</div></div></div></div>
 				
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-					sadfdsfsdfsdfsd
-
-
 				</div></div></div></div>
 				
 
