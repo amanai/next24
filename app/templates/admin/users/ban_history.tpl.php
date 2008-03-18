@@ -1,4 +1,4 @@
-<table cellpadding="0" cellspacing="0" width="100%">
+<table cellpadding="2" cellspacing="2" width="100%"  class="ban_history">
 	<tr>
 		<th>Когда</th>
 		<th>До</th>
