@@ -67,7 +67,10 @@
 						Забанен до:
 						</td>
 						<td class="right_col">
-							<input class="hasDatepicker"  size="30" value="дата" id="defaultFocus"  type="text">
+						
+							<input readonly type="text" name="m_date" id="m_date" value="<?php echo $date; ?>">
+	            			<script>$("#m_date").date_input();</script>
+	            		</td>
 					</tr>
 				</tbody></table>
 				</form>
