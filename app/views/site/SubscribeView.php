@@ -54,9 +54,11 @@ class SubscribeView extends BaseSiteView{
 				$ajax_param = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogTree', array($info['id'], ($info['level'] - 1), $info['filter'], 1));
 				$response -> block('bti_'.$info['id'].'_'.($info['level'] - 1), true, '<a href="#" onClick=\'ajax('.$ajax_param.');\'><img src="'.$this -> image_url.'icons/plus.gif" /></a>' );
 			}
-			
-			
-			
+		}
+		
+		function Change($info = array()){
+			$response = Project::getAjaxResponse();
+			$response -> effect("ch_".$info['id'], 'revert');
 		}
 }
 ?>

@@ -67,8 +67,8 @@ class AjaxResponse{
 		
 		
 		
-		public function effect($id, $value, $properties=array()){
-			$this -> _response['effects'][] = array("id"=>$id, "effect_name"=>$value, "properties"=>$properties);
+		public function effect($id, $effect_name, $properties=array()){
+			$this -> _response['effects'][] = array("id"=>$id, "name"=>$effect_name, "properties"=>$properties);
 		}
 		
 		

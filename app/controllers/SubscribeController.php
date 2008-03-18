@@ -147,7 +147,11 @@ class SubscribeController extends SiteController{
 			
 			$subscribe_model = new BlogSubscribeModel;
 			$subscribe_model -> changeSubscribe($user_id, $tree_id);
+			$info = array();
+			$info['id'] = $tree_id;
 			
+			$this -> _view -> Change($info);
+			$this -> _view -> ajax();
 		}
 }
 ?>
