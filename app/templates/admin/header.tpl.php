@@ -10,14 +10,22 @@
 	<link href="<?php echo $this -> css_url;?>ajax.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo $this -> css_url;?>datepicker.css" type="text/css" rel="StyleSheet"/>
 	<link href="<?php echo $this -> css_url;?>dialog.css" type="text/css" rel="StyleSheet"/>
+	<link href="<?php echo $this -> css_url;?>date_input.css" type="text/css" rel="StyleSheet"/>
 	
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery-1.2.3.pack.js"></script>
+	
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery_pngfix.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>init.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>xpath.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>blockUI.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>ajax.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>datepicker.js"></script>
+	
+	
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.dimensions.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.pack.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.ru_RU.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.format.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.hoverIntent.js"></script>
 </head>
 
 <body>
