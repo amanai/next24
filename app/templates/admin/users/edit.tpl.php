@@ -97,8 +97,20 @@
 									</table>
 	            				</div>
 							<?php } ?>
-							<div><a id="sticky" title="история банов" href="<?php echo $this -> history_link; ?>" rel="<?php echo $this -> history_link; ?>">история банов</a></div>
-							<script>$('#sticky').cluetip({activation: 'click', width: 650});</script>
+							<div><a class="jt"  id="sticky" title="история банов" href="<?php echo $this -> history_link; ?>" rel="<?php echo $this -> history_link; ?>">история банов</a></div>
+							<script>
+							$('a.jt:eq(0)').cluetip({
+							      cluetipClass: 'jtip', 
+							      arrows: true, 
+							      dropShadow: false,
+							      hoverIntent: false,
+							      sticky: true,
+							      mouseOutClose: true,
+							      closePosition: 'title',
+							      width:650,
+							      closeText: '<img src="<?php echo $this -> image_url; ?>icons/cross.png" alt="close" />'
+							    });
+							</script>
 	            		</td>
 					</tr>
 				</tbody></table>
