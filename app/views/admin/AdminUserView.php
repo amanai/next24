@@ -22,6 +22,11 @@ class AdminUserView extends BaseAdminView{
 			$this -> set($info);
 		}
 		
+		function BanHistoryList($info){
+			$this -> set($info);
+			$this -> setTemplate($this -> _dir, 'ban_history.tpl.php');
+		}
+		
 		function AjaxList($info){
 			$this -> createList($info);
 			$response = Project::getAjaxResponse();

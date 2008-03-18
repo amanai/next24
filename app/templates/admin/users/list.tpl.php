@@ -45,7 +45,7 @@
 				<?php echo date("Y-m-d", strtotime($item['registration_date'])); ?>
 			</td>
 			<td>
-				<?php if ((int)$item['banned'] == 0){ echo 'нет'; } else { echo 'до !!ДАТА!!'; } ?>
+				<?php if ((int)$item['banned'] == 0){ echo 'нет'; } else { echo '<b>'.$item['banned_date'].'</b>'; } ?>
 			</td>
 			<td>
 				<div class="button bsmall" style="float: left;"><a href="#" onClick='ajax(<?php echo $item['edit_link'];?>);'><img src="<?php echo $this -> image_url;?>icons/small_edit.gif" alt="Правка"/></a></div>

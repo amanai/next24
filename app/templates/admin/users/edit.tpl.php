@@ -63,13 +63,42 @@
 					</tr>
 
 					<tr>
-						<td class="left_col">
-						Забанен до:
+						<td class="left_col" valign="top">
+						<?php if ($this -> banned) { ?>
+							Разбанить:
+						<?php } else { ?>
+							Забанить:
+						<?php } ?>
 						</td>
 						<td class="right_col">
-						
-							<input readonly type="text" name="m_date" id="m_date" value="<?php echo $date; ?>">
-	            			<script>$("#m_date").date_input();</script>
+							<?php if ($this -> banned) { ?>
+								<input type="checkbox" name="unbann" /><span style="font-size:11px">(забанен до <b><?php echo $this -> banned_date; ?></b>)</span>
+							<?php } else { ?>
+								<input type="checkbox" name="bann" onClick='if (this.checked) $("div#ban_block").show(); else $("div#ban_block").hide();' />
+								<div id="ban_block" style="display:none;">
+									<table cellpadding="0" cellspacing="0">
+										<tr>
+											<td>
+												Дата:
+											</td>
+											<td>
+												<input readonly type="text" style="width:200px;" name="ban_date" id="ban_date" value="<?php echo $date; ?>">
+	            								<script>$("#ban_date").date_input();</script>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Предупреждение:
+											</td>
+											<td>
+											  <textarea name="warning" style="width:200px;height:150px;"></textarea>
+											</td>
+										</tr>
+									</table>
+	            				</div>
+							<?php } ?>
+							<div><a id="sticky" title="история банов" href="<?php echo $this -> history_link; ?>" rel="<?php echo $this -> history_link; ?>">история банов</a></div>
+							<script>$('#sticky').cluetip({activation: 'click', width: 650});</script>
 	            		</td>
 					</tr>
 				</tbody></table>
