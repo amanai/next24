@@ -19,7 +19,7 @@ class SubscribeView extends BaseSiteView{
 					
 				}
 				$ajax_param = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogCatalogTree', array($info['id'], $info['level'], $info['filter'], 0));
-				$response -> block('bti_'.$info['id'].'_'.($info['level'] - 1), true, '<a href="#" onClick=\'ajax('.$ajax_param.');\'><img src="'.$this -> image_url.'icons/minus.gif" />' );
+				$response -> block('bti_'.$info['id'].'_'.($info['level'] - 1), true, '<a href="#" onClick=\'ajax('.$ajax_param.');\'><img src="'.$this -> image_url.'icons/minus.gif" /></a>' );
 				
 				$this -> set($info);
 				$this -> setTemplate($this -> _dir, 'blog_tree.tpl.php');
@@ -27,7 +27,7 @@ class SubscribeView extends BaseSiteView{
 			} else {
 				$response -> hide('btl_'.$info['id'].'_'.($info['level'] - 1));
 				$ajax_param = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogCatalogTree', array($info['id'], ($info['level'] - 1), $info['filter'], 1));
-				$response -> block('bti_'.$info['id'].'_'.($info['level'] - 1), true, '<a href="#" onClick=\'ajax('.$ajax_param.');\'><img src="'.$this -> image_url.'icons/plus.gif" />' );
+				$response -> block('bti_'.$info['id'].'_'.($info['level'] - 1), true, '<a href="#" onClick=\'ajax('.$ajax_param.');\'><img src="'.$this -> image_url.'icons/plus.gif" /></a>' );
 			}
 		}
 		
@@ -44,7 +44,7 @@ class SubscribeView extends BaseSiteView{
 				}
 				
 				$ajax_param = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogTree', array($info['id'], $info['level'], $info['filter'], 0));
-				$response -> block('bti_'.$info['id'].'_'.($info['level'] - 1), true, '<a href="#" onClick=\'ajax('.$ajax_param.');\'><img src="'.$this -> image_url.'icons/minus.gif" />' );
+				$response -> block('bti_'.$info['id'].'_'.($info['level'] - 1), true, '<a href="#" onClick=\'ajax('.$ajax_param.');\'><img src="'.$this -> image_url.'icons/minus.gif" /></a>' );
 				
 				$this -> set($info);
 				$this -> setTemplate($this -> _dir, 'blog_tree.tpl.php');
@@ -52,7 +52,7 @@ class SubscribeView extends BaseSiteView{
 			} else {
 				$response -> hide('btl_'.$info['id'].'_'.($info['level'] - 1));
 				$ajax_param = AjaxRequest::getJsonParam('Subscribe', 'AjaxBlogTree', array($info['id'], ($info['level'] - 1), $info['filter'], 1));
-				$response -> block('bti_'.$info['id'].'_'.($info['level'] - 1), true, '<a href="#" onClick=\'ajax('.$ajax_param.');\'><img src="'.$this -> image_url.'icons/plus.gif" />' );
+				$response -> block('bti_'.$info['id'].'_'.($info['level'] - 1), true, '<a href="#" onClick=\'ajax('.$ajax_param.');\'><img src="'.$this -> image_url.'icons/plus.gif" /></a>' );
 			}
 			
 			
