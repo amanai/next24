@@ -1,6 +1,7 @@
 <?php
 
 class ArticleController extends SiteController {
+	private $_countPages = 0;
 	
 	public function __construct() {
 		if ($view_class === null) {
@@ -44,12 +45,23 @@ class ArticleController extends SiteController {
 	
 	public function AddArticleAction() {
 		$request = Project::getRequest();
-		var_dump($request);
-		$article_tree_model = new ArticleTreeModel();
-		$data['cat_list'] = $article_tree_model->loadByParentId(0);
-		$article_tree_model->load(2);
-		$this->_view->AddArticle($data);
-		$this->_view->parse();
+		if(!$request->submit) {
+			$article_tree_model = new ArticleTreeModel();
+			$data['cat_list'] = $article_tree_model->loadByParentId(0);
+			$this->_view->AddArticle($data);
+			$this->_view->parse();
+		} else {
+			$article_model = new ArticleModel();
+			$article_page_model = new ArticlePageModel();
+			$article_model->articles_tree_id = (int)$request->category;
+			$article_model->user_id = Project::getUser()->getDbUser()->id;;
+			$article_model->title = $request->title;
+			$article_model->allowcomments = (int)$request->allow_comment;
+			$article_model->rate_status = (int)$request->allow_rate;
+			$article_model->creation_date = date("Y-m-d H:i:s");
+			$article_model->save();
+		}
+		
 	}
 	
 	public function AjaxChangeCatAction() {
@@ -67,6 +79,14 @@ class ArticleController extends SiteController {
 				$this ->_view->ajax();
 			}
 		}	
+	}
+	
+	public function AjaxAddPageAction() {
+		$this->_countPages++;
+		$data = array();
+		$data['page_number'] = $this->_countPages;
+		$this->_view->AjaxAddPage($data);
+		$this->_view->ajax();
 	}
 	
 }
