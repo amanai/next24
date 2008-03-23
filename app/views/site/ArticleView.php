@@ -17,14 +17,14 @@ class ArticleView extends BaseSiteView {
 		$this->setTemplate(null, 'change_cat.tpl.php');
 		$this->set($data);
 		$response = Project::getAjaxResponse();
-		$response->block($data['block_name'], true, $this->parse()); //TODO: addBlock()
+		$response->block($data['block_name'], true, $this->parse()); //TODO: addBlock
 	}
 	
 	public function AjaxAddPage($data) {
 		$this->setTemplate(null, 'page_article.tpl.php');
 		$this->set($data);
 		$response = Project::getAjaxResponse();
-		$response->block("pages", true, $this->parse()); //TODO: addBlock
+		$response->block('pages', true, $this->parse()); //TODO: addBlock
 	}
 }
 

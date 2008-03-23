@@ -8,7 +8,7 @@
 			<td><input type="text" name="title"></td>
 		</tr>
 		<tr>
-			<td width="15%" valign="top">Раздел</td>
+			<td width="15%">Раздел</td>
 			<td width="85%">
 				<div id="level1" style="padding-top:5px">
 					<select style="width:115px">
@@ -30,7 +30,7 @@
 		</tr>
 		<tr>
 			<td>Принимать участие в голосовании</td>
-			<td><input type="checkbox" name="allow_rate"></td>
+			<td><input type="checkbox" name="allow_comment"></td>
 		</tr>
 		<tr>
 			<td colspan="2"><center>Страницы</center></td>

@@ -60,6 +60,7 @@ class ArticleController extends SiteController {
 			$article_model->rate_status = (int)$request->allow_rate;
 			$article_model->creation_date = date("Y-m-d H:i:s");
 			$article_model->save();
+			//var_dump($request->title_page);
 		}
 		
 	}
