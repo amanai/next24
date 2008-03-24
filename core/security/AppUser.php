@@ -60,8 +60,8 @@ class AppUser{
 			}
 			
 			function login($user, $pwd){
-				$this -> _dbUser -> login($user, $pwd);
-				if ($this -> _dbUser -> id > 0){
+				$res = $this -> _dbUser -> login($user, $pwd);
+				if ($res){
 					return $this -> _dbUser;
 				} else {
 					return false;

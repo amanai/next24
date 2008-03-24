@@ -26,7 +26,8 @@ class SecurityManager extends ApplicationManager implements IManager{
 			}
 			
 			function login($login, $pwd){
-				if ( ($user_model = Project::getUser() -> login($login, $pwd)) !== false){
+				$user_model = Project::getUser() -> login($login, $pwd);
+				if ( $user_model !== false){
 					// Set current user as logged
 					Project::getUser() -> setIsLogged($user_model);
 					// Reinit user rights and access list
