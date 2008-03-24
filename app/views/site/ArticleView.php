@@ -36,6 +36,11 @@ class ArticleView extends BaseSiteView {
 		$this->setTemplate(null, 'list.tpl.php');
 		$this->set($data);
 	}
+	
+	public function ViewArticle($data) {
+		$this->setTemplate(null, 'view_article.tpl.php');
+		$this->set($data);
+	}
 }
 
 ?>

@@ -75,6 +75,19 @@ class ArticleController extends SiteController {
 		
 	}
 	
+	public function ViewArticle() {
+		$request = Project::getRequest();
+		$data = array();
+		$id = (int)$request->getKeyByNumber(0);
+		if($id > 0) {
+			$this->BaseSiteData($data);
+			$article_model = new ArticleModel();
+			$data['article'] = $article_model->loadArticle($id);
+			$this->_view->ViewArticle($data);
+			$this->_view->parse();
+		}		
+	}
+	
 	public function AjaxChangeCatAction() {
 		$request = Project::getRequest();
 		$parent_id = $request->getKeyByNumber(0);

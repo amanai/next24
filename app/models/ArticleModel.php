@@ -62,6 +62,33 @@ class ArticleModel extends BaseModel {
 		return $result;
 	}
 	
+	public function loadArticle($id) {
+		$id = (int)$id;
+		$sql = "SELECT ".
+				"a.`id`, ".
+				"a.`articles_tree_id`, ".
+				"a.`user_id`, ".
+				"a.`title`, ".
+				"a.`allowcomments`, ".
+				"a.`rate_status`, ".
+				"a.`rate`, ".
+				"a.`votes`, ".
+				"a.`comments`, ".
+				"a.`views`, ".
+				"a.`creation_date`, ".
+				"u.`login`, ".
+				"at.`name` ".
+				"FROM articles a ".
+				"LEFT JOIN users u ".
+				"ON a.`user_id` = u.`id` ".
+				"LEFT JOIN articles_tree at ".
+				"ON a.`articles_tree_id` = at.`id` ".
+				"WHERE a.`id` = ?d";
+		$result = Project::getDatabase()->selectRow($sql, $id);
+		$this->bind($result);
+		return $result;
+	}
+	
 }
 
 ?>
