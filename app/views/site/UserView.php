@@ -25,5 +25,48 @@ class UserView extends BaseSiteView{
 			$this -> setTemplate(null, 'login.tpl.php');
 		}
 		
+		function RegistrationForm($info){
+			$this -> set($info);
+			$this -> setTemplate(null, 'registration.tpl.php');
+		}
+		
+		function Activation($info){
+			$this -> set($info);
+			$this -> setTemplate(null, 'activation.tpl.php');
+		}
+		
+		function CompleteRegistration($info = array()){
+			$this -> set($info);
+			$this -> setTemplate(null, 'complete_registration.tpl.php');
+		}
+		
+		
+		
+		function ChangeCountry($info){
+			$response = Project::getAjaxResponse();
+			$this -> set($info);
+			$this -> setTemplate($this -> _dir, 'state_list.tpl.php');
+			$response -> block('state_div', true, $this -> parse());
+			
+			$info = array();
+			$info['city_list'] = array();
+			$this -> set($info);
+			$this -> setTemplate($this -> _dir, 'city_list.tpl.php');
+			$response -> block('city_div', true, $this -> parse());
+		}
+		
+		function ChangeState($info){
+			$response = Project::getAjaxResponse();
+			$this -> set($info);
+			$this -> setTemplate($this -> _dir, 'city_list.tpl.php');
+			$response -> block('city_div', true, $this -> parse());
+		}
+		
+		
+		function ProfileEdit($info){
+			$this -> set($info);
+			$this -> setTemplate(null, 'profile_edit.tpl.php');
+		}
+		
 }
 ?>

@@ -1,0 +1,16 @@
+.registration_form .label{
+	width:200px;
+}
+
+.registration_form input, .registration_form select{
+	width: 300px;
+}
+
+.registration_form input[type=radio]{
+	width: 10px;
+}
+
+.registration_form textarea{
+	width: 300px;
+	height:100px;
+}
