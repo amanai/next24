@@ -10,6 +10,9 @@ class CApp {
 			if (!file_exists($configFile) || !is_file($configFile)){
 				die("Missing main configuration file");
 			}
+			//$x = setlocale(LC_TIME, 'ru_RU.CP1251', 'ru_RU.cp1251', 'Russian_Russia.1251');
+			$x = setlocale(LC_ALL, 'rus_RUS.65001', 'rus_RUS.65001', 'Russian_Russia.65001');
+			
 			$xml = simplexml_load_file($configFile);
 			foreach ($xml->module as $module) {
 				$configuration = new ConfigParameter($module->asXML());
