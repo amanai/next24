@@ -8,13 +8,7 @@
 		<tr>
 			<td class="next24u_left">
 				<!-- левый блок -->
-					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-						<div class="block_title"><h2>Управление</h2></div>
-
-						<a href="">Редактировать профиль</a><br />
-						<a href="#">Редактировать аватары</a>
-
-					</div></div></div></div>
+					<?php  include($this -> _include('control_panel.tpl.php')); ?>
 				<!-- /левый блок -->
 			</td>
 			<td class="next24u_right">
