@@ -4,14 +4,23 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href="<?php echo $this -> css_url;?>style.css" type="text/css" rel="StyleSheet" />
 	<link href="<?php echo $this -> css_url;?>tabpane.css" type="text/css" rel="StyleSheet"	/>
+	<link href="<?php echo $this -> css_url;?>date_input.css" type="text/css" rel="StyleSheet"/>
+	
+	
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>tabpane.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>sys.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
+	
 
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>xpath.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>blockUI.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>ajax.js"></script>
+	
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.dimensions.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.pack.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.ru_RU.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.format.js"></script>
 </head>
 <body>
 <table width="100%" height="100%" cellpadding="0">
@@ -66,7 +75,7 @@
 								</tr>
 								</table>
 								<div class="user2_x"><input type="checkbox" style="padding: 0px;" /> Запомнить <input type="submit" value="Вход" style="width: 45px;" /></div>
-								<div class="user2_x"><a href="#">Потеряли пароль?</a> | <a href="#">Регистрация</a></div>
+								<div class="user2_x"><a href="#">Потеряли пароль?</a> | <a href="<?php echo $this->createUrl('User', 'RegistrationForm');?>">Регистрация</a></div>
 							</form>
 						</td>
 						<td class="user3"> </td>
@@ -106,3 +115,4 @@
 	<table width="100%" cellpadding="0">
 	<tr>
 		<td class="next24">
+			<div class="info" id="flash_message"><?php echo $this -> flash_messages; ?></div>
