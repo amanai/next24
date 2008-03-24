@@ -40,10 +40,14 @@ class ArticleModel extends BaseModel {
 				"a.`votes`, ".
 				"a.`comments`, ".
 				"a.`views`, ".
-				"a.`creation_date` ".
+				"a.`creation_date`, ".
+				"u.`login`, ".
+				"at.`name` ".
 				"FROM articles a ".
 				"LEFT JOIN users u ".
-				"ON a.`user_id` = u.`id` ";
+				"ON a.`user_id` = u.`id` ".
+				"LEFT JOIN articles_tree at ".
+				"ON a.`articles_tree_id` = at.`id` ";
 				$userId > 0 ? $sql .= "WHERE a.`user_id` = ?d " : "";
 				$sql .= "ORDER BY $sortName $sortOrder  LIMIT ?d, ?d ";
 		$params = array();
@@ -53,8 +57,8 @@ class ArticleModel extends BaseModel {
 		$params[] = $this->_pager->getStartLimit();
 		$params[] = $this->_pager->getPageSize();
 		$result = call_user_func_array(array(Project::getDatabase(), 'selectPage'), $params);
-		//$this->updatePagerAmount();
 		echo $sql;
+		//$this->updatePagerAmount();
 		return $result;
 	}
 	

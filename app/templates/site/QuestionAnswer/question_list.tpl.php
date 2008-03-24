@@ -28,7 +28,7 @@
 											<div style="margin: 0px -10px;">
 												<table class="questions">
 													<tr>
-														<td style="width: 100%; text-align: left;"><b>Вопросы пользователей</b><b></td>
+														<td style="width: 100%; text-align: left;"><b>Вопросы пользователей</b></td>
 														<td><b>Автор</b></td>
 														<td><b>Ответов</b></td>
 														<td><b>Дата создания</b></td>

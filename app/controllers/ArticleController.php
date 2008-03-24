@@ -13,24 +13,28 @@ class ArticleController extends SiteController {
 	public function ListAction() {
 		$request = Project::getRequest();
 		$data = array();
+		$this->BaseSiteData($data);
 		$tree_model = new ArticleTreeModel();
 		$article_model = new ArticleModel();
 		$data['cat_list'] = $tree_model->loadByParentId((int)$request->getKeyByNumber(0));
-		$data['article_list'] = $article_model->loadByParentId((int)$request->getKeyByNumber(0));		
-		
-		
+		$data['article_list'] = $article_model->loadByParentId((int)$request->getKeyByNumber(0));
+		$this->_view->ArticleList($data);
+		$this->_view->parse();
 	}
 	
 	public function LastListAction() {
 		$data = array();
+		$this->BaseSiteData($data);
 		$this->_articleList($data, null, 'a.creation_date', 'DESC', 10, 'LastList');
-		var_dump($data);
+		$this->_view->LastList($data);
+		$this->_view->parse();
 	}
 	
 	public function TopListAction() {
 		$data = array();
 		$this->_articleList($data, null, 'a.votes', 'DESC', 10, 'TopList');
-		var_dump($data);
+		$this->_view->TopList($data);
+		$this->_view->parse();
 	}
 	
 	private function _articleList(&$data, $userId, $sortName, $sortOrder, $per_page, $action) {
@@ -59,8 +63,14 @@ class ArticleController extends SiteController {
 			$article_model->allowcomments = (int)$request->allow_comment;
 			$article_model->rate_status = (int)$request->allow_rate;
 			$article_model->creation_date = date("Y-m-d H:i:s");
-			$article_model->save();
-			//var_dump($request->title_page);
+			$id = $article_model->save();
+			for($i=0; $i < count($request->page_title); $i++) {
+				$article_page_model = new ArticlePageModel();
+				$article_page_model->article_id = $id;
+				$article_page_model->title = $request->page_title[$i];
+				$article_page_model->p_text = $request->page_text[$i];
+				$article_page_model->save();
+			}
 		}
 		
 	}
@@ -88,6 +98,13 @@ class ArticleController extends SiteController {
 		$data['page_number'] = $this->_countPages;
 		$this->_view->AjaxAddPage($data);
 		$this->_view->ajax();
+	}
+	
+	protected function BaseSiteData(&$data) {
+		$data['tab_article_list'] = "Каталог статей";
+		$data['tab_top_list'] = "Top статьи";
+		$data['tab_last_list'] = "Последние статьи";
+		$data['tab_my_articles'] = "Мои статьи";
 	}
 	
 }

@@ -26,6 +26,11 @@ class ArticleView extends BaseSiteView {
 		$response = Project::getAjaxResponse();
 		$response->block('pages', true, $this->parse()); //TODO: addBlock
 	}
+	
+	public function LastList($data) {
+		$this->setTemplate(null, 'list.tpl.php');
+		$this->set($data);	
+	}
 }
 
 ?>

@@ -588,6 +588,22 @@ table { border-collapse: collapse; }
 	padding: 0px 10px 20px 10px;
 }
 
+.articles td
+{
+	background: #E9F1F7;
+	padding: 5px 10px;
+	white-space: nowrap;
+	text-align: right;
+}
+
+.articles #cmod_tab2 td
+{
+	background: #F0F6FB;
+	padding: 5px 10px;
+	white-space: nowrap;
+	text-align: right;
+}
+
 
 /* Фотоальбомы */
 .photo_table
