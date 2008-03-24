@@ -1,6 +1,12 @@
 <?php
 spl_autoload_register(array('Project','autoload'));
 
+class OS{
+	const WINDOWS	= "WIN";
+	const LINUX		= "LINUX";
+	const UKNOWN	= "UKNOWN";
+}
+
 
 
 /**
@@ -8,9 +14,35 @@ spl_autoload_register(array('Project','autoload'));
  */
 class Project{
 	public $_stack;
+	private $_eol = false;
+	private $_os = false;
  
 	    function __construct() {
 	        $this -> _stack = array(array());
+	    }
+	    
+	    
+	    function detectOs(){
+	    	if (!self::$_eol || !self::$_os){
+		    	if (strtoupper(substr(PHP_OS, 0, 3)) === "WIN") {
+					self::$_eol = "\r\n";
+					self::$_os = OS::WINDOWS;
+				} else if (PHP_OS == "Linux") {
+					self::$_eol = "\n";
+					self::$_os = OS::LINUX;
+				} else {
+					self::$_eol = "\n";
+					self::$_os = OS::UKNOWN;
+				}
+	    	}
+	    }
+	    
+	    function isLocalhost(){
+	    	if (self::$_os == OS::WINDOWS){
+	    		return true;
+	    	} else {
+	    		return false;
+	    	}
 	    }
 	    
 	    
