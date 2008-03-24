@@ -5,15 +5,24 @@ class UserModel extends BaseModel{
 		}
 		
 		function login($login, $pwd){
+			
 			$DE = Project::getDatabase();
 			$result = array();
-			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE login=? AND pass=?", $login, $pwd);
+			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE login=? AND pass=concat(salt, md5(concat(salt, ?)))", $login, $pwd);
+			
 			if (count($result) > 0){
 				$this -> bind($result);
 				return true;
 			} else {
 				return false;
 			}
+		}
+		
+		function loadByActivationCode($code, $user_group_id){
+			$DE = Project::getDatabase();
+			$result = array();
+			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE md5(concat(login,salt,pass))=? AND user_type_id=?d LIMIT 1", $code, (int)$user_group_id);
+			$this -> bind($result);
 		}
 		
 		/** 
@@ -34,6 +43,13 @@ class UserModel extends BaseModel{
 			$this -> bind($result);
 		}
 		
+		function loadByEmail($email){
+			$DE = Project::getDatabase();
+			$result = array();
+			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE LOWER(TRIM(email))=? LIMIT 1", strtolower(trim($email)));
+			$this -> bind($result);
+		}
+		
 		function &getBlog(){
 			$blog_model = new BlogModel;
 			$blog_model -> loadByUserId($this -> id);
@@ -46,6 +62,10 @@ class UserModel extends BaseModel{
 		
 		function unban($user_id){
 			Project::getDatabase() -> selectRow("UPDATE ".$this -> _table." SET banned=0 WHERE id=?d ", (int)$user_id);
+		}
+		
+		function getActivationCode(){
+			return md5($this -> login . $this -> salt . $this -> pass);
 		}
 }
 ?>
