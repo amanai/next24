@@ -21,7 +21,7 @@ class ParamModel extends BaseModel{
 		
 		function getByGroupId($group_id){
 			$result = Project::getDatabase() -> select("SELECT param.id as id, param.name as name, param.value as value, param.php_type as php_type from param 
-									INNER JOIN param_group ON param_group.id = param.param_group_id AND param_group.id=?d", $group_id);
+									LEFT JOIN param_group ON param_group.id = param.param_group_id WHERE param.param_group_id=?d", $group_id);
 			return $result;
 		}
 		
