@@ -193,6 +193,11 @@ function getFormData(p){
 		//parameter += '&' + a[i].name + '=' + a[i].value;
 		parameter[a[i].name] = a[i].value;
 	}
+	a = $('#'+form_id+' :password');
+	for (i = 0; i < a.length; i++){
+		//parameter += '&' + a[i].name + '=' + a[i].value;
+		parameter[a[i].name] = a[i].value;
+	}
 	
 	
 	if (p.editors){
