@@ -25,6 +25,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 	
 	private $_after_init_process = false;
 	
+	private $_request_session_id = null;
 		function __get($param){
 			return $this -> getKey($param);
 		}
@@ -36,7 +37,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 				HelpFunctions::strips($_COOKIE);
 				HelpFunctions::strips($_REQUEST);
 			}
-			
+
 			$this -> _requestMethod = $_SERVER['REQUEST_METHOD'];
 			if ($this -> _requestMethod == 'GET'){
 				$this -> _request = $_GET;
@@ -74,7 +75,6 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 							}
 						}
 					}
-				
 				}
 			} else {
 				die(__METHOD__."::".__LINE__."::Non-rewrite mode need some changes after last modification this manager!!!!");
@@ -143,6 +143,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			if (!$this -> _after_init_process){
 				$session_name = Project::getSession() -> getSessionName();
 				if (isset($this -> _request[$session_name])){
+					$this -> _request_session_id = $this -> _request[$session_name];
 					$n_key = array_search($session_name, $this -> _request_by_number);
 					if ($n_key !== false){
 						// Unset from keys, sorted by number
@@ -155,6 +156,11 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 				}
 				$this -> _after_init_process = true;
 			}
+		}
+		
+		function getRequestSessionId(){
+			$this -> afterInitProcess();
+			return $this -> _request_session_id;
 		}
 		
 		/**
@@ -271,6 +277,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			$session_name = Project::getSession() -> getSessionName();
 			if (($this -> _username != $user) && ($user !== null) && ((int)Project::getUser() -> getDbUser() -> id > 0)){
 				$sid = Project::getSession() -> getSID();
+				//var_dump($sid);die;
 				$parameters[$session_name] = $sid;
 			} else {
 				if (isset($parameters[$session_name])){
