@@ -19,6 +19,7 @@
 					<td>
 					<div style="float: right">
 					<?php 
+					echo $this->vote_status;
 						if($this->vote_status != 0 && $this->current_user->id > 0) {
 							include($this -> _include('vote.tpl.php'));
 						} else {

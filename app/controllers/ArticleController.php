@@ -59,7 +59,7 @@ class ArticleController extends SiteController {
 			$article_model = new ArticleModel();
 			$article_page_model = new ArticlePageModel();
 			$article_model->articles_tree_id = (int)$request->category;
-			//$article_model->user_id = Project::getUser()->getDbUser()->id;;
+			$article_model->user_id = Project::getUser()->getDbUser()->id;;
 			$article_model->title = $request->title;
 			$article_model->allowcomments = (bool)$request->allow_comment;
 			$article_model->rate_status = (bool)$request->allow_rate;
@@ -93,7 +93,7 @@ class ArticleController extends SiteController {
 			$data['category'] = $article_tree_model->load($article_model->articles_tree_id);
 			$data['page_content'] = $pages[$pageId];
 			$data['pager_view'] = $this->_view->ShowPager(count($pages), $pageId, 'Article', 'ArticleView', array($id));
-			$data['vote_status'] = $article_vote_model->count();
+			$data['vote_status'] = (bool)$article_vote_model->count() && (bool)$article_model->rate_status;
 			$article_model->views++;
 			$article_model->save();
 			$this->_view->ViewArticle($data);
