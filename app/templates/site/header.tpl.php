@@ -93,7 +93,7 @@
 					<td class="menu2"> </td>
 					<td class="menu3">
 						<a href="#">Новости</a><br />
-						<a href="#">Статьи</a><br />
+						<a href="<?php echo $this->createUrl('Article', 'List', null, false)?>">Статьи</a><br />
 						<a href="#">Найти знакомых</a><br />
 						<a href="#">Дневники</a><br />
 						<a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false)?>">Вопрос-ответ</a><br />
