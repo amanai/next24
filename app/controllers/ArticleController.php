@@ -96,9 +96,56 @@ class ArticleController extends SiteController {
 			$data['vote_status'] = (bool)$article_vote_model->count() && (bool)$article_model->rate_status;
 			$article_model->views++;
 			$article_model->save();
+			if($article_model->allowcomments) {
+				$controller = new BaseCommentController();
+				$data['comment_list'] = $controller -> CommentList(
+																	'ArticleCommentModel', 
+																	$id,  
+																	$request -> getKeyByNumber(2), 	//TODO: page
+																	20,  							//TODO: page
+																	'Article', 'ArticleView', array($id), 
+																	'Article', 'DeleteComment'
+																	);
+				$data['add_comment_url'] = $request -> createUrl('Article', 'AddComment');
+				$data['add_comment_element_id'] = $id;
+				$data['add_comment_id'] = 0;
+			}
 			$this->_view->ViewArticle($data);
 			$this->_view->parse();
 		}
+	}
+	
+	public function AddComment() {
+		$request = Project::getRequest();
+		$article_model = new ArticleModel();
+		$article_model->load($request->element_id);
+		$comment_model= new ArticleCommentModel();
+		if($article_model->id > 0) {
+			$comment_model->addComment(Project::getUser()->getDbUser()->id, 0, 0, $request->element_id, $request->comment, 0, 0);
+			$article_model->comments++;
+			$article_model->save();
+			
+		}
+		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($article_model->id)));
+	}
+	
+	public function DeleteComment() {
+		$request = Project::getRequest();
+		$request_user_id = (int)Project::getUser()->getShowedUser()->id;
+		$user_id = (int)Project::getUser()->getDbUser()->id;
+		$article_id = $request->getKeyByNumber(0);
+		$comment_id = $request->getKeyByNumber(1);
+		$comment_model = new ArticleCommentModel($comment_id);
+		$article_model = new ArticleModel();
+		$article_model->load($article_id);
+		if (($comment_model->id > 0) && ($article_model->id > 0) && ($comment_model->article_id == $article_model->id)){
+			if (($comment_model->user_id == $user_id) || ($article_model->user_id == $user_id)){
+				$comment_model->delete($comment_model->user_id, $comment_id);
+				$article_model->comments--;
+				$article_model->save();
+			}
+		}
+		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($article_model->id)));
 	}
 	
 	public function AjaxChangeCatAction() {
