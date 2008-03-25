@@ -1,0 +1,25 @@
+INSERT INTO `action` VALUES (150, 19, 'List', NULL, NULL, 'article_list');
+INSERT INTO `action` VALUES (151, 19, 'LastList', NULL, NULL, 'last_article');
+INSERT INTO `action` VALUES (152, 19, 'TopList', NULL, NULL, 'top_article');
+INSERT INTO `action` VALUES (153, 19, 'AddArticle', NULL, NULL, 'add_article');
+INSERT INTO `action` VALUES (154, 19, 'AjaxChangeCat', NULL, NULL, 'ajax_change_cat');
+INSERT INTO `action` VALUES (155, 19, 'AjaxAddPage', NULL, NULL, 'ajax_add_page');
+INSERT INTO `action` VALUES (156, 19, 'ArticleView', NULL, NULL, 'view_article');
+INSERT INTO `action` VALUES (157, 19, 'Vote', NULL, NULL, 'vote_article');
+INSERT INTO `action` VALUES (158, 19, 'AddComment', NULL, NULL, 'add_comment');
+INSERT INTO `action` VALUES (159, 19, 'DeleteComment', NULL, NULL, 'delete_comment');
+
+INSERT INTO `user_right` VALUES (258, 1, 19, 150, NULL, 1);
+INSERT INTO `user_right` VALUES (259, 1, 19, 151, NULL, 1);
+INSERT INTO `user_right` VALUES (260, 1, 19, 152, NULL, 1);
+INSERT INTO `user_right` VALUES (261, 1, 19, 153, NULL, 1);
+INSERT INTO `user_right` VALUES (262, 1, 19, 154, NULL, 1);
+INSERT INTO `user_right` VALUES (263, 1, 19, 155, NULL, 1);
+INSERT INTO `user_right` VALUES (264, 0, 19, 150, NULL, 1);
+INSERT INTO `user_right` VALUES (265, 0, 19, 151, NULL, 1);
+INSERT INTO `user_right` VALUES (266, 0, 19, 152, NULL, 1);
+INSERT INTO `user_right` VALUES (271, 0, 19, 156, NULL, 1);
+INSERT INTO `user_right` VALUES (273, 1, 19, 156, NULL, 1);
+INSERT INTO `user_right` VALUES (274, 1, 19, 157, NULL, 1);
+INSERT INTO `user_right` VALUES (275, 1, 19, 158, NULL, 1);
+INSERT INTO `user_right` VALUES (276, 1, 19, 159, NULL, 1);

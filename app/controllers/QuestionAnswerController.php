@@ -185,7 +185,7 @@ class QuestionAnswerController extends SiteController {
 				$question_model->save();
 			}
 		}
-		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'ViewQuestion', array('q_id'=>$question_model->id)));
+		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'ViewQuestion', array($question_model->id)));
 	}
 	
 	public function DeleteAction() {
@@ -199,7 +199,7 @@ class QuestionAnswerController extends SiteController {
 		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
 	}
 	
-	public function BaseSiteData(&$data) {
+	protected function BaseSiteData(&$data) {
 		$data['tab_list_name'] = "Каталог вопросов";
 		$data['tab_my_list_name'] = "Мои вопросы";
 		$data['tab_manage_question_name'] = "Задать вопрос";

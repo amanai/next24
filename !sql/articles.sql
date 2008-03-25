@@ -50,6 +50,7 @@ DROP TABLE IF EXISTS `articles`;
 CREATE TABLE IF NOT EXISTS `articles` (
   `id` bigint(20) NOT NULL auto_increment,
   `articles_tree_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `user_id` bigint(20) NOT NULL,
   `allowcomments` tinyint(4) NOT NULL,
   `rate_status` tinyint(4) NOT NULL,

@@ -79,24 +79,25 @@ class ArticleController extends SiteController {
 	public function ArticleViewAction() {
 		$request = Project::getRequest();
 		$data = array();
+		$this->BaseSiteData($data);
 		$id = (int)$request->getKeyByNumber(0);
 		$pageId = (int)$request->getKeyByNumber(1);
 		if($id > 0) {
-			$this->BaseSiteData($data);
 			$article_model = new ArticleModel();
 			$article_page_model = new ArticlePageModel();
 			$article_tree_model = new ArticleTreeModel();
 			$article_vote_model = new ArticleVoteModel();
-			$article_vote_model->loadByArticleUser($id, Project::getUser()->getDbUser()->id);
+			$article_pager = new ArticlePagerView();
+			$votes = $article_vote_model->loadByArticleUser($id, Project::getUser()->getDbUser()->id);
 			$pages = $article_page_model->loadByArticleId($id);
 			$data['article'] = $article_model->load($id);
 			$data['category'] = $article_tree_model->load($article_model->articles_tree_id);
 			$data['page_content'] = $pages[$pageId];
-			$data['pager_view'] = $this->_view->ShowPager(count($pages), $pageId, 'Article', 'ArticleView', array($id));
-			$data['vote_status'] = (bool)$article_vote_model->count() && (bool)$article_model->rate_status;
+			$data['pager_view'] = $article_pager->ShowPager(count($pages), $pageId, 'Article', 'ArticleView', array($id));
+			$data['vote_status'] = !count($votes) && $article_model->rate_status;
 			$article_model->views++;
 			$article_model->save();
-			if($article_model->allowcomments) {
+			if($article_model->allowcomments > 0) {
 				$controller = new BaseCommentController();
 				$data['comment_list'] = $controller -> CommentList(
 																	'ArticleCommentModel', 
@@ -115,7 +116,7 @@ class ArticleController extends SiteController {
 		}
 	}
 	
-	public function AddComment() {
+	public function AddCommentAction() {
 		$request = Project::getRequest();
 		$article_model = new ArticleModel();
 		$article_model->load($request->element_id);
@@ -129,7 +130,7 @@ class ArticleController extends SiteController {
 		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($article_model->id)));
 	}
 	
-	public function DeleteComment() {
+	public function DeleteCommentAction() {
 		$request = Project::getRequest();
 		$request_user_id = (int)Project::getUser()->getShowedUser()->id;
 		$user_id = (int)Project::getUser()->getDbUser()->id;
@@ -195,6 +196,7 @@ class ArticleController extends SiteController {
 		$data['tab_top_list'] = "Top статьи";
 		$data['tab_last_list'] = "Последние статьи";
 		$data['tab_my_articles'] = "Мои статьи";
+		parent::BaseSiteData();
 	}
 	
 }

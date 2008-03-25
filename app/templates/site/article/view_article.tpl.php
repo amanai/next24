@@ -20,7 +20,7 @@
 					<div style="float: right">
 					<?php 
 					echo $this->vote_status;
-						if($this->vote_status != 0 && $this->current_user->id > 0) {
+						if($this->vote_status != 0 && Project::getUser()->getDbUser()->id > 0) {
 							include($this -> _include('vote.tpl.php'));
 						} else {
 							include($this -> _include('vote_result.tpl.php'));
@@ -36,13 +36,14 @@
 				</tr>
 			</table>
 			
-			<?php if($this->article['allowcomments']){ ?>
+			<?php if($this->article['allowcomments'] > 0){ ?>
 				<?=$this->comment_list?>
-}				<?php 
+				<?php 
 					if ($this -> is_logged){
 						include($this -> _include('../form_add_comment.tpl.php'));
-					}				  
-				?>
+					}
+			}				  
+			?>
 		</div>
 	</div>
 
