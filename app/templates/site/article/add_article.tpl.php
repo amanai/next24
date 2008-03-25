@@ -30,7 +30,7 @@
 		</tr>
 		<tr>
 			<td>Принимать участие в голосовании</td>
-			<td><input type="checkbox" name="allow_comment"></td>
+			<td><input type="checkbox" name="allow_rate"></td>
 		</tr>
 		<tr>
 			<td colspan="2"><center>Страницы</center></td>

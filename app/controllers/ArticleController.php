@@ -32,6 +32,7 @@ class ArticleController extends SiteController {
 	
 	public function TopListAction() {
 		$data = array();
+		$this->BaseSiteData($data);
 		$this->_articleList($data, null, 'a.votes', 'DESC', 10, 'TopList');
 		$this->_view->TopList($data);
 		$this->_view->parse();
@@ -58,13 +59,13 @@ class ArticleController extends SiteController {
 			$article_model = new ArticleModel();
 			$article_page_model = new ArticlePageModel();
 			$article_model->articles_tree_id = (int)$request->category;
-			$article_model->user_id = Project::getUser()->getDbUser()->id;;
+			//$article_model->user_id = Project::getUser()->getDbUser()->id;;
 			$article_model->title = $request->title;
-			$article_model->allowcomments = (int)$request->allow_comment;
-			$article_model->rate_status = (int)$request->allow_rate;
+			$article_model->allowcomments = (bool)$request->allow_comment;
+			$article_model->rate_status = (bool)$request->allow_rate;
 			$article_model->creation_date = date("Y-m-d H:i:s");
 			$id = $article_model->save();
-			for($i=0; $i < count($request->page_title); $i++) {
+			for($i = 0; $i < count($request->page_title); $i++) {
 				$article_page_model = new ArticlePageModel();
 				$article_page_model->article_id = $id;
 				$article_page_model->title = $request->page_title[$i];
@@ -75,17 +76,29 @@ class ArticleController extends SiteController {
 		
 	}
 	
-	public function ViewArticle() {
+	public function ArticleViewAction() {
 		$request = Project::getRequest();
 		$data = array();
 		$id = (int)$request->getKeyByNumber(0);
+		$pageId = (int)$request->getKeyByNumber(1);
 		if($id > 0) {
 			$this->BaseSiteData($data);
 			$article_model = new ArticleModel();
-			$data['article'] = $article_model->loadArticle($id);
+			$article_page_model = new ArticlePageModel();
+			$article_tree_model = new ArticleTreeModel();
+			$article_vote_model = new ArticleVoteModel();
+			$article_vote_model->loadByArticleUser($id, Project::getUser()->getDbUser()->id);
+			$pages = $article_page_model->loadByArticleId($id);
+			$data['article'] = $article_model->load($id);
+			$data['category'] = $article_tree_model->load($article_model->articles_tree_id);
+			$data['page_content'] = $pages[$pageId];
+			$data['pager_view'] = $this->_view->ShowPager(count($pages), $pageId, 'Article', 'ArticleView', array($id));
+			$data['vote_status'] = $article_vote_model->count();
+			$article_model->views++;
+			$article_model->save();
 			$this->_view->ViewArticle($data);
 			$this->_view->parse();
-		}		
+		}
 	}
 	
 	public function AjaxChangeCatAction() {
@@ -111,6 +124,23 @@ class ArticleController extends SiteController {
 		$data['page_number'] = $this->_countPages;
 		$this->_view->AjaxAddPage($data);
 		$this->_view->ajax();
+	}
+	
+	public function VoteAction() {
+		$request = Project::getRequest();
+		$articleId = (int)$request->getKeyByNumber(0);
+		$userId = Project::getUser()->getDbUser()->id;
+		$article_model = new ArticleModel();
+		$article_model->load($articleId);
+		$article_vote_model = new ArticleVoteModel();
+		if(count($article_vote_model->loadByArticleUser($articleId, $userId)) <= 0 && $article_model->rate_status == 1 && $userId > 0) {
+			$article_vote_model->article_id = $articleId;
+			$article_vote_model->user_id = $userId;
+			$article_model->votes = $request->vote;
+			$article_vote_model->save();
+			$article_model->save();
+		}
+		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($request->getKeyByNumber(0))));
 	}
 	
 	protected function BaseSiteData(&$data) {

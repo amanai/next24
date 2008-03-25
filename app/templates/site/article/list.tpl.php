@@ -4,12 +4,12 @@
 
 		<div id="tabs">
 		<?php $request = Project::getRequest(); ?>
-			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="#"><?=$this->tab_article_list?></a></div>
+			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('Article', 'List')?>"><?=$this->tab_article_list?></a></div>
 			<?php if($this->current_user && $this->current_user->id > 0) { ?>
 				<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="#"><?=$this->tab_my_articles?></a></div> 
 			<?php } ?>
-			<div class="tab  tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="#"><?=$this->tab_last_list?></a></div>
-			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="#"><?=$this->tab_top_list?></a></div>
+			<div class="tab  tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('Article', 'LastList')?>"><?=$this->tab_last_list?></a></div>
+			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('Article', 'TopList')?>"><?=$this->tab_top_list?></a></div>
 			
 			<div class="tab-page tab-page-selected">
 			
@@ -26,20 +26,20 @@
 												<table class="questions" width="100%">
 													<tr>
 														<td><b>Название</b></td>
-														<td><b>Автор</b></td>
 														<td><b>Категория</b></td>
-														<td><b>Кол-во коментариев</b></td>
-														<td><b>Кол-во просмотров</b></td>
+														<td><b>Кол-во<br /> коментариев</b></td>
+														<td><b>Кол-во<br /> просмотров</b></td>
+														<td><b>Статус</b></td>
 													</tr>
 													<?foreach ($this->article_list as $key => $item):?>
 														<tr id=<?php if($key%2==0) { ?>"cmod_tab2"<?php } else { ?>"cmod_tab1"<?php } ?>>
 															<td style="text-align: left; white-space: normal;">
 																<?=$item['title']?>
 															</td>
-															<td><?=$item['login']?></td>
 															<td><?=$item['name']?></td>
 															<td><?=$item['comments']?></td>
 															<td><?=$item['views']?></td>
+															<td><?=$item['status']?></td>
 													<?endforeach;?>
 												</table>
 											</div>
