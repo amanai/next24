@@ -13,7 +13,8 @@ class ArticleController extends SiteController {
 	public function ListAction() {
 		$request = Project::getRequest();
 		$data = array();
-		$this->BaseSiteData($data);
+		$this->BaseSiteData();
+		$data['tab_list'] = TabController::getMainArticleTabs(true);
 		$tree_model = new ArticleTreeModel();
 		$article_model = new ArticleModel();
 		$data['cat_list'] = $tree_model->loadByParentId((int)$request->getKeyByNumber(0));
@@ -22,9 +23,21 @@ class ArticleController extends SiteController {
 		$this->_view->parse();
 	}
 	
+	public function UserArticleListAction() {
+		$request = Project::getRequest();
+		$data = array();
+		$this->BaseSiteData();
+		$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, true);
+		echo Project::getUser()->getDbUser()->id;
+		$this->_articleList($data, Project::getUser()->getDbUser()->id, null, null, 10, 'UserArticleList');
+		$this->_view->UserArticleList($data);
+		$this->_view->parse();
+	}
+	
 	public function LastListAction() {
 		$data = array();
 		$this->BaseSiteData($data);
+		$data['tab_list'] = TabController::getMainArticleTabs(false, true);
 		$this->_articleList($data, null, 'a.creation_date', 'DESC', 10, 'LastList');
 		$this->_view->LastList($data);
 		$this->_view->parse();
@@ -33,6 +46,7 @@ class ArticleController extends SiteController {
 	public function TopListAction() {
 		$data = array();
 		$this->BaseSiteData($data);
+		$data['tab_list'] = TabController::getMainArticleTabs(false, false, true);
 		$this->_articleList($data, null, 'a.votes', 'DESC', 10, 'TopList');
 		$this->_view->TopList($data);
 		$this->_view->parse();
@@ -51,6 +65,9 @@ class ArticleController extends SiteController {
 	public function AddArticleAction() {
 		$request = Project::getRequest();
 		if(!$request->submit) {
+			$data = array();
+			$this->BaseSiteData();
+			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, false, true);
 			$article_tree_model = new ArticleTreeModel();
 			$data['cat_list'] = $article_tree_model->loadByParentId(0);
 			$this->_view->AddArticle($data);
@@ -76,10 +93,28 @@ class ArticleController extends SiteController {
 		
 	}
 	
+	public function EditArticleAction() {
+		$request = Project::getRequest();
+		$id = (int)$request->getKeyByNumber(0);
+		if(!$request->submit) {
+			$data = array();
+			$this->BaseSiteData();
+			
+			$article_model = new ArticleModel();
+			$article_page_model = new ArticlePageModel();
+			$article_tree_model = new ArticleTreeModel();
+			$data['article'] = $article_model->load($id);
+			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, false, true, null, $article_model->title);
+			$data['pages'] = $article_page_model->loadByArticleId($id);
+			$this->_view->AddArticle($data);
+			$this->_view->parse();
+		}
+	}
+	
 	public function ArticleViewAction() {
 		$request = Project::getRequest();
 		$data = array();
-		$this->BaseSiteData($data);
+		$this->BaseSiteData();
 		$id = (int)$request->getKeyByNumber(0);
 		$pageId = (int)$request->getKeyByNumber(1);
 		if($id > 0) {
@@ -91,6 +126,7 @@ class ArticleController extends SiteController {
 			$votes = $article_vote_model->loadByArticleUser($id, Project::getUser()->getDbUser()->id);
 			$pages = $article_page_model->loadByArticleId($id);
 			$data['article'] = $article_model->load($id);
+			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, true, false, $article_model->title);
 			$data['category'] = $article_tree_model->load($article_model->articles_tree_id);
 			$data['page_content'] = $pages[$pageId];
 			$data['pager_view'] = $article_pager->ShowPager(count($pages), $pageId, 'Article', 'ArticleView', array($id));
@@ -189,14 +225,6 @@ class ArticleController extends SiteController {
 			$article_model->save();
 		}
 		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($request->getKeyByNumber(0))));
-	}
-	
-	protected function BaseSiteData(&$data) {
-		$data['tab_article_list'] = "Каталог статей";
-		$data['tab_top_list'] = "Top статьи";
-		$data['tab_last_list'] = "Последние статьи";
-		$data['tab_my_articles'] = "Мои статьи";
-		parent::BaseSiteData();
 	}
 	
 }

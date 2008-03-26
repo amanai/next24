@@ -2,16 +2,9 @@
 
 <script language="JavaScript" type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
 
-		<div id="tabs">
-		<?php $request = Project::getRequest(); ?>
-			<div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('Article', 'List')?>"><?=$this->tab_article_list?></a></div>
-			<?php if($this->current_user && $this->current_user->id > 0) { ?>
-				<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="#"><?=$this->tab_my_articles?></a></div> 
-			<?php } ?>
-			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('Article', 'LastList')?>"><?=$this->tab_last_list?></a></div>
-			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('Article', 'TopList')?>"><?=$this->tab_top_list?></a></div>
-			
-			<div class="tab-page tab-page-selected">
+		<div class="tab-page" id="modules-cpanel">
+				<?php include($this -> _include('../tab_panel.tpl.php')); ?>
+				<div class="tab-page tab-page-selected">
 			
 			
 			<table  width="100%" height="100%" cellpadding="0">

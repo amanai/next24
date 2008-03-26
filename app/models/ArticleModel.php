@@ -27,8 +27,10 @@ class ArticleModel extends BaseModel {
 		return Project::getDatabase()->select($sql, $id);
 	}
 	
-	public function loadWhere($userId, $sortName = 'a.creation_date', $sortOrder = 'DESC') {
+	public function loadWhere($userId, $sortName, $sortOrder) {
 		$userId = (int)$userId;
+		$sortName == null ? $sortName = 'a.creation_date' : "";
+		$sortOrder == null ? $sortOrder = 'DESC' : "";
 		$sql = "SELECT ".
 				"a.`id`, ".
 				"a.`articles_tree_id`, ".
@@ -57,7 +59,7 @@ class ArticleModel extends BaseModel {
 		$params[] = $this->_pager->getStartLimit();
 		$params[] = $this->_pager->getPageSize();
 		$result = call_user_func_array(array(Project::getDatabase(), 'selectPage'), $params);
-		//echo $sql;
+		echo $sql;
 		//$this->updatePagerAmount();
 		return $result;
 	}
