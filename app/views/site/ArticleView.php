@@ -1,11 +1,10 @@
 <?php
 
 class ArticleView extends BaseSiteView {
-	protected $_dir = 'Article';
+	protected $_dir = 'article';
 	
 	public function ArticleList($data) {
 		$this->setTemplate(null, 'list_article.tpl.php');
-		var_dump($this);
 		$this->set($data);
 	}
 	
