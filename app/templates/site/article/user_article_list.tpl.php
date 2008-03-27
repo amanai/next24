@@ -34,7 +34,7 @@
 															<td><?=$item['comments']?></td>
 															<td><?=$item['views']?></td>
 															<td><?=$item['status']?></td>
-															<td><a href="<?=$this->createUrl('Article', 'EditArticle', array($item['id']))?>">[Редактировать]</a>&nbsp;<a href="#">[Удалить]</a></td>
+															<td><a href="<?=$this->createUrl('Article', 'EditArticle', array($item['id']))?>">[Редактировать]</a>&nbsp;<a href="<?=$this->createUrl('Article', 'DeleteArticle', array($item['id']))?>">[Удалить]</a></td>
 													<?endforeach;?>
 												</table>
 											</div>

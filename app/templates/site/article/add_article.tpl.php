@@ -8,6 +8,9 @@
 <input type="hidden" value="" name="category">
 	<table width="100%" cellpadding="2">
 		<tr>
+			<td colspan="2"><?=$this->message?></td>
+		</tr>
+		<tr>
 			<td>Заголовок статьи</td>
 			<td><input type="text" name="title"></td>
 		</tr>

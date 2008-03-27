@@ -59,7 +59,7 @@ class ArticleModel extends BaseModel {
 		$params[] = $this->_pager->getStartLimit();
 		$params[] = $this->_pager->getPageSize();
 		$result = call_user_func_array(array(Project::getDatabase(), 'selectPage'), $params);
-		echo $sql;
+		//echo $sql;
 		//$this->updatePagerAmount();
 		return $result;
 	}

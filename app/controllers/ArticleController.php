@@ -99,13 +99,20 @@ class ArticleController extends SiteController {
 		if(!$request->submit) {
 			$data = array();
 			$this->BaseSiteData();
-			
+			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, false, true, null, $article_model->title);
 			$article_model = new ArticleModel();
+			$article_vote_model = new ArticleVoteModel();
 			$article_page_model = new ArticlePageModel();
 			$article_tree_model = new ArticleTreeModel();
-			$data['article'] = $article_model->load($id);
-			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, false, true, null, $article_model->title);
-			$data['pages'] = $article_page_model->loadByArticleId($id);
+			if(count($article_vote_model->loadByArticleId($id)) > 0) { //TODO: it's todo
+				$data['message'] = "Вы не можете редактировать эту статью, голосование по ней уже началось";
+			} else {
+				$article = $article_model->load($id);
+				if($article['user_id'] == Project::getUser()->getDbUser()->id) {
+					$data['article'] = $article;
+					$data['pages'] = $article_page_model->loadByArticleId($id);
+				}
+			}
 			$this->_view->AddArticle($data);
 			$this->_view->parse();
 		}
@@ -226,6 +233,21 @@ class ArticleController extends SiteController {
 		}
 		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($request->getKeyByNumber(0))));
 	}
+	
+	public function DeleteArticleAction() {
+		$request = Project::getRequest();
+		$article_model = new ArticleModel();
+		$article_vote_model = new ArticleVoteModel();
+		$userId = Project::getUser()->getDbUser()->id;
+		$articleId = $request->getKeyByNumber(0);
+		$article_model->load($articleId);
+		if($article_model->user_id == $userId && count($article_vote_model->loadByArticleId($articleId)) <=0 ) {
+			$article_model->delete($articleId);
+		}
+		Project::getResponse()->redirect($request->createUrl('Article', 'UserArticleList'));
+	}
+	
+	
 	
 }
 

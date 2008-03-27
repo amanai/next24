@@ -15,4 +15,16 @@ class ArticleVoteModel extends BaseModel {
 		return $result;
 	}
 	
+	public function loadByArticleId($articleId) {
+		$articleId = (int)$articleId;
+		$sql = "SELECT * FROM $this->_table WHERE article_id = ?d";
+		return Project::getDatabase()->select($sql, $articleId);
+	}
+	
+	public function deleteByArticleId($articleId) {
+		$articleId = (int)$articleId;
+		$sql = "DELETE FROM $this->_table WHERE article_id = ?d";
+		return Project::getDatabase()->query($sql, $articleId);
+	}
+	
 }
