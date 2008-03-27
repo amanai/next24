@@ -5,6 +5,7 @@ class ArticleView extends BaseSiteView {
 	
 	public function ArticleList($data) {
 		$this->setTemplate(null, 'list_article.tpl.php');
+		var_dump($this);
 		$this->set($data);
 	}
 	
