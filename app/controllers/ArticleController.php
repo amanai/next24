@@ -246,9 +246,6 @@ class ArticleController extends SiteController {
 		}
 		Project::getResponse()->redirect($request->createUrl('Article', 'UserArticleList'));
 	}
-	
-	
-	
 }
 
 ?>
