@@ -27,4 +27,10 @@ class ArticleVoteModel extends BaseModel {
 		return Project::getDatabase()->query($sql, $articleId);
 	}
 	
+	public function rateByArticleId($articleId) {
+		$articleId = (int)$articleId;
+		$sql = "SELECT AVG(vote) as vote_result FROM article_votes WHERE article_id = ?d";
+		return Project::getDatabase()->selectRow($sql, $articleId);
+	}
+	
 }

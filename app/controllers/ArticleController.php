@@ -19,6 +19,11 @@ class ArticleController extends SiteController {
 		$article_model = new ArticleModel();
 		$data['cat_list'] = $tree_model->loadByParentId((int)$request->getKeyByNumber(0));
 		$data['article_list'] = $article_model->loadByParentId((int)$request->getKeyByNumber(0));
+		$controller_model = new ControllerModel();
+		$action_model = new ActionModel();
+		$controller = $controller_model->loadByKey('AdminArticle');
+		$action = $action_model->loadByKey($controller['id'], 'ManagedSection');
+		$data['admin_access'] = Project::getSecurityManager()->getAuth()->checkAccess($controller['id'], $action['id']);
 		$this->_view->ArticleList($data);
 		$this->_view->parse();
 	}
@@ -138,6 +143,7 @@ class ArticleController extends SiteController {
 			$data['page_content'] = $pages[$pageId];
 			$data['pager_view'] = $article_pager->ShowPager(count($pages), $pageId, 'Article', 'ArticleView', array($id));
 			$data['vote_status'] = !count($votes) && $article_model->rate_status;
+			$data+=$article_vote_model->rateByArticleId($id);
 			$article_model->views++;
 			$article_model->save();
 			if($article_model->allowcomments > 0) {
@@ -227,7 +233,8 @@ class ArticleController extends SiteController {
 		if(count($article_vote_model->loadByArticleUser($articleId, $userId)) <= 0 && $article_model->rate_status == 1 && $userId > 0) {
 			$article_vote_model->article_id = $articleId;
 			$article_vote_model->user_id = $userId;
-			$article_model->votes = $request->vote;
+			$article_vote_model->vote = $request->vote;
+			$article_model->votes++;
 			$article_vote_model->save();
 			$article_model->save();
 		}

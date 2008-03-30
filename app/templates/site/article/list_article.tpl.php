@@ -27,6 +27,7 @@
 														<td><b>Кол-во<br /> коментариев</b></td>
 														<td><b>Кол-во<br /> просмотров</b></td>
 														<td><b>Статус</b></td>
+														<?php if($this->admin_access) { ?><td><b>Действие</b></td><?php } ?>
 													</tr>
 													<?foreach ($this->article_list as $key => $item):?>
 														<tr id=<?php if($key%2==0) { ?>"cmod_tab2"<?php } else { ?>"cmod_tab1"<?php } ?>>
@@ -36,6 +37,14 @@
 															<td><?=$item['comments']?></td>
 															<td><?=$item['views']?></td>
 															<td>&nbsp;</td>
+															<?php if($this->admin_access) { ?>
+																<td>
+																	<a href="<?=$this->createUrl('AdminArticle', 'DeleteArticle', array($item['id']))?>">[Удалить] </a>
+																	<a href="#">[Редактировать] </a>
+																	<a href="<?=$this->createUrl('AdminArticle', 'ResetRate', array($item['id']))?>">[Сброс рейтинга]</a>
+																</td>
+																
+															<?php } ?>
 													<?endforeach;?>
 												</table>
 											</div>

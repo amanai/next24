@@ -6,7 +6,7 @@
 		<table width="100%" cellpadding="2">
 		<tr>
 			<td width="100">Оценка</td>
-			<td><a href="#"><select name="vote"><?for ($i = 1;$i <= 100; $i++):?><option value="<?=$i?>"><?=$i?></option><?endfor;?></select></a></td>
+			<td><select name="vote"><?for ($i = 1;$i <= 100; $i++):?><option value="<?=$i?>"><?=$i?></option><?endfor;?></select></td>
 		</tr>
 		<tr>
 			<td colspan="2" align="right" style="padding-right: 6px;"><input type="submit" value="Отправить"></td>

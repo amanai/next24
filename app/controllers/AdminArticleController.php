@@ -8,9 +8,11 @@ class AdminArticleController extends AdminController {
 	}
 	
 	public function ResetRateAction() {
+		
 		$request = Project::getRequest();
 		$article_vote_controller = new ArticleVoteModel();
 		$article_vote_controller->deleteByArticleId($request->getKeyByNumber(0));
+		Project::getResponse()->redirect($request->createUrl('Article', 'List'));
 	}
 	
 	public function ShowTreeAction() {
@@ -44,8 +46,7 @@ class AdminArticleController extends AdminController {
 				$article_tree_model->key = $key;
 				$article_tree_model->level = $key->level;
 				$article_tree_model->save();
-			}
-			
+			}			
 		}
 	}
 	
@@ -65,6 +66,7 @@ class AdminArticleController extends AdminController {
 			$article_model = new ArticleModel();
 			$article_model->delete($id);
 		}
+		Project::getResponse()->redirect($request->createUrl('Article', 'List'));		
 	}
 	
 	public function SetCompetitionAction() {
