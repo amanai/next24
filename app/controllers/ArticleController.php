@@ -78,10 +78,23 @@ class ArticleController extends SiteController {
 			$this->_view->AddArticle($data);
 			$this->_view->parse();
 		} else {
+			$parent_id = (int)$request->category;
+			if($request->cat_title != null) {
+				$node = Node::by_id($request->category, 'articles_tree');
+				$key = $node->getNewChildKey();
+				if($key->level <= 5) {
+					$article_tree_model = new ArticleTreeModel();
+					$article_tree_model->user_id = Project::getUser()->getDbUser()->id;
+					$article_tree_model->name = $request->cat_title;
+					$article_tree_model->key = $key;
+					$article_tree_model->level = $key->level;
+					$parent_id = $article_tree_model->save();
+				}				
+			}
 			$article_model = new ArticleModel();
 			$article_page_model = new ArticlePageModel();
-			$article_model->articles_tree_id = (int)$request->category;
-			$article_model->user_id = Project::getUser()->getDbUser()->id;;
+			$article_model->articles_tree_id = $parent_id;
+			$article_model->user_id = Project::getUser()->getDbUser()->id;
 			$article_model->title = $request->title;
 			$article_model->allowcomments = (bool)$request->allow_comment;
 			$article_model->rate_status = (bool)$request->allow_rate;

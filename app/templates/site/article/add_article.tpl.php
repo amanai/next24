@@ -21,7 +21,7 @@
 					<select style="width:115px">
 						<option value=""> -- Select -- </option>
 						<?foreach ($this->cat_list as $cat):?>
-							<option onclick='getElementById("category").value="<?=$cat['id']?>";ajax(<?=AjaxRequest::getJsonParam('Article', 'AjaxChangeCat', array($cat['id']))?>);' value="<?=$cat['id']?>"><?=$cat['name']?></option>
+							<option onclick='<?if($cat['level'] < 5) {?>getElementById("add_cat").style.visibility = "visible";<?} else {?>getElementById("add_cat").style.visibility = "hidden";<? } ?> getElementById("category").value="<?=$cat['id']?>";ajax(<?=AjaxRequest::getJsonParam('Article', 'AjaxChangeCat', array($cat['id']))?>);' value="<?=$cat['id']?>"><?=$cat['name']?></option>
 						<?endforeach;?>
 					</select>
 				</div>
@@ -29,7 +29,12 @@
 				<div id="level3" style="padding-top:5px"></div>
 				<div id="level4" style="padding-top:5px"></div>
 				<div id="level5" style="padding-top:5px"></div>
+				<div id="add_cat"><a href="#" onclick='getElementById("new_cat_block").style.visibility = "visible";'>Добавить категорию</a></div>
 			</td>
+		</tr>
+		<tr style="visibility: hidden" id="new_cat_block">
+			<td>Новая категория</td>
+			<td><input type="text" name="cat_title"></td>
 		</tr>
 		<tr>
 			<td>Разрешить комментарии</td>
