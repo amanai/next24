@@ -1,3 +1,9 @@
+<?php 
+	$k = new Key($this->cat['key']);
+	$par = $k->getParent();
+?>
+
+
 <table class="dialog">
 	<tbody>
 		<tr>
@@ -22,14 +28,16 @@
 			<td class="c_left">&nbsp;</td>
 			<td class="c_cen">
 				<!-- САМ ДИАЛОГ -->
-				<form id="edit_form">
+				<form action="<?=Project::getRequest()->createUrl('AdminArticle', 'ManagedSection', array($this->cat['id']))?>" method="POST" id="edit_form">
+				<input type="hidden" value="<?=$par?>" name="parent_id">
+				<input type="hidden" name="sub" value="0">
 				<table border="0" cellpadding="0" cellspacing="4">
 					<tbody><tr>
 						<td class="left_col">
 						Название*:
 						</td>
 						<td class="right_col" style="width: 100%;">
-						<input class="field" name="section_name" value="" type="text">
+						<input class="field" name="section_name" value="<?=$this->cat['name']?>" type="text">
 						</td>
 					</tr>
 					<tbody><tr>
@@ -39,16 +47,14 @@
 						<td class="right_col" style="width: 100%;">
 							<div id="level1" style="padding-top:5px">
 							<select style="width:115px">
-								<option value=""> -- Select -- </option>
-								<?foreach ($this->cat_list as $cat):?>
-									<option onclick='getElementById("category").value="<?=$cat['id']?>";ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'AjaxChangeCat', array($cat['id']))?>);' value="<?=$cat['id']?>"><?=$cat['name']?></option>
+								<option value="" > -- Select -- </option>
+								<?foreach ($this->tree as $n):?>
+									<option onclick='getElementById("parent_id").value="<?=$n['key']?>";' value="<?=$n['key']?>" 
+									<? if($par == $n['key']) echo selected;?>><?=str_repeat("&nbsp;&nbsp;&nbsp;",  $n['level'] -1)?><?=$n['name']?></option>
 								<?endforeach;?>
 							</select>
+							
 							</div>
-							<div id="level2" style="padding-top:5px"></div>
-							<div id="level3" style="padding-top:5px"></div>
-							<div id="level4" style="padding-top:5px"></div>
-							<div id="level5" style="padding-top:5px"></div>
   						</td>
 					</tr>
 				</tbody></table>
@@ -62,7 +68,7 @@
 			<td class="b_left">&nbsp;</td>
 			<td class="b_cen"><div class="b_delim">
 				<div class="button bbig" style="float: right;"><a href="#" >Отмена</a></div>
-				<div class="button bbig" style="float: right;"><a href="#" >Сохранить</a></div>
+				<div class="button bbig" style="float: right;"><a href="#" onclick="getElementById('sub').value=1;getElementById('edit_form').submit()">Сохранить</a></div>
 			</td>
 			<td class="b_right">&nbsp;</td>
 		</tr>

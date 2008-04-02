@@ -16,6 +16,7 @@ class AdminArticleController extends AdminController {
 	}
 	
 	public function ShowTreeAction() {
+		$this->BaseAdminData();
 		$data = array();
 		$n = Node::by_key('', 'articles_tree');
 		$data['tree'] = $n->getBranch();
@@ -25,28 +26,35 @@ class AdminArticleController extends AdminController {
 	
 	public function ManagedSectionAction() {
 		$request = Project::getRequest();
-		if(!$request->submit) {
-			$data = array();
-			$this->BaseAdminData();
+		$data = array();
+		if($request->sub == 0) {
+			$id = (int)$request->getKeyByNumber(0);
 			$article_tree_model = new ArticleTreeModel();
-			$data['cat_list'] = $article_tree_model->loadByParentId(0);
+			if($id > 0){
+				$data['cat'] = $article_tree_model->load($id);
+			}
+			
+			$this->BaseAdminData();
+			$n = Node::by_key('', 'articles_tree');
+			$data['tree'] = $n->getBranch();
 			$this->_view->ManagedSection($data);
-			$this->_view->parse();
+			$this->_view->ajax();
 		} else {
 			$id = (int)$request->getKeyByNumber(0);
 			$article_tree_model = new ArticleTreeModel();
 			if($id > 0) {
 				$article_tree_model->load($id);
 			}
-			$node = Node::by_id($request->parent_id, 'articles_tree');
-			$key = $node->getNewKey();
-			if($key->level < 5) {
+			$node = Node::by_key($request->parent_id, 'articles_tree');
+			$key = $node->getNewChildKey();
+			if($key->level <= 5) {
 				$article_tree_model->user_id = Project::getUser()->getDbUser()->id;
 				$article_tree_model->name = $request->section_name;
 				$article_tree_model->key = $key;
 				$article_tree_model->level = $key->level;
 				$article_tree_model->save();
-			}			
+			}
+			Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));			
 		}
 	}
 	
@@ -57,6 +65,7 @@ class AdminArticleController extends AdminController {
 			$article_tree_model = new ArticleTreeModel();
 			$article_tree_model->delete($id);
 		}
+		Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));	
 	}
 	
 	public function DeleteArticleAction() {
