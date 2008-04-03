@@ -10,7 +10,7 @@ class ArticleTreeModel extends BaseModel {
 		$id = (int)$id;
 		$DE = Project::getDatabase();
 		$parent = $DE->selectRow("SELECT * FROM $this->_table WHERE id = ?d", $id);
-		$result = $DE->select("SELECT * FROM $this->_table WHERE $this->_table.key like '".$parent['key']."%' AND $this->_table.level = ?d", $parent['level'] + 1);
+		$result = $DE->select("SELECT * FROM $this->_table WHERE $this->_table.key like '".$parent['key']."%' AND $this->_table.level = ?d AND $this->_table.active = 1", $parent['level'] + 1);
 		return $result;
 	}
 	

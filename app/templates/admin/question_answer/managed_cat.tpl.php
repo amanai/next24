@@ -1,6 +1,3 @@
-<?php include($this -> _include('../header.tpl.php')); ?>
-
-	<div class="list">
 			<table class="dialog">
 				<tr>
 					<td class="h_left"><img src="<?=$this -> image_url?>1x1.gif" alt=""/></td>
@@ -62,5 +59,3 @@
 					<td class="b_right">&nbsp;</td>
 				</tr>
 			</table>
-	</div>
-<?php include($this -> _include('../footer.tpl.php')); ?>

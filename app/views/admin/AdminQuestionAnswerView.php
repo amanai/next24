@@ -13,8 +13,17 @@ class AdminQuestionAnswerView extends BaseAdminView {
 	}
 	
 	public function ManagedCat($data) {
-		$this->setTemplate($this->_dir, "managed_cat.tpl.php");
+		$response = Project::getAjaxResponse();
+		$response -> save();
+		$response -> clearBlock($this -> _flesh_messages_block);
+		$response -> hide('edit_block');
+		$response -> enable('list_block');
+		$data['cancel_param'] = $response -> getResponse();
+		$response -> restore();
 		$this->set($data);
+		$this->setTemplate($this->_dir, 'managed_cat.tpl.php');
+		$response->block('edit_block', true, $this->parse());
+		$response->disable('list_block');
 	}
 	
 	public function QuestionList($data) {
@@ -23,8 +32,17 @@ class AdminQuestionAnswerView extends BaseAdminView {
 	}
 	
 	public function EditQuestion($data) {
-		$this->setTemplate($this->_dir, "edit_question.tpl.php");
+		$response = Project::getAjaxResponse();
+		$response -> save();
+		$response -> clearBlock($this -> _flesh_messages_block);
+		$response -> hide('edit_block');
+		$response -> enable('list_block');
+		$data['cancel_param'] = $response -> getResponse();
+		$response -> restore();
 		$this->set($data);
+		$this->setTemplate($this->_dir, 'edit_question.tpl.php');
+		$response->block('edit_block', true, $this->parse());
+		$response->disable('list_block');
 	}
 }
 

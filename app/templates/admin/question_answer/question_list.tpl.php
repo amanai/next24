@@ -1,7 +1,7 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 
 <div style="float: left;"><h3>Вопросы</h3></div><!-- TODO: descript -->
- 	   	 	<div class="list">
+ 	   	 	<div class="list" id="list_block">
 				<div class="options">
 					<div>
 					Категория: 
@@ -38,7 +38,7 @@
 						<td><?=$question['login']?></td>						
 						<td><?=$question['a_count']?></td>
 						<td><?=$question['creation_date']?></td>
-						<td><div class="button bsmall" style="float: left;"><a href="<?=$this->createUrl('AdminQuestionAnswer','EditQuestion',array($question['id']))?>"><img src="<?=$this -> image_url?>icons/small_edit.gif" alt="Правка"/></a></div> 
+						<td><div class="button bsmall" style="float: left;"><a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminQuestionAnswer', 'EditQuestion', array($question['id']));?>)'><img src="<?=$this -> image_url?>icons/small_edit.gif" alt="Правка"/></a></div> 
 						<div class="button bsmall" style="float: left;"><a href="<?=$this->createUrl('AdminQuestionAnswer','DeleteQuestion',array($question['id']))?>"><img src="<?=$this -> image_url?>icons/small_del.gif" alt="Удалить"/></a></div></td>
 					</tr>
 				<?endforeach;?>

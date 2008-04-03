@@ -1,8 +1,8 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
  	    <div style="float: left;"><h3>Категории</h3></div><!-- TODO: descript -->
- 	    <div class="list">
+ 	    <div class="list" id="list_block">
 				<div class="options">
-					<div class="button bnormal" style="float: left;"><a href="<?=$this->createUrl('AdminQuestionAnswer','ManagedCat')?>">Добавить</a></div>
+					<div class="button bnormal" style="float: left;"><a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminQuestionAnswer', 'ManagedCat')?>)' >Добавить</a></div>
 				</div>
 				<table class="list_table">
 					<tr class="head">
@@ -35,7 +35,7 @@
 							<a href="<?=$this->createUrl('AdminQuestionAnswer','MoveCat',array($this->cat_list[$i]['id'],$this->cat_list[$i+1]['id']))?>">[Down]</a>
 						</td>
 						<td>
-							<div class="button bsmall" style="float: left;"><a href="<?=$this->createUrl('AdminQuestionAnswer','ManagedCat',array($this->cat_list[$i]['id']))?>"><img src="<?=$this -> image_url?>icons/small_edit.gif" alt="Правка"/></a></div>
+							<div class="button bsmall" style="float: left;"><a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminQuestionAnswer', 'ManagedCat', array($question['id']));?>)'><img src="<?=$this -> image_url?>icons/small_edit.gif" alt="Правка"/></a></div>
 							<div class="button bsmall" style="float: left;"><a href="<?=$this->createUrl('AdminQuestionAnswer','DeleteCat',array($this->cat_list[$i]['id']))?>"><img src="<?=$this -> image_url?>icons/small_del.gif" alt="Удалить"/></a></div>
 						</td>
 					</tr>

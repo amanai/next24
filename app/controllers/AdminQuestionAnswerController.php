@@ -7,12 +7,6 @@ class AdminQuestionAnswerController extends AdminController {
 		parent::__construct("AdminQuestionAnswerView");
 	}
 	
-	public function IndexAction() {
-		$this->BaseAdminData();
-		$this->_view->Index();
-		$this->_view->parse();
-	}
-	
 	public function CatListAction() {
 		$request = Project::getRequest();
 		$this->BaseAdminData();
@@ -57,7 +51,7 @@ class AdminQuestionAnswerController extends AdminController {
 			$data['cat_list'] = $model->loadAll('sortfield');
 			$this->BaseAdminData();
 			$this->_view->ManagedCat($data);
-			$this->_view->parse();
+			$this->_view->ajax();
 		} else {
 			if($id > 0) {
 				$model->load($id);
@@ -129,7 +123,7 @@ class AdminQuestionAnswerController extends AdminController {
 				$data['tags'] = rtrim($data['tags'], ', ');
 				$this->BaseAdminData();
 				$this->_view->EditQuestion($data);
-				$this->_view->parse();
+				$this->_view->ajax();
 			}
 		} else {
 			if($id > 0) {				
