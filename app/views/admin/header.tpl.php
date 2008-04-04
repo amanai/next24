@@ -17,9 +17,15 @@
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>blockUI.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>ajax.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>datepicker.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>menu.js"></script>
 </head>
 
 <body>
+
+<div class="sm" id="sub2"><ul>
+	<li><a href="<?=$this->createUrl('AdminQuestionAnswer','CatList')?>">Категории вопросов</a></li>
+	<li><a href="<?=$this->createUrl('AdminQuestionAnswer','QuestionList')?>">Вопросы</a></li>
+</ul></div>
 
 <table class="main">
 	<!-- Header -->
@@ -52,6 +58,7 @@
 					<?php foreach ($this -> main_menu as $menu_item) { ?>
 						<li><a href="<?php echo $menu_item['link']; ?>"><?php echo $menu_item['name']; ?></a></li>
 					<?php } ?>
+					<li><a href="#" class="sub" id="_sub2">Вопросы</a></li>
 				</ul>
 
 				<table class="mm_footer">
