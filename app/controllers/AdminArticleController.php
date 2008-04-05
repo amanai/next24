@@ -80,6 +80,32 @@ class AdminArticleController extends AdminController {
 	
 	public function SetCompetitionAction() {
 		
+		
+	}
+	
+	public function VerifyCompetitionAction() {
+		$article_competition_model = new ArticleCompetitionModel();
+		$endCompetition = $article_competition_model->selectEndCompetition();
+		$article_model = new ArticleModel();
+		$article_vote_model = new ArticleVoteModel();
+		$winnerArticleId = 0;
+		if(count($endCompetition) > 0) {
+			foreach ($endCompetition as $comp) {
+				$articles = $article_model->loadByParentId($comp['article_tree_id']);
+				$max = 0;
+				foreach ($articles as $article) {
+					$r = $article_vote_model->rateByArticleId($article['id']);
+					if($max < $r['rate']) {
+						$max = $r['rate'];
+						$winnerArticleId = $article['id'];
+					}
+				}
+				$article_model->load($winnerArticleId);
+				$article_model->rate_status = 2;
+				$article_model->save();
+				$article_competition_model->delete($comp['id']);
+			}
+		}
 	}
 	
 	
