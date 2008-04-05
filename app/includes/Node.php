@@ -31,8 +31,7 @@ class Node extends BasicNode{
 		
 	//methods
 		function getBranch($field = null, $value = null){
-			return Project::getDatabase() -> select(
-				" select
+			$sql = " select
 					id
 					, `key`
 					, level
@@ -43,8 +42,9 @@ class Node extends BasicNode{
 					`key` like '{$this->key}%' 
 				order by
 					`key`
-				"
-			);
+				";
+			//echo $sql;
+			return Project::getDatabase() -> select($sql);
 		}
 		
 		function countSubItems(){

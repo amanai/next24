@@ -79,8 +79,30 @@ class AdminArticleController extends AdminController {
 	}
 	
 	public function SetCompetitionAction() {
-		
-		
+		$request = Project::getRequest();
+		if($request->sub == 0) {
+			$id = (int)$request->getKeyByNumber(0);
+			$article_tree_model = new ArticleTreeModel();
+			$data['node'] = $article_tree_model->load($id);
+			$this->_view->SetCompetition($data);
+			$this->_view->ajax();
+						
+		} else {
+			$article_comp_model = new ArticleCompetitionModel();
+			$articleTreeId = (int)$request->article_tree_id;
+			$dataBegin = $request->data_begin;
+			$dataEnd = $request->data_end;
+			$art = $article_comp_model->loadWhere($articleTreeId, $dataBegin, $dataEnd);
+			var_dump($art);
+			if(count($art) <= 0) {
+				$article_comp_model->id_article_tree = (int)$request->id;
+				$article_comp_model->data_begin = $dataBegin;
+				$article_comp_model->data_end = $dataEnd;
+				$article_comp_model->reward = $request->reward;
+				$article_comp_model->save();
+			}
+			Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));
+		}
 	}
 	
 	public function VerifyCompetitionAction() {
