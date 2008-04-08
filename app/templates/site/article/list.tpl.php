@@ -32,7 +32,7 @@
 															<td><a href="<?=$this->createUrl('Article', 'List', array($item['articles_tree_id']))?>"><?=$item['name']?></a></td>
 															<td><?=$item['comments']?></td>
 															<td><?=$item['views']?></td>
-															<td><?=$item['status']?></td>
+															<td><?=$item['rate_status'] == ARTICLE_RATE_STATUS::WINNER ? "Winner" : ""?></td>
 													<?endforeach;?>
 												</table>
 											</div>

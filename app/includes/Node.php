@@ -31,11 +31,7 @@ class Node extends BasicNode{
 		
 	//methods
 		function getBranch($field = null, $value = null){
-			$sql = " select
-					id
-					, `key`
-					, level
-					, name
+			$sql = " select *
 				from
 					{$this->tablename}
 				where

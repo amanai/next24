@@ -36,7 +36,7 @@
 															</td>
 															<td><?=$item['comments']?></td>
 															<td><?=$item['views']?></td>
-															<td>&nbsp;</td>
+															<td><?=$item['rate_status'] == ARTICLE_RATE_STATUS::WINNER ? "Winner" : ""?></td>
 															<?php if($this->admin_access) { ?>
 																<td>
 																	<a href="<?=$this->createUrl('AdminArticle', 'DeleteArticle', array($item['id']))?>">[Удалить] </a>

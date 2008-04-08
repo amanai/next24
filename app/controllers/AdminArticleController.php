@@ -123,11 +123,23 @@ class AdminArticleController extends AdminController {
 					}
 				}
 				$article_model->load($winnerArticleId);
-				$article_model->rate_status = 2;
+				$article_model->rate_status = ARTICLE_RATE_STATUS::WINNER;
 				$article_model->save();
 				$article_competition_model->delete($comp['id']);
 			}
 		}
+	}
+	
+	public function SetActiveAction() {
+		$request = Project::getRequest();
+		$id = (int)$request->getKeyByNumber(0);
+		if($id > 0) {
+			$article_tree_model = new ArticleTreeModel();
+			$article_tree_model->load($id);
+			$article_tree_model->active = 1;
+			$article_tree_model->save();
+		}
+		Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));
 	}
 	
 	

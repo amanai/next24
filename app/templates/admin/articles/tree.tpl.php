@@ -7,6 +7,7 @@
 <table class="list_table">
 	<tr class="head">
 		<td>Категория</td>
+		<td>Статус</td>
 		<td>Действие</td>
 	</tr>
 	<? foreach ($this->tree as $n): ?>
@@ -15,6 +16,7 @@
 				<?=str_repeat("&nbsp;&nbsp;&nbsp;",  $n['level'] -1)?>
 				<?=$n['name']?><br>
 			</td>
+			<td><?=$n['active'] == 1 ? "Active" : "Draft"?></td>
 			<td><a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'ManagedSection', array($n['id']));?>)'>[Редактировать]</a> <a href="<?=$this->createUrl('AdminArticle', 'DeleteSection', array($n['id']));?>">[Удалить]</a> <a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'SetCompetition', array($n['id']));?>)'>[Добавить конкурс]</a></td>
 		</tr>
 	<? endforeach;?>
