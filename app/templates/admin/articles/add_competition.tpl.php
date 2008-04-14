@@ -25,7 +25,6 @@
 				<form id="edit_form" action="<?=Project::getRequest()->createUrl('AdminArticle', 'SetCompetition', array($this->cat['id']))?>" method="POST">
 				<input type="hidden" name="sub" value="0">
 				<input type="hidden" id="id" name="id" value="<?=$this->node['id']?>">
-				<?=var_dump($this->node);?>
 				<table border="0" cellpadding="0" cellspacing="4">
 					<tbody><tr>
 						<td class="left_col">
