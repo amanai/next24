@@ -1,8 +1,9 @@
 <?php
 
 session_start();
-if (!$_SESSION['ss']) {
+if (!isset($_SESSION['ss'])) {
     $_SESSION['ss'] = $_SERVER['HTTP_HOST'];
+	echo 'Setting value...<br>';
 }
 echo $_SESSION['ss'];
 
