@@ -1,4 +1,6 @@
 <?php
+if (class_exists('SecurityManager')) die();
+
 class SecurityManager extends ApplicationManager implements IManager{
 	private $_autorization;
 	private $_auth;
