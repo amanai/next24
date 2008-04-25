@@ -5,7 +5,7 @@
 				<div class="tab-page tab-page-selected">
 
 <form action="<?=$this->createUrl('Article', 'AddArticle')?>" method="POST">
-<input type="hidden" value="" name="category">
+<input type="hidden" value="" name="category" id="category">
 	<table width="100%" cellpadding="2">
 		<tr>
 			<td colspan="2"><?=$this->message?></td>
