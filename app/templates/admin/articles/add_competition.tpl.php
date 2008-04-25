@@ -23,7 +23,7 @@
 			<td class="c_cen">
 				<!-- САМ ДИАЛОГ -->
 				<form id="edit_form" action="<?=Project::getRequest()->createUrl('AdminArticle', 'SetCompetition', array($this->cat['id']))?>" method="POST">
-				<input type="hidden" name="sub" value="0">
+				<input type="hidden" name="sub" id="sub" value="0">
 				<input type="hidden" id="id" name="id" value="<?=$this->node['id']?>">
 				<table border="0" cellpadding="0" cellspacing="4">
 					<tbody><tr>

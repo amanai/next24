@@ -30,7 +30,7 @@
 				<!-- САМ ДИАЛОГ -->
 				<form action="<?=Project::getRequest()->createUrl('AdminArticle', 'ManagedSection', array($this->cat['id']))?>" method="POST" id="edit_form">
 				<input type="hidden" value="<?=$par?>" name="parent_id">
-				<input type="hidden" name="sub" value="0">
+				<input type="hidden" name="sub" value="0" id="sub">
 				<table border="0" cellpadding="0" cellspacing="4">
 					<tbody><tr>
 						<td class="left_col">

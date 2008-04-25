@@ -17,7 +17,7 @@
 				<?=$n['name']?><br>
 			</td>
 			<td><?=$n['active'] == 1 ? "Active" : "Draft"?></td>
-			<td><a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'ManagedSection', array($n['id']));?>)'>[Редактировать]</a> <a href="<?=$this->createUrl('AdminArticle', 'DeleteSection', array($n['id']));?>">[Удалить]</a> <a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'SetCompetition', array($n['id']));?>)'>[Добавить конкурс]</a></td>
+			<td><a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'ManagedSection', array($n['id']));?>)'>[Редактировать]</a> <a href="<?=$this->createUrl('AdminArticle', 'DeleteSection', array($n['id']));?>">[Удалить]</a> <a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'SetCompetition', array($n['id']));?>)'>[Добавить конкурс]</a> <a href="<?=$this->createUrl('AdminArticle', 'SetActive', array($n['id']));?>">[Активировать]</a></td>
 		</tr>
 	<? endforeach;?>
 </table>
