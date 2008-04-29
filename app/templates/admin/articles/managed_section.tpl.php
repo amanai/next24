@@ -29,7 +29,7 @@
 			<td class="c_cen">
 				<!-- САМ ДИАЛОГ -->
 				<form action="<?=Project::getRequest()->createUrl('AdminArticle', 'ManagedSection', array($this->cat['id']))?>" method="POST" id="edit_form">
-				<input type="hidden" value="<?=$par?>" name="parent_id">
+				<input type="hidden" value="<?=$par?>" name="parent_id" id="parent_id">
 				<input type="hidden" name="sub" value="0" id="sub">
 				<table border="0" cellpadding="0" cellspacing="4">
 					<tbody><tr>
@@ -37,7 +37,7 @@
 						Название*:
 						</td>
 						<td class="right_col" style="width: 100%;">
-						<input class="field" name="section_name" value="<?=$this->cat['name']?>" type="text">
+						<input class="field" name="section_name" value="<?=$this->cat['name']?>" type="text" id="section_name">
 						</td>
 					</tr>
 					<tbody><tr>
