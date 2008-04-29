@@ -275,7 +275,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			}
 			
 			$session_name = Project::getSession() -> getSessionName();
-			if (($this -> _username != $user) && ($user !== null) && ((int)Project::getUser() -> getDbUser() -> id > 0)){
+			/*if (($this -> _username != $user) && ($user !== null) && ((int)Project::getUser() -> getDbUser() -> id > 0)){
 				$sid = Project::getSession() -> getSID();
 				//var_dump($sid);die;
 				$parameters[$session_name] = $sid;
@@ -283,7 +283,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 				if (isset($parameters[$session_name])){
 					unset($parameters[$session_name]);
 				}
-			}
+			}*/
 			
 			$query = '';
 			foreach ($parameters as $k=>$v){
