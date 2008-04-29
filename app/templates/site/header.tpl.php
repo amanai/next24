@@ -43,13 +43,11 @@
 								<a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>">Профиль</a><br />
 								<a href="<?php echo $this->createUrl('Photo', 'LastList', null, $this->current_user->login)?>">Фотоальбом</a><br />
 								<a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>">Подписка</a><br />
-								<a href="<?php echo $this->createUrl('Bookmarks', 'List', null, $this->current_user->login)?>">Закладки</a><br />
 
 								<a href="#">Дневник</a><br />
 								<!--<a href="#">Сообщения</a>-->
 							</div>
 
-							<div style="float: left;"><a href="#"><img src="<?php echo $this -> image_url;?>open.png" width="21" height="24" /></a></div>
 							<div align="right" style="padding-top: 7px;">Вы вошли как: <a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><?php echo $this->current_user->login;?></a></div>
 
 						</td>
@@ -99,7 +97,7 @@
 						<a href="#">Дневники</a><br />
 						<a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false)?>">Вопрос-ответ</a><br />
 						<a href="<?php echo $this->createUrl('Album', 'LastList', null, false);?>">Фотоальбомы</a><br />
-						<a href="#">Топы</a>
+						<a href="<?php echo $this->createUrl('Bookmarks', 'List', null, false)?>">Закладки</a>
 					</td>
 				</tr>
 				</table>
