@@ -1,15 +1,18 @@
 <?php
 
 class BookmarksView extends BaseSiteView {
-	protected $_dir = 'Bookmarks';
-    //protected $_dir = 'QuestionAnswer';
+	protected $_dir = 'Bookmarks'; // - ссылка на дирректорию, где хранятся шаблоны
 
-	public function BookmarksList($data) {
+	public function Bookmarks_List($data) {
+		$this->setTemplate(null, 'bookmarks_list.tpl.php');
+		$this->set($data);
+  //print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
+	}
+	public function Bookmarks_MostVisit($data) {
 		$this->setTemplate(null, 'bookmarks_list.tpl.php');
 		$this->set($data);
 	}
-
-	public function ViewBookmarks($data) {
+	public function Bookmarks_View($data) {
 		$this->setTemplate(null, 'bookmarks.tpl.php');
 		$this->set($data);
 
