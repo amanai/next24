@@ -7,7 +7,7 @@ class BookmarksController extends SiteController {
 
   function __construct($view_class = null) {
     if ($view_class === null) {
-	  $view_class = "BookmarksView"; // - привязываем класс Представления к данному Контроллеру
+	      $view_class = "BookmarksView"; // - привязываем класс Представления к данному Контроллеру
     }
     parent::__construct($view_class);
     //print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
