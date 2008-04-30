@@ -3,7 +3,7 @@
 <script language="JavaScript" type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
 
 		<div id="tabs">
-			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=Project::getRequest()->createUrl('Bookmarks','List')?>"><?=$this->tab_list_name?></a></div>
+			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=Project::getRequest()->createUrl('Bookmarks','BookmarksList')?>"><?=$this->tab_list_name?></a></div>
 			<?php if($this->current_user && $this->current_user->id > 0) { ?>
 				<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('QuestionAnswer', 'UserQuestions')?>" ><?=$this->tab_my_list_name?></a></div>
 			<?php } ?>
