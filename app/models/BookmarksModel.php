@@ -1,12 +1,22 @@
 <?php
+/*
+  Класс BookmarksModel - Модель для модуля Закладки (Bookmarks)
+  Содержит функции, работающие непосредственно с данными из БД
+*/
 
 class BookmarksModel extends BaseModel {
 
   public function __construct() {
-    parent::__construct('bookmarks'); // - имя таблицы
+    parent::__construct('bookmarks'); // - передаем параметром имя таблицы
+    // конструктор родителя содержит базовые функции по работе с БД:
+    // _caches, load($id), loadAll, loadPage, delete($id), count(), save(),
+    // __get($var), __set($var, $val), bind($result), data(), setPager, getPager(),
+    // updatePagerAmount(), getCountRecords(), clear()
+    //print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
   }
 
   public function loadByUserId($user_id = 0){
+    $userId = (int)$userId;
     $sql = "
     SELECT
         bookmarks.`id`,
@@ -18,13 +28,21 @@ class BookmarksModel extends BaseModel {
         bookmarks.`is_public`,
         bookmarks.`creation_date`,
         bookmarks.`views`,
-        users.`login`
+        users.`login`,
+        bookmarks_tree.`name` as bookmark_category,
+        count(bookmarks_comments.`id`) as count_comments
     FROM bookmarks
-      LEFT JOIN users
+    LEFT JOIN users
       ON bookmarks.`user_id` = users.`id`
-    WHERE bookmarks.`user_id` = ?d ";
-    $result = Project::getDatabase() -> selectRow($sql, $user_id);
-    $this -> bind($result);
+    LEFT JOIN bookmarks_tree
+      ON bookmarks.`bookmarks_tree_id` = bookmarks_tree.`id`
+    LEFT JOIN bookmarks_comments
+      ON bookmarks.`id` = bookmarks_comments.`bookmark_id`";
+    if ($user_id != 0) { $sql .= " WHERE bookmarks.`user_id` = ?d "; }
+    $sql .= " GROUP BY bookmarks.`id`";
+    //$result = Project::getDatabase() -> selectRow($sql, $user_id);
+    $result = Project::getDatabase() -> select($sql, $user_id);
+    //$this -> bind($result); ??? - не знаю надо ли или это только для selectRow
     return $result;
   }
 
