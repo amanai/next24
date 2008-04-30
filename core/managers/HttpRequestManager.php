@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handle all http requests///
+ * Handle all http requests//////
  */
 class HttpRequestManager extends ApplicationManager implements IManager, IteratorAggregate, Countable{
 
