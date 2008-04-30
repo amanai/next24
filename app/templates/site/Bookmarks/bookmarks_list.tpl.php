@@ -22,7 +22,7 @@
 							<!-- /панель слева -->
 						</td>
 						<td class="next24u_right">
-						<?php include($this -> _include('tag_list.tpl.php')); ?>
+						<?php //include($this -> _include('tag_list.tpl.php')); ?>
 							<div class="block_ee1">
 								<div class="block_ee2">
 									<div class="block_ee3">
