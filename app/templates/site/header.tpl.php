@@ -43,6 +43,8 @@
 								<a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>">Профиль</a><br />
 								<a href="<?php echo $this->createUrl('Photo', 'LastList', null, $this->current_user->login)?>">Фотоальбом</a><br />
 								<a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>">Подписка</a><br />
+								<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, $this->current_user->login)?>">Закладки</a><br />
+								<a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, $this->current_user->login)?>">Вопросы-ответы</a><br />
 
 								<a href="#">Дневник</a><br />
 								<!--<a href="#">Сообщения</a>-->
@@ -97,7 +99,7 @@
 						<a href="#">Дневники</a><br />
 						<a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false)?>">Вопрос-ответ</a><br />
 						<a href="<?php echo $this->createUrl('Album', 'LastList', null, false);?>">Фотоальбомы</a><br />
-						<a href="<?php echo $this->createUrl('Bookmarks', 'List', null, false)?>">Закладки</a>
+						<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false)?>">Закладки</a>
 					</td>
 				</tr>
 				</table>
