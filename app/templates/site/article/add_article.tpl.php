@@ -12,37 +12,32 @@
 		</tr>
 		<tr>
 			<td>Заголовок статьи</td>
-			<td><input type="text" name="title"></td>
+			<td><input type="text" name="title" id="title"></td>
 		</tr>
 		<tr>
 			<td width="15%">Раздел</td>
 			<td width="85%">
-				<div id="level1" style="padding-top:5px">
-					<select style="width:115px">
-						<option value=""> -- Select -- </option>
-						<?foreach ($this->cat_list as $cat):?>
-							<option onclick='<?if($cat['level'] < 5) {?>getElementById("add_cat").style.visibility = "visible";<?} else {?>getElementById("add_cat").style.visibility = "hidden";<? } ?> getElementById("category").value="<?=$cat['id']?>";ajax(<?=AjaxRequest::getJsonParam('Article', 'AjaxChangeCat', array($cat['id']))?>);' value="<?=$cat['id']?>"><?=$cat['name']?></option>
-						<?endforeach;?>
-					</select>
-				</div>
-				<div id="level2" style="padding-top:5px"></div>
-				<div id="level3" style="padding-top:5px"></div>
-				<div id="level4" style="padding-top:5px"></div>
-				<div id="level5" style="padding-top:5px"></div>
+				<?
+					if($this->action == "AddArticle") {
+						include($this -> _include('add_section.tpl.php'));
+					} else {
+						include($this -> _include('edit_section.tpl.php'));
+					}
+				?>
 				<div id="add_cat"><a href="#" onclick='getElementById("new_cat_block").style.visibility = "visible";'>Добавить категорию</a></div>
 			</td>
 		</tr>
 		<tr style="visibility: hidden" id="new_cat_block">
 			<td>Новая категория</td>
-			<td><input type="text" name="cat_title"></td>
+			<td><input type="text" name="cat_title" id="cat_title"></td>
 		</tr>
 		<tr>
 			<td>Разрешить комментарии</td>
-			<td><input type="checkbox" name="allow_comment"></td>
+			<td><input type="checkbox" name="allow_comment" id="allow_comment"></td>
 		</tr>
 		<tr>
 			<td>Принимать участие в голосовании</td>
-			<td><input type="checkbox" name="allow_rate"></td>
+			<td><input type="checkbox" name="allow_rate" id="allow_rate"></td>
 		</tr>
 		<tr>
 			<td colspan="2"><center>Страницы</center></td>
@@ -60,7 +55,7 @@
 			<td colspan="2"><input type="button" value="Добавить страницу" onclick='ajax(<?=AjaxRequest::getJsonParam('Article', 'AjaxAddPage')?>);'></td>
 		</tr>
 		<tr>
-			<td colspan="2" align="right" style="padding-right: 6px;"><input type="submit" name="submit" value="Отправить"></td>
+			<td colspan="2" align="right" style="padding-right: 6px;"><input type="submit" name="submit" id="submit" value="Отправить"></td>
 		</tr>
 	</table>
 </form>

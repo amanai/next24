@@ -71,6 +71,7 @@ class ArticleController extends SiteController {
 		$request = Project::getRequest();
 		if(!$request->submit) {
 			$data = array();
+			$data['action'] = "AddArticle";
 			$this->BaseSiteData();
 			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, false, true);
 			$article_tree_model = new ArticleTreeModel();
@@ -117,6 +118,7 @@ class ArticleController extends SiteController {
 		$id = (int)$request->getKeyByNumber(0);
 		if(!$request->submit) {
 			$data = array();
+			$data['action'] = "EditArticle";
 			$this->BaseSiteData();
 			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, false, true, null, $article_model->title);
 			$article_model = new ArticleModel();
@@ -126,10 +128,24 @@ class ArticleController extends SiteController {
 			if(count($article_vote_model->loadByArticleId($id)) > 0) { //TODO: it's todo
 				$data['message'] = "Вы не можете редактировать эту статью, голосование по ней уже началось";
 			} else {
+				
 				$article = $article_model->load($id);
 				if($article['user_id'] == Project::getUser()->getDbUser()->id) {
 					$data['article'] = $article;
 					$data['pages'] = $article_page_model->loadByArticleId($id);
+					$key = Node::by_id($article_model->articles_tree_id, 'articles_tree')->key;
+					while($key != "") {
+						$sect[] = $key;
+						$key = $key->getParent();
+					}
+					$sect = array_reverse($sect);
+					$n = Node::by_key('', 'articles_tree');
+					$branches = $n->getBranch();
+					$fill_sections = array();
+					foreach ($branches as $section) {
+						$data['fill_sections'][$section['level']][] = $section;
+					}
+					$data['sect'] = $sect;
 				}
 			}
 			$this->_view->AddArticle($data);
