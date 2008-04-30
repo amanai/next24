@@ -44,7 +44,7 @@
 															<?PHP print '<img src="'.$this -> image_url.'d_ld_ico2.png" id="ico2" />'; ?>
 															<a href="<?PHP print $this->createUrl('Bookmarks', 'BookmarksView', array($item['id']))?>" title="<?PHP print $item['title']?>"><?PHP print $item['description']?></a>
 														</td>
-														<td><a href="#"><?PHP print $item['login']?></a></td><!-- TODO: User profile -->
+														<td><a href="<?php echo  UserController::getProfileUrl($item['login']);?>"><?PHP print $item['login']?></a></td><!-- TODO: User profile -->
 														<td><?PHP print $item['bookmark_category']; ?></td>
 														<td><?PHP print $item['count_comments']; ?></td>
 														<td><?PHP print $item['views']; ?></td>
