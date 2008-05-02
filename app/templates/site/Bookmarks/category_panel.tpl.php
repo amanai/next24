@@ -50,20 +50,25 @@ function doLevelMainClick(p_obj) {
     $v_count = 0;
     foreach($this->bookmarks_catalog_list as $key => $item){
     // для всех дочерних Категорий организуем контейнер-скрыватель-раскрыватель
-    // Его состояние обрабатывается JavaScript function
-      if ($item['level_item']==0):
-        if ($v_count != 0) print '</span>'; // Закрывает TAG
-        $v_count++;
-        print '<p class="level_0">'."\r\n";//align="absmiddle"
-        print '<input type="image" class="img_icon" tag="+" src="'.$v_url_img_icon_plus.'" id="id_'.$item['id'].'" onclick="doLevelMainClick(this)" title="Открыть/закрыть категорию" />'."\r\n";
-        print ' <a href="'.$this->createUrl('Bookmarks', 'BookmarksList', array($item['id'])).'">'.$item['name'].'</a></p>'."\r\n";
-        print '<span style="display: none;" id="span_show_id_'.$item['id'].'">'."\r\n";
-     else:
-       print '<p class="level_1">'."\r\n";
-       print '<b>» </b> <a href="'.$this->createUrl('Bookmarks', 'BookmarksList', array($item['id'])).'">'.$item['name'].'</a></p>'."\r\n";
-     endif;
+    // Его состояние обрабатывается JavaScript function //align="absmiddle"
+      if ($item['level_item']==0) {
+        if ($v_count != 0) { ?></span><?PHP }?>
+        <?PHP $v_count++; ?>
+        <p class="level_0">
+          <input type="image" class="img_icon" tag="+" src="<?=$v_url_img_icon_plus; ?>" id="id_<?=$item['id']?>" onclick="doLevelMainClick(this)" title="Открыть/закрыть категорию" />
+          <a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']))?>"><?=$item['name']?></a>
+        </p>
+   <span style="display: none;" id="span_show_id_<?=$item['id']?>">
+    <?PHP } else { ?>
+       <p class="level_1">
+         <b>» </b> <a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']))?>"><?=$item['name']?></a>
+       </p>
+     <?PHP
+     }
    }
-   print '</span>';
+   ?>
+   </span>
+<?PHP
   }
 ?>
    </div>
