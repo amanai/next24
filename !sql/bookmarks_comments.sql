@@ -9,7 +9,7 @@ CREATE TABLE `bookmarks_comments` (
   `bookmark_id` int(11) NOT NULL COMMENT 'ID закладки',
   `text` text NOT NULL COMMENT 'Текст комментария',
   `mood` varchar(100) default NULL COMMENT 'Настроение автора',
-  `creation_date` datetime NOT NULL COMMENT 'Дата создания коментария',
+  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата создания коментария',
   `adm_redacted` tinyint(4) NOT NULL default '0' COMMENT 'Отредактирован ли администратором',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Таблица комментариев к закладкам';
