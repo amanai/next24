@@ -1,6 +1,7 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 
-<script language="JavaScript" type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
+<script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>tab.js"></script>
+<script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>bookmarks_category_panel.tpl.js"></script>
 
   <div id="tabs">
   <?php $request = Project::getRequest(); ?>
@@ -45,7 +46,8 @@
                <?PHP print '<img src="'.$this -> image_url.'d_ld_ico2.png" id="ico2" />'; ?>
                <?PHP
                  printf('<a href="%s" title="%s : %s">%s</a>',
-                   $this->createUrl('Bookmarks', 'BookmarksView', array($item['id'])),
+                   //$this->createUrl('Bookmarks', 'BookmarksView', array($item['id'])),
+                   $item['url'],
                    $item['description'],
                    $item['title'],
                    $item['description_cut']);
