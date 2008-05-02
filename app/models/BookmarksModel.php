@@ -16,32 +16,34 @@ class BookmarksModel extends BaseModel {
   }
 
   public function loadByUserId($user_id = 0){
-    $userId = (int)$userId;
+    $v_userId = (int)$user_id;
     $sql = "
     SELECT
-        bookmarks.`id`,
-        bookmarks.`user_id`,
-        bookmarks.`bookmarks_tree_id`,
-        bookmarks.`url`,
-        bookmarks.`title`,
-        bookmarks.`description`,
-        bookmarks.`is_public`,
-        bookmarks.`creation_date`,
-        bookmarks.`views`,
+        bm.`id`,
+        bm.`user_id`,
+        bm.`bookmarks_tree_id`,
+        bm.`url`,
+        bm.`title`,
+        bm.`description`,
+        bm.`is_public`,
+        bm.`creation_date`,
+        bm.`views`,
         users.`login`,
-        bookmarks_tree.`name` as bookmark_category,
-        count(bookmarks_comments.`id`) as count_comments
-    FROM bookmarks
+        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(bmt_pr.`name`, ' -><br />',bmt_ch.`name`)) as bookmark_category,
+        count(bm_com.`id`) as count_comments
+    FROM bookmarks bm
     LEFT JOIN users
-      ON bookmarks.`user_id` = users.`id`
-    LEFT JOIN bookmarks_tree
-      ON bookmarks.`bookmarks_tree_id` = bookmarks_tree.`id`
-    LEFT JOIN bookmarks_comments
-      ON bookmarks.`id` = bookmarks_comments.`bookmark_id`";
-    if ($user_id != 0) { $sql .= " WHERE bookmarks.`user_id` = ?d "; }
-    $sql .= " GROUP BY bookmarks.`id`";
+      ON bm.`user_id` = users.`id`
+    LEFT JOIN bookmarks_tree bmt_ch
+      ON bm.`bookmarks_tree_id` = bmt_ch.`id`
+    LEFT JOIN bookmarks_tree bmt_pr
+      ON bmt_ch.`parent_id` = bmt_pr.`id`
+    LEFT JOIN bookmarks_comments bm_com
+      ON bm.`id` = bm_com.`bookmark_id`";
+    if ($v_userId != 0) { $sql .= " WHERE bm.`user_id` = ?d "; }
+    $sql .= " GROUP BY bm.`id`";
     //$result = Project::getDatabase() -> selectRow($sql, $user_id);
-    $result = Project::getDatabase() -> select($sql, $user_id);
+    $result = Project::getDatabase() -> select($sql, $v_userId);
     //$this -> bind($result); ??? - не знаю надо ли или это только для selectRow
     return $result;
   }
