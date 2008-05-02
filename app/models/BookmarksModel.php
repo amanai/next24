@@ -25,6 +25,7 @@ class BookmarksModel extends BaseModel {
         bm.`url`,
         bm.`title`,
         bm.`description`,
+        IF (CHAR_LENGTH(bm.`description`)<=25, bm.`description`, CONCAT( LEFT(bm.`description`, 25), '...')) as description_cut,
         bm.`is_public`,
         bm.`creation_date`,
         bm.`views`,
