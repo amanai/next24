@@ -143,7 +143,6 @@ class AdminArticleController extends AdminController {
 	}
 	
 	
-	
 }
 
 ?>
