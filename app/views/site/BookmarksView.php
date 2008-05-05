@@ -9,7 +9,7 @@ class BookmarksView extends BaseSiteView {
   //print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
 	}
 	public function Bookmarks_MostVisit($data) {
-		$this->setTemplate(null, 'bookmarks_list.tpl.php');
+		$this->setTemplate(null, 'bookmarks_most_visit.tpl.php');
 		$this->set($data);
 	}
 	public function Bookmarks_View($data) {
