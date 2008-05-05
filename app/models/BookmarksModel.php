@@ -15,8 +15,14 @@ class BookmarksModel extends BaseModel {
     //print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
   }
 
-  public function loadByUserId($user_id = 0){
-    $v_userId = (int)$user_id;
+  public function loadWhere($categoryID = null){
+    $categoryID = (int)$categoryID;
+    $v_sql_where = " 1=1 ";
+    if ($categoryID > 0) {
+      $v_sql_where .= ' and bm.`bookmarks_tree_id`='.$categoryID;
+    }
+    $v_sql_order = "bm.`creation_date`";
+    if ($v_userId != 0) { $v_sql_where .= " and bm.`user_id` = ?d "; }
     $sql = "
     SELECT
         bm.`id`,
@@ -40,12 +46,23 @@ class BookmarksModel extends BaseModel {
     LEFT JOIN bookmarks_tree bmt_pr
       ON bmt_ch.`parent_id` = bmt_pr.`id`
     LEFT JOIN bookmarks_comments bm_com
-      ON bm.`id` = bm_com.`bookmark_id`";
-    if ($v_userId != 0) { $sql .= " WHERE bm.`user_id` = ?d "; }
-    $sql .= " GROUP BY bm.`id`";
+      ON bm.`id` = bm_com.`bookmark_id` 
+    WHERE ".$v_sql_where."
+    GROUP BY bm.`id`
+    ORDER BY ".$v_sql_order."
+    LIMIT ?d, ?d  
+    ";
+
     //$result = Project::getDatabase() -> selectRow($sql, $user_id);
-    $result = Project::getDatabase() -> select($sql, $v_userId);
+    //$result = Project::getDatabase() -> select($sql, $v_userId);
     //$this -> bind($result); ??? - не знаю надо ли или это только для selectRow
+		$result = Project::getDatabase() -> 
+        selectPage( $this -> _countRecords, 
+                    $sql, 
+										$this -> _pager -> getStartLimit(), 
+                    $this -> _pager -> getPageSize() /* limit params */
+                    );
+		$this -> updatePagerAmount();
     return $result;
   }
 
@@ -67,6 +84,41 @@ class BookmarksModel extends BaseModel {
     " WHERE bookmarks.`bookmarks_tree_id` = ?d ";
     $result = Project::getDatabase() -> selectRow($sql, $bookmarks_tree_id);
     $this -> bind($result);
+    return $result;
+  }
+  
+  // -- Выборка для самых посещаемых закладок. Критерий: 10 самых посещаемых
+  //  $p_count - количество строк из запроса, самых посещаемых
+  public function loadMostVisit($p_count = 10) {
+    $sql = "
+    SELECT
+        bm.`id`,
+        bm.`user_id`,
+        bm.`bookmarks_tree_id`,
+        bm.`url`,
+        bm.`title`,
+        bm.`description`,
+        IF (CHAR_LENGTH(bm.`description`)<=25, bm.`description`, CONCAT( LEFT(bm.`description`, 25), '...')) as description_cut,
+        bm.`is_public`,
+        bm.`creation_date`,
+        bm.`views`,
+        users.`login`,
+        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(bmt_pr.`name`, ' -><br />',bmt_ch.`name`)) as bookmark_category,
+        count(bm_com.`id`) as count_comments
+    FROM bookmarks bm
+    LEFT JOIN users
+      ON bm.`user_id` = users.`id`
+    LEFT JOIN bookmarks_tree bmt_ch
+      ON bm.`bookmarks_tree_id` = bmt_ch.`id`
+    LEFT JOIN bookmarks_tree bmt_pr
+      ON bmt_ch.`parent_id` = bmt_pr.`id`
+    LEFT JOIN bookmarks_comments bm_com
+      ON bm.`id` = bm_com.`bookmark_id` 
+    GROUP BY bm.`id`
+    ORDER BY bm.`views` DESC
+    LIMIT 0, ?d
+    ";
+    $result = Project::getDatabase() -> select($sql, $p_count);
     return $result;
   }
 
