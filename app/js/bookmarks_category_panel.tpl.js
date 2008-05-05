@@ -4,21 +4,21 @@
   unit: \app\templates\site\Bookmarks\control_panel.tpl.php 
 */
 
-function doLevelMainClick(p_obj) {
+function doLevelMainClick(p_id) {
   var v_url_img_icon_plus  = "/app/images/icons/plus.gif";
   var v_url_img_icon_minus = "/app/images/icons/minus.gif";
-  var v_str = p_obj.getAttribute("tag");
-  var v_id  = p_obj.id;
+  var v_obj_inp = document.getElementById('inp_'+p_id);
+  var v_str = v_obj_inp.getAttribute("tag");
   if (v_str == '+') {
     //p_obj.childNodes[0].nodeValue =  '[-] ';
     //document.getElementById('span_show_'+v_id).className = 'span_show';
-    document.getElementById('span_show_'+v_id).style.display = 'block';
-    p_obj.setAttribute("tag", "-");
-    p_obj.setAttribute("src", v_url_img_icon_minus);
+    document.getElementById('span_show_'+p_id).style.display = 'block';
+    v_obj_inp.setAttribute("tag", "-");
+    v_obj_inp.setAttribute("src", v_url_img_icon_minus);
   } else {
-    document.getElementById('span_show_'+v_id).style.display = 'none';
-    p_obj.setAttribute("tag", "+");
-    p_obj.setAttribute("src", v_url_img_icon_plus);
+    document.getElementById('span_show_'+p_id).style.display = 'none';
+    v_obj_inp.setAttribute("tag", "+");
+    v_obj_inp.setAttribute("src", v_url_img_icon_plus);
   }
-  p_obj.blur();
+  v_obj_inp.blur();
 }
