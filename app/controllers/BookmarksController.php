@@ -7,79 +7,71 @@ class BookmarksController extends SiteController {
 
   function __construct($view_class = null) {
     if ($view_class === null) {
-	      $view_class = "BookmarksView"; // - привязываем класс Представления к данному Контроллеру
+      $view_class = "BookmarksView"; // - привязываем класс Представления к данному Контроллеру
     }
     parent::__construct($view_class);
     //print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
   }
-// -- BaseSiteData - определяет набор закладок, доступных на странице
+  
+  // -- BaseSiteData - определяет набор закладок, доступных на странице
 	protected function BaseSiteData(&$data) {
-		$data['tab_list_name'] = "Каталог закладок";
-		$data['tab_most_visit'] = "Самые посещаемые";
+		$data['tab_list_name']    = "Каталог закладок";
+		$data['tab_most_visit']   = "Самые посещаемые";
 		$data['tab_my_list_name'] = "Мои закладки";
 		$data['tab_add_bookmark'] = "Добавить закладку";
 		parent::BaseSiteData();
 	}
-// -- BookmarksListAction - метод описывающий работу конкретного действия, зарегистрированного в таблице ACTION
-// Имя формируется строго: ИмяДействияAction. ИмяДействия_Action - уже не верно!
+  
+  // -- BookmarksListAction - метод описывающий работу конкретного действия, зарегистрированного 
+  // в таблице ACTION
+  // Имя формируется строго: ИмяДействияAction. ИмяДействия_Action - уже не верно!
 	public function BookmarksListAction() {
 		$request = Project::getRequest();
 		$data = array();
-        $user_id = (int)Project::getUser() -> getDbUser() -> id;
+    $this->BaseSiteData($data);
+    $data['action'] = 'BookmarksList';
+    $user_id = (int)Project::getUser() -> getDbUser() -> id;
 		$this->_list($data, 'BookmarksList', $request->getKeyByNumber(0), $request->getKeyByNumber(1), $user_id);
-  $this->_get_catalogs($data);
-		$this->BaseSiteData($data);
-		$data['action'] = 'BookmarksList';
-        $this->_view->Bookmarks_List($data);
+    $this->_get_catalogs($data);
+    $this->_view->Bookmarks_List($data);
 		$this->_view->parse();
-  //print_r($data);
-	}
+  }
 
+  // -- Action "Самые посещаемые" закладки. Критерий: 10 самых посещаемых
 	public function BookmarksMostVisitAction() {
-    print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
 		$request = Project::getRequest();
 		$data = array();
 		$this->BaseSiteData($data);
 		$data['action'] = 'BookmarksMostVisit';
-        $this->_view->Bookmarks_MostVisit($data);
+    $bookmarks_model = new BookmarksModel();
+    $data['bookmarks_list'] = $bookmarks_model->loadMostVisit();
+    $this->_view->Bookmarks_MostVisit($data);
 		$this->_view->parse();
-	}
+	}               
+  
  // -- Формирует каталог закладок, уже упорядоченный в Моделе BookmarksTreeModel
- protected function _get_catalogs(&$data) {
-   $v_bookmarks_tree_model =  new BookmarksTreeModel();
-   $data['bookmarks_catalog_list'] = $v_bookmarks_tree_model -> loadSortedAll();
- }
+  protected function _get_catalogs(&$data) {
+    $v_bookmarks_tree_model =  new BookmarksTreeModel();
+    $data['bookmarks_catalog_list'] = $v_bookmarks_tree_model -> loadSortedAll();
+  }
 
-/*
-	public function UserQuestionsAction() {
-		$request = Project::getRequest();
-		$data = array();
-		$this->_list($data, 'UserQuestions', $request->getKeyByNumber(0), $request->getKeyByNumber(1), Project::getUser()->getDbUser()->id);
-		$this->BaseSiteData($data);
-		$data['action'] = 'UserQuestions';
-		$this->_view->MyQuestionList($data);
-		$this->_view->parse();
-	}
-*/
+	protected function _list(&$data, $action, $categoryID = null, $tagId = null, $userId = null) {
+    $v_request = Project::getRequest();
+	  $v_tree_id = (int)$v_request-> getKeyByNumber(0);
+	  $v_n_page  = (int)$v_request -> getKeyByNumber(1);
+    // Номер текущей выводимой страницы, определяется по адресу bookmarks_list/0/1/ ...bookmarks_list/0/0/
+	  $param = $v_request->getKeys(); // = Array ( [_path] => bookmarks_list ) - выбранный URL ..bookmarks_list/0/0/
+	  array_shift($param);
+	  $bookmarks_model = new BookmarksModel();
+    $list_per_page = $this->getParam('bookmarks_per_page', 4);
+    $v_DbPager = new DbPager($v_n_page, $list_per_page);
+	  $bookmarks_model -> setPager($v_DbPager);
 
-	protected function _list(&$data, $action, $catId = null, $tagId = null, $userId = null) {
-		$param = Project::getRequest()->getKeys(); // = Array ( [_path] => bookmarks_list )
-		array_shift($param);
-		$bookmarks_model = new BookmarksModel();
-		//$pager = new DbPager($request->pn, 20); //TODO: pageSize
-		//$bookmarks_model->setPager($pager);
-		//$data['bookmarks_list'] = $bookmarks_model->loadByUserId($userId);
-  $data['bookmarks_list'] = $bookmarks_model->loadByUserId();
-		//$pager_view = new SitePagerView();
-		//$data['bookmarks_list_pager'] = $pager_view->show2($bookmarks_model->getPager(), 'Bookmarks', $action, $param);
-  /*
-		$question_model = new QuestionModel();
-		$pager = new DbPager($request->pn, 20); //TODO: pageSize
-		$question_model->setPager($pager);
-		$data['question_list'] = $question_model->loadWhere($catId, $tagId, $userId);
-		$pager_view = new SitePagerView();
-		$data['question_list_pager'] = $pager_view->show2($question_model->getPager(), 'QuestionAnswer', $action, $param);
-  */
+    $data['bookmarks_list'] = $bookmarks_model->loadWhere($categoryID);
+	  $pager_view = new SitePagerView();
+    // Формируем объект-постраничный вывод
+    $data['bookmarks_list_pager'] = $pager_view->show2($bookmarks_model->getPager(), 'Bookmarks', $action, array($v_tree_id));
+    // class SitePagerView -> function show2(IDbPager $pager, $controller = null, $action = null, $params = array(), $user = null)
 	}
 
 /*
