@@ -31,6 +31,21 @@
    <!-- /панель слева -->
   </td>
   <td class="next24u_right">
+  <!-- панель-строка открытой категории -->
+  <?php if (count($this->category_row) > 0) { ?>
+  <div class="block_ee1">
+    <div class="block_ee2">
+      <div class="block_ee3">
+        <div class="block_ee4">
+          <div style="margin: 0px 10px;">
+          <b>Закладки категории:</b> &nbsp;<?=$this->category_row[0]['name']; ?>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php } ?>
+  <!-- /панель-строка открытой категории -->
   <?php //include($this -> _include('tag_list.tpl.php')); ?>
    <div class="block_ee1">
     <div class="block_ee2">
@@ -51,11 +66,11 @@
          <tr id="<?=$v_id; ?>">
           <td style="text-align: left; white-space: normal;">
            <img src="<?=$this->image_url; ?>d_ld_ico2.png" id="ico2" />
-             <a href="<?=$item['url'];?>" title="<?=$item['title'];?>"><?=$item['description_cut'];?></a>
+             <a href="<?=$item['url'];?>" title="<?=$item['description'].' ('.$item['url'].')';?>"><?=$item['description_cut'];?></a>
                <!-- $this- >createUrl('Bookmarks', 'BookmarksView', array($item['id'])) -->
                <!-- $item['description'] -->
           </td>
-          <td style="text-align: center;"><a href="<?=UserController::getProfileUrl($item['login']);?>"><?=$item['login']; ?></a></td><!-- TODO: User profile -->
+          <td style="text-align: center;"><a href="<?=$request->createUrl('Index','Index', null, $item['login']); ;?>"><?=$item['login']; ?></a></td><!-- TODO: User profile -->
           <td style="text-align: center" width="70"><?=$item['bookmark_category']; ?></td>
           <td style="text-align: center;"><?=$item['count_comments']; ?></td>
           <td style="text-align: center;"><?=number_format($item['views'], 0, '',' '); ?></td>

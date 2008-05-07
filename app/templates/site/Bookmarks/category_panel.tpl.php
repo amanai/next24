@@ -23,6 +23,13 @@
  <? } ?>
    </span>
 <? } ?>
+
+<? if (count($this->category_row) > 0) { ?>
+<script language="JavaScript" type="text/javascript">
+  doLevelMainClick('id_'+<?=$this->category_row[0]['parent_id'];?>);
+</script>
+<? } ?>
+
    </div>
   </div>
  </div>

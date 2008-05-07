@@ -14,7 +14,7 @@ class BookmarksController extends SiteController {
   }
   
   // -- BaseSiteData - определяет набор закладок, доступных на странице
-	protected function BaseSiteData(&$data) {
+	protected function _BaseSiteData(&$data) {
 		$data['tab_list_name']    = "Каталог закладок";
 		$data['tab_most_visit']   = "Самые посещаемые";
 		$data['tab_my_list_name'] = "Мои закладки";
@@ -26,25 +26,29 @@ class BookmarksController extends SiteController {
   // в таблице ACTION
   // Имя формируется строго: ИмяДействияAction. ИмяДействия_Action - уже не верно!
 	public function BookmarksListAction() {
-		$request = Project::getRequest();
+		$v_request = Project::getRequest();
 		$data = array();
-    $this->BaseSiteData($data);
+    $this->_BaseSiteData($data);
     $data['action'] = 'BookmarksList';
-    $user_id = (int)Project::getUser() -> getDbUser() -> id;
-		$this->_list($data, 'BookmarksList', $request->getKeyByNumber(0), $request->getKeyByNumber(1), $user_id);
+    $v_user_id = (int)Project::getUser() -> getDbUser() -> id;
+    // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/ ...bookmarks_list/0/0/
+    // где bookmarks_list/{id_категории}/{номер страницы}/
+    $v_categoryID = $v_request->getKeyByNumber(0);
+    $v_n_page     = $v_request->getKeyByNumber(1);
+		$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, $v_user_id);
     $this->_get_catalogs($data);
+    $this->_getOpenCategory($data, $v_categoryID);
     $this->_view->Bookmarks_List($data);
 		$this->_view->parse();
   }
 
   // -- Action "Самые посещаемые" закладки. Критерий: 10 самых посещаемых
 	public function BookmarksMostVisitAction() {
-		$request = Project::getRequest();
 		$data = array();
-		$this->BaseSiteData($data);
+		$this->_BaseSiteData($data);
 		$data['action'] = 'BookmarksMostVisit';
-    $bookmarks_model = new BookmarksModel();
-    $data['bookmarks_list'] = $bookmarks_model->loadMostVisit();
+    $v_bookmarks_model = new BookmarksModel();
+    $data['bookmarks_list'] = $v_bookmarks_model->loadMostVisit();
     $this->_view->Bookmarks_MostVisit($data);
 		$this->_view->parse();
 	}               
@@ -54,25 +58,36 @@ class BookmarksController extends SiteController {
     $v_bookmarks_tree_model =  new BookmarksTreeModel();
     $data['bookmarks_catalog_list'] = $v_bookmarks_tree_model -> loadSortedAll();
   }
-
-	protected function _list(&$data, $action, $categoryID = null, $tagId = null, $userId = null) {
-    $v_request = Project::getRequest();
-	  $v_tree_id = (int)$v_request-> getKeyByNumber(0);
-	  $v_n_page  = (int)$v_request -> getKeyByNumber(1);
-    // Номер текущей выводимой страницы, определяется по адресу bookmarks_list/0/1/ ...bookmarks_list/0/0/
-	  $param = $v_request->getKeys(); // = Array ( [_path] => bookmarks_list ) - выбранный URL ..bookmarks_list/0/0/
-	  array_shift($param);
-	  $bookmarks_model = new BookmarksModel();
-    $list_per_page = $this->getParam('bookmarks_per_page', 4);
-    $v_DbPager = new DbPager($v_n_page, $list_per_page);
-	  $bookmarks_model -> setPager($v_DbPager);
-
-    $data['bookmarks_list'] = $bookmarks_model->loadWhere($categoryID);
-	  $pager_view = new SitePagerView();
+  //$param = $v_request->getKeys(); // = Array ( [_path] => bookmarks_list ) - выбранный URL ..bookmarks_list/0/0/
+  
+  // -- Формируем все основные данные для HTML-формы
+	protected function _getData(&$data, $p_action, $p_categoryID = null, $p_n_page = null) {
+	  $v_categoryID = (int)$p_categoryID;
+	  $v_n_page     = (int)$p_n_page;
+	  $v_model      = new BookmarksModel();
+    $v_list_per_page = $this->getParam('bookmarks_per_page', 4);
+    $v_DbPager = new DbPager($v_n_page, $v_list_per_page);
+	  $v_model -> setPager($v_DbPager);
+    $data['bookmarks_list'] = $v_model->loadWhere($v_categoryID);
+	  $v_pager_view = new SitePagerView();
     // Формируем объект-постраничный вывод
-    $data['bookmarks_list_pager'] = $pager_view->show2($bookmarks_model->getPager(), 'Bookmarks', $action, array($v_tree_id));
+    $data['bookmarks_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'Bookmarks', $p_action, array($v_categoryID));
     // class SitePagerView -> function show2(IDbPager $pager, $controller = null, $action = null, $params = array(), $user = null)
 	}
+  
+  // -- Используется для отрытия в HTML-форме category_panel.tpl.php Раздела категорий
+  // из которого вызвана страница. Возвращает ID родителя Категории
+  protected function _getOpenCategory(&$data, $p_category_childID){
+    $v_categoryID = (int)$p_category_childID;
+    if ($v_categoryID != 0) {
+      // Определяем Родителя и получаем выборку "id parent_id name"
+      $v_model = new BookmarksModel();
+      $v_row   = $v_model->loadCategoryByChildID($v_categoryID);
+      if (count($v_row) > 0) {
+        $data['category_row'] = $v_row;
+      }
+    }
+  }
 
 /*
 	protected function _list(&$data, $action, $catId = null, $tagId = null, $userId = null) {

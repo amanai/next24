@@ -24,12 +24,6 @@
 
 <table  width="100%" height="100%" cellpadding="0">
  <tr>
-  <td class="next24u_left">
-   <!-- панель слева -->
-   <?php include($this -> _include('category_panel.tpl.php')); ?>
-   <?php include($this -> _include('control_panel.tpl.php')); ?>
-   <!-- /панель слева -->
-  </td>
   <td class="next24u_right">
   <?php //include($this -> _include('tag_list.tpl.php')); ?>
    <div class="block_ee1">

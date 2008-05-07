@@ -31,7 +31,7 @@ class BookmarksModel extends BaseModel {
         bm.`url`,
         bm.`title`,
         bm.`description`,
-        IF (CHAR_LENGTH(bm.`description`)<=25, bm.`description`, CONCAT( LEFT(bm.`description`, 25), '...')) as description_cut,
+        IF (CHAR_LENGTH(bm.`description`)<=50, bm.`description`, CONCAT( LEFT(bm.`description`, 50), '...')) as description_cut,
         bm.`is_public`,
         bm.`creation_date`,
         bm.`views`,
@@ -66,27 +66,6 @@ class BookmarksModel extends BaseModel {
     return $result;
   }
 
-  public function loadBySection($bookmarks_tree_id = 0){
-    $sql = "SELECT ".
-        " bookmarks.`id`,".
-        " bookmarks.`user_id`,".
-        " bookmarks.`bookmarks_tree_id`,".
-        " bookmarks.`url`,".
-        " bookmarks.`title`,".
-        " bookmarks.`description`,".
-        " bookmarks.`is_public`,".
-        " bookmarks.`creation_date`,".
-        " bookmarks.`views`,".
-        " users.`login` ".
-    " FROM bookmarks ".
-    " LEFT JOIN users ".
-    " ON bookmarks.`user_id` = users.`id` ".
-    " WHERE bookmarks.`bookmarks_tree_id` = ?d ";
-    $result = Project::getDatabase() -> selectRow($sql, $bookmarks_tree_id);
-    $this -> bind($result);
-    return $result;
-  }
-  
   // -- Выборка для самых посещаемых закладок. Критерий: 10 самых посещаемых
   //  $p_count - количество строк из запроса, самых посещаемых
   public function loadMostVisit($p_count = 10) {
@@ -98,7 +77,7 @@ class BookmarksModel extends BaseModel {
         bm.`url`,
         bm.`title`,
         bm.`description`,
-        IF (CHAR_LENGTH(bm.`description`)<=25, bm.`description`, CONCAT( LEFT(bm.`description`, 25), '...')) as description_cut,
+        IF (CHAR_LENGTH(bm.`description`)<=75, bm.`description`, CONCAT( LEFT(bm.`description`, 75), '...')) as description_cut,
         bm.`is_public`,
         bm.`creation_date`,
         bm.`views`,
@@ -122,6 +101,22 @@ class BookmarksModel extends BaseModel {
     return $result;
   }
 
+  // -- Выборка категории, которая открыта и получение ID предка
+  // id=8 parent_id=2 name='Авто -> Автомобили'
+  // Предполагаем, что входящий параметр точно является ID дочерним
+  public function loadCategoryByChildID($p_category_childID) {
+    $sql = "
+    SELECT 
+      bmt_ch.`id`, 
+      bmt_ch.`parent_id`, 
+      CONCAT( bmt_pr.`name`, ' -> ', bmt_ch.`name` ) name  
+    FROM `bookmarks_tree` bmt_ch LEFT JOIN `bookmarks_tree` bmt_pr
+      ON bmt_ch.`parent_id` = bmt_pr.`id`  
+    WHERE bmt_ch.`id` = ?d ";
+    $result = Project::getDatabase()->select($sql, $p_category_childID);
+    return $result;
+  }
+  
 /*
 	public function loadWhere($catId = null, $tagId = null, $userId = null) {
 		$catId = (int)$catId;
