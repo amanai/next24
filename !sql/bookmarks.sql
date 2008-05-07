@@ -9,7 +9,7 @@ CREATE TABLE `bookmarks` (
   `title` varchar(255) NOT NULL COMMENT 'Заголовок закладки',
   `description` text COMMENT 'Описание закладки',
   `is_public` tinyint(4) NOT NULL default '0' COMMENT 'Публичная ли закладка',
-  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата создания закладки',
+  `creation_date` datetime NOT NULL COMMENT 'Дата создания закладки',
   `views` int(11) NOT NULL default '0' COMMENT 'Число просмотров закладки',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Таблица закладок';
