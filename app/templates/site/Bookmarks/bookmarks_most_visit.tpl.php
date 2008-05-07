@@ -45,11 +45,11 @@
          <tr id="<?=$v_id; ?>">
           <td style="text-align: left; white-space: normal;">
            <img src="<?=$this->image_url; ?>d_ld_ico2.png" id="ico2" />
-             <a href="<?=$item['url'];?>" title="<?=$item['title'];?>"><?=$item['description_cut'];?></a>
+             <a href="<?=$this->createUrl('Bookmarks', 'BookmarksView', array($item['id']))?>" title="<?=$item['title'].' ('.$item['url'].')';?>"><?=$item['title_cut'];?></a>
                <!-- $this- >createUrl('Bookmarks', 'BookmarksView', array($item['id'])) -->
                <!-- $item['description'] -->
           </td>
-          <td style="text-align: center;"><a href="<?=UserController::getProfileUrl($item['login']);?>"><?=$item['login']; ?></a></td><!-- TODO: User profile -->
+          <td style="text-align: center;"><a href="<?=$request->createUrl('Index','Index', null, $item['login']); ;?>"><?=$item['login']; ?></a></td><!-- TODO: User profile -->
           <td style="text-align: center" width="70"><?=$item['bookmark_category']; ?></td>
           <td style="text-align: center;"><?=$item['count_comments']; ?></td>
           <td style="text-align: center;"><?=number_format($item['views'], 0, '',' '); ?></td>
