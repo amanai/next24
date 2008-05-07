@@ -1,3 +1,4 @@
+<!-- TEMPLATE: "Каталог закладок" - основная вкладка раздела закладки -->
 <?php include($this -> _include('../header.tpl.php')); ?>
 
 <script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>tab.js"></script>
@@ -27,8 +28,7 @@
  <tr>
   <td class="next24u_left">
    <!-- панель слева -->
-   <?php include($this -> _include('category_panel.tpl.php')); ?>
-   <?php include($this -> _include('control_panel.tpl.php')); ?>
+   <?php include($this -> _include('panel_category.tpl.php')); ?>
    <!-- /панель слева -->
   </td>
   <td class="next24u_right">
