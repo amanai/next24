@@ -3,8 +3,8 @@
 class BookmarksView extends BaseSiteView {
 	protected $_dir = 'Bookmarks'; // - ссылка на дирректорию, где хранятся шаблоны
 
-	public function Bookmarks_List($data) {
-		$this->setTemplate(null, 'bookmarks_list.tpl.php');
+	public function Bookmarks_MainList($data) {
+		$this->setTemplate(null, 'bookmarks_main_list.tpl.php');
 		$this->set($data);
   //print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
 	}
@@ -13,10 +13,15 @@ class BookmarksView extends BaseSiteView {
 		$this->set($data);
 	}
 	public function Bookmarks_View($data) {
-		$this->setTemplate(null, 'bookmarks.tpl.php');
+		$this->setTemplate(null, 'bookmarks_view.tpl.php');
 		$this->set($data);
-
 	}
+  public function Bookmarks_UserList($data) {
+    $this->setTemplate(null, 'bookmarks_user_list.tpl.php');
+    $this->set($data);
+  }
+  
+  
 
     /*
 	public function QuestionList($data) {
