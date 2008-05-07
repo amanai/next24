@@ -5,24 +5,27 @@
 */
 
 class BookmarksModel extends BaseModel {
+  const C_MAX_LENGTH_TITLE = 50; // -- Длина строк поля TITLE, выше которой строка обрезается
+  const C_MAX_LENGTH_URL   = 30; // -- Длина строк поля URL, выше которой строка обрезается
 
   public function __construct() {
     parent::__construct('bookmarks'); // - передаем параметром имя таблицы
-    // конструктор родителя содержит базовые функции по работе с БД:
-    // _caches, load($id), loadAll, loadPage, delete($id), count(), save(),
-    // __get($var), __set($var, $val), bind($result), data(), setPager, getPager(),
-    // updatePagerAmount(), getCountRecords(), clear()
-    //print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
+                  // конструктор родителя содержит базовые функции по работе с БД:
+                  // _caches, load($id), loadAll, loadPage, delete($id), count(), save(),
+                  // __get($var), __set($var, $val), bind($result), data(), setPager, 
+                  // getPager(), updatePagerAmount(), getCountRecords(), clear()
   }
-
-  public function loadWhere($categoryID = null){
-    $categoryID = (int)$categoryID;
+                                      
+  // -- Выборка списка закладок. Формируется с Pager (страничной листалкой) 
+  // 1) для 1-ой страницы "Каталог закладок" $p_userID=null
+  // 2) для "Мои закладки" - передается $p_userID>0
+  public function loadBookmarksList($p_categoryID = null, $p_userID = null){
+    $v_categoryID = (int)$p_categoryID;
+    $v_userID     = (int)$p_userID;
     $v_sql_where = " 1=1 ";
-    if ($categoryID > 0) {
-      $v_sql_where .= ' and bm.`bookmarks_tree_id`='.$categoryID;
-    }
+    if ($v_categoryID > 0) { $v_sql_where .= ' and bm.`bookmarks_tree_id`='.$v_categoryID; }
+    if ($v_userID > 0)     { $v_sql_where .= " and bm.`user_id`=".$v_userID; }
     $v_sql_order = "bm.`creation_date`";
-    if ($v_userId != 0) { $v_sql_where .= " and bm.`user_id` = ?d "; }
     $sql = "
     SELECT
         bm.`id`,
@@ -31,7 +34,7 @@ class BookmarksModel extends BaseModel {
         bm.`url`,
         bm.`title`,
         bm.`description`,
-        IF (CHAR_LENGTH(bm.`description`)<=50, bm.`description`, CONCAT( LEFT(bm.`description`, 50), '...')) as description_cut,
+        IF (CHAR_LENGTH(bm.`title`)<=".self::C_MAX_LENGTH_TITLE.", bm.`title`, CONCAT( LEFT(bm.`title`, ".self::C_MAX_LENGTH_TITLE."), '...')) as title_cut,
         bm.`is_public`,
         bm.`creation_date`,
         bm.`views`,
@@ -53,9 +56,7 @@ class BookmarksModel extends BaseModel {
     LIMIT ?d, ?d  
     ";
 
-    //$result = Project::getDatabase() -> selectRow($sql, $user_id);
     //$result = Project::getDatabase() -> select($sql, $v_userId);
-    //$this -> bind($result); ??? - не знаю надо ли или это только для selectRow
 		$result = Project::getDatabase() -> 
         selectPage( $this -> _countRecords, 
                     $sql, 
@@ -77,7 +78,7 @@ class BookmarksModel extends BaseModel {
         bm.`url`,
         bm.`title`,
         bm.`description`,
-        IF (CHAR_LENGTH(bm.`description`)<=75, bm.`description`, CONCAT( LEFT(bm.`description`, 75), '...')) as description_cut,
+        IF (CHAR_LENGTH(bm.`title`)<=".self::C_MAX_LENGTH_TITLE.", bm.`title`, CONCAT( LEFT(bm.`title`, ".self::C_MAX_LENGTH_TITLE."), '...')) as title_cut,
         bm.`is_public`,
         bm.`creation_date`,
         bm.`views`,
@@ -97,7 +98,7 @@ class BookmarksModel extends BaseModel {
     ORDER BY bm.`views` DESC
     LIMIT 0, ?d
     ";
-    $result = Project::getDatabase() -> select($sql, $p_count);
+    $result = Project::getDatabase() -> select($sql, (int)$p_count);
     return $result;
   }
 
@@ -114,6 +115,39 @@ class BookmarksModel extends BaseModel {
       ON bmt_ch.`parent_id` = bmt_pr.`id`  
     WHERE bmt_ch.`id` = ?d ";
     $result = Project::getDatabase()->select($sql, $p_category_childID);
+    return $result;
+  }
+  
+  // -- Выборка 1 строки конкретной закладки
+  // Используется для просмотра закладки BookmarksViewAction
+  public function loadBookmarkRow($p_id = 0) {
+    $v_id = (int)$p_id;
+    $sql = "
+    SELECT
+        bm.`id`,
+        bm.`user_id`,
+        bm.`bookmarks_tree_id`,
+        bm.`url`,
+        IF (CHAR_LENGTH(bm.`url`)<=".self::C_MAX_LENGTH_URL.", bm.`url`, CONCAT( LEFT(bm.`url`, ".self::C_MAX_LENGTH_URL."), '...')) as url_cut,
+        bm.`title`,
+        bm.`description`,
+        IF (CHAR_LENGTH(bm.`title`)<=".self::C_MAX_LENGTH_TITLE.", bm.`title`, CONCAT( LEFT(bm.`title`, ".self::C_MAX_LENGTH_TITLE."), '...')) as title_cut,
+        bm.`is_public`,
+        bm.`creation_date`,
+        bm.`views`,
+        users.`login`,
+        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(bmt_pr.`name`, ' -> ',bmt_ch.`name`)) as bookmark_category
+    FROM bookmarks bm
+    LEFT JOIN users
+      ON bm.`user_id` = users.`id`
+    LEFT JOIN bookmarks_tree bmt_ch
+      ON bm.`bookmarks_tree_id` = bmt_ch.`id`
+    LEFT JOIN bookmarks_tree bmt_pr
+      ON bmt_ch.`parent_id` = bmt_pr.`id`
+    WHERE bm.`id` = ?d
+    ";
+    $result = Project::getDatabase() -> selectRow($sql, $v_id);
+    $this -> bind($result); // - пока не знаю надо ли или это только для selectRow
     return $result;
   }
   
