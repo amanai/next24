@@ -27,7 +27,7 @@ class BookmarksController extends SiteController {
   // Имя формируется строго: ИмяДействияAction. ИмяДействия_Action - уже не верно!
 	public function BookmarksListAction() {
 		$v_request = Project::getRequest();
-		$data = array();
+		$data = array();   
     $this->_BaseSiteData($data);
     $data['action'] = 'BookmarksList';
     $v_user_id = (int)Project::getUser() -> getDbUser() -> id;
@@ -35,7 +35,8 @@ class BookmarksController extends SiteController {
     // где bookmarks_list/{id_категории}/{номер страницы}/
     $v_categoryID = $v_request->getKeyByNumber(0);
     $v_n_page     = $v_request->getKeyByNumber(1);
-		$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0);
+    $v_tagID      = $v_request->getKeyByNumber(2);
+		$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID);
     $this->_get_catalogs($data);
     $this->_getOpenCategory($data, $v_categoryID);
     $this->_view->Bookmarks_MainList($data);
@@ -57,13 +58,16 @@ class BookmarksController extends SiteController {
   public function BookmarksViewAction() {
     $v_request = Project::getRequest();
     $data = array();
-    $data['tab_bookmarks_view'] = 'Просмотр закладки';
     $this->_BaseSiteData($data);
 
     $v_id = (int)$v_request->getKeyByNumber(0);
     if ($v_id > 0) {
       $v_bookmarks_model = new BookmarksModel();
       $data['bookmark_row'] = $v_bookmarks_model->loadBookmarkRow($v_id);
+      $v_tab_name = $data['bookmark_row']['title'];
+      $v_encoding = mb_detect_encoding($v_tab_name);
+      if (mb_strlen($v_tab_name, $v_encoding) > 50 ) $v_tab_name = mb_substr($v_tab_name, 0, 50, $v_encoding).'...';
+      $data['tab_bookmarks_view'] = $v_tab_name;
       $this->_view->Bookmarks_View($data);
       $this->_view->parse();
     } else {
@@ -82,7 +86,8 @@ class BookmarksController extends SiteController {
     // где bookmarks_list/{id_категории}/{номер страницы}/
     $v_categoryID = $v_request->getKeyByNumber(0);
     $v_n_page     = $v_request->getKeyByNumber(1);
-    $this->_getData($data, 'BookmarksUser', $v_categoryID, $v_n_page, $v_userID);
+    $v_tagID      = $v_request->getKeyByNumber(2);
+    $this->_getData($data, 'BookmarksUser', $v_categoryID, $v_n_page, $v_userID, $v_tagID);
     $this->_get_catalogs($data);
     $this->_getOpenCategory($data, $v_categoryID);
     $this->_view->Bookmarks_UserList($data);
@@ -97,19 +102,23 @@ class BookmarksController extends SiteController {
   //$param = $v_request->getKeys(); // = Array ( [_path] => bookmarks_list ) - выбранный URL ..bookmarks_list/0/0/
   
   // -- Формируем все основные данные для HTML-формы
-	protected function _getData(&$data, $p_action, $p_categoryID = null, $p_n_page = null, $p_userID = null) {
+	protected function _getData(&$data, $p_action, $p_categoryID = null, $p_n_page = null, $p_userID = null, $p_tagID = null) {
 	  $v_categoryID = (int)$p_categoryID;
 	  $v_n_page     = (int)$p_n_page;
     $v_userID     = (int)$p_userID;
+    $v_tagID      = (int)$p_tagID;
 	  $v_model      = new BookmarksModel();
     $v_list_per_page = $this->getParam('bookmarks_per_page', 4);
     $v_DbPager = new DbPager($v_n_page, $v_list_per_page);
 	  $v_model -> setPager($v_DbPager);
-    $data['bookmarks_list'] = $v_model->loadBookmarksList($v_categoryID, $v_userID);
+    $data['bookmarks_list'] = $v_model->loadBookmarksList($v_categoryID, $v_userID, $v_tagID);
 	  $v_pager_view = new SitePagerView();
     // Формируем объект-постраничный вывод
     $data['bookmarks_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'Bookmarks', $p_action, array($v_categoryID));
     // class SitePagerView -> function show2(IDbPager $pager, $controller = null, $action = null, $params = array(), $user = null)
+    if ($v_categoryID > 0) { // -- формирование облака тегов для выбранной категории
+      $data['bookmarks_tags_list'] = $v_model->loadTagsByCategoryID($v_categoryID);
+    }
 	}
   
   // -- Используется для отрытия в HTML-форме category_panel.tpl.php Раздела категорий
