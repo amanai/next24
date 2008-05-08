@@ -19,12 +19,18 @@ class BookmarksModel extends BaseModel {
   // -- ¬ыборка списка закладок. ‘ормируетс€ с Pager (страничной листалкой) 
   // 1) дл€ 1-ой страницы " аталог закладок" $p_userID=null
   // 2) дл€ "ћои закладки" - передаетс€ $p_userID>0
-  public function loadBookmarksList($p_categoryID = null, $p_userID = null){
+  public function loadBookmarksList($p_categoryID = null, $p_userID = null, $p_tagID = null){
     $v_categoryID = (int)$p_categoryID;
     $v_userID     = (int)$p_userID;
+    $v_tagID      = (int)$p_tagID;
     $v_sql_where = " 1=1 ";
+    $v_sql_tag   = '';
     if ($v_categoryID > 0) { $v_sql_where .= ' and bm.`bookmarks_tree_id`='.$v_categoryID; }
     if ($v_userID > 0)     { $v_sql_where .= " and bm.`user_id`=".$v_userID; }
+    if ($v_tagID > 0)      { 
+      $v_sql_tag = " RIGHT JOIN bookmarks_tags_links bm_tl ON bm.`id` = bm_tl.`bookmarks_id` "; 
+      $v_sql_where .= " and bm_tl.`bookmarks_tags_id` = ".$v_tagID;
+    }                                    
     $v_sql_order = "bm.`creation_date`";
     $sql = "
     SELECT
@@ -49,8 +55,8 @@ class BookmarksModel extends BaseModel {
     LEFT JOIN bookmarks_tree bmt_pr
       ON bmt_ch.`parent_id` = bmt_pr.`id`
     LEFT JOIN bookmarks_comments bm_com
-      ON bm.`id` = bm_com.`bookmark_id` 
-    WHERE ".$v_sql_where."
+      ON bm.`id` = bm_com.`bookmark_id`".$v_sql_tag.
+    "WHERE ".$v_sql_where."
     GROUP BY bm.`id`
     ORDER BY ".$v_sql_order."
     LIMIT ?d, ?d  
@@ -149,6 +155,23 @@ class BookmarksModel extends BaseModel {
     $result = Project::getDatabase() -> selectRow($sql, $v_id);
     $this -> bind($result); // - пока не знаю надо ли или это только дл€ selectRow
     return $result;
+  }
+  
+  // -- ¬ыборка облака тегов дл€ указанной категории
+  public function loadTagsByCategoryID($p_categoryID = null) {
+    $v_categoryID = (int)$p_categoryID;
+    if ($p_categoryID > 0) {
+      $sql = "
+      SELECT DISTINCT bm_t.`id`, bm_t.`name` as tag_name 
+      FROM bookmarks_tags_links bm_tl, bookmarks b, bookmarks_tags bm_t
+      WHERE bm_tl.`bookmarks_id` = b.`id` 
+        and bm_tl.`bookmarks_tags_id` = bm_t.`id`
+        and b.`bookmarks_tree_id` = ?d
+      ORDER BY tag_name      
+      ";
+      $result = Project::getDatabase() -> select($sql, $v_categoryID);
+      return $result;
+    }
   }
   
 /*
