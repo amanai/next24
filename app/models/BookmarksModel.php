@@ -174,6 +174,14 @@ class BookmarksModel extends BaseModel {
     }
   }
   
+  // -- Выборка имени тега по ID
+  public function loadTageNameByID($p_id) {
+    $v_id = (int)$p_id;
+    $sql = "SELECT bt.`id`, bt.`name` FROM bookmarks_tags bt WHERE bt.`id` = ?d";
+    $result = Project::getDatabase() -> selectRow($sql, $v_id);
+    return $result;
+  }
+  
 /*
 	public function loadWhere($catId = null, $tagId = null, $userId = null) {
 		$catId = (int)$catId;

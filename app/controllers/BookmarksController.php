@@ -38,7 +38,8 @@ class BookmarksController extends SiteController {
     $v_tagID      = $v_request->getKeyByNumber(2);
 		$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID);
     $this->_get_catalogs($data);
-    $this->_getOpenCategory($data, $v_categoryID);
+    $this->_getSelectedCategory($data, $v_categoryID);
+    $this->_getSelectedTag($data, $v_tagID);
     $this->_view->Bookmarks_MainList($data);
 		$this->_view->parse();
   }
@@ -89,7 +90,8 @@ class BookmarksController extends SiteController {
     $v_tagID      = $v_request->getKeyByNumber(2);
     $this->_getData($data, 'BookmarksUser', $v_categoryID, $v_n_page, $v_userID, $v_tagID);
     $this->_get_catalogs($data);
-    $this->_getOpenCategory($data, $v_categoryID);
+    $this->_getSelectedCategory($data, $v_categoryID);
+    $this->_getSelectedTag($data, $v_tagID);
     $this->_view->Bookmarks_UserList($data);
     $this->_view->parse();
   }
@@ -123,7 +125,7 @@ class BookmarksController extends SiteController {
   
   // -- Используется для отрытия в HTML-форме category_panel.tpl.php Раздела категорий
   // из которого вызвана страница. Возвращает ID родителя Категории
-  protected function _getOpenCategory(&$data, $p_category_childID){
+  protected function _getSelectedCategory(&$data, $p_category_childID){
     $v_categoryID = (int)$p_category_childID;
     if ($v_categoryID != 0) {
       // Определяем Родителя и получаем выборку "id parent_id name"
@@ -131,6 +133,18 @@ class BookmarksController extends SiteController {
       $v_row   = $v_model->loadCategoryByChildID($v_categoryID);
       if (count($v_row) > 0) {
         $data['category_row'] = $v_row;
+      }
+    }
+  }
+  
+  // -- Выбирает имя тега, по которому фильтруем набор закладок
+  protected function _getSelectedTag(&$data, $p_id = null) {
+    $v_id = (int)$p_id;
+    if ($v_id > 0) {
+      $v_model = new BookmarksModel();
+      $v_row   = $v_model->loadTageNameByID($v_id);
+      if (count($v_row) > 0) {
+        $data['tag_name_selected'] = $v_row['name'];
       }
     }
   }

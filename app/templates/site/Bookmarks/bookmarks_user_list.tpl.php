@@ -38,6 +38,9 @@
         <div class="block_ee4">
           <div style="margin: 0px 10px;">
           <b>Закладки категории:</b> &nbsp;<?=$this->category_row[0]['name']; ?>
+          <?php if ($this->tag_name_selected !== null) { ?>
+          &nbsp;<b>(Тег:</b> <?=$this->tag_name_selected;?><b>)</b>
+          <? } ?>
           </div>
         </div>
       </div>
