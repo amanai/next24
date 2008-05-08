@@ -44,7 +44,9 @@
   </div>
 <?php } ?>
   <!-- /панель-строка открытой категории -->
-  <?php //include($this -> _include('tag_list.tpl.php')); ?>
+  <!-- строка тегов -->
+<?php include($this -> _include('list_tags.tpl.php')); ?>
+  <!-- /строка тегов -->
    <div class="block_ee1">
     <div class="block_ee2">
      <div class="block_ee3">
