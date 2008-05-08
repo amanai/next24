@@ -17,9 +17,6 @@
     <a href="<?=$request->createUrl('Bookmarks','BookmarksUser'); ?>" title="<?=$this->tab_my_list_name; ?>"><?=$this->tab_my_list_name; ?></a>
   </div>
 <? } ?>
-  <div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$this->createUrl('Bookmarks', 'BookmarksList'); ?>" title="<?=$this->tab_add_bookmark; ?>"><?=$this->tab_add_bookmark; ?></a>
-  </div>
   
 <div class="tab-page tab-page-selected">
 <!-- Вопросы пользователей -->

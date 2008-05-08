@@ -1,3 +1,4 @@
+<!-- TEMPLATE: "Каталог закладок" - основная вкладка раздела закладки -->
 <?php include($this -> _include('../header.tpl.php')); ?>
 
 <script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>tab.js"></script>
@@ -13,12 +14,10 @@
 </div>
 <? if($this->current_user && $this->current_user->id > 0) { ?>
   <div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('Bookmarks','BookmarksList'); ?>" title="<?=$this->tab_my_list_name; ?>"><?=$this->tab_my_list_name; ?></a>
+    <a href="<?=$request->createUrl('Bookmarks','BookmarksUser'); ?>" title="<?=$this->tab_my_list_name; ?>"><?=$this->tab_my_list_name; ?></a>
   </div>
 <? } ?>
-<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-  <a href="<?=$this->createUrl('Bookmarks', 'BookmarksList'); ?>" title="<?=$this->tab_add_bookmark; ?>"><?=$this->tab_add_bookmark; ?></a>
-</div>
+
 <div class="tab-page tab-page-selected">
 <!-- Вопросы пользователей -->
 
