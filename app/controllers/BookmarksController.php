@@ -34,8 +34,8 @@ class BookmarksController extends SiteController {
     // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/ ...bookmarks_list/0/0/
     // где bookmarks_list/{id_категории}/{номер страницы}/
     $v_categoryID = $v_request->getKeyByNumber(0);
-    $v_n_page     = $v_request->getKeyByNumber(1);
-    $v_tagID      = $v_request->getKeyByNumber(2);
+    $v_tagID      = $v_request->getKeyByNumber(1);
+    $v_n_page     = $v_request->getKeyByNumber(2);
 		$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID);
     $this->_get_catalogs($data);
     $this->_getSelectedCategory($data, $v_categoryID);
@@ -86,8 +86,8 @@ class BookmarksController extends SiteController {
     // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/ ...bookmarks_list/0/0/
     // где bookmarks_list/{id_категории}/{номер страницы}/
     $v_categoryID = $v_request->getKeyByNumber(0);
-    $v_n_page     = $v_request->getKeyByNumber(1);
-    $v_tagID      = $v_request->getKeyByNumber(2);
+    $v_tagID      = $v_request->getKeyByNumber(1);
+    $v_n_page     = $v_request->getKeyByNumber(2);
     $this->_getData($data, 'BookmarksUser', $v_categoryID, $v_n_page, $v_userID, $v_tagID);
     $this->_get_catalogs($data);
     $this->_getSelectedCategory($data, $v_categoryID);
@@ -116,7 +116,7 @@ class BookmarksController extends SiteController {
     $data['bookmarks_list'] = $v_model->loadBookmarksList($v_categoryID, $v_userID, $v_tagID);
 	  $v_pager_view = new SitePagerView();
     // Формируем объект-постраничный вывод
-    $data['bookmarks_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'Bookmarks', $p_action, array($v_categoryID));
+    $data['bookmarks_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'Bookmarks', $p_action, array($v_categoryID, $v_tagID));
     // class SitePagerView -> function show2(IDbPager $pager, $controller = null, $action = null, $params = array(), $user = null)
     if ($v_categoryID > 0) { // -- формирование облака тегов для выбранной категории
       $data['bookmarks_tags_list'] = $v_model->loadTagsByCategoryID($v_categoryID);

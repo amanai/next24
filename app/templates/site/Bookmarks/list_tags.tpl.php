@@ -10,7 +10,7 @@
               $v_categoryID = $v_request->getKeyByNumber(0);
               $v_n_page     = $v_request->getKeyByNumber(1);
               foreach ($this->bookmarks_tags_list as $key => $value) { 
-                $v_URL  = $this->createUrl('Bookmarks', $this->action, array($v_categoryID, '0', $value['id']));
+                $v_URL  = $this->createUrl('Bookmarks', $this->action, array($v_categoryID, $value['id'], '0'));
                 if ($value['tag_name'] != $this->tag_name_selected) {
                   $tags_set[] = '<a href="'.$v_URL.'">'.$value['tag_name'].'</a>';
                 } else {
