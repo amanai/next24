@@ -18,7 +18,12 @@
      <span style="display: none;" id="span_show_id_<?=$item['id']?>">
     <? } else { ?>
      <p style="padding-left: 14px; line-height: 14px;">
-       <b>» </b> <a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']))?>"><?=$item['name']?></a>
+       <b>» </b> 
+       <? if ($this->bookmarks_catalog_selectedID == $item['id']) { ?>
+         <?=$item['name']?>
+       <? } else { ?>  
+         <a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']))?>"><?=$item['name']?></a>
+       <? } ?>
      </p>
     <? } ?>
  <? } ?>

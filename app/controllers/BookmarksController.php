@@ -31,13 +31,13 @@ class BookmarksController extends SiteController {
     $this->_BaseSiteData($data);
     $data['action'] = 'BookmarksList';
     $v_user_id = (int)Project::getUser() -> getDbUser() -> id;
-    // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/ ...bookmarks_list/0/0/
-    // где bookmarks_list/{id_категории}/{номер страницы}/
+    // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/2/ ...bookmarks_list/0/0/2/
+    // где bookmarks_list/{id_категории}/{id_тега}/{номер страницы}/
     $v_categoryID = $v_request->getKeyByNumber(0);
     $v_tagID      = $v_request->getKeyByNumber(1);
     $v_n_page     = $v_request->getKeyByNumber(2);
 		$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID);
-    $this->_get_catalogs($data);
+    $this->_get_catalogs($data, $v_categoryID);
     $this->_getSelectedCategory($data, $v_categoryID);
     $this->_getSelectedTag($data, $v_tagID);
     $this->_view->Bookmarks_MainList($data);
@@ -89,17 +89,38 @@ class BookmarksController extends SiteController {
     $v_tagID      = $v_request->getKeyByNumber(1);
     $v_n_page     = $v_request->getKeyByNumber(2);
     $this->_getData($data, 'BookmarksUser', $v_categoryID, $v_n_page, $v_userID, $v_tagID);
-    $this->_get_catalogs($data);
+    $this->_get_catalogs($data, $v_categoryID);
     $this->_getSelectedCategory($data, $v_categoryID);
     $this->_getSelectedTag($data, $v_tagID);
     $this->_view->Bookmarks_UserList($data);
     $this->_view->parse();
   }
+  /*
+  // -- Action: Добавить комментарий
+  public function AddCommentAction() {
+    $request = Project::getRequest();
+    $question_model = new QuestionModel();
+    $question_model->load($request->element_id);
+    $answer_model = new AnswerModel();
+    if($question_model->id > 0) {
+      $answer_model->addComment(Project::getUser()->getDbUser()->id, 0, 0, $request->element_id, $request->comment, 0, 0);
+      $question_model->a_count++;
+      $question_model->save();
+      
+    } //TODO:...
+    Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'ViewQuestion', array($question_model->id)));
+  }
+  */
+  
   
   // -- Формирует каталог закладок, уже упорядоченный в Моделе BookmarksTreeModel
-  protected function _get_catalogs(&$data) {
+  protected function _get_catalogs(&$data, $p_categoryID = null) {
     $v_bookmarks_tree_model =  new BookmarksTreeModel();
+    $v_categoryID           = (int)$p_categoryID;
     $data['bookmarks_catalog_list'] = $v_bookmarks_tree_model -> loadSortedAll();
+    if ($v_categoryID > 0) {
+      $data['bookmarks_catalog_selectedID'] = $v_categoryID;
+    }
   }
   //$param = $v_request->getKeys(); // = Array ( [_path] => bookmarks_list ) - выбранный URL ..bookmarks_list/0/0/
   
@@ -119,7 +140,7 @@ class BookmarksController extends SiteController {
     $data['bookmarks_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'Bookmarks', $p_action, array($v_categoryID, $v_tagID));
     // class SitePagerView -> function show2(IDbPager $pager, $controller = null, $action = null, $params = array(), $user = null)
     if ($v_categoryID > 0) { // -- формирование облака тегов для выбранной категории
-      $data['bookmarks_tags_list'] = $v_model->loadTagsByCategoryID($v_categoryID);
+      $data['bookmarks_tags_list'] = $v_model->loadTagsByCategoryID($v_categoryID, $v_userID);
     }
 	}
   
@@ -139,7 +160,7 @@ class BookmarksController extends SiteController {
   
   // -- Выбирает имя тега, по которому фильтруем набор закладок
   protected function _getSelectedTag(&$data, $p_id = null) {
-    $v_id = (int)$p_id;
+    $v_id = (int)$p_id; 
     if ($v_id > 0) {
       $v_model = new BookmarksModel();
       $v_row   = $v_model->loadTageNameByID($v_id);

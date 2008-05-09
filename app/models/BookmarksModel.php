@@ -31,7 +31,6 @@ class BookmarksModel extends BaseModel {
       $v_sql_tag = " RIGHT JOIN bookmarks_tags_links bm_tl ON bm.`id` = bm_tl.`bookmarks_id` "; 
       $v_sql_where .= " and bm_tl.`bookmarks_tags_id` = ".$v_tagID;
     }                                    
-    $v_sql_order = "bm.`creation_date`";
     $sql = "
     SELECT
         bm.`id`,
@@ -58,7 +57,7 @@ class BookmarksModel extends BaseModel {
       ON bm.`id` = bm_com.`bookmark_id`".$v_sql_tag.
     "WHERE ".$v_sql_where."
     GROUP BY bm.`id`
-    ORDER BY ".$v_sql_order."
+    ORDER BY bm.`creation_date` DESC
     LIMIT ?d, ?d  
     ";
 
@@ -158,15 +157,18 @@ class BookmarksModel extends BaseModel {
   }
   
   // -- Выборка облака тегов для указанной категории
-  public function loadTagsByCategoryID($p_categoryID = null) {
+  // Если выборка для вкладки "Мои закладки", то отфильтровываются по userID
+  public function loadTagsByCategoryID($p_categoryID = null, $p_userID = null) {
     $v_categoryID = (int)$p_categoryID;
+    $v_userID     = (int)$p_userID;
+    if ($v_userID > 0) $v_sql_where = ' and b.`user_id` = '.$v_userID;
     if ($p_categoryID > 0) {
       $sql = "
       SELECT DISTINCT bm_t.`id`, bm_t.`name` as tag_name 
       FROM bookmarks_tags_links bm_tl, bookmarks b, bookmarks_tags bm_t
       WHERE bm_tl.`bookmarks_id` = b.`id` 
         and bm_tl.`bookmarks_tags_id` = bm_t.`id`
-        and b.`bookmarks_tree_id` = ?d
+        and b.`bookmarks_tree_id` = ?d ".$v_sql_where."
       ORDER BY tag_name      
       ";
       $result = Project::getDatabase() -> select($sql, $v_categoryID);

@@ -60,7 +60,7 @@
          <tr>
           <td style="width: 100%; text-align: left;"><b>Закладка</b></td>
           <td><b>Автор</b></td>
-          <td><b>Категория</b></td>
+          <!--<td><b>Категория</b></td>-->
           <td><b>Комментариев</b></td>
           <td><b>Просмотров</b></td>
           <td><b>Дата создания</b></td>
@@ -75,7 +75,7 @@
                <!-- $item['description'] -->
           </td>
           <td style="text-align: center;"><a href="<?=$request->createUrl('Index','Index', null, $item['login']); ;?>"><?=$item['login']; ?></a></td><!-- TODO: User profile -->
-          <td style="text-align: center" width="70"><?=$item['bookmark_category']; ?></td>
+          <!--<td style="text-align: center" width="70"><?=$item['bookmark_category']; ?></td>-->
           <td style="text-align: center;"><?=$item['count_comments']; ?></td>
           <td style="text-align: center;"><?=number_format($item['views'], 0, '',' '); ?></td>
           <td><?=date_format(new DateTime($item['creation_date']),'d.m.y H:i'); ?></td>
