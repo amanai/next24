@@ -72,7 +72,7 @@ class BookmarksController extends SiteController {
       $this->_view->Bookmarks_View($data);
       $this->_view->parse();
     } else {
-      Project::getResponse()->redirect($request->createUrl('Bookmarks', 'BookmarksList'));
+      Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksList'));
     }
   }
   
@@ -95,6 +95,102 @@ class BookmarksController extends SiteController {
     $this->_view->Bookmarks_UserList($data);
     $this->_view->parse();
   }
+  
+  // -- Action: Удалить закладку
+  public function BookmarksDeleteAction() {
+    $v_request = Project::getRequest();
+    $v_user_id = (int)Project::getUser()->getDbUser()->id;
+    $v_model = new BookmarksModel();
+    $v_bookmarkID = $v_request->getKeyByNumber(0);
+    $v_model->load($v_bookmarkID);
+    if ($v_model->user_id == $v_user_id) {
+      //$v_model->delete($v_bookmarkID);
+    }
+    Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
+  }
+  
+  // -- Action: Редактирование/создание закладки
+  public function BookmarksManageAction() {
+    $v_request = Project::getRequest();
+    $data = array();
+    $question_model = new QuestionModel();
+    $v_bm_model = new BookmarksModel();
+    $id = (int)$v_request->getKeyByNumber(0);
+    if (!$v_request->submit) { // Редактирование закладки
+      
+      $question_cat_model = new QuestionCatModel();
+      if($id > 0) {
+        $data['question'] = $question_model->loadQuestion($id);
+        $tags_model = new QuestionTagModel();
+        $tags = $tags_model->loadWhere(null, null, $id);
+        foreach ($tags as $tag) {
+          $data['question_tag_list'].= $tag['name'].', ';
+        }
+        $data['question_tag_list'] = rtrim($data['question_tag_list'], ', ');
+        $data['tab_manage_question_name'] = "Редактирование вопроса";
+      }
+      $data['question_cat'] = $question_cat_model->loadAll();
+      $this->BaseSiteData($data);
+      $this->_view->Bookmarks_Manage($data);
+      $this->_view->parse();
+    } else {
+      if($id > 0) {
+        $data['question'] = $question_model->load($id);
+        if($question_model->user_id != Project::getUser()->getDbUser()->id) {
+          Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
+        }
+      }  
+      
+      if($v_request->question_text == null) {    //TODO validator
+        $data['error'][] = "Заполните текст вопроса";
+        $question_cat_model = new QuestionCatModel();
+        $data['question_cat'] = $question_cat_model->loadAll();
+        $data['question_tag_list'] = $v_request->tags;
+        $data['question']['q_text'] = $v_request->question_text;
+        $data['question']['question_cat_id'] = (int)$v_request->cat_id;
+        $data['question']['user_id'] = Project::getUser()->getDbUser()->id;
+        $data['question']['creation_date'] = date("Y-m-d H:i:s");
+        $this->BaseSiteData($data);
+        $this->_view->Bookmarks_Manage($data);
+        $this->_view->parse();
+        return;
+      }
+      
+      $question_model->q_text = $v_request->question_text;
+      $question_model->questions_cat_id = (int)$v_request->cat_id;
+      $question_model->user_id = Project::getUser()->getDbUser()->id;
+      $question_model->creation_date = date("Y-m-d H:i:s");
+      $q_id = $question_model->save();
+      $tag_model = new QuestionTagModel();
+      $question_tag_model = new QTagModel();
+      $question_tag_model->deleteByQuestionId($id);      //TODO: revamp
+      $tags_ar = array();
+      $tags_ar = explode(",", $v_request->tags);
+      foreach ($tags_ar as $tag) {
+        $tag = trim($tag);  
+        if(count($tag_model->loadByName($tag)) <= 0) {
+          $tag_model->name = $tag;
+          $tag_id = $tag_model->save();
+          /*if(count($question_tag_model->loadWhere($q_id, $tag_model->id)) <= 0) {
+            $question_tag_model->question_id = $q_id;
+            $question_tag_model->question_tag_id = $tag_model->id;
+            $question_tag_model->save();
+            $question_tag_model->clear();  
+          }*/
+        } else {
+          $tag_id = $tag_model->id;
+        }
+          $tag_model->clear();  
+          $question_tag_model->question_id = $q_id;
+          $question_tag_model->question_tag_id = $tag_id;
+          $question_tag_model->save();
+          $question_tag_model->clear();
+      }
+      Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
+    }
+  }
+  
+  
   /*
   // -- Action: Добавить комментарий
   public function AddCommentAction() {
@@ -113,11 +209,11 @@ class BookmarksController extends SiteController {
   */
   
   
-  // -- Формирует каталог закладок, уже упорядоченный в Моделе BookmarksTreeModel
+  // -- Формирует каталог закладок, уже упорядоченный в Моделе BookmarksCategoryModel
   protected function _get_catalogs(&$data, $p_categoryID = null) {
-    $v_bookmarks_tree_model =  new BookmarksTreeModel();
+    $v_bookmarks_category_model =  new BookmarksCategoryModel();
     $v_categoryID           = (int)$p_categoryID;
-    $data['bookmarks_catalog_list'] = $v_bookmarks_tree_model -> loadSortedAll();
+    $data['bookmarks_catalog_list'] = $v_bookmarks_category_model -> loadCategoryList();
     if ($v_categoryID > 0) {
       $data['bookmarks_catalog_selectedID'] = $v_categoryID;
     }
@@ -171,23 +267,6 @@ class BookmarksController extends SiteController {
   }
 
 /*
-	protected function _list(&$data, $action, $catId = null, $tagId = null, $userId = null) {
-		$param = Project::getRequest()->getKeys();
-		array_shift($param);
-		$question_model = new QuestionModel();
-		$question_cat_model = new QuestionCatModel();
-		if($catId > 0) {
-			$tag_model = new QuestionTagModel();
-			$data['question_tag_list'] = $tag_model->loadTags($catId);
-		}
-		$pager = new DbPager($request->pn, 20); //TODO: pageSize
-		$question_model->setPager($pager);
-		$data['question_list'] = $question_model->loadWhere($catId, $tagId, $userId);
-		$data['question_cat_list'] = $question_cat_model->loadAll();
-		$pager_view = new SitePagerView();
-		$data['question_list_pager'] = $pager_view->show2($question_model->getPager(), 'QuestionAnswer', $action, $param);
-	}
-
 	public function ViewQuestionAction() {
 		$request = Project::getRequest();
 		$this->BaseSiteData($data);

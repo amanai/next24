@@ -4,7 +4,7 @@
   <div class="block_ee3">
    <div class="block_ee4">
     <div class="block_title"><h2>Категории</h2></div>
-<? if (is_array($this->bookmarks_catalog_list)) { $v_count = 0; ?>
+<? if (count($this->bookmarks_catalog_list) > 0) { $v_count = 0; ?>
    <? foreach($this->bookmarks_catalog_list as $key => $item){ ?>
     <!-- для всех дочерних Категорий организуем контейнер-скрыватель-раскрыватель -->
     <!-- Его состояние обрабатывается JavaScript function //align="absmiddle" -->

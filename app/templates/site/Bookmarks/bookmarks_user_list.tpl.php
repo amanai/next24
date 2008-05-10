@@ -64,6 +64,7 @@
           <td><b>Комментариев</b></td>
           <td><b>Просмотров</b></td>
           <td><b>Дата создания</b></td>
+          <td><b>Действие</b></td>
          </tr>
          <? foreach($this->bookmarks_list as $key => $item) { ?>
          <?   ($key%2==0) ? $v_id = "cmod_tab2" : $v_id = "cmod_tab1"; ?>
@@ -79,6 +80,12 @@
           <td style="text-align: center;"><?=$item['count_comments']; ?></td>
           <td style="text-align: center;"><?=number_format($item['views'], 0, '',' '); ?></td>
           <td><?=date_format(new DateTime($item['creation_date']),'d.m.y H:i'); ?></td>
+          <td>
+            <?php if($item['user_id'] == Project::getUser()->getDbUser()->id) { ?>
+              <a href=<?=$this->createUrl('Bookmarks','BookmarksDelete',array($item['id']))?>>[Удалить]</a> 
+              <a href="<?=$this->createUrl('Bookmarks','BookmarksManage',array($item['id']))?>">[Редактировать]</a>
+            <?php } ?>
+          </td>
          </tr>
          <? } ?>
         </table>

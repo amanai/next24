@@ -20,6 +20,10 @@ class BookmarksView extends BaseSiteView {
     $this->setTemplate(null, 'bookmarks_user_list.tpl.php');
     $this->set($data);
   }
+  public function Bookmarks_Manage($data) {
+    $this->setTemplate(null, 'bookmarks_manage.tpl.php');
+    $this->set($data);
+  }
   
   
 
