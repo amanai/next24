@@ -4,8 +4,8 @@
   <div class="block_ee3">
    <div class="block_ee4">
     <div class="block_title"><h2>Категории</h2></div>
-<? if (count($this->bookmarks_catalog_list) > 0) { $v_count = 0; ?>
-   <? foreach($this->bookmarks_catalog_list as $key => $item){ ?>
+<? if (count($this->bookmarks_category_list) > 0) { $v_count = 0; ?>
+   <? foreach($this->bookmarks_category_list as $key => $item){ ?>
     <!-- для всех дочерних Категорий организуем контейнер-скрыватель-раскрыватель -->
     <!-- Его состояние обрабатывается JavaScript function //align="absmiddle" -->
     <? if ($item['level_item']==0) { ?>
@@ -19,7 +19,7 @@
     <? } else { ?>
      <p style="padding-left: 14px; line-height: 14px;">
        <b>» </b> 
-       <? if ($this->bookmarks_catalog_selectedID == $item['id']) { ?>
+       <? if ($this->bookmarks_category_selectedID == $item['id']) { ?>
          <?=$item['name']?>
        <? } else { ?>  
          <a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']))?>"><?=$item['name']?></a>

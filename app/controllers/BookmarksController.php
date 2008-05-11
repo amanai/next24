@@ -100,11 +100,13 @@ class BookmarksController extends SiteController {
   public function BookmarksDeleteAction() {
     $v_request = Project::getRequest();
     $v_user_id = (int)Project::getUser()->getDbUser()->id;
-    $v_model = new BookmarksModel();
     $v_bookmarkID = $v_request->getKeyByNumber(0);
+    $v_model = new BookmarksModel();
     $v_model->load($v_bookmarkID);
-    if ($v_model->user_id == $v_user_id) {
-      //$v_model->delete($v_bookmarkID);
+    if (($v_model->user_id == $v_user_id) and ($v_bookmarkID > 0)) {
+      $v_model->delete($v_bookmarkID);
+      $v_tag_model = new BookmarksTagModel();
+      $v_tag_model->deleteTagsLinkByBookmarkID($v_bookmarkID);
     }
     Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
   }
@@ -113,78 +115,92 @@ class BookmarksController extends SiteController {
   public function BookmarksManageAction() {
     $v_request = Project::getRequest();
     $data = array();
-    $question_model = new QuestionModel();
+    $data['action'] = 'BookmarksManage';
+    $v_bm_id = (int)$v_request->getKeyByNumber(0);
+    $data['tab_manage_bookmark_name'] = (($v_bm_id == 0) ? "Добавление закладки" : "Редактирование закладки");
+
     $v_bm_model = new BookmarksModel();
-    $id = (int)$v_request->getKeyByNumber(0);
-    if (!$v_request->submit) { // Редактирование закладки
-      
-      $question_cat_model = new QuestionCatModel();
-      if($id > 0) {
-        $data['question'] = $question_model->loadQuestion($id);
-        $tags_model = new QuestionTagModel();
-        $tags = $tags_model->loadWhere(null, null, $id);
+    if ($v_request->submit == null) { 
+      // Открытие вкладки на Добавление/Редактирование закладки
+      $v_bm_category_model = new BookmarksCategoryModel();
+      if($v_bm_id > 0) { // Закладка уже есть, читаем её данные
+        $data['bookmark_row'] = $v_bm_model->load($v_bm_id);
+        $v_tags_model = new BookmarksTagModel();
+        $tags = $v_tags_model->loadTagsWhere(null, null, $v_bm_id);
         foreach ($tags as $tag) {
-          $data['question_tag_list'].= $tag['name'].', ';
+          $data['bookmarks_tag_list'].= $tag['tag_name'].', ';
         }
-        $data['question_tag_list'] = rtrim($data['question_tag_list'], ', ');
-        $data['tab_manage_question_name'] = "Редактирование вопроса";
+        $data['bookmarks_tag_list'] = rtrim($data['bookmarks_tag_list'], ', ');
       }
-      $data['question_cat'] = $question_cat_model->loadAll();
-      $this->BaseSiteData($data);
+      $data['bookmarks_category_list'] = $v_bm_category_model -> loadCategoryList();
+      $this->_BaseSiteData($data);
       $this->_view->Bookmarks_Manage($data);
       $this->_view->parse();
-    } else {
-      if($id > 0) {
-        $data['question'] = $question_model->load($id);
-        if($question_model->user_id != Project::getUser()->getDbUser()->id) {
+    } else { 
+      // Нажата SUBMIT на форме. Сохранение закладки (после Добавления/Редактирования)
+      if($v_bm_id > 0) {
+        $data['bookmark_row'] = $v_bm_model->load($v_bm_id);
+        if($v_bm_model->user_id != Project::getUser()->getDbUser()->id) { // Чужая закладка
           Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
         }
       }  
       
-      if($v_request->question_text == null) {    //TODO validator
-        $data['error'][] = "Заполните текст вопроса";
-        $question_cat_model = new QuestionCatModel();
-        $data['question_cat'] = $question_cat_model->loadAll();
-        $data['question_tag_list'] = $v_request->tags;
-        $data['question']['q_text'] = $v_request->question_text;
-        $data['question']['question_cat_id'] = (int)$v_request->cat_id;
-        $data['question']['user_id'] = Project::getUser()->getDbUser()->id;
-        $data['question']['creation_date'] = date("Y-m-d H:i:s");
-        $this->BaseSiteData($data);
+      if(   ($v_request->inp_bookmark_title       == null) 
+				 or ($v_request->inp_bookmark_url         == null)   
+         or ($v_request->inp_bookmark_description == null)
+        ) {    //TODO validator
+      // Данные, введеные на форме не полные - переоткрыть форму с сообщением об ошибке
+        $data['error'][] = 'Поля " * " должны быть заполнены';
+        $v_bm_category_model = new BookmarksCategoryModel();
+        $data['bookmarks_category_list'] = $v_bm_category_model -> loadCategoryList();
+        $data['bookmarks_tag_list'] = $v_request->inp_tags;
+        $data['bookmark_row']['title'] = $v_request->inp_bookmark_title;
+        $data['bookmark_row']['url'] = $v_request->inp_bookmark_url;
+        $data['bookmark_row']['bookmarks_tree_id'] = (int)$v_request->select_cat_id;
+        $data['bookmark_row']['description'] = $v_request->inp_bookmark_description;
+        $data['bookmark_row']['is_public'] = 1;
+        $data['bookmark_row']['user_id'] = Project::getUser()->getDbUser()->id;
+        //$data['question']['creation_date'] = date("Y-m-d H:i:s");
+        $this->_BaseSiteData($data);
         $this->_view->Bookmarks_Manage($data);
         $this->_view->parse();
         return;
       }
+      // Данные введенные в форме валидны - UPDATE/INSERT данных в таблицу
+      // -- Формируем поля в _data:array() для UPDATE `bookmarks` SET ...
+      $v_bm_model->user_id            = Project::getUser()->getDbUser()->id;
+      $v_bm_model->bookmarks_tree_id  = (int)$v_request->select_cat_id;
+      $v_bm_model->url                = $v_request->inp_bookmark_url;
+      $v_bm_model->title              = $v_request->inp_bookmark_title; 
+      $v_bm_model->description        = $v_request->inp_bookmark_description;
+      $v_bm_model->is_public          = 1;
+      if ($v_bm_id == 0) $v_bm_model->creation_date = date("Y-m-d H:i:s");
+      // !!! Для возможности выполнить BaseModel->save()(UPDATE) необходимо, чтобы в моделе была 
+      // выборка строго соответствующая полям базовой таблицы. Метод BaseModel->load() - идеален
+      $v_bm_old_id = (int)$v_bm_id;
+      $v_bm_id = $v_bm_model->save();
       
-      $question_model->q_text = $v_request->question_text;
-      $question_model->questions_cat_id = (int)$v_request->cat_id;
-      $question_model->user_id = Project::getUser()->getDbUser()->id;
-      $question_model->creation_date = date("Y-m-d H:i:s");
-      $q_id = $question_model->save();
-      $tag_model = new QuestionTagModel();
-      $question_tag_model = new QTagModel();
-      $question_tag_model->deleteByQuestionId($id);      //TODO: revamp
-      $tags_ar = array();
-      $tags_ar = explode(",", $v_request->tags);
-      foreach ($tags_ar as $tag) {
-        $tag = trim($tag);  
-        if(count($tag_model->loadByName($tag)) <= 0) {
-          $tag_model->name = $tag;
-          $tag_id = $tag_model->save();
-          /*if(count($question_tag_model->loadWhere($q_id, $tag_model->id)) <= 0) {
-            $question_tag_model->question_id = $q_id;
-            $question_tag_model->question_tag_id = $tag_model->id;
-            $question_tag_model->save();
-            $question_tag_model->clear();  
-          }*/
-        } else {
-          $tag_id = $tag_model->id;
+      // Вставка тегов
+      $v_tags_model = new BookmarksTagModel();
+      if ($v_bm_old_id > 0) { // UPDATE закладки, запись уже существовала - обнулить теги
+        $v_tags_model->deleteTagsLinkByBookmarkID($v_bm_old_id);
+      }
+      $arr_tags = array();
+      $arr_tags = explode(",", trim($v_request->inp_tags));
+      foreach ($arr_tags as $value) {
+        $v_tagName = trim($value);
+        if (strlen($v_tagName)!=0) {
+          if (count($v_tags_model->loadTagByName($v_tagName)) == 0) {
+            // Такого тега в таблице тегов ещё нет - вставка тега
+            $v_tags_model->name = $v_tagName;
+            $v_tag_id = $v_tags_model->save();
+          } else {
+            // Такой тег есть в таблице тегов
+            $v_tag_id = $v_tags_model->id;
+          }
+          $v_tags_model->clear();
+          $v_tags_model->insertTagLink($v_bm_id, $v_tag_id);
         }
-          $tag_model->clear();  
-          $question_tag_model->question_id = $q_id;
-          $question_tag_model->question_tag_id = $tag_id;
-          $question_tag_model->save();
-          $question_tag_model->clear();
       }
       Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
     }
@@ -213,9 +229,9 @@ class BookmarksController extends SiteController {
   protected function _get_catalogs(&$data, $p_categoryID = null) {
     $v_bookmarks_category_model =  new BookmarksCategoryModel();
     $v_categoryID           = (int)$p_categoryID;
-    $data['bookmarks_catalog_list'] = $v_bookmarks_category_model -> loadCategoryList();
+    $data['bookmarks_category_list'] = $v_bookmarks_category_model -> loadCategoryList();
     if ($v_categoryID > 0) {
-      $data['bookmarks_catalog_selectedID'] = $v_categoryID;
+      $data['bookmarks_category_selectedID'] = $v_categoryID;
     }
   }
   //$param = $v_request->getKeys(); // = Array ( [_path] => bookmarks_list ) - выбранный URL ..bookmarks_list/0/0/
@@ -236,7 +252,8 @@ class BookmarksController extends SiteController {
     $data['bookmarks_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'Bookmarks', $p_action, array($v_categoryID, $v_tagID));
     // class SitePagerView -> function show2(IDbPager $pager, $controller = null, $action = null, $params = array(), $user = null)
     if ($v_categoryID > 0) { // -- формирование облака тегов для выбранной категории
-      $data['bookmarks_tags_list'] = $v_model->loadTagsByCategoryID($v_categoryID, $v_userID);
+      $v_tags_model = new BookmarksTagModel();
+      $data['bookmarks_tags_list'] = $v_tags_model->loadTagsWhere($v_categoryID, $v_userID);
     }
 	}
   
@@ -258,8 +275,8 @@ class BookmarksController extends SiteController {
   protected function _getSelectedTag(&$data, $p_id = null) {
     $v_id = (int)$p_id; 
     if ($v_id > 0) {
-      $v_model = new BookmarksModel();
-      $v_row   = $v_model->loadTageNameByID($v_id);
+      $v_tag_model = new BookmarksTagModel();
+      $v_row   = $v_tag_model->loadTagNameByID($v_id);
       if (count($v_row) > 0) {
         $data['tag_name_selected'] = $v_row['name'];
       }
@@ -296,85 +313,6 @@ class BookmarksController extends SiteController {
 		}
 	}
 	
-	public function ManagedQuestionAction() {
-		$request = Project::getRequest();
-		$data = array();
-		$question_model = new QuestionModel();
-		$id = (int)$request->getKeyByNumber(0);
-		if(!$request->submit) {
-			
-			$question_cat_model = new QuestionCatModel();
-			if($id > 0) {
-				$data['question'] = $question_model->loadQuestion($id);
-				$tags_model = new QuestionTagModel();
-				$tags = $tags_model->loadWhere(null, null, $id);
-				foreach ($tags as $tag) {
-					$data['question_tag_list'].= $tag['name'].', ';
-				}
-				$data['question_tag_list'] = rtrim($data['question_tag_list'], ', ');
-				$data['tab_manage_question_name'] = "Редактирование вопроса";
-			}
-			$data['question_cat'] = $question_cat_model->loadAll();
-			$this->BaseSiteData($data);
-			$this->_view->ManagedQuestion($data);
-			$this->_view->parse();
-		} else {
-			if($id > 0) {
-				$data['question'] = $question_model->load($id);
-				if($question_model->user_id != Project::getUser()->getDbUser()->id) {
-					Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
-				}
-			}	
-			
-			if($request->question_text == null) {		//TODO validator
-				$data['error'][] = "Заполните текст вопроса";
-				$question_cat_model = new QuestionCatModel();
-				$data['question_cat'] = $question_cat_model->loadAll();
-				$data['question_tag_list'] = $request->tags;
-				$data['question']['q_text'] = $request->question_text;
-				$data['question']['question_cat_id'] = (int)$request->cat_id;
-				$data['question']['user_id'] = Project::getUser()->getDbUser()->id;
-				$data['question']['creation_date'] = date("Y-m-d H:i:s");
-				$this->BaseSiteData($data);
-				$this->_view->ManagedQuestion($data);
-				$this->_view->parse();
-				return;
-			}
-
-			$question_model->q_text = $request->question_text;
-			$question_model->questions_cat_id = (int)$request->cat_id;
-			$question_model->user_id = Project::getUser()->getDbUser()->id;
-			$question_model->creation_date = date("Y-m-d H:i:s");
-			$q_id = $question_model->save();
-			$tag_model = new QuestionTagModel();
-			$question_tag_model = new QTagModel();
-			$question_tag_model->deleteByQuestionId($id);    	//TODO: revamp
-			$tags_ar = array();
-			$tags_ar = explode(",", $request->tags);
-			foreach ($tags_ar as $tag) {
-				$tag = trim($tag);	
-				if(count($tag_model->loadByName($tag)) <= 0) {
-					$tag_model->name = $tag;
-					$tag_id = $tag_model->save();
-					//if(count($question_tag_model->loadWhere($q_id, $tag_model->id)) <= 0) {
-					//	$question_tag_model->question_id = $q_id;
-					//	$question_tag_model->question_tag_id = $tag_model->id;
-					//	$question_tag_model->save();
-					//	$question_tag_model->clear();
-					//}
-				} else {
-					$tag_id = $tag_model->id;
-				}
-					$tag_model->clear();
-					$question_tag_model->question_id = $q_id;
-					$question_tag_model->question_tag_id = $tag_id;
-					$question_tag_model->save();
-					$question_tag_model->clear();
-			}
-			Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
-		}
-	}
-
 	public function AddAnswerAction() {
 		$request = Project::getRequest();
 		$question_model = new QuestionModel();

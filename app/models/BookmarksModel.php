@@ -156,33 +156,6 @@ class BookmarksModel extends BaseModel {
     return $result;
   }
   
-  // -- Выборка облака тегов для указанной категории
-  // Если выборка для вкладки "Мои закладки", то отфильтровываются по userID
-  public function loadTagsByCategoryID($p_categoryID = null, $p_userID = null) {
-    $v_categoryID = (int)$p_categoryID;
-    $v_userID     = (int)$p_userID;
-    if ($v_userID > 0) $v_sql_where = ' and b.`user_id` = '.$v_userID;
-    if ($p_categoryID > 0) {
-      $sql = "
-      SELECT DISTINCT bm_t.`id`, bm_t.`name` as tag_name 
-      FROM bookmarks_tags_links bm_tl, bookmarks b, bookmarks_tags bm_t
-      WHERE bm_tl.`bookmarks_id` = b.`id` 
-        and bm_tl.`bookmarks_tags_id` = bm_t.`id`
-        and b.`bookmarks_tree_id` = ?d ".$v_sql_where."
-      ORDER BY tag_name      
-      ";
-      $result = Project::getDatabase() -> select($sql, $v_categoryID);
-      return $result;
-    }
-  }
-  
-  // -- Выборка имени тега по ID
-  public function loadTageNameByID($p_id) {
-    $v_id = (int)$p_id;
-    $sql = "SELECT bt.`id`, bt.`name` FROM bookmarks_tags bt WHERE bt.`id` = ?d";
-    $result = Project::getDatabase() -> selectRow($sql, $v_id);
-    return $result;
-  }
   
 /*
 	public function loadWhere($catId = null, $tagId = null, $userId = null) {
