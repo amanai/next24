@@ -1,6 +1,6 @@
 <?php
 /*
-  Модель тегов закладок
+  Модель: Tегов закладок
 */
 
 class BookmarksTagModel extends BaseModel {
@@ -9,10 +9,11 @@ class BookmarksTagModel extends BaseModel {
 		parent::__construct('bookmarks_tags');
 	}
 	
-  // -- Выборка тегов для: категории, пользователя, закладки
-  // $p_categoryID - ID категории
-  // $p_userID - ID пользователя: используется для вкладки "Мои закладки", фильтр по userID
-  // $p_bookmarkID - ID закладки
+  /** Выборка тегов для: категории, пользователя, закладки
+   $p_categoryID - ID категории
+   $p_userID - ID пользователя: используется для вкладки "Мои закладки", фильтр по userID
+   $p_bookmarkID - ID закладки
+  */
   public function loadTagsWhere($p_categoryID = null, $p_userID = null, $p_bookmarkID = null) {
     $v_categoryID = (int)$p_categoryID;
     $v_userID     = (int)$p_userID;
@@ -33,7 +34,9 @@ class BookmarksTagModel extends BaseModel {
     return $result;
   }
   
-  // -- Выборка имени тега по ID
+  /** 
+  * Выборка имени тега по ID 
+  */
   public function loadTagNameByID($p_id) {
     $v_id = (int)$p_id;
     $sql = "SELECT bt.`id`, bt.`name` FROM bookmarks_tags bt WHERE bt.`id` = ?d";
@@ -41,7 +44,9 @@ class BookmarksTagModel extends BaseModel {
     return $result;
   }
   
-  // -- Выборка строки Тега по Имени
+  /**
+  *  Выборка строки Тега по Имени
+  */
   public function loadTagByName($p_tag_name){
     $sql = "SELECT * FROM bookmarks_tags WHERE LOWER(bookmarks_tags.`name`) = LOWER(?s)";
     $result =  Project::getDatabase()->selectRow($sql, $p_tag_name);
@@ -49,17 +54,20 @@ class BookmarksTagModel extends BaseModel {
     return $result;
   }  
   
-  // -- Удаление тегов из `bookmarks_tags_links` по ID закладки
-  // $p_bookmark_id - ID закладки
+  /**
+  *  Удаление тегов из `bookmarks_tags_links` по ID закладки
+  * $p_bookmark_id - ID закладки
+  */
   public function deleteTagsLinkByBookmarkID($p_bookmark_id) {
     $v_bookmark_id = (int)$p_bookmark_id;
     $sql = "DELETE FROM bookmarks_tags_links WHERE bookmarks_id = ?d";
     Project::getDatabase()->query($sql, $v_bookmark_id);
   }
   
-  // -- Вставка записи в таблицу `bookmarks_tags_links`
-  // $p_bookmark_id - ID закладки
-  // $p_tag_id      - ID тега
+  /**  Вставка записи в таблицу `bookmarks_tags_links`
+   * $p_bookmark_id - ID закладки
+   * $p_tag_id      - ID тега
+  */
   public function insertTagLink($p_bookmark_id, $p_tag_id) {
     $v_bookmark_id = (int)$p_bookmark_id;
     $v_tag_id      = (int)$p_tag_id;
@@ -68,6 +76,7 @@ class BookmarksTagModel extends BaseModel {
       Project::getDatabase()->query($sql, $v_bookmark_id, $v_tag_id);
     }
   }
+  
 	/*
 	public function loadByName($tagName) {
 		$sql = "SELECT * FROM question_tags WHERE LOWER(question_tags.name) = LOWER(?s)";

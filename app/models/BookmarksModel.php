@@ -16,13 +16,18 @@ class BookmarksModel extends BaseModel {
                   // getPager(), updatePagerAmount(), getCountRecords(), clear()
   }
                                       
-  // -- Выборка списка закладок. Формируется с Pager (страничной листалкой) 
-  // 1) для 1-ой страницы "Каталог закладок" $p_userID=null
-  // 2) для "Мои закладки" - передается $p_userID>0
-  public function loadBookmarksList($p_categoryID = null, $p_userID = null, $p_tagID = null){
+  /**
+   Выборка списка закладок. Формируется с Pager (страничной листалкой) 
+     $p_categoryID - ID категории
+     $p_userID - ID пользователя (для "Каталог закладок" $p_userID=null, "Мои закладки" - $p_userID>0)
+     $p_tagID - ID выбранного тега
+     $p_show_only_public - Показывать только публичные закладки (true), все (false)
+  */
+  public function loadBookmarksList($p_categoryID = null, $p_userID = null, $p_tagID = null, $p_show_only_public = false){
     $v_categoryID = (int)$p_categoryID;
     $v_userID     = (int)$p_userID;
     $v_tagID      = (int)$p_tagID;
+    $v_show_only_public = (boolean)$p_show_only_public;
     $v_sql_where = " 1=1 ";
     $v_sql_tag   = '';
     if ($v_categoryID > 0) { $v_sql_where .= ' and bm.`bookmarks_tree_id`='.$v_categoryID; }
@@ -30,7 +35,8 @@ class BookmarksModel extends BaseModel {
     if ($v_tagID > 0)      { 
       $v_sql_tag = " RIGHT JOIN bookmarks_tags_links bm_tl ON bm.`id` = bm_tl.`bookmarks_id` "; 
       $v_sql_where .= " and bm_tl.`bookmarks_tags_id` = ".$v_tagID;
-    }                                    
+    }   
+    if ($v_show_only_public == true) { $v_sql_where .= " and bm.`is_public` = 1"; }
     $sql = "
     SELECT
         bm.`id`,
@@ -99,6 +105,7 @@ class BookmarksModel extends BaseModel {
       ON bmt_ch.`parent_id` = bmt_pr.`id`
     LEFT JOIN bookmarks_comments bm_com
       ON bm.`id` = bm_com.`bookmark_id` 
+    WHERE bm.`is_public` = 1
     GROUP BY bm.`id`
     ORDER BY bm.`views` DESC
     LIMIT 0, ?d

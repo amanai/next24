@@ -1,23 +1,21 @@
 <?php
-/*
-  Класс BookmarksCategoryModel - Модель для модуля Закладки (Bookmarks), раздела Каталог закладок
+/**
+  Модель: Каталог-Закладок
   На основе получаемых данных строится дерево Каталога закладок
-  Содержит функции, работающие непосредственно с данными из БД
 */
 
 class BookmarksCategoryModel extends BaseModel {
-
+  /**
+  * parent::__construct('bookmarks_tree'); - передаем параметром имя таблицы
+  */
   public function __construct() {
-    parent::__construct('bookmarks_tree'); // - передаем параметром имя таблицы
-    // конструктор родителя содержит базовые функции по работе с БД:
-    // _caches, load($id), loadAll, loadPage, delete($id), count(), save(),
-    // __get($var), __set($var, $val), bind($result), data(), setPager, getPager(),
-    // updatePagerAmount(), getCountRecords(), clear()
-    //print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
+    parent::__construct('bookmarks_tree');
   }
 
-// Для дерева категорий определена сортировка в алфавитном порядке как в
-//   родительских категориях(level_item=0), так и в дочерних (level_item=1)
+  /** 
+    Для дерева категорий определена сортировка в алфавитном порядке:
+     как в родительских категориях(level_item=0), так и в дочерних (level_item=1)
+  */
   public function loadCategoryList(){
     $sql = "
       SELECT

@@ -2,15 +2,16 @@
 /*
   Контроллер для работы с Закладками
 */
+//print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
 
 class BookmarksController extends SiteController {
+  const C_MAX_TAGS_COUNT = 10; // -- Максимальное кол-во тегов для вкладки. Остальные усекаются.
 
   function __construct($view_class = null) {
     if ($view_class === null) {
       $view_class = "BookmarksView"; // - привязываем класс Представления к данному Контроллеру
     }
     parent::__construct($view_class);
-    //print '['.basename(__FILE__).'] line:'.__LINE__.' '.__METHOD__.'</br>';
   }
   
   // -- BaseSiteData - определяет набор закладок, доступных на странице
@@ -30,13 +31,12 @@ class BookmarksController extends SiteController {
 		$data = array();   
     $this->_BaseSiteData($data);
     $data['action'] = 'BookmarksList';
-    $v_user_id = (int)Project::getUser() -> getDbUser() -> id;
     // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/2/ ...bookmarks_list/0/0/2/
     // где bookmarks_list/{id_категории}/{id_тега}/{номер страницы}/
     $v_categoryID = $v_request->getKeyByNumber(0);
     $v_tagID      = $v_request->getKeyByNumber(1);
     $v_n_page     = $v_request->getKeyByNumber(2);
-		$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID);
+		$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID, true);
     $this->_get_catalogs($data, $v_categoryID);
     $this->_getSelectedCategory($data, $v_categoryID);
     $this->_getSelectedTag($data, $v_tagID);
@@ -60,15 +60,33 @@ class BookmarksController extends SiteController {
     $v_request = Project::getRequest();
     $data = array();
     $this->_BaseSiteData($data);
+    $data['action'] = 'BookmarksView';
 
     $v_id = (int)$v_request->getKeyByNumber(0);
     if ($v_id > 0) {
       $v_bookmarks_model = new BookmarksModel();
+      $v_bookmarks_model->load($v_id);
+      $v_bookmarks_model->views++;
+      $v_bookmarks_model->save();
       $data['bookmark_row'] = $v_bookmarks_model->loadBookmarkRow($v_id);
       $v_tab_name = $data['bookmark_row']['title'];
       $v_encoding = mb_detect_encoding($v_tab_name);
       if (mb_strlen($v_tab_name, $v_encoding) > 50 ) $v_tab_name = mb_substr($v_tab_name, 0, 50, $v_encoding).'...';
       $data['tab_bookmarks_view'] = $v_tab_name;
+      // ---
+      $controller = new BaseCommentController();
+      $data['comment_list'] = $controller -> CommentList(
+                                'BookmarksCommentModel', 
+                                $v_id,  
+                                $v_request -> getKeyByNumber(1),   //TODO: page
+                                20,                //TODO: page
+                                'Bookmarks', 'BookmarksView', array($v_id), 
+                                'Bookmarks', 'BookmarksCommentDelete'
+                                );
+      $data['add_comment_url'] = $v_request -> createUrl('Bookmarks', 'BookmarksCommentAdd');
+      $data['add_comment_element_id'] = $v_id;
+      $data['add_comment_id'] = 0;
+      // ---
       $this->_view->Bookmarks_View($data);
       $this->_view->parse();
     } else {
@@ -82,13 +100,13 @@ class BookmarksController extends SiteController {
     $data = array();
     $this->_BaseSiteData($data);
     $data['action'] = 'BookmarksUser';
-    $v_userID = (int)Project::getUser() -> getDbUser() -> id;
+    $v_current_userID = (int)Project::getUser() -> getDbUser() -> id;
     // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/ ...bookmarks_list/0/0/
     // где bookmarks_list/{id_категории}/{номер страницы}/
     $v_categoryID = $v_request->getKeyByNumber(0);
     $v_tagID      = $v_request->getKeyByNumber(1);
     $v_n_page     = $v_request->getKeyByNumber(2);
-    $this->_getData($data, 'BookmarksUser', $v_categoryID, $v_n_page, $v_userID, $v_tagID);
+    $this->_getData($data, 'BookmarksUser', $v_categoryID, $v_n_page, $v_current_userID, $v_tagID, false);
     $this->_get_catalogs($data, $v_categoryID);
     $this->_getSelectedCategory($data, $v_categoryID);
     $this->_getSelectedTag($data, $v_tagID);
@@ -99,11 +117,11 @@ class BookmarksController extends SiteController {
   // -- Action: Удалить закладку
   public function BookmarksDeleteAction() {
     $v_request = Project::getRequest();
-    $v_user_id = (int)Project::getUser()->getDbUser()->id;
+    $v_current_userID = (int)Project::getUser()->getDbUser()->id;
     $v_bookmarkID = $v_request->getKeyByNumber(0);
     $v_model = new BookmarksModel();
     $v_model->load($v_bookmarkID);
-    if (($v_model->user_id == $v_user_id) and ($v_bookmarkID > 0)) {
+    if (($v_model->user_id == $v_current_userID) and ($v_bookmarkID > 0)) {
       $v_model->delete($v_bookmarkID);
       $v_tag_model = new BookmarksTagModel();
       $v_tag_model->deleteTagsLinkByBookmarkID($v_bookmarkID);
@@ -116,12 +134,15 @@ class BookmarksController extends SiteController {
     $v_request = Project::getRequest();
     $data = array();
     $data['action'] = 'BookmarksManage';
+    $v_current_userID = Project::getUser()->getDbUser()->id; // ID залогиненного пользователя
     $v_bm_id = (int)$v_request->getKeyByNumber(0);
     $data['tab_manage_bookmark_name'] = (($v_bm_id == 0) ? "Добавление закладки" : "Редактирование закладки");
 
     $v_bm_model = new BookmarksModel();
+    
     if ($v_request->submit == null) { 
-      // Открытие вкладки на Добавление/Редактирование закладки
+      
+      // --- Открытие вкладки на Добавление/Редактирование закладки
       $v_bm_category_model = new BookmarksCategoryModel();
       if($v_bm_id > 0) { // Закладка уже есть, читаем её данные
         $data['bookmark_row'] = $v_bm_model->load($v_bm_id);
@@ -136,11 +157,15 @@ class BookmarksController extends SiteController {
       $this->_BaseSiteData($data);
       $this->_view->Bookmarks_Manage($data);
       $this->_view->parse();
+      return;
+      // --- /Открытие вкладки на Добавление/Редактирование закладки
+      
     } else { 
+      
       // Нажата SUBMIT на форме. Сохранение закладки (после Добавления/Редактирования)
       if($v_bm_id > 0) {
         $data['bookmark_row'] = $v_bm_model->load($v_bm_id);
-        if($v_bm_model->user_id != Project::getUser()->getDbUser()->id) { // Чужая закладка
+        if($v_bm_model->user_id != $v_current_userID) { // Чужая закладка
           Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
         }
       }  
@@ -149,7 +174,7 @@ class BookmarksController extends SiteController {
 				 or ($v_request->inp_bookmark_url         == null)   
          or ($v_request->inp_bookmark_description == null)
         ) {    //TODO validator
-      // Данные, введеные на форме не полные - переоткрыть форму с сообщением об ошибке
+      // Данные, введеные в форме неполные - переоткрыть форму с сообщ.об ошибке и введенными данными
         $data['error'][] = 'Поля " * " должны быть заполнены';
         $v_bm_category_model = new BookmarksCategoryModel();
         $data['bookmarks_category_list'] = $v_bm_category_model -> loadCategoryList();
@@ -158,8 +183,8 @@ class BookmarksController extends SiteController {
         $data['bookmark_row']['url'] = $v_request->inp_bookmark_url;
         $data['bookmark_row']['bookmarks_tree_id'] = (int)$v_request->select_cat_id;
         $data['bookmark_row']['description'] = $v_request->inp_bookmark_description;
-        $data['bookmark_row']['is_public'] = 1;
-        $data['bookmark_row']['user_id'] = Project::getUser()->getDbUser()->id;
+        $data['bookmark_row']['is_public'] = (($v_request->inp_check_public == 'on') ? 1 : 0);
+        $data['bookmark_row']['user_id'] = $v_current_userID;
         //$data['question']['creation_date'] = date("Y-m-d H:i:s");
         $this->_BaseSiteData($data);
         $this->_view->Bookmarks_Manage($data);
@@ -168,12 +193,12 @@ class BookmarksController extends SiteController {
       }
       // Данные введенные в форме валидны - UPDATE/INSERT данных в таблицу
       // -- Формируем поля в _data:array() для UPDATE `bookmarks` SET ...
-      $v_bm_model->user_id            = Project::getUser()->getDbUser()->id;
+      $v_bm_model->user_id            = $v_current_userID;
       $v_bm_model->bookmarks_tree_id  = (int)$v_request->select_cat_id;
       $v_bm_model->url                = $v_request->inp_bookmark_url;
       $v_bm_model->title              = $v_request->inp_bookmark_title; 
       $v_bm_model->description        = $v_request->inp_bookmark_description;
-      $v_bm_model->is_public          = 1;
+      $v_bm_model->is_public          = (($v_request->inp_check_public == 'on') ? 1 : 0);
       if ($v_bm_id == 0) $v_bm_model->creation_date = date("Y-m-d H:i:s");
       // !!! Для возможности выполнить BaseModel->save()(UPDATE) необходимо, чтобы в моделе была 
       // выборка строго соответствующая полям базовой таблицы. Метод BaseModel->load() - идеален
@@ -182,11 +207,13 @@ class BookmarksController extends SiteController {
       
       // Вставка тегов
       $v_tags_model = new BookmarksTagModel();
-      if ($v_bm_old_id > 0) { // UPDATE закладки, запись уже существовала - обнулить теги
+      if ($v_bm_old_id > 0) { 
+        // UPDATE закладки, запись уже существовала - обнулить теги
         $v_tags_model->deleteTagsLinkByBookmarkID($v_bm_old_id);
       }
       $arr_tags = array();
       $arr_tags = explode(",", trim($v_request->inp_tags));
+      $arr_tags = array_slice(array_unique($arr_tags), 0, self::C_MAX_TAGS_COUNT);
       foreach ($arr_tags as $value) {
         $v_tagName = trim($value);
         if (strlen($v_tagName)!=0) {
@@ -206,24 +233,38 @@ class BookmarksController extends SiteController {
     }
   }
   
-  
-  /*
-  // -- Action: Добавить комментарий
-  public function AddCommentAction() {
-    $request = Project::getRequest();
-    $question_model = new QuestionModel();
-    $question_model->load($request->element_id);
-    $answer_model = new AnswerModel();
-    if($question_model->id > 0) {
-      $answer_model->addComment(Project::getUser()->getDbUser()->id, 0, 0, $request->element_id, $request->comment, 0, 0);
-      $question_model->a_count++;
-      $question_model->save();
-      
+  // -- Action: Добавить комментарий к закладке
+  public function BookmarksCommentAddAction() {
+    $v_request = Project::getRequest();
+    $v_bookmark_id = (int)$v_request->element_id;
+    if($v_bookmark_id > 0) {
+      $v_comment_model = new BookmarksCommentModel();
+      $v_comment_model->addComment(Project::getUser()->getDbUser()->id, 0, 0, $v_bookmark_id, $v_request->comment, 0, 0);
     } //TODO:...
-    Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'ViewQuestion', array($question_model->id)));
+    Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksView', array($v_bookmark_id)));
   }
-  */
   
+  // -- Action: Удалить комментарий к закладке
+  public function BookmarksCommentDeleteAction() {
+    $v_request = Project::getRequest();
+    $v_current_userID = (int)Project::getUser()->getDbUser()->id;
+    $v_bookmark_id = $v_request->getKeyByNumber(0);
+    $v_comment_id  = $v_request->getKeyByNumber(1);
+    $v_comment_model = new BookmarksCommentModel($v_comment_id);
+    $v_bookmarks_model = new BookmarksModel();
+    $v_bookmarks_model->load($v_bookmark_id);
+    if ( ($v_comment_model->id > 0) and 
+         ($v_bookmarks_model->id > 0) and 
+         ($v_comment_model->bookmark_id == $v_bookmarks_model->id))
+    {
+      if ( ($v_comment_model->user_id == $v_current_userID) or 
+           ($v_bookmarks_model->user_id == $v_current_userID) ) 
+      {
+        $v_comment_model->delete($v_comment_model->user_id, $v_comment_id);
+      }
+    }
+    Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksView', array($v_bookmark_id)));
+  }
   
   // -- Формирует каталог закладок, уже упорядоченный в Моделе BookmarksCategoryModel
   protected function _get_catalogs(&$data, $p_categoryID = null) {
@@ -237,7 +278,7 @@ class BookmarksController extends SiteController {
   //$param = $v_request->getKeys(); // = Array ( [_path] => bookmarks_list ) - выбранный URL ..bookmarks_list/0/0/
   
   // -- Формируем все основные данные для HTML-формы
-	protected function _getData(&$data, $p_action, $p_categoryID = null, $p_n_page = null, $p_userID = null, $p_tagID = null) {
+	protected function _getData( &$data, $p_action, $p_categoryID = null, $p_n_page = null, $p_userID = null, $p_tagID = null, $p_show_only_public = false) {
 	  $v_categoryID = (int)$p_categoryID;
 	  $v_n_page     = (int)$p_n_page;
     $v_userID     = (int)$p_userID;
@@ -246,7 +287,7 @@ class BookmarksController extends SiteController {
     $v_list_per_page = $this->getParam('bookmarks_per_page', 4);
     $v_DbPager = new DbPager($v_n_page, $v_list_per_page);
 	  $v_model -> setPager($v_DbPager);
-    $data['bookmarks_list'] = $v_model->loadBookmarksList($v_categoryID, $v_userID, $v_tagID);
+    $data['bookmarks_list'] = $v_model->loadBookmarksList($v_categoryID, $v_userID, $v_tagID, (boolean)$p_show_only_public);
 	  $v_pager_view = new SitePagerView();
     // Формируем объект-постраничный вывод
     $data['bookmarks_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'Bookmarks', $p_action, array($v_categoryID, $v_tagID));
@@ -283,84 +324,6 @@ class BookmarksController extends SiteController {
     }
   }
 
-/*
-	public function ViewQuestionAction() {
-		$request = Project::getRequest();
-		$this->BaseSiteData($data);
-		$id = (int)$request->getKeyByNumber(0);
-		if($id > 0) {
-			$question_model = new QuestionModel();
-			$data['question'] = $question_model->loadQuestion($id);
-			$data['question_tab'] = substr($question_model->q_text, 0, 100);
-			count($question_model->q_text) > 100 ? $data['question_tab'] .= "..." : "";
-			$controller = new BaseCommentController();
-			$data['comment_list'] = $controller -> CommentList(
-																'AnswerModel', 
-																$id,  
-																$request -> getKeyByNumber(1), 	//TODO: page
-																20,  							//TODO: page
-																'QuestionAnswer', 'ViewQuestion', array($id),
-																'QuestionAnswer', 'AnswerDelete'
-																);
-			$data['add_comment_url'] = $request -> createUrl('QuestionAnswer', 'AddAnswer');
-			$data['add_comment_element_id'] = $id;
-			$data['add_comment_id'] = 0;
-//			if($question_model->user_id == Project::getUser()->getDbUser()->id) $data['managed'] = true;
-			$this->_view->ViewQuestion($data);
-			$this->_view->parse();
-		} else {
-			Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'List'));
-		}
-	}
-	
-	public function AddAnswerAction() {
-		$request = Project::getRequest();
-		$question_model = new QuestionModel();
-		$question_model->load($request->element_id);
-		$answer_model = new AnswerModel();
-		if($question_model->id > 0) {
-			$answer_model->addComment(Project::getUser()->getDbUser()->id, 0, 0, $request->element_id, $request->comment, 0, 0);
-			$question_model->a_count++;
-			$question_model->save();
-
-		} //TODO:...
-		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'ViewQuestion', array($question_model->id)));
-	}
-	
-	public function AnswerDeleteAction() {
-		$request = Project::getRequest();
-		$request_user_id = (int)Project::getUser()->getShowedUser()->id;
-		$user_id = (int)Project::getUser()->getDbUser()->id;
-		$question_id = $request->getKeyByNumber(0);
-		$answer_id = $request->getKeyByNumber(1);
-		$answer_model = new AnswerModel($answer_id);
-		$question_model = new QuestionModel();
-		$question_model->load($question_id);
-		if (($answer_model->id > 0) && ($question_model->id > 0) && ($answer_model->question_id == $question_model->id)){
-			if (($answer_model->user_id == $user_id) || ($question_model->user_id == $user_id)){
-				$answer_model->delete($answer_model->user_id, $answer_id);
-				$question_model->a_count--;
-				$question_model->save();
-			}
-		}
-		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'ViewQuestion', array($question_model->id)));
-	}
-
-	public function DeleteAction() {
-		$request = Project::getRequest();
-		$user_id = (int)Project::getUser()->getDbUser()->id;
-		$question_model = new QuestionModel();
-		$question_model->load($request->getKeyByNumber(0));
-		if ($question_model->user_id == $user_id) {
-			$question_model->delete($request->getKeyByNumber(0));
-		}
-		Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
-	}
-
- */
-
-
 }
-
 
 ?>

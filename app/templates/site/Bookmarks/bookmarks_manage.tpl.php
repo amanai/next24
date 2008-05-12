@@ -61,6 +61,7 @@
                             <? } ?>
 								        	<? } ?>
 							        </select>
+                      <input type="checkbox" name="inp_check_public" style="vertical-align: top;  margin-left: 20px; border: 0;" <? if ($this->bookmark_row['is_public']==1) print 'checked="checked"'; ?> ><span style="vertical-align: 20%; margin-left: 2px;">Публичная</span>
 								</td>
 							</tr>
 							<tr>
