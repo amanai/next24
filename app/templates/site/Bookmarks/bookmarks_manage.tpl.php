@@ -69,7 +69,11 @@
 								<td><input type="text"  value="<?=$this->bookmarks_tag_list?>" name="inp_tags" style="width: 100%;"></td> <!--TODO: load tags-->
 							</tr>
 							<tr>
-								<td colspan="2" align="right" style="padding-right: 2px;"><input type="submit" name="submit" value="Отправить"></td>
+                <td>&nbsp;</td>
+								<td style="padding-right: 2px;">
+                  <p style="text-align: left; color: gray; font-size: 10px; padding-left: 0.5em;">Максимально тегов - 10 шт. Теги перечисляются через запятую</p>
+                  <p style="text-align: right;"><input type="submit" name="submit" value="Отправить"></p>
+                </td>
 							</tr>
 						</table>
 					</form>
