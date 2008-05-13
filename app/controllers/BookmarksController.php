@@ -147,7 +147,7 @@ class BookmarksController extends SiteController {
       if($v_bm_id > 0) { // Закладка уже есть, читаем её данные
         $data['bookmark_row'] = $v_bm_model->load($v_bm_id);
         $v_tags_model = new BookmarksTagModel();
-        $tags = $v_tags_model->loadTagsWhere(null, null, $v_bm_id);
+        $tags = $v_tags_model->loadTagsWhere(null, null, $v_bm_id, false);
         foreach ($tags as $tag) {
           $data['bookmarks_tag_list'].= $tag['tag_name'].', ';
         }
@@ -294,7 +294,7 @@ class BookmarksController extends SiteController {
     // class SitePagerView -> function show2(IDbPager $pager, $controller = null, $action = null, $params = array(), $user = null)
     if ($v_categoryID > 0) { // -- формирование облака тегов для выбранной категории
       $v_tags_model = new BookmarksTagModel();
-      $data['bookmarks_tags_list'] = $v_tags_model->loadTagsWhere($v_categoryID, $v_userID);
+      $data['bookmarks_tags_list'] = $v_tags_model->loadTagsWhere($v_categoryID, $v_userID, null, (boolean)$p_show_only_public);
     }
 	}
   

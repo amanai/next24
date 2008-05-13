@@ -21,7 +21,7 @@
                   $v_size = 100;
                 }
                 if ($value['tag_name'] != $this->tag_name_selected) {
-                  $tags_set[] = '<a style="font-size: '.$v_size.'%" href="'.$v_URL.'" title="'.$value['count_tag'].' раз">'.$value['tag_name'].'</a>';
+                  $tags_set[] = '<a style="font-size: '.$v_size.'%" href="'.$v_URL.'" title="'.$value['count_tag'].' раз(а)">'.$value['tag_name'].'</a>';
                 } else {
                   $tags_set[] = '<b style="font-size: '.$v_size.'%">'.$value['tag_name'].'</b>';
                 }

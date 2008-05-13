@@ -13,22 +13,25 @@ class BookmarksTagModel extends BaseModel {
    $p_categoryID - ID категории
    $p_userID - ID пользователя: используется для вкладки "Мои закладки", фильтр по userID
    $p_bookmarkID - ID закладки
+   $p_show_only_public = false - показывать только публичные
   */
-  public function loadTagsWhere($p_categoryID = null, $p_userID = null, $p_bookmarkID = null) {
+  public function loadTagsWhere($p_categoryID = null, $p_userID = null, $p_bookmarkID = null, $p_show_only_public = false) {
     $v_categoryID = (int)$p_categoryID;
     $v_userID     = (int)$p_userID;
     $v_bookmarkID = (int)$p_bookmarkID;
+    $v_show_only_public = (boolean)$p_show_only_public; 
     $v_sql_where  = '';
-    if ($v_categoryID > 0) $v_sql_where .= ' and b.`bookmarks_tree_id` = '.$v_categoryID;
-    if ($v_userID > 0)     $v_sql_where .= ' and b.`user_id` = '.$v_userID;
-    if ($v_bookmarkID > 0) $v_sql_where .= ' and b.`id` = '.$v_bookmarkID;
+    if ($v_categoryID > 0)            $v_sql_where .= ' and b.`bookmarks_tree_id` = '.$v_categoryID;
+    if ($v_userID > 0)                $v_sql_where .= ' and b.`user_id` = '.$v_userID;
+    if ($v_bookmarkID > 0)            $v_sql_where .= ' and b.`id` = '.$v_bookmarkID;
+    if ($v_show_only_public == true)  $v_sql_where .= ' and b.`is_public` = 1';
 
     $sql = "
     SELECT 
       /* DISTINCT */ 
       bm_t.`id`, 
       bm_t.`name` as tag_name,
-      count(b.`id`) as count_tag
+      count(bm_t.`id`) as count_tag
     FROM bookmarks_tags_links bm_tl, bookmarks b, bookmarks_tags bm_t
     WHERE bm_tl.`bookmarks_id` = b.`id` 
       and bm_tl.`bookmarks_tags_id` = bm_t.`id` ".$v_sql_where."
