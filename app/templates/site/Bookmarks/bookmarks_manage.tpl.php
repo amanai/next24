@@ -71,7 +71,7 @@
 							<tr>
                 <td>&nbsp;</td>
 								<td style="padding-right: 2px;">
-                  <p style="text-align: left; color: gray; font-size: 10px; padding-left: 0.5em;">Максимально тегов - 10 шт. Теги перечисляются через запятую</p>
+                  <p style="text-align: left; color: gray; font-size: 10px; padding-left: 0.5em;">Максимальное число тегов - 10 шт. Теги перечисляются через запятую. Максимальная длина тега - 30 символов.</p>
                   <p style="text-align: right;"><input type="submit" name="submit" value="Отправить"></p>
                 </td>
 							</tr>

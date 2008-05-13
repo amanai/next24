@@ -6,6 +6,7 @@
 
 class BookmarksController extends SiteController {
   const C_MAX_TAGS_COUNT = 10; // -- Максимальное кол-во тегов для вкладки. Остальные усекаются.
+  const C_MAX_TAG_LENGTH = 30; // -- Максимальная длина тега в символах
 
   function __construct($view_class = null) {
     if ($view_class === null) {
@@ -216,7 +217,8 @@ class BookmarksController extends SiteController {
       $arr_tags = array_slice(array_unique($arr_tags), 0, self::C_MAX_TAGS_COUNT);
       foreach ($arr_tags as $value) {
         $v_tagName = trim($value);
-        if (strlen($v_tagName)!=0) {
+        $v_tagName = mb_substr($v_tagName, 0, self::C_MAX_TAG_LENGTH, mb_detect_encoding($v_tagName));
+        if (mb_strlen($v_tagName)!=0) {
           if (count($v_tags_model->loadTagByName($v_tagName)) == 0) {
             // Такого тега в таблице тегов ещё нет - вставка тега
             $v_tags_model->name = $v_tagName;
