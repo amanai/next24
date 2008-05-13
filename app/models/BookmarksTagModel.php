@@ -24,10 +24,15 @@ class BookmarksTagModel extends BaseModel {
     if ($v_bookmarkID > 0) $v_sql_where .= ' and b.`id` = '.$v_bookmarkID;
 
     $sql = "
-    SELECT DISTINCT bm_t.`id`, bm_t.`name` as tag_name 
+    SELECT 
+      /* DISTINCT */ 
+      bm_t.`id`, 
+      bm_t.`name` as tag_name,
+      count(b.`id`) as count_tag
     FROM bookmarks_tags_links bm_tl, bookmarks b, bookmarks_tags bm_t
     WHERE bm_tl.`bookmarks_id` = b.`id` 
       and bm_tl.`bookmarks_tags_id` = bm_t.`id` ".$v_sql_where."
+    GROUP BY bm_t.`id` 
     ORDER BY tag_name      
     ";
     $result = Project::getDatabase() -> select($sql);
