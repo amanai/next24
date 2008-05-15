@@ -86,7 +86,7 @@ class TabController{
 			return $tabs;
 		}
 		
-		static public function getMainArticleTabs($selected_cat = false, $selected_last = false, $selected_top = false, $selected_user_list = false, $selected_view_article = false, $selected_managed_article = false, $view_article_name = "", $managed_article_name = "Новая статья" ) {
+		static public function getMainArticleTabs($selected_cat = false, $selected_last = false, $selected_top = false, /*$selected_user_list = false,*/ $selected_view_article = false, /*$selected_managed_article = false,*/ $view_article_name = ""/*, $managed_article_name = "Новая статья"*/ ) {
 			$request = Project::getRequest();
 			$tabs = array(
 							0 => array(
@@ -108,7 +108,7 @@ class TabController{
 								 	'url' => $request -> createUrl('Article', 'TopList', null, false)
 									),
 							);
-			if(Project::getUser()->getDbUser()->id > 0) {
+		/*	if(Project::getUser()->getDbUser()->id > 0) {
 				$tabs[] = array(
 							'name' => 'Мои статьи',
 							'title' => 'Мои статьи',
@@ -121,7 +121,7 @@ class TabController{
 							'selected' => $selected_managed_article,
 							'url' => $request -> createUrl('Article', 'AddArticle', null, false)
 							);
-			}
+			}*/
 			if($selected_view_article === true) {
 				$tabs[] = array(
 							'name' => $view_article_name,

@@ -28,7 +28,7 @@ class ArticleController extends SiteController {
 		$this->_view->parse();
 	}
 	
-	public function UserArticleListAction() {
+/*	public function UserArticleListAction() {
 		$request = Project::getRequest();
 		$data = array();
 		$this->BaseSiteData();
@@ -37,7 +37,7 @@ class ArticleController extends SiteController {
 		$this->_articleList($data, Project::getUser()->getDbUser()->id, null, null, 10, 'UserArticleList');
 		$this->_view->UserArticleList($data);
 		$this->_view->parse();
-	}
+	}*/
 	
 	public function LastListAction() {
 		$data = array();
@@ -67,7 +67,7 @@ class ArticleController extends SiteController {
 		$data['article_list_pager'] = $pager_view->show2($article_model->getPager(), 'Article', $action);
 	}
 	
-	public function AddArticleAction() {
+/*	public function AddArticleAction() {
 		$request = Project::getRequest();
 		if(!$request->submit) {
 			$data = array();
@@ -151,7 +151,7 @@ class ArticleController extends SiteController {
 			$this->_view->AddArticle($data);
 			$this->_view->parse();
 		}
-	}
+	}*/
 	
 	public function ArticleViewAction() {
 		$request = Project::getRequest();
@@ -228,7 +228,7 @@ class ArticleController extends SiteController {
 		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($article_model->id)));
 	}
 	
-	public function AjaxChangeCatAction() {
+/*	public function AjaxChangeCatAction() {
 		$request = Project::getRequest();
 		$parent_id = $request->getKeyByNumber(0);
 		$article_tree_model = new ArticleTreeModel();
@@ -251,7 +251,7 @@ class ArticleController extends SiteController {
 		$data['page_number'] = $this->_countPages;
 		$this->_view->AjaxAddPage($data);
 		$this->_view->ajax();
-	}
+	}*/
 	
 	public function VoteAction() {
 		$request = Project::getRequest();
