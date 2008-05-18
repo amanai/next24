@@ -18,6 +18,18 @@ class ArticleController extends SiteController {
 		$tree_model = new ArticleTreeModel();
 		$article_model = new ArticleModel();
 		$data['cat_list'] = $tree_model->loadByParentId((int)$request->getKeyByNumber(0));
+		
+		$n = Node::by_key('', 'articles_tree');
+		$tree = $n->getBranch();
+		
+		foreach ($tree as $node) {
+			if($node['level'] == 1) {
+				$data[root][$node['key']] = $node;
+			} else {
+				$data[child][substr($node['key'], 0, -4)][$node['key']] = $node;
+			}
+		}
+		
 		$data['article_list'] = $article_model->loadByParentId((int)$request->getKeyByNumber(0));
 		$controller_model = new ControllerModel();
 		$action_model = new ActionModel();
