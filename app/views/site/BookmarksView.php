@@ -25,31 +25,11 @@ class BookmarksView extends BaseSiteView {
     $this->set($data);
   }
   
+  public function Bookmarks_CategoryEdit($data) {
+    $this->setTemplate(null, 'bookmarks_category_edit.tpl.php');
+    $this->set($data);
+  }
   
-
-    /*
-	public function QuestionList($data) {
-		$this->setTemplate(null, 'question_list.tpl.php');
-		$this->set($data);
-	}
-
-	public function ViewQuestion($data) {
-		$this->setTemplate(null, 'question.tpl.php');
-		$this->set($data);
-
-	}
-
-	public function ManagedQuestion($data) {
-		$this->setTemplate(null, 'add_question.tpl.php');
-		$this->set($data);
-	}
-
-	public function MyQuestionList($data) {
-		$this->setTemplate(null, "my_question_list.tpl.php");
-		$this->set($data);
-	}
-
-    */
 	
 	
 }

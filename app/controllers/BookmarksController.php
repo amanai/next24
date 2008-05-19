@@ -17,10 +17,11 @@ class BookmarksController extends SiteController {
   
   // -- BaseSiteData - определяет набор закладок, доступных на странице
 	protected function _BaseSiteData(&$data) {
-		$data['tab_list_name']    = "Каталог закладок";
-		$data['tab_most_visit']   = "Самые посещаемые";
-		$data['tab_my_list_name'] = "Мои закладки";
-		$data['tab_add_bookmark'] = "Добавить закладку";
+		$data['tab_list_name']     = "Каталог закладок";
+		$data['tab_most_visit']    = "Самые посещаемые";
+		$data['tab_my_list_name']  = "Мои закладки";
+		$data['tab_add_bookmark']  = "Добавить закладку";
+    $data['tab_category_edit'] = "Категория";
 		parent::BaseSiteData();
 	}
   
@@ -266,6 +267,122 @@ class BookmarksController extends SiteController {
       }
     }
     Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksView', array($v_bookmark_id)));
+  }
+  
+  /**
+     Action: Создание/редактирование категории (дерево)
+  */
+  public function BookmarksCategoryEditAction($p_category_id = null){
+    $v_request = Project::getRequest();
+    $data = array();   
+    $data['action'] = 'BookmarksCategoryEdit';
+    $this->_BaseSiteData($data);
+    $v_category_id = ($p_category_id !== null) ? (int)$p_category_id : (int)$v_request -> getKeyByNumber(0);
+    $this->_get_catalogs($data, $v_category_id);
+    $this->_getSelectedCategory($data, $v_category_id);
+
+    $this -> _view -> Bookmarks_CategoryEdit($data);
+    $this -> _view -> parse();
+  }
+  
+  /**
+     Action: Записи категории (дерево)
+  */
+  public function BookmarksCategorySaveAction(){
+    $v_request = Project::getRequest();
+    $v_current_userID = (int)Project::getUser()->getDbUser()->id;
+    
+    if($v_request->inp_categiry_name == null) {
+      // -- Название категории пусто - ничего не делаем - просто редирект
+      Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksList'));
+    } else {
+      // -- Сохранение
+      $v_bm_category_model = new BookmarksCategoryModel();
+      $v_bm_category_model->user_id = $v_current_userID;
+      $v_bm_category_model->name    = $v_request->inp_categiry_name;
+      $v_bm_category_model->active  = 0;
+      $v_bm_category_model->parent_id = (int)$v_request->sel_parent_category;
+      $v_bm_category_model->save();
+      Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
+    }
+
+/*
+      $request = Project::getRequest();
+      $request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+      $user_id = (int)Project::getUser() -> getDbUser() -> id;
+      
+      $branch_id = (int)$request -> branch_id;
+      $name = $request -> branch_name;
+      $catalog_id = (int)$request -> blog_catalog;
+      $parent_id = (int)$request -> parent_branch;
+      $access = (int)$request -> branch_access;
+      
+      $this -> BaseSiteData();
+      $info = array();
+      $this -> BaseBlogData($info);
+      
+      $blog_model = new BlogModel;
+      $blog_model -> loadByUserId($user_id);
+      $blog_id = (int)$blog_model -> id;
+      if ($blog_id <= 0){
+        Project::getResponse() -> redirect($request -> createUrl('Blog', 'Post'));
+      }
+      
+      $parent_tree_model = new BlogTreeModel;
+      $parent_tree_model -> load($parent_id);
+      $parent_node = $parent_tree_model -> getNode();
+      if ($parent_tree_model -> level > 1){
+        $this -> _view -> addFlashMessage(FM::ERROR, "Неверно выбран родительский раздел");
+        $this -> EditBranchAction($branch_id);
+        return;
+      }
+      
+      
+      
+      $tree_model = new BlogTreeModel;
+      $tree_model -> load($branch_id);
+      $n = $tree_model -> getNode();
+      if ($n instanceof Node){
+        $child =  $n -> getLastChildKey();
+      } else {
+        $child = null;
+      }
+      if ($child){
+        $this -> _view -> addFlashMessage(FM::ERROR, "Невозможно переместить раздел: есть зависимые разделы");
+        $this -> EditBranchAction($branch_id);
+        return;
+      }
+      
+      $tree_model -> name = $name;
+      $tree_model -> blog_id = $blog_id;
+      $tree_model -> access = $access;
+      $tree_model -> blog_catalog_id = $catalog_id;
+      $tree_model -> blog_banner_id = 0;
+      $n = $tree_model -> getNode();
+      if (!$n){
+        $tree_model -> key = '';
+        if ($parent_node){
+          $tree_model -> level = 2;
+        } else {
+          $tree_model -> level = 1;
+        }
+        $branch_id = $tree_model -> save();
+        $n = new Node(new Key($branch_id), 'ub_tree');
+        $tree_model -> key = $n -> key -> __toString();
+      }
+      
+      if (!$parent_node){
+        $node = new Node(new Key($tree_model -> id), 'ub_tree');
+        $tree_model -> key = $node -> key -> __toString();
+        $tree_model -> level = 1;
+      }
+      
+      $branch_id = $tree_model -> save();
+      if ($parent_node){
+        $n -> changeParent($parent_node);
+      }
+      Project::getResponse() -> redirect($request -> createUrl('Blog', 'EditBranch', array($branch_id)));
+*/
   }
   
   // -- Формирует каталог закладок, уже упорядоченный в Моделе BookmarksCategoryModel
