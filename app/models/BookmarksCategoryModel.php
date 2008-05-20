@@ -23,6 +23,7 @@ class BookmarksCategoryModel extends BaseModel {
         IF (bt.`parent_id`=0, 0, 1) level_item,
         IF (bt.`parent_id`=0, bt.`name`, CONCAT(bt1.`name`, '_', bt.`name`)) field_order
       FROM `bookmarks_tree` bt LEFT JOIN `bookmarks_tree` bt1 ON bt.`parent_id` = bt1.`id`
+      WHERE bt.`active` = 1
       ORDER BY field_order
     ";
     $result = Project::getDatabase() -> select($sql);

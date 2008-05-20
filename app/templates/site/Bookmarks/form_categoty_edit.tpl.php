@@ -4,7 +4,7 @@
 	<br />
 	<table>
   <tr>
-    <td valign="top">Родительский раздел</td>
+    <td valign="top" width="140">Родительская категория: </td>
     <td>   
       <select style="width: 300px;" name="sel_parent_category">
         <option value="0">---</option>
@@ -17,7 +17,7 @@
     </td>
   </tr>
 	<tr>
-		<td width="100" valign="top">Название</td>
+		<td width="100" valign="top">Название: </td>
 
 		<td>
 			<input type="text" name="inp_categiry_name" style="width: 300px;" value="<?=$this -> category_name; ?>"><br />
