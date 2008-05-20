@@ -7,47 +7,67 @@
 					<p><a href="<?=$this->createUrl('Article', 'List', array($item['id'])) ?>"><?=$item['name']?></a></p>
 				<?php }*/ ?>
 				
-				
+				<!-- панель сделаю всё нормально 26го -->
 <style type="text/css">
-.node {
-    padding-left: 20px;
+.close_folder {
+  padding-left: 30px;
+  font-weight: bolder; line-height: 14px; cursor: pointer;
+  background-image: url(<?=$this -> image_url."icons/plus.gif"; ?>);
+  background-repeat: no-repeat;
+  padding-bottom: 3px
+}
+
+.open_folder {
+  padding-left: 20px;
+  font-weight: bolder; line-height: 14px; cursor: pointer;
+  background-image: url(<?=$this -> image_url."icons/minus.gif"; ?>);
+  background-repeat: no-repeat;
+  padding-bottom: 3px
 }
 </style>
 <script language="javascript">
 function set(id_el, key) {
-    el = document.getElementById("child_key_"+key);
+    el = document.getElementById(key);
     p_el = document.getElementById(id_el);
     if (el.style.display=="none") {
         el.style.display="block";
+        p_el.style.backgroundImage = "url(<?=$this -> image_url."icons/minus.gif"; ?>)";
+
 
     } else {
         el.style.display="none";
+        p_el.style.backgroundImage = "url(<?=$this -> image_url."icons/plus.gif"; ?>)";
         
     }
+ 
+   
 }
 </script>
+
+
 				
 				<?php
 					
 					foreach ($this->root as $node) {
-						?> <div id='p_<?=$node['key']?>' onClick="set(this.id, '<?=$node['key']?>')"><?=$node['name']?></div><?
+						?> 
+							<div class="close_folder" id="p_<?=$node['key']?>" onClick="javascript: set(this.id, '<?=$node['key']?>');"><?=$node['name']." key "?>
+						<?
 						tree($node['key'], $this->child);
+						echo "</div>";
 					}
 					
 					function tree($key, $child) {
-					
+					?>
+								<div class="close_folder" style="display: none;" onClick=" <? if($child[key($child[$key])] != "") { ?>javascript: set(this.id, '<?=key($child[$key]);?>'); <? } ?>event.cancelBubble=true;"  id="<?=$key?>">
+							<?
+				
 						
 						foreach ($child[$key] as $subNode) {
-							if(count($child[$subNode['key']]) > 0) {
-								?><div class='node' id='child_key_<?=$key?>' style='display: none' onClick="set(this.id, '<?=$subNode['key']?>')"><?
-								
-								echo "+".$subNode['name']."<br />";
+							echo $subNode['name'];
+							if(count($child[$subNode['key']]) > 0){
 								tree($subNode['key'], $child);
-							} else {
-								?><div class='node' id='child_key_<?=$key?>' style='display: none'><?
-								echo "-".$subNode['name']."<br />";
-								
 							}
+								
 						}
 						echo "</div>";
 					}
