@@ -277,11 +277,9 @@ class BookmarksController extends SiteController {
     $data = array();   
     $data['action'] = 'BookmarksCategoryEdit';
     $this->_BaseSiteData($data);
-    /*
     $v_category_id = ($p_category_id !== null) ? (int)$p_category_id : (int)$v_request -> getKeyByNumber(0);
     $this->_get_catalogs($data, $v_category_id);
     $this->_getSelectedCategory($data, $v_category_id);
-    */
     $this -> _view -> Bookmarks_CategoryEdit($data);
     $this -> _view -> parse();
   }
