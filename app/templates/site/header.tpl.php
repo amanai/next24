@@ -3,13 +3,14 @@
 	<title>Next24</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href="<?php echo $this -> css_url;?>style.css" type="text/css" rel="StyleSheet" />
-	<link href="<?php echo $this -> css_url;?>tabpane.css" type="text/css" rel="StyleSheet"	/>
+<!--	<link href="<?php echo $this -> css_url;?>tabpane.css" type="text/css" rel="StyleSheet"	/>-->
 	<link href="<?php echo $this -> css_url;?>date_input.css" type="text/css" rel="StyleSheet"/>
 	
 	
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>tabpane.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>sys.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
+	
+<!--	<script type="text/javascript" src="<?php echo $this -> js_url;?>tabpane.js"></script>-->
 	
 
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.js"></script>
@@ -43,8 +44,6 @@
 								<a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>">Профиль</a><br />
 								<a href="<?php echo $this->createUrl('Photo', 'LastList', null, $this->current_user->login)?>">Фотоальбом</a><br />
 								<a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>">Подписка</a><br />
-								<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, $this->current_user->login)?>">Закладки</a><br />
-								<a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, $this->current_user->login)?>">Вопросы-ответы</a><br />
 
 								<a href="#">Дневник</a><br />
 								<!--<a href="#">Сообщения</a>-->
