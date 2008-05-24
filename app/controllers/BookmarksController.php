@@ -31,18 +31,18 @@ class BookmarksController extends SiteController {
 	public function BookmarksListAction() {
 		$v_request = Project::getRequest();
 		$data = array();   
-    $this->_BaseSiteData($data);
-    $data['action'] = 'BookmarksList';
-    // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/2/ ...bookmarks_list/0/0/2/
-    // где bookmarks_list/{id_категории}/{id_тега}/{номер страницы}/
-    $v_categoryID = $v_request->getKeyByNumber(0);
-    $v_tagID      = $v_request->getKeyByNumber(1);
-    $v_n_page     = $v_request->getKeyByNumber(2);
-		$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID, true);
-    $this->_get_catalogs($data, $v_categoryID);
-    $this->_getSelectedCategory($data, $v_categoryID);
-    $this->_getSelectedTag($data, $v_tagID);
-    $this->_view->Bookmarks_MainList($data);
+	    $this->_BaseSiteData($data);
+	    $data['action'] = 'BookmarksList';
+	    // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/2/ ...bookmarks_list/0/0/2/
+	    // где bookmarks_list/{id_категории}/{id_тега}/{номер страницы}/
+	    $v_categoryID = $v_request->getKeyByNumber(0);
+	    $v_tagID      = $v_request->getKeyByNumber(1);
+	    $v_n_page     = $v_request->getKeyByNumber(2);
+			$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID, true);
+	    $this->_get_catalogs($data, $v_categoryID);
+	    $this->_getSelectedCategory($data, $v_categoryID);
+	    $this->_getSelectedTag($data, $v_tagID);
+	    $this->_view->Bookmarks_MainList($data);
 		$this->_view->parse();
   }
 

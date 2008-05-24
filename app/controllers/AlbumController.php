@@ -15,7 +15,6 @@
 		
 		public function UploadAction(){
 			// TODO:: album_id - проверять, этого ли пользователя альбом
-			
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			$request = Project::getRequest();

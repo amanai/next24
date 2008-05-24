@@ -7,7 +7,7 @@
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<tr>
-							<td class="next24_right">
+							<td class="next24u_left">
 								<table width="100%" height="100%" cellpadding="0">
 									<tr>
 										<td class="next24u_left">
@@ -15,6 +15,9 @@
 											<?php echo $this -> album_menu;?>
 											<?php echo $this -> control_panel;?>
 										<!-- /левый блок -->
+										</td>
+									</tr>
+								</table>
 						</td>
 						<td class="next24u_right">
 							<table class="photo_table">

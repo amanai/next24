@@ -6,6 +6,16 @@
 				$view_class = "UserView";
 			}
 			parent::__construct($view_class);
+		}
+		
+	  // -- BaseSiteData - определяет набор закладок, доступных на странице
+		protected function _BaseSiteData(&$data) {
+			$data['tab_list_name']     = "Каталог закладок";
+			$data['tab_most_visit']    = "Самые посещаемые";
+			$data['tab_my_list_name']  = "Мои закладки";
+			$data['tab_add_bookmark']  = "Добавить закладку";
+	    	$data['tab_category_edit'] = "Категория";
+			parent::BaseSiteData();
 		}			
 		
 		static public function getProfileUrl($username){
@@ -39,31 +49,14 @@
 			die("!!!!");
 		}
 		
-		function RegistrationFormAction(){
-			
-			/*
-			// Get activation code
-			//$user_model = new UserModel;
-			//$user_model -> load(7);
-			$login = "admin";
-			$salt = "3333333333";
-			$pass = "admin";
-			$md5_pass = AppCrypt::getHash($pass, $salt);
-			var_dump($md5_pass);
-			$act_code = md5($login . $salt . $pass);
-			var_dump($act_code);
-			die();
-			*/
-			
+		function RegistrationFormAction(){			
 			$request = Project::getRequest();
+			
 			$info = array();
-			
 			$info['save_url'] = $request -> createUrl('User', 'Registration');
-			
-			
-			
 			$info['validate_param'] = AjaxRequest::getJsonParam('User', 'ValidateRegistration', array('form_id' => 'register_form'), "POST");
 			$info['save_param'] = AjaxRequest::getJsonParam('User', 'Registration', array('form_id' => 'register_form'), "POST");
+
 			$this -> FillEditParams($info);
 			$this -> _view -> RegistrationForm($info);
 			$this -> _view -> parse();
@@ -306,7 +299,6 @@
 		
 		public function ProfileAction(){
 			$info = array();
-			
 			$user = Project::getUser() -> getShowedUser();
 			$this -> BaseSiteData();
 			$friend_model = new FriendModel;

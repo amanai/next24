@@ -40,8 +40,6 @@ class UserView extends BaseSiteView{
 			$this -> setTemplate(null, 'complete_registration.tpl.php');
 		}
 		
-		
-		
 		function ChangeCountry($info){
 			$response = Project::getAjaxResponse();
 			$this -> set($info);

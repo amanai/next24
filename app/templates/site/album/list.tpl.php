@@ -7,7 +7,7 @@
 					<table width="100%" height="100%" cellpadding="0">
 					<tr>
 						<?php if ($this -> left_panel === true) { ?>
-							<td class="next24_right">
+							<td class="next24u_left">
 									<table width="100%" height="100%" cellpadding="0">
 										<tr>
 											<td class="next24u_left">
@@ -15,6 +15,9 @@
 												<?php echo $this -> album_menu;?>
 												<?php echo $this -> control_panel;?>
 											<!-- /левый блок -->
+											</td>
+										</tr>
+									</table>
 							</td>
 						<?php } ?>
 						<td class="next24u_right">
@@ -66,6 +69,7 @@
 												</div>
 											</div>
 										</td>
+
 								<?php }?>
 								<?php if ($this -> can_edit && count($this->album_list)) { ?>
 										<tr><td><input type="submit" value="Сохранить" /></td></tr>

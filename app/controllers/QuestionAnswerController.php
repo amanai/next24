@@ -15,7 +15,7 @@ class QuestionAnswerController extends SiteController {
 		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1));
 		$this->BaseSiteData($data);
 		$data['action'] = 'List';
-		$this->_view->QuestionList($data);	
+		$this->_view->QuestionList($data);
 		$this->_view->parse();
 	}
 	
