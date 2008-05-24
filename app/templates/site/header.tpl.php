@@ -2,26 +2,23 @@
 <head>
 	<title>Next24</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link href="<?php echo $this -> css_url;?>style.css" type="text/css" rel="StyleSheet" />
-<!--	<link href="<?php echo $this -> css_url;?>tabpane.css" type="text/css" rel="StyleSheet"	/>-->
-	<link href="<?php echo $this -> css_url;?>date_input.css" type="text/css" rel="StyleSheet"/>
+<!--	<link href="<?php echo $this -> css_url;?>style.css" type="text/css" rel="StyleSheet" />
+	<link href="<?php echo $this -> css_url;?>date_input.css" type="text/css" rel="StyleSheet"/>-->
 	
 	
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>sys.js"></script>
+	<!--<script type="text/javascript" src="<?php echo $this -> js_url;?>sys.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
-	
-<!--	<script type="text/javascript" src="<?php echo $this -> js_url;?>tabpane.js"></script>-->
-	
-
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>xpath.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>blockUI.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>ajax.js"></script>
-	
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.dimensions.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.pack.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.ru_RU.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.format.js"></script>
+	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.format.js"></script>-->
+	
+	<link href="<?=$this->getBothCJ($this -> _css_files,'css');?>" type="text/css" rel="StyleSheet"/>
+	<script type="text/javascript" src="<?=$this->getBothCJ($this -> _js_files,'js');?>"></script>
 </head>
 <body>
 <table width="100%" height="100%" cellpadding="0">
