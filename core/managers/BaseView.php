@@ -33,11 +33,11 @@ class BaseView{
 			$tm = Project::getTemplateManager();
 			$this -> css_url = $url . $tm -> getCssPath();
 			$this -> js_url = $url . $tm -> getJsPath();
-			$this -> css_path = $_SERVER['DOCUMENT_ROOT'] . $tm -> getCssPath();
-			$this -> js_path = $_SERVER['DOCUMENT_ROOT'] . $tm -> getJsPath();
+			$this -> css_path = $_SERVER['DOCUMENT_ROOT'].'/'.$tm -> getCssPath();
+			$this -> js_path = $_SERVER['DOCUMENT_ROOT'].'/'.$tm -> getJsPath();
 			$this -> image_url = $url . $tm -> getImagePath();
 			$this -> cj_cache_url = $url . $tm -> getCJCachePath();
-			$this -> cj_cache_path = $_SERVER['DOCUMENT_ROOT'].$tm -> getCJCachePath();
+			$this -> cj_cache_path = $_SERVER['DOCUMENT_ROOT'].'/'.$tm -> getCJCachePath();
 			
 			$this -> helper = &$request;
 		}
