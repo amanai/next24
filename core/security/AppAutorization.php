@@ -10,7 +10,6 @@ class AppAutorization extends ApplicationManager implements IManager{
 	private $_current_subactions;
 
 			function initialize(IConfigParameter $configuration){
-				
 				$need = $configuration -> get('autorization');
 				if ($need === true){
 					$this -> _needAutorization = true;
@@ -40,7 +39,6 @@ class AppAutorization extends ApplicationManager implements IManager{
 			function procees($auth){
 				
 				$request = Project::getRequest();
-				
 				$load_default = false;
 				$request_action = $request -> getAction();
 				$action_model = new ActionModel;
@@ -175,7 +173,7 @@ class AppAutorization extends ApplicationManager implements IManager{
 						throw new SecurityException('Critical security error: login controller not defined at configuration');
 					}
 				}
-				
+
 				Project::getRequest() -> setController($controller_model -> request_key);
 				if (($controller_model -> id > 0) && ($action_model -> id > 0)){
 					if ( $action_model -> request_key != $request_action ){

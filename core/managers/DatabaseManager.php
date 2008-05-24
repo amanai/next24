@@ -86,9 +86,9 @@ function myLogger($db, $sql){
   //echo '<br>'.HelpFunctions::backtrace();
   //echo "<xmp title=\"$tip\">"; print_r($sql); echo "</xmp>";
   $GLOBALS['query_counter']++;
-  //echo '~~~'.print_r($sql).'~~~';
-  if ( ($logger = Project::get("logger")) !== null){
+  //echo '~~~'.print_r($sql).'~~~<br>';
+  //if ( ($logger = Project::get("logger")) !== null){
 		//$logger -> writeLog($tip."::".$sql);
-  }
+  //}
 }
 ?>

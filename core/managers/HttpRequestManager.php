@@ -49,7 +49,6 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			
 			$this -> _username = $this -> getSubDomain($configuration -> get('base_host'));
 			
-			
 			$this -> _rewrite = (bool)$configuration -> get('rewrite');
 			if ($this -> _rewrite){
 				$request_key = $configuration -> get('request_key');
@@ -87,7 +86,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 					$this -> _current_controller = $this -> _request[$this -> _request_controller_key];
 				}
 			}
-
+			
 			$this -> _files = $_FILES;
 			Project::setRequest($this);
 			$this -> _common_config($configuration);

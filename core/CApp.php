@@ -30,7 +30,7 @@ class CApp {
 				}
 				$module = new $class;
 				$module -> initialize($configuration);
-				//var_dump($module_id, $class);echo '<br>';
+				
 				if ($module -> setToRegistry() === true){
 					Project::set($module_id, $module);
 				}
@@ -40,7 +40,6 @@ class CApp {
 
 		
 		public function run(){
-			
 			$autorize = Project::getSecurityManager() -> getAutorize(); 
 			$controller_class = $autorize -> getController() -> name;
 			$controller = new $controller_class;
