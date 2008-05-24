@@ -21,12 +21,12 @@
 	
 	
 	<!-- APC cache module -->
-	<module id="cache_manager"  class="CacheManager">
+	<module id="cache_manager" class="CacheManager">
 		<param key="set_to_registry" value="false" />
 	</module>
 	
 	<!-- APC cache module -->
-	<module id="APC"  class="APCCache">
+	<module id="APC" class="APCCache">
 		<param key="expire" value="3600" />
 		<param key="prefix" value="next24" />
 	</module>
@@ -67,7 +67,7 @@
 		<param key="value_delimiter" value=":" />
 		<param key="request_action_key" value="act" />
 		<param key="set_to_registry" value="false" />
-		<param key="base_host" value="next24" />
+		<param key="base_host" value="next24.home" />
 	</module>
 	
 	<!-- Sesion module -->
@@ -77,8 +77,6 @@
 		<param key="session_name" value="nextsk11" />
 		<param key="autoStart" value="true" />
 	</module>
-	
-	
 	
 	<!-- Right manager module -->
 	<module id="security_manager"  class="SecurityManager" >
@@ -97,6 +95,7 @@
 		<param key="template_dir" value="app/templates" />
 		<param key="js_path" value="app/js/" />
 		<param key="css_path" value="app/css/" />
+		<param key="cj_cache_path" value="app/cj_cache/" />
 		<param key="image_path" value="app/images/" />
 		<param key="set_to_registry" value="false" />
 	</module>
