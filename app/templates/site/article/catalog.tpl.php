@@ -10,20 +10,28 @@
 				<!-- панель сделаю всё нормально 26го -->
 <style type="text/css">
 .close_folder {
-  padding-left: 30px;
-  font-weight: bolder; line-height: 14px; cursor: pointer;
-  background-image: url(<?=$this -> image_url."icons/plus.gif"; ?>);
+  padding-left: 28px;
+  line-height: 14px;
+  background-image: url(http://next24/app/images/icons/plus.gif);
   background-repeat: no-repeat;
-  padding-bottom: 3px
+  padding-bottom: 3px;
+  
 }
 
 .open_folder {
-  padding-left: 20px;
-  font-weight: bolder; line-height: 14px; cursor: pointer;
-  background-image: url(<?=$this -> image_url."icons/minus.gif"; ?>);
+  padding-left: 28px;
+  line-height: 14px; 
+  background-image: url(http://next24/app/images/icons/minus.gif);
   background-repeat: no-repeat;
-  padding-bottom: 3px
+  padding-bottom: 3px;
 }
+
+.item {
+  padding-left: 0px;
+  padding: 0px;
+ 
+}
+
 </style>
 <script language="javascript">
 function set(id_el, key) {
@@ -46,33 +54,31 @@ function set(id_el, key) {
 
 
 				
-				<?php
-					
-					foreach ($this->root as $node) {
-						?> 
-							<div class="close_folder" id="p_<?=$node['key']?>" onClick="javascript: set(this.id, '<?=$node['key']?>');"><?=$node['name']." key "?>
-						<?
-						tree($node['key'], $this->child);
-						echo "</div>";
-					}
-					
-					function tree($key, $child) {
-					?>
-								<div class="close_folder" style="display: none;" onClick=" <? if($child[key($child[$key])] != "") { ?>javascript: set(this.id, '<?=key($child[$key]);?>'); <? } ?>event.cancelBubble=true;"  id="<?=$key?>">
-							<?
-				
-						
-						foreach ($child[$key] as $subNode) {
-							echo $subNode['name'];
-							if(count($child[$subNode['key']]) > 0){
-								tree($subNode['key'], $child);
-							}
 								
-						}
-						echo "</div>";
-					}
-				
-				?>
+					<?foreach ($this->root as $node):?> 
+						<?if (count($this->child[$node['key']]) > 0):?> 
+							<div class="close_folder"><b><a href="javascript: set(this.id, '<?=$node['key'];?>')" style="text-decoration:none;"><?=$node['name']?></a></b>
+							<? tree($node['key'], $this->child, $this); ?>
+							</div>
+						<?else :?> 
+							<div class="item"><b>»</b> <a href="<?=Project::getRequest()->createUrl('Article', 'List', array($subNode['id']));?>"><?=$node['name']?></a></div>
+						<?endif;?>
+					<?endforeach;?>
+					
+					<?function tree($key, $child, $obj) { ?>					
+						<div id="<?=$key?>" style="display: none">
+						<?foreach ($child[$key] as $subNode) :?>
+								<?if(count($child[$subNode['key']]) > 0):?>
+									<div class="close_folder" id="p_<?=$subNode['key']?>" ><b ><a href="javascript: set(this.id, '<?=key($child[$key]);?>')" style="text-decoration:none;"><?=$subNode['name']?></a></b>
+									<?tree($subNode['key'], $child, $obj);?>
+									</div>
+								<?else :?> 
+									<div class="item" id="p_<?=$subNode['key']?>" ><b>»</b> <a href="<?=Project::getRequest()->createUrl('Article', 'List', array($subNode['id']));?>"><?=$subNode['name']?></a></div>
+								<?endif;?>
+									
+						<?endforeach;?>
+						</div>
+					<? } ?>
 
 	
 
