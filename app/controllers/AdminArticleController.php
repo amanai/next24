@@ -142,6 +142,52 @@ class AdminArticleController extends AdminController {
 		Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));
 	}
 	
+	public function AddArticleAction() {
+		$request = Project::getRequest();
+		if(!$request->submit) {
+			$data = array();
+			$data['action'] = "AddArticle";
+			$this->BaseSiteData();
+			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, false, true);
+			$article_tree_model = new ArticleTreeModel();
+			$data['cat_list'] = $article_tree_model->loadByParentId(0);
+			$this->_view->AddArticle($data);
+			$this->_view->parse();
+		} else {
+			$parent_id = (int)$request->category;
+			if($request->cat_title != null) {
+				$node = Node::by_id($request->category, 'articles_tree');
+				$key = $node->getNewChildKey();
+				if($key->level <= 5) {
+					$article_tree_model = new ArticleTreeModel();
+					$article_tree_model->user_id = Project::getUser()->getDbUser()->id;
+					$article_tree_model->name = $request->cat_title;
+					$article_tree_model->key = $key;
+					$article_tree_model->level = $key->level;
+					$article_tree_model->active = 0;
+					$parent_id = $article_tree_model->save();
+				}				
+			}
+			$article_model = new ArticleModel();
+			$article_page_model = new ArticlePageModel();
+			$article_model->articles_tree_id = $parent_id;
+			$article_model->user_id = Project::getUser()->getDbUser()->id;
+			$article_model->title = $request->title;
+			$article_model->allowcomments = (bool)$request->allow_comment;
+			$article_model->rate_status = (bool)$request->allow_rate;
+			$article_model->creation_date = date("Y-m-d H:i:s");
+			$id = $article_model->save();
+			for($i = 0; $i < count($request->page_title); $i++) {
+				$article_page_model = new ArticlePageModel();
+				$article_page_model->article_id = $id;
+				$article_page_model->title = $request->page_title[$i];
+				$article_page_model->p_text = $request->page_text[$i];
+				$article_page_model->save();
+			}
+		}
+		
+	}
+	
 	
 }
 
