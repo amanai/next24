@@ -30,6 +30,10 @@
    </span>
 <? } ?>
 
+<? if ($this->show_imported_bookmarks == true) { ?>
+  <div class="block_title" style="margin-top: 5px;"><p style="text-indent: 12px;"><a href="<?php echo $this->createUrl('Bookmarks', $this->action, array('imported'));?>" >Импортированные</a></p></div>
+<? } ?>
+
 <? if (count($this->category_row) > 0) { ?>
 <script language="JavaScript" type="text/javascript">
   doLevelMainClick('id_'+<?=$this->category_row[0]['parent_id'];?>);

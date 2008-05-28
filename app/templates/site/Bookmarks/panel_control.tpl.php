@@ -3,5 +3,5 @@
 	<div class="block_title"><h2>Управление закладками</h2></div>
   <p><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksManage');?>">Добавить закладку</a></p>
   <p><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksCategoryEdit');?>">Добавить категорию</a></p>
-  <p><a href="#" style="color: #C0C0C0">Импортировать закладки</a></p>
+  <p><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksImportForm');?>" >Импортировать закладки</a></p>
 </div></div></div></div>

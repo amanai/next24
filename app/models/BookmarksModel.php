@@ -30,7 +30,8 @@ class BookmarksModel extends BaseModel {
     $v_show_only_public = (boolean)$p_show_only_public;
     $v_sql_where = " 1=1 ";
     $v_sql_tag   = '';
-    if ($v_categoryID > 0) { $v_sql_where .= ' and bm.`bookmarks_tree_id`='.$v_categoryID; }
+    if ($v_categoryID > 0)   { $v_sql_where .= ' and bm.`bookmarks_tree_id`='.$v_categoryID; }
+    if ($v_categoryID == -1) { $v_sql_where .= ' and bm.`bookmarks_tree_id`=0'; }
     if ($v_userID > 0)     { $v_sql_where .= " and bm.`user_id`=".$v_userID; }
     if ($v_tagID > 0)      { 
       $v_sql_tag = " RIGHT JOIN bookmarks_tags_links bm_tl ON bm.`id` = bm_tl.`bookmarks_id` "; 

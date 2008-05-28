@@ -30,6 +30,11 @@ class BookmarksView extends BaseSiteView {
     $this->set($data);
   }
   
+  public function Bookmarks_Import($data) {
+    $this->setTemplate(null, 'bookmarks_import.tpl.php');
+    $this->set($data);
+  }
+  
 	
 	
 }
