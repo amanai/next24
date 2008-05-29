@@ -35,18 +35,18 @@
 </style>
 <script language="javascript">
 function set(id_el, key) {
+	
     el = document.getElementById(key);
-    p_el = document.getElementById(id_el);
+    p_el = document.getElementById('p_'+id_el);
     if (el.style.display=="none") {
         el.style.display="block";
         p_el.style.backgroundImage = "url(<?=$this -> image_url."icons/minus.gif"; ?>)";
-
-
     } else {
         el.style.display="none";
         p_el.style.backgroundImage = "url(<?=$this -> image_url."icons/plus.gif"; ?>)";
         
     }
+ 
  
    
 }
@@ -57,7 +57,7 @@ function set(id_el, key) {
 								
 					<?foreach ($this->root as $node):?> 
 						<?if (count($this->child[$node['key']]) > 0):?> 
-							<div class="close_folder"><b><a href="javascript: set(this.id, '<?=$node['key'];?>')" style="text-decoration:none;"><?=$node['name']?></a></b>
+							<div class="close_folder" id="p_<?=$node['key']?>"><b><a href="javascript: set('<?=$node['key'];?>', '<?=$node['key'];?>')" style="text-decoration:none;"><?=$node['name']?></a></b>
 							<? tree($node['key'], $this->child, $this); ?>
 							</div>
 						<?else :?> 
@@ -66,10 +66,10 @@ function set(id_el, key) {
 					<?endforeach;?>
 					
 					<?function tree($key, $child, $obj) { ?>					
-						<div id="<?=$key?>" style="display: none">
+						<div id="<?=$key?>" <?if(strpos($key, substr($obj->key, 0, 4)) === 0 && count($obj->key) > 0) {?> style="display: block" <? } else { ?> style="display: none" <? } ?>>
 						<?foreach ($child[$key] as $subNode) :?>
 								<?if(count($child[$subNode['key']]) > 0):?>
-									<div class="close_folder" id="p_<?=$subNode['key']?>" ><b ><a href="javascript: set(this.id, '<?=key($child[$key]);?>')" style="text-decoration:none;"><?=$subNode['name']?></a></b>
+									<div class="close_folder" id="p_<?=$subNode['key']?>" ><b ><a href="javascript: set('<?=$subNode['key']?>', '<?=key($child[$key]);?>')" style="text-decoration:none;"><?=$subNode['name']?></a></b>
 									<?tree($subNode['key'], $child, $obj);?>
 									</div>
 								<?else :?> 

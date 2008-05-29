@@ -16,20 +16,17 @@ class ArticleController extends SiteController {
 		$this->BaseSiteData();
 		$data['tab_list'] = TabController::getMainArticleTabs(true);
 		$tree_model = new ArticleTreeModel();
-		$article_model = new ArticleModel();
-		$data['cat_list'] = $tree_model->loadByParentId((int)$request->getKeyByNumber(0));
-		
+		$article_model = new ArticleModel();		
 		$n = Node::by_key('', 'articles_tree');
-		$tree = $n->getBranch();
-		
+		$tree = $n->getBranch();		
 		foreach ($tree as $node) {
+			if($node['id'] == (int)$request->getKeyByNumber(0)) $data['key'] = $node['key'];
 			if($node['level'] == 1) {
 				$data[root][$node['key']] = $node;
 			} else {
 				$data[child][substr($node['key'], 0, -4)][$node['key']] = $node;
 			}
 		}
-		
 		$data['article_list'] = $article_model->loadByParentId((int)$request->getKeyByNumber(0));
 		$controller_model = new ControllerModel();
 		$action_model = new ActionModel();
