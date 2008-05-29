@@ -147,8 +147,7 @@ class AdminArticleController extends AdminController {
 		if(!$request->submit) {
 			$data = array();
 			$data['action'] = "AddArticle";
-			$this->BaseSiteData();
-			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, false, true);
+			$this->BaseAdminData();
 			$article_tree_model = new ArticleTreeModel();
 			$data['cat_list'] = $article_tree_model->loadByParentId(0);
 			$this->_view->AddArticle($data);
@@ -186,6 +185,19 @@ class AdminArticleController extends AdminController {
 			}
 		}
 		
+	}
+	
+	public function ListAction() {
+		$request = Project::getRequest();
+		$data = array();
+		$this->BaseAdminData();
+		$article_model = new ArticleModel();
+		$pager = new DbPager($request->getKeyByNumber(0), 10);
+		$article_model -> setPager($pager);
+		$data['article_list'] = $article_model->loadPage();
+		$data['list_pager'] = $article_model->getPager();
+		$this->_view->ArticleList($data);
+		$this->_view->parse();
 	}
 	
 	
