@@ -31,7 +31,7 @@
   </td>
   <td class="next24u_right">
   <!-- панель-строка открытой категории -->
-  <?php if (count($this->category_row) > 0) { ?>
+  <?php if ((count($this->category_row) > 0) or ($this->show_imported_bookmarks == true)) { ?>
   <div class="block_ee1">
     <div class="block_ee2">
       <div class="block_ee3">

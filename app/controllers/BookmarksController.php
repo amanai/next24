@@ -129,6 +129,8 @@ class BookmarksController extends SiteController {
     $v_request = Project::getRequest();
     $v_current_userID = (int)Project::getUser()->getDbUser()->id;
     $v_bookmarkID = $v_request->getKeyByNumber(0);
+    $v_categoryID = $this->_GetIDCategoryByIDBookmark($v_bookmarkID);
+    if ($v_categoryID == 0) $v_categoryID = 'imported';
     $v_model = new BookmarksModel();
     $v_model->load($v_bookmarkID);
     if (($v_model->user_id == $v_current_userID) and ($v_bookmarkID > 0)) {
@@ -136,7 +138,7 @@ class BookmarksController extends SiteController {
       $v_tag_model = new BookmarksTagModel();
       $v_tag_model->deleteTagsLinkByBookmarkID($v_bookmarkID);
     }
-    Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
+    Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser', array($v_categoryID)));
   }
   
   /**
@@ -432,6 +434,10 @@ class BookmarksController extends SiteController {
         $data['category_row'] = $v_row;
       }
     }
+    if ($p_category_childID == 'imported') {
+      $data['category_row']['0']['id']   = -1;
+      $data['category_row']['0']['name'] = 'Импортированные';
+    }
   }
   
   // -- Выбирает имя тега, по которому фильтруем набор закладок
@@ -468,10 +474,14 @@ class BookmarksController extends SiteController {
           $v_name = $str;
           $v_name = mb_substr($v_name, mb_strpos(mb_strtolower($v_name), '<a href')+10);
           $v_name = mb_substr($v_name, mb_strpos($v_name, '>')+1);
-          $v_name = trim(mb_substr($v_name, 0, mb_strpos($v_name, '<')));
-          
+          if (strtolower($v_encoding_charset) == 'utf-8') {
+            $v_name = trim(mb_substr($v_name, 0, mb_strpos($v_name, '<')));
+          } else { // Win-1251
+            $v_name = trim(substr($v_name, 0, strpos($v_name, '<')));
+            $v_name = mb_convert_encoding($v_name, "UTF-8", $v_encoding_charset);
+          }
+
           if ($v_name == '') $v_name = '[Заполнить]';
-          $v_name = mb_convert_encoding($v_name, "UTF-8", $v_encoding_charset);
           // -- INSERT закладок
           $v_bm_model = new BookmarksModel();
           $v_bm_model->user_id            = Project::getUser()->getDbUser()->id; // ID залогиненного пользователя 
@@ -524,6 +534,19 @@ class BookmarksController extends SiteController {
     return "UTF-8"; // -- Кодировка по умолчанию
   }
   
+  /**
+  * Функция получения ID категории по ID закладки
+  */
+  private function _GetIDCategoryByIDBookmark($p_id_bookmark = null) {
+    $v_id_bookmark = (int)$p_id_bookmark;
+    if ($v_id_bookmark > 0) {
+      $v_bm_model = new BookmarksModel();
+      $v_row = $v_bm_model->load($v_id_bookmark);
+      return $v_row['bookmarks_tree_id'];
+      // для "Импортированные" ID Категории = 0
+    }
+    return -1; // -- Выбираемая закладка с несуществующим ID 
+  }
     
 }
 
