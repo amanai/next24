@@ -36,6 +36,11 @@ class AdminArticleView extends BaseAdminView {
 		$response->disable('list_block');
 	}
 	
+	public function ArticleList($data) {
+		$this->setTemplate($this->_dir, 'article_list.tpl.php');
+		$this->set($data);
+	}
+	
 }
 
 ?>

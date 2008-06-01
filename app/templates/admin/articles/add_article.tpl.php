@@ -1,3 +1,10 @@
+<script language="JavaScript">
+	function addPage() {
+		el = getElementById('pages');
+		el.innerHTML = el.innerHTML + '<textarea name="page_text[]"></textarea>';
+	}
+</script>
+
 <table class="dialog">
 	<tbody>
 		<tr>
@@ -22,7 +29,31 @@
 			<td class="c_left">&nbsp;</td>
 			<td class="c_cen">
 				<!-- САМ ДИАЛОГ -->
-				
+				<table>
+					<tr>
+						<td>Заголовок статьи</td>
+						<td><input type="text" id="article_title"></td>
+					</tr>
+					<tr>
+						<td>Раздел</td>
+						<td>----</td>
+					</tr>
+					<tr>
+						<td>Разрешить комментарии</td>
+						<td><input type="checkbox" id="allow_comment"></td>
+					</tr>
+					<tr>
+						<td>Принимать участие в голосовании</td>
+						<td><input type="checkbox" name="allow_rate" id="allow_rate"></td>
+					</tr>
+					<tr>
+						<td>Страницы</td>
+						<td><input type="button" onclick="javascript: addPage()"></td>
+					</tr>
+					<tr>
+						<td colspan="2"><div id="pages"></div></td>
+					</tr>
+				</table>
 				<!-- -->
 
 			</td>
