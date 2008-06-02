@@ -3,7 +3,7 @@
 
 
 <script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>tab.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>bookmarks_category_panel.tpl.js"></script>
+<script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>category_panel.js"></script>
 
 <div id="tabs">
 <?php $request = Project::getRequest(); ?>
