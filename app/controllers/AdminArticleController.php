@@ -151,7 +151,7 @@ class AdminArticleController extends AdminController {
 			$article_tree_model = new ArticleTreeModel();
 			$data['cat_list'] = $article_tree_model->loadByParentId(0);
 			$this->_view->AddArticle($data);
-			$this->_view->parse();
+			$this->_view->ajax();
 		} else {
 			$parent_id = (int)$request->category;
 			if($request->cat_title != null) {

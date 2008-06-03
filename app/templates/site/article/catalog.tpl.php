@@ -7,7 +7,7 @@
 					<p><a href="<?=$this->createUrl('Article', 'List', array($item['id'])) ?>"><?=$item['name']?></a></p>
 				<?php }*/ ?>
 				
-				<!-- панель сделаю всё нормально 26го -->
+		
 <style type="text/css">
 .close_folder {
   padding-left: 28px;

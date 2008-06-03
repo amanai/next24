@@ -2,7 +2,7 @@
 <div class="list" id="list_block">
 	<div style="float: left;"><h3>Статьи</h3></div>
 	<div class="options">
-		<div class="button bnormal" style="float: left;"><a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'ManagedSection');?>)'>Добавить</a></div>
+		<div class="button bnormal" style="float: left;"><a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'AddArticle');?>)'>Добавить</a></div>
 	</div>
 <table class="list_table">
 	<tr class="head">

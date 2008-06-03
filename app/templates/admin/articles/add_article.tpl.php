@@ -1,11 +1,17 @@
 <script language="JavaScript">
 	function addPage() {
-		el = getElementById('pages');
-		el.innerHTML = el.innerHTML + '<textarea name="page_text[]"></textarea>';
+		el = document.getElementById('pages');
+		el.innerHTML = el.innerHTML + '<tr><td>Загаловок страницы</td><td><input type="text" id="title_page[]" /></td></tr><tr><td>Текст страницы</td><td><?php
+				$oFCKeditor = new FCKeditor('post_full_text') ;
+				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
+				$oFCKeditor -> Value = $this -> full_text;
+				$oFCKeditor -> Width = 600;
+				$oFCKeditor -> Create() ;
+			?></td></tr>';
 	}
 </script>
 
-<table class="dialog">
+<table class="dialog" width="100%">
 	<tbody>
 		<tr>
 			<td class="h_left"><img src="<?php echo $this -> image_url;?>1x1.gif" alt=""></td>
@@ -29,10 +35,10 @@
 			<td class="c_left">&nbsp;</td>
 			<td class="c_cen">
 				<!-- САМ ДИАЛОГ -->
-				<table>
+				<table width="100%" id="pages">
 					<tr>
-						<td>Заголовок статьи</td>
-						<td><input type="text" id="article_title"></td>
+						<td width="20%">Заголовок статьи</td>
+						<td width="80%"><input type="text" id="article_title"></td>
 					</tr>
 					<tr>
 						<td>Раздел</td>
@@ -48,10 +54,22 @@
 					</tr>
 					<tr>
 						<td>Страницы</td>
-						<td><input type="button" onclick="javascript: addPage()"></td>
+						<td><input type="button" onclick="addPage();" value="Добавить страницу"></td>
 					</tr>
 					<tr>
-						<td colspan="2"><div id="pages"></div></td>
+						<td>Загаловок страницы</td>
+						<td><input type="text" id="title_page[]" /></td>
+					</tr>
+					<tr>
+						<td>Текст страницы</td>
+						<td><?php
+								$oFCKeditor = new FCKeditor('post_full_text') ;
+								$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
+								$oFCKeditor -> Value = $this -> full_text;
+								$oFCKeditor -> Width = 600;
+								$oFCKeditor -> Create() ;
+							?>
+						</td>
 					</tr>
 				</table>
 				<!-- -->

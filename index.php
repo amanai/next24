@@ -16,6 +16,6 @@
 	
 	// Time seek
 	$t2 = microtime(true);
-	echo '<!-- Generation time '.round($t2-$t1, 4).' sec, queries '.$GLOBALS['query_counter'].' -->';
+	//echo '<!-- Generation time '.round($t2-$t1, 4).' sec, queries '.$GLOBALS['query_counter'].' -->';
 	// ----------
 ?>
