@@ -149,7 +149,8 @@ class AdminArticleController extends AdminController {
 			$data['action'] = "AddArticle";
 			$this->BaseAdminData();
 			$article_tree_model = new ArticleTreeModel();
-			$data['cat_list'] = $article_tree_model->loadByParentId(0);
+			$n = Node::by_key('', 'articles_tree');
+			$data['cat_list'] = $n->getBranch();
 			$this->_view->AddArticle($data);
 			$this->_view->ajax();
 		} else {

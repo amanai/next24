@@ -5,7 +5,7 @@
 				$oFCKeditor = new FCKeditor('post_full_text') ;
 				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
 				$oFCKeditor -> Value = $this -> full_text;
-				$oFCKeditor -> Width = 600;
+				$oFCKeditor -> Width = 700;
 				$oFCKeditor -> Create() ;
 			?></td></tr>';
 	}
@@ -42,7 +42,16 @@
 					</tr>
 					<tr>
 						<td>Раздел</td>
-						<td>----</td>
+						<td>
+							<select>
+								<option> -- select -- </option>
+								<? foreach ($this->cat_list as $n): ?>
+									<option>
+										<?=str_repeat("&nbsp;&nbsp;&nbsp;",  $n['level'] -1)?><?=$n['name']?>
+									</option>
+								<? endforeach;?>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td>Разрешить комментарии</td>
@@ -63,10 +72,10 @@
 					<tr>
 						<td>Текст страницы</td>
 						<td><?php
-								$oFCKeditor = new FCKeditor('post_full_text') ;
+								$oFCKeditor = new FCKeditor('article_content[]') ;
 								$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
 								$oFCKeditor -> Value = $this -> full_text;
-								$oFCKeditor -> Width = 600;
+								$oFCKeditor -> Width = 700;
 								$oFCKeditor -> Create() ;
 							?>
 						</td>
