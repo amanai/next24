@@ -1,5 +1,5 @@
+<!-- TEMPLATE: Форма просмотра Соц.позиций, добавления комментариев, оценки -->
 <?php include($this -> _include('../header.tpl.php')); ?>
-<!-- Форма просмотра закладки BookmarksViewAction -->
 
 <script language="JavaScript" type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
 
@@ -28,10 +28,10 @@
      <div class="block_ee3">
       <div class="block_ee4">
        <div style="margin: 0px -10px;">
-        <table class="questions">
-         <tr>
+        <table class="questions"  style="text-align: center;">
+         <tr align="center">
           <td style="width: 200; text-align: left;"><b>Название</b></td>
-          <td style="text-align: center;"><b>Рейтинг</b></td>
+          <td><b>Рейтинг</b></td>
           <td style="text-align: center;"><b>Автор</b></td>
           <td style="text-align: center;"><b>Категория</b></td>
           <td style="text-align: center;"><b>Дата создания</b></td>
@@ -48,17 +48,72 @@
           </td>
           <td style="text-align: center;"><a href="<?=$request->createUrl('Index','Index', null, $this->social_row[0]['login']); ;?>"><?=$this->social_row[0]['login']; ?></a></td>
           <td style="text-align: center" width="70"><?=$this->social_row[0]['social_category']; ?></td>
-          <td><?=date_format(new DateTime($this->social_row[0]['creation_date']),'d.m.y H:i'); ?></td>
+          <td style="text-align: center;"><?=date_format(new DateTime($this->social_row[0]['creation_date']),'d.m.y H:i'); ?></td>
          </tr>
          <? } ?>
         </table>  
        </div>     
-       <p style="text-indent: 1em;"><?=$this->bookmark_row['description'];?></p>
       </div>
      </div>
     </div>
    </div>
 <!-- /Вывод строки закладки -->
+
+<!-- Панель оценки соц.позиции -->
+   <div class="block_ee1">
+    <div class="block_ee2">
+     <div class="block_ee3">
+      <div class="block_ee4">
+       <div style="margin: 0px -10px;">  
+        <table class="questions">
+         <tr>
+          <td style="width: 200; text-align: left;" colspan="4"><b>Оценка позиции</b></td>
+         </tr>
+         <? $a=1; 
+          $a=1; 
+          $a=1; ?>
+         <tr id="cmod_tab2">
+         <?php $v_form_action = $this->createUrl('Social', 'SocialVoteAdd', array($this->social_row[0]['id'])); ?>
+         <form action="<?=$v_form_action;?>" method="post">
+         <? if ($this->count_comment == 0) { ?>
+           <!-- Комментариев ещё нет - оценивать пользователь не может -->
+           <td style="text-align: left;" colspan="4">Для того, чтобы иметь возможность оценить позицию вам необходимо оставить хотя бы один комментарий к ней.</td>
+         <? } else { ?>
+         <? $v_i = 1; ?>
+           <? if ($this->count_votes < 1) { ?>
+           <? foreach($this->social_row as $key => $value) {?>
+             <td style="text-align: left; width: 200px;">
+               <?=$value['criteria_name'].' : ';?>
+               <select name="inp_select_<?=$v_i;?>" style="width: 35px;">
+                 <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+                 <option value="5">5</option>
+                 <option value="6">6</option>
+                 <option value="7">7</option>
+                 <option value="8">8</option>
+                 <option value="9">9</option>
+                 <option value="10">10</option>
+               </select>
+               <input type="hidden" name="inp_criteria_id_<?=$v_i;?>" value="<?=$value['criteria_id'];?>">
+             </td>
+             <? $v_i++; ?>
+           <? } ?>
+           <td style="text-align: left;"><input type="submit" name="inp_submit_vote" value="Оценить"></td>
+           <? } else { ?>
+             <td style="text-align: left;" colspan="4">Вы уже проголосовали.</td>
+           <? } ?>
+         <? } ?>
+         </form>
+         </tr>
+        </table>  
+       </div>     
+      </div>
+     </div>
+    </div>
+   </div>
+<!-- /Панель оценки соц.позиции -->
 			
 				<?=$this->comment_list?>
 			

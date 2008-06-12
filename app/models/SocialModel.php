@@ -53,7 +53,7 @@ class SocialModel extends BaseModel {
         spcv.`social_pos_id`, 
         sum(spcv.`votes_sum`) as votes_sum, 
         sum(spcv.`votes_count`) as votes_count,
-        sum(spcv.`votes_sum`)/sum(spcv.`votes_count`) as avg_rating
+        sum(spcv.`votes_sum`/spcv.`votes_count`)/count(*) as avg_rating
       FROM social_pos_criteria_votes spcv
       GROUP BY spcv.`social_pos_id`
       ) spc
@@ -107,7 +107,7 @@ class SocialModel extends BaseModel {
         spcv.`social_pos_id`, 
         sum(spcv.`votes_sum`) as votes_sum, 
         sum(spcv.`votes_count`) as votes_count,
-        sum(spcv.`votes_sum`)/sum(spcv.`votes_count`) as avg_rating
+        sum(spcv.`votes_sum`/spcv.`votes_count`)/count(*) as avg_rating
       FROM social_pos_criteria_votes spcv
       GROUP BY spcv.`social_pos_id`
       ) spc
@@ -141,7 +141,7 @@ class SocialModel extends BaseModel {
   *  Выборка 1 строки конкретной соц.позиции
   * Используется для просмотра закладки SocialViewAction
   */
-  public function loadSocialRow($p_id = 0) {
+  public function loadSocialRows($p_id = 0) {
     $v_id = (int)$p_id;
     $sql = "
     SELECT
@@ -151,9 +151,9 @@ class SocialModel extends BaseModel {
         sp.`name`,
         IF (CHAR_LENGTH(sp.`name`)<=".self::C_MAX_LENGTH_NAME.", sp.`name`, CONCAT( LEFT(sp.`name`, ".self::C_MAX_LENGTH_NAME."), '...')) as name_cut,
         sp.`creation_date`,
-        #sp.`views`,
         users.`login`,
         IF (spt_pr.`name` is null, spt_ch.`name`, CONCAT(spt_pr.`name`, ' -> ',spt_ch.`name`)) as social_category,
+        sc.`id` as criteria_id,
         sc.`name` as criteria_name,
         spcv.`votes_sum`,
         spcv.`votes_count`,
@@ -166,20 +166,22 @@ class SocialModel extends BaseModel {
       ON sp.`social_tree_id` = spt_ch.`id`
     LEFT JOIN social_tree spt_pr
       ON spt_ch.`parent_id` = spt_pr.`id`
-    LEFT JOIN `social_pos_criteria_votes` spcv
-      ON sp.`id` = spcv.`social_pos_id`
+    LEFT JOIN `social_tree_criteria` stc
+      ON sp.`social_tree_id` = stc.`social_tree_id`
     LEFT JOIN `social_criteria` sc
-      ON spcv.`social_criteria_id` = sc.`id`
+      ON stc.`social_criteria_id` = sc.`id`
+    LEFT JOIN `social_pos_criteria_votes` spcv
+      ON spcv.`social_criteria_id` = sc.`id` and spcv.`social_pos_id` = sp.`id`
     LEFT JOIN (
       SELECT 
-        spcv.`social_pos_id`, 
-        sum(spcv.`votes_sum`) as votes_sum, 
-        sum(spcv.`votes_count`) as votes_count,
-        sum(spcv.`votes_sum`)/sum(spcv.`votes_count`) as avg_rating
-      FROM social_pos_criteria_votes spcv
-      GROUP BY spcv.`social_pos_id`
+        spcv2.`social_pos_id`, 
+        sum(spcv2.`votes_sum`) as votes_sum, 
+        sum(spcv2.`votes_count`) as votes_count,
+        sum(spcv2.`votes_sum`/spcv2.`votes_count`)/count(*) as avg_rating
+      FROM social_pos_criteria_votes spcv2
+      GROUP BY spcv2.`social_pos_id`
       ) spc
-      ON sp.`id` = spc.`social_pos_id`
+      ON spc.`social_pos_id` = sp.`id`
     WHERE sp.`id` = ?d
     ";
     $result = Project::getDatabase() -> select($sql, $v_id);

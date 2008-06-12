@@ -78,6 +78,7 @@ class SocialController extends SiteController {
   // -- Action "Просмотр соц.позиции": параметры соц.позиции, комментарии, добавление комментария
   public function SocialViewAction() {
     $v_request = Project::getRequest();
+    $v_current_userID = (int)Project::getUser() -> getDbUser() -> id;
     $data = array();
     $this->_BaseSiteData($data);
     $data['action'] = 'SocialView';
@@ -85,29 +86,33 @@ class SocialController extends SiteController {
     $v_id = (int)$v_request->getKeyByNumber(0);
     if ($v_id > 0) {
       $v_sp_model = new SocialModel();
-      $v_sp_model->load($v_id);
-      $v_sp_model->views++;
-      $v_sp_model->save();
-      $data['social_row'] = $v_sp_model->loadSocialRow($v_id);
+      $data['social_row'] = $v_sp_model->loadSocialRows($v_id);
       $v_tab_name = $data['social_row'][0]['name'];
       $v_encoding = mb_detect_encoding($v_tab_name);
       if (mb_strlen($v_tab_name, $v_encoding) > 50 ) $v_tab_name = mb_substr($v_tab_name, 0, 50, $v_encoding).'...';
       $data['tab_social_view'] = $v_tab_name;
       // ---
-      /*
+      
       $controller = new BaseCommentController();
       $data['comment_list'] = $controller -> CommentList(
-                                'BookmarksCommentModel', 
+                                'SocialCommentModel', 
                                 $v_id,  
                                 $v_request -> getKeyByNumber(1),   //TODO: page
                                 20,                //TODO: page
-                                'Bookmarks', 'BookmarksView', array($v_id), 
-                                'Bookmarks', 'BookmarksCommentDelete'
+                                'Social', 'SocialView', array($v_id), 
+                                'Social', 'SocialCommentDelete'
                                 );
-      $data['add_comment_url'] = $v_request -> createUrl('Social', 'BookmarksCommentAdd');
+      $data['add_comment_url'] = $v_request -> createUrl('Social', 'SocialCommentAdd');
+      
       $data['add_comment_element_id'] = $v_id;
       $data['add_comment_id'] = 0;
-      */
+      // -- Проверка наличия внесение комментариев текущим пользователем по данной соц.позиции
+      $v_sp_comment_model = new SocialCommentModel();
+      $v_sp_votes_model   = new SocialVotesModel();
+      $v_count_comment = $v_sp_comment_model->GetCountRecComment($v_current_userID, $v_id);
+      $v_count_votes   = $v_sp_votes_model->GetCountRecVotes($v_current_userID, $v_id);
+      $data['count_comment'] = $v_count_comment;
+      $data['count_votes'] = $v_count_votes;
       // ---
       $this->_view->Social_View($data);
       $this->_view->parse();
@@ -255,37 +260,84 @@ class SocialController extends SiteController {
     }
   }
   
-  // -- Action: Добавить комментарий к закладке
-  public function BookmarksCommentAddAction() {
+  /**
+  * Action: Добавить комментарий к Соц.позиции
+  */
+  public function SocialCommentAddAction() {
     $v_request = Project::getRequest();
-    $v_bookmark_id = (int)$v_request->element_id;
-    if($v_bookmark_id > 0) {
-      $v_comment_model = new BookmarksCommentModel();
-      $v_comment_model->addComment(Project::getUser()->getDbUser()->id, 0, 0, $v_bookmark_id, $v_request->comment, 0, 0);
+    $v_sp_id = (int)$v_request->element_id;
+    if($v_sp_id > 0) {
+      $v_comment_model = new SocialCommentModel();
+      $v_comment_model->addComment(Project::getUser()->getDbUser()->id, 0, 0, $v_sp_id, $v_request->comment, 0, 0);
     } //TODO:...
-    Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksView', array($v_bookmark_id)));
+    Project::getResponse()->redirect($v_request->createUrl('Social', 'SocialView', array($v_sp_id)));
   }
   
-  // -- Action: Удалить комментарий к закладке
-  public function BookmarksCommentDeleteAction() {
+  /**
+  *  Action: Удалить комментарий к Соц.позиции
+  */
+  public function SocialCommentDeleteAction() {
     $v_request = Project::getRequest();
     $v_current_userID = (int)Project::getUser()->getDbUser()->id;
-    $v_bookmark_id = $v_request->getKeyByNumber(0);
+    $v_sp_id = $v_request->getKeyByNumber(0);
     $v_comment_id  = $v_request->getKeyByNumber(1);
-    $v_comment_model = new BookmarksCommentModel($v_comment_id);
-    $v_bookmarks_model = new BookmarksModel();
-    $v_bookmarks_model->load($v_bookmark_id);
+    $v_comment_model = new SocialCommentModel($v_comment_id);
+    $v_sp_model = new SocialModel();
+    $v_sp_model->load($v_sp_id);
     if ( ($v_comment_model->id > 0) and 
-         ($v_bookmarks_model->id > 0) and 
-         ($v_comment_model->bookmark_id == $v_bookmarks_model->id))
+         ($v_sp_model->id > 0) and 
+         ($v_comment_model->social_pos_id == $v_sp_model->id))
     {
       if ( ($v_comment_model->user_id == $v_current_userID) or 
-           ($v_bookmarks_model->user_id == $v_current_userID) ) 
+           ($v_sp_model->user_id == $v_current_userID) ) 
       {
         $v_comment_model->delete($v_comment_model->user_id, $v_comment_id);
       }
     }
-    Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksView', array($v_bookmark_id)));
+    Project::getResponse()->redirect($v_request->createUrl('Social', 'SocialView', array($v_sp_id)));
+  }
+  
+  /**
+  * Action: Оценка соц.позиции
+  */
+  public function SocialVoteAddAction(){
+    $v_request = Project::getRequest();
+    $v_sp_id   = $v_request->getKeyByNumber(0);
+    if ((int)$v_sp_id > 0) {
+      $v_sc_model = new  SocialPosCriteriaVoteModel();
+      // = 1
+      $v_id = $v_sc_model->GetIDBy($v_sp_id, $v_request->inp_criteria_id_1);
+      $v_sc_model->load($v_id);
+      $v_sc_model->social_pos_id      = $v_sp_id;
+      $v_sc_model->social_criteria_id = $v_request->inp_criteria_id_1;
+      $v_sc_model->votes_sum          = (int)$v_sc_model->votes_sum   + (int)$v_request->inp_select_1;
+      $v_sc_model->votes_count        = (int)$v_sc_model->votes_count + 1;
+      $v_sc_model->save();
+      // = 2
+      $v_id = $v_sc_model->GetIDBy($v_sp_id, $v_request->inp_criteria_id_2);
+      $v_sc_model->load($v_id);
+      $v_sc_model->social_pos_id      = $v_sp_id;
+      $v_sc_model->social_criteria_id = $v_request->inp_criteria_id_2;
+      $v_sc_model->votes_sum          = (int)$v_sc_model->votes_sum   + (int)$v_request->inp_select_2;
+      $v_sc_model->votes_count        = (int)$v_sc_model->votes_count + 1;
+      $v_sc_model->save();
+      // = 3
+      $v_id = $v_sc_model->GetIDBy($v_sp_id, $v_request->inp_criteria_id_3);
+      $v_sc_model->load($v_id);
+      $v_sc_model->social_pos_id      = $v_sp_id;
+      $v_sc_model->social_criteria_id = $v_request->inp_criteria_id_3;
+      $v_sc_model->votes_sum          = (int)$v_sc_model->votes_sum   + (int)$v_request->inp_select_3;
+      $v_sc_model->votes_count        = (int)$v_sc_model->votes_count + 1;
+      $v_sc_model->save();
+      // = Запись в таблицу локировки голосования
+      $v_sp_votes_model = new SocialVotesModel();
+      $v_sp_votes_model->social_pos_id = $v_sp_id;
+      $v_sp_votes_model->user_id       = (int)Project::getUser()->getDbUser()->id;
+      $v_sp_votes_model->ip            = $_SERVER['REMOTE_ADDR'];
+      $v_sp_votes_model->save();
+      
+    }
+    Project::getResponse()->redirect($v_request->createUrl('Social', 'SocialView', array($v_sp_id)));
   }
   
   /**
