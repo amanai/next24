@@ -237,13 +237,13 @@
 				$info['support_email'] = $this -> getParam('support_mail');
 				$view -> Registration($info);
 				
-				$mail->From =  $info['support_email'];
-				$mail->FromName = "Next24.ru";
-				$mail->Subject = "Регистрация на сайте Next24.ru";
-				$mail->Body = $view -> parse();
-				$mail->IsHTML(false);
-				$mail->AddAddress($user_model -> email, $user_model -> last_name . " " . $user_model -> first_name . " " . $user_model -> middle_name);
-				$bResult = $mail->Send();
+				$mailer->From =  $info['support_email'];
+				$mailer->FromName = "Next24.ru";
+				$mailer->Subject = "Регистрация на сайте Next24.ru";
+				$mailer->Body = $view -> parse();
+				$mailer->IsHTML(false);
+				$mailer->AddAddress($user_model -> email, $user_model -> last_name . " " . $user_model -> first_name . " " . $user_model -> middle_name);
+				$bResult = $mailer->Send();
 				
 			}
 		}
