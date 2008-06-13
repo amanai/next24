@@ -56,6 +56,7 @@
 		function RegistrationFormAction(){			
 			if (!$this -> _view ->is_logged) {
 				
+				$mailer = new PHPMailer();
 				$this-> _view -> assign('tab_list', TabController::getRegistrationTabs(true)); // Show tabs
 				$this-> _view -> assign('check_login', AjaxRequest::getJsonParam("User", "CheckLogin"));
 				$this-> _view -> assign('check_email', AjaxRequest::getJsonParam("User", "CheckEmail"));
@@ -235,11 +236,15 @@
 				$info['registration_url'] = $request -> createUrl('Index', 'Index');
 				$info['support_email'] = $this -> getParam('support_mail');
 				$view -> Registration($info);
-				$bResult = $mailer -> sendMail($user_model -> email, 
-										      $user_model -> last_name . " " . $user_model -> first_name . " " . $user_model -> middle_name, 
-											  "Регистрация на сайте Next24.ru", 
-											  $view -> parse() 
-											 );
+				
+				$mail->From =  $info['support_email'];
+				$mail->FromName = "Next24.ru";
+				$mail->Subject = "Регистрация на сайте Next24.ru";
+				$mail->Body = $view -> parse();
+				$mail->IsHTML(false);
+				$mail->AddAddress($user_model -> email, $user_model -> last_name . " " . $user_model -> first_name . " " . $user_model -> middle_name);
+				$bResult = $mail->Send();
+				
 			}
 		}
 		
