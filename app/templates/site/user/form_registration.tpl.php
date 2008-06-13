@@ -9,7 +9,7 @@
 	<tr>
 		<td class="label<?=($this->email_error?' red':'')?>">Email</td>
 		<td>
-			<input type="text" name="email" onBlur='sendParams(<?=$this->check_email; ?>, {"email":$(this).val()}, true);' value="<?php echo $this -> helper -> email;?>" class="field"/><span class="necessary">*</span>
+			<input type="text" name="email" onBlur='if ($(this).val().length>0) { sendParams(<?=$this->check_email; ?>, {"email":$(this).val()}, true); }' value="<?php echo $this -> helper -> email;?>" class="field"/><span class="necessary">*</span>
 			<div id="email_check_result"></div>
 			<div id="micro2" style="width: 350px;">Ваш электронный адрес. Пожалуйста, указывайте существующий адрес, так как на него вам будет отправлена техническая информация о доступе на сайт.</div>
 		</td>
@@ -17,7 +17,7 @@
 	<tr>
 		<td class="label<?=($this->login_error?' red':'')?>">Логин</td>
 		<td>
-			<input type="text" name="login" onBlur='sendParams(<?=$this->check_login; ?>, {"login":$(this).val()}, true);' id="login" value="<?php echo $this -> helper -> login;?>" class="field"/><span class="necessary">*</span>
+			<input type="text" name="login" onBlur='if ($(this).val().length>0) { sendParams(<?=$this->check_login; ?>, {"login":$(this).val()}, true); }' id="login" value="<?php echo $this -> helper -> login;?>" class="field"/><span class="necessary">*</span>
 			<div id="login_check_result"></div>
 			<div id="micro2" style="width: 350px;">Логин — это ваше имя внутри сайта, старайтесь выбирать осмысленное название. Вы можете использовать латинские буквы и цифры, а также подчеркивание и символ дефиса. Имя не должно начинаться с дефиса или подчеркивания и должно быть не короче четырех символов.</div>
 		</td>
