@@ -20,12 +20,8 @@ class SocialController extends SiteController {
 	protected function _BaseSiteData(&$data) {
 		$data['tab_main_list']         = "Каталог позиций";
 		$data['tab_last_add_pos_list'] = "Последние позиции";
-		$data['tab_user_list']         = "Мои позиции";
-    /*
-		$data['tab_add_bookmark']  = "Добавить закладку";
-    $data['tab_category_edit'] = "Категория";
-    $data['tab_bookmarks_import'] = "Импорт";
-    */
+    $data['tab_user_list']         = "Мои позиции";
+    $data['tab_soc_pos_add']       = "Добавление позиции";
 		parent::BaseSiteData();
 	}
   
@@ -154,109 +150,56 @@ class SocialController extends SiteController {
   }
   
   /**
-  *  Action: Редактирование/создание закладки
+  *  Action: Открытие формы создания соц.позиции
   */
-  public function BookmarksManageAction() {
+  public function SocialPosAddAction() {
     $v_request = Project::getRequest();
     $data = array();
-    $data['action'] = 'BookmarksManage';
+    $data['action'] = 'SocialPosAdd';
     $v_current_userID = Project::getUser()->getDbUser()->id; // ID залогиненного пользователя
-    $v_bm_id = (int)$v_request->getKeyByNumber(0);
-    $data['tab_manage_bookmark_name'] = (($v_bm_id == 0) ? "Добавление закладки" : "Редактирование закладки");
-
-    $v_bm_model = new BookmarksModel();
-    
-    if ($v_request->submit == null) { 
-      
-      // --- Открытие вкладки на Добавление/Редактирование закладки
-      $v_bm_category_model = new BookmarksCategoryModel();
-      if($v_bm_id > 0) { // Закладка уже есть, читаем её данные
-        $data['bookmark_row'] = $v_bm_model->load($v_bm_id);
-        $v_tags_model = new BookmarksTagModel();
-        $tags = $v_tags_model->loadTagsWhere(null, null, $v_bm_id, false);
-        foreach ($tags as $tag) {
-          $data['bookmarks_tag_list'].= $tag['tag_name'].', ';
-        }
-        $data['bookmarks_tag_list'] = rtrim($data['bookmarks_tag_list'], ', ');
-      }
-      $data['bookmarks_category_list'] = $v_bm_category_model -> loadCategoryList();
-      $this->_BaseSiteData($data);
-      $this->_view->Bookmarks_Manage($data);
+    $v_sp_model = new SocialModel();
+    $data['arr_social_tree_criteria'] = $v_sp_model->loadTreeCriteria();
+    $data['arr_categories'] = $v_sp_model->loadCategories();
+    $this->_BaseSiteData($data);
+    if ($v_request->btn_submit == null) {
+      // -- Открытие формы для создания
+      $this->_view->Social_PosAdd($data);
       $this->_view->parse();
-      return;
-      // --- /Открытие вкладки на Добавление/Редактирование закладки
-      
-    } else { 
-      
-      // Нажата SUBMIT на форме. Сохранение закладки (после Добавления/Редактирования)
-      if($v_bm_id > 0) {
-        $data['bookmark_row'] = $v_bm_model->load($v_bm_id);
-        if($v_bm_model->user_id != $v_current_userID) { // Чужая закладка
-          Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
-        }
-      }  
-      
-      if(   ($v_request->inp_bookmark_title       == null) 
-				 or ($v_request->inp_bookmark_url         == null)   
-         or ($v_request->inp_bookmark_description == null)
-        ) {    //TODO validator
-      // Данные, введеные в форме неполные - переоткрыть форму с сообщ.об ошибке и введенными данными
-        $data['error'][] = 'Поля " * " должны быть заполнены';
-        $v_bm_category_model = new BookmarksCategoryModel();
-        $data['bookmarks_category_list'] = $v_bm_category_model -> loadCategoryList();
-        $data['bookmarks_tag_list'] = $v_request->inp_tags;
-        $data['bookmark_row']['title'] = $v_request->inp_bookmark_title;
-        $data['bookmark_row']['url'] = $v_request->inp_bookmark_url;
-        $data['bookmark_row']['bookmarks_tree_id'] = (int)$v_request->select_cat_id;
-        $data['bookmark_row']['description'] = $v_request->inp_bookmark_description;
-        $data['bookmark_row']['is_public'] = (($v_request->inp_check_public == 'on') ? 1 : 0);
-        $data['bookmark_row']['user_id'] = $v_current_userID;
-        //$data['question']['creation_date'] = date("Y-m-d H:i:s");
-        $this->_BaseSiteData($data);
-        $this->_view->Bookmarks_Manage($data);
-        $this->_view->parse();
-        return;
-      }
-      // Данные введенные в форме валидны - UPDATE/INSERT данных в таблицу
-      // -- Формируем поля в _data:array() для UPDATE `bookmarks` SET ...
-      $v_bm_model->user_id            = $v_current_userID;
-      $v_bm_model->bookmarks_tree_id  = (int)$v_request->select_cat_id;
-      $v_bm_model->url                = $v_request->inp_bookmark_url;
-      $v_bm_model->title              = $v_request->inp_bookmark_title; 
-      $v_bm_model->description        = $v_request->inp_bookmark_description;
-      $v_bm_model->is_public          = (($v_request->inp_check_public == 'on') ? 1 : 0);
-      if ($v_bm_id == 0) $v_bm_model->creation_date = date("Y-m-d H:i:s");
-      // !!! Для возможности выполнить BaseModel->save()(UPDATE) необходимо, чтобы в моделе была 
-      // выборка строго соответствующая полям базовой таблицы. Метод BaseModel->load() - идеален
-      $v_bm_old_id = (int)$v_bm_id;
-      $v_bm_id = $v_bm_model->save();
-      
-      // Вставка тегов
-      $v_tags_model = new BookmarksTagModel();
-      if ($v_bm_old_id > 0) { 
-        // UPDATE закладки, запись уже существовала - обнулить теги
-        $v_tags_model->deleteTagsLinkByBookmarkID($v_bm_old_id);
-      }
-      $arr_tags = array();
-      $arr_tags = explode(",", trim($v_request->inp_tags));
-      $arr_tags = array_slice(array_unique($arr_tags), 0, self::C_MAX_TAGS_COUNT);
-      foreach ($arr_tags as $value) {
-        $v_tagName = trim($value);
-        $v_tagName = mb_substr($v_tagName, 0, self::C_MAX_TAG_LENGTH, mb_detect_encoding($v_tagName));
-        if (mb_strlen($v_tagName)!=0) {
-          if (count($v_tags_model->loadTagByName($v_tagName)) == 0) {
-            // Такого тега в таблице тегов ещё нет - вставка тега
-            $v_tags_model->name = $v_tagName;
-            $v_tag_id = $v_tags_model->save();
+    } else {
+      // -- Анализ данных и сохранение
+      if (($v_request->inp_sp_name == "") or
+          ($v_request->inp_sp_comment == "")) 
+          {
+            // -- Данные неполные
+            $data['inp_sp_name']    = $v_request->inp_sp_name;
+            $data['inp_sp_comment'] = $v_request->inp_sp_comment;
+            $this->_view->Social_PosAdd($data);
+            $this ->_view->addFlashMessage(FM::ERROR, 'Поля " * " должны быть заполнены');
+            $this->_view->parse();
           } else {
-            // Такой тег есть в таблице тегов
-            $v_tag_id = $v_tags_model->id;
+            // -- Сохранение данных  
+            $v_model = new SocialModel();
+            $v_model->social_tree_id = $v_request->inp_sp_category;
+            $v_model->user_id        = $v_current_userID;
+            $v_model->name           = $v_request->inp_sp_name;
+            $v_model->creation_date  = date("Y-m-d H:i:s");
+            $v_new_id =$v_model->save();
+            // -- Сохранение коммента
+            $v_comment_model = new SocialCommentModel();
+            $v_comment_model->addComment(Project::getUser()->getDbUser()->id, 0, 0, $v_new_id, $v_request->inp_sp_comment, 0, 0);
+            // -- Сохранения связи соц.позиции и критериев
+            $this->_SetVote($v_new_id, $v_request->inp_num_criteria_1, $v_request->inp_select_1);
+            $this->_SetVote($v_new_id, $v_request->inp_num_criteria_2, $v_request->inp_select_2);
+            $this->_SetVote($v_new_id, $v_request->inp_num_criteria_3, $v_request->inp_select_3);
+            // = Запись в таблицу локировки голосования
+            $v_sp_votes_model = new SocialVotesModel();
+            $v_sp_votes_model->social_pos_id = $v_new_id;
+            $v_sp_votes_model->user_id       = (int)Project::getUser()->getDbUser()->id;
+            $v_sp_votes_model->ip            = $_SERVER['REMOTE_ADDR'];
+            $v_sp_votes_model->save();
+
+            Project::getResponse()->redirect($v_request->createUrl('Social', 'SocialUserList'));
           }
-          $v_tags_model->clear();
-          $v_tags_model->insertTagLink($v_bm_id, $v_tag_id);
-        }
-      }
-      Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksUser'));
     }
   }
   
@@ -304,38 +247,15 @@ class SocialController extends SiteController {
     $v_request = Project::getRequest();
     $v_sp_id   = $v_request->getKeyByNumber(0);
     if ((int)$v_sp_id > 0) {
-      $v_sc_model = new  SocialPosCriteriaVoteModel();
-      // = 1
-      $v_id = $v_sc_model->GetIDBy($v_sp_id, $v_request->inp_criteria_id_1);
-      $v_sc_model->load($v_id);
-      $v_sc_model->social_pos_id      = $v_sp_id;
-      $v_sc_model->social_criteria_id = $v_request->inp_criteria_id_1;
-      $v_sc_model->votes_sum          = (int)$v_sc_model->votes_sum   + (int)$v_request->inp_select_1;
-      $v_sc_model->votes_count        = (int)$v_sc_model->votes_count + 1;
-      $v_sc_model->save();
-      // = 2
-      $v_id = $v_sc_model->GetIDBy($v_sp_id, $v_request->inp_criteria_id_2);
-      $v_sc_model->load($v_id);
-      $v_sc_model->social_pos_id      = $v_sp_id;
-      $v_sc_model->social_criteria_id = $v_request->inp_criteria_id_2;
-      $v_sc_model->votes_sum          = (int)$v_sc_model->votes_sum   + (int)$v_request->inp_select_2;
-      $v_sc_model->votes_count        = (int)$v_sc_model->votes_count + 1;
-      $v_sc_model->save();
-      // = 3
-      $v_id = $v_sc_model->GetIDBy($v_sp_id, $v_request->inp_criteria_id_3);
-      $v_sc_model->load($v_id);
-      $v_sc_model->social_pos_id      = $v_sp_id;
-      $v_sc_model->social_criteria_id = $v_request->inp_criteria_id_3;
-      $v_sc_model->votes_sum          = (int)$v_sc_model->votes_sum   + (int)$v_request->inp_select_3;
-      $v_sc_model->votes_count        = (int)$v_sc_model->votes_count + 1;
-      $v_sc_model->save();
+      $this->_SetVote($v_sp_id, $v_request->inp_criteria_id_1, $v_request->inp_select_1);
+      $this->_SetVote($v_sp_id, $v_request->inp_criteria_id_2, $v_request->inp_select_2);
+      $this->_SetVote($v_sp_id, $v_request->inp_criteria_id_3, $v_request->inp_select_3);
       // = Запись в таблицу локировки голосования
       $v_sp_votes_model = new SocialVotesModel();
       $v_sp_votes_model->social_pos_id = $v_sp_id;
       $v_sp_votes_model->user_id       = (int)Project::getUser()->getDbUser()->id;
       $v_sp_votes_model->ip            = $_SERVER['REMOTE_ADDR'];
       $v_sp_votes_model->save();
-      
     }
     Project::getResponse()->redirect($v_request->createUrl('Social', 'SocialView', array($v_sp_id)));
   }
@@ -501,6 +421,25 @@ class SocialController extends SiteController {
       // для "Импортированные" ID Категории = 0
     }
     return -1; // -- Выбираемая соц.позиция с несуществующим ID 
+  }
+  
+  /**
+  * Голосование - сохраняет связь 1 криетрия с соц.позицие - вызывается 3 раза для 1 позиции
+  * $p_sp_id - ID позиции
+  * $p_cr_id - ID критерия
+  * $p_cr_val - Величина критерия в 1..10
+  */
+  private function _SetVote($p_sp_id =0, $p_cr_id = 0, $p_cr_val = 0){
+    if (((int)$p_sp_id >0 ) and ((int)$p_cr_id > 0)){
+      $v_sc_model = new  SocialPosCriteriaVoteModel();
+      $v_id = $v_sc_model->GetIDBy($p_sp_id, $p_cr_id);
+      $v_sc_model->load($v_id);
+      $v_sc_model->social_pos_id      = $p_sp_id;
+      $v_sc_model->social_criteria_id = $p_cr_id;
+      $v_sc_model->votes_sum          = (int)$v_sc_model->votes_sum   + (int)$p_cr_val;
+      $v_sc_model->votes_count        = (int)$v_sc_model->votes_count + 1;
+      $v_sc_model->save();
+    }
   }
     
 }

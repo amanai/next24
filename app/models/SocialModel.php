@@ -190,6 +190,40 @@ class SocialModel extends BaseModel {
     return $result;
   }
   
+  /**
+  * Выборка 'social_tree_criteria'
+  */
+  public function loadTreeCriteria(){
+    $sql = "
+    SELECT 
+      stc.`id`,  
+      stc.`social_tree_id`,
+      st.`name` as social_tree_name,
+      stc.`social_criteria_id`,
+      sc.`name` as social_criteria_name
+      FROM `social_tree_criteria` stc, `social_tree` st, `social_criteria` sc
+     WHERE stc.`social_tree_id` = st.`id`
+       and stc.`social_criteria_id` = sc.`id`
+     ORDER BY stc.`social_tree_id`, stc.`social_criteria_id` ";
+    $result = Project::getDatabase() -> select($sql, $v_id);
+    $this -> bind($result);
+    return $result;
+  }
+  
+  /**
+  * Выборка `social_tree` - ID и Name категорий
+  */
+  public function loadCategories(){
+    $sql = "
+      SELECT *  FROM `social_tree` st
+       WHERE st.`parent_id` >0
+       ORDER BY st.`name` ";
+    $result = Project::getDatabase() -> select($sql);
+    $this -> bind($result);
+    return $result;
+  }
+  
+  
   
 /*
 	public function loadWhere($catId = null, $tagId = null, $userId = null) {

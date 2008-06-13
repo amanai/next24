@@ -18,26 +18,14 @@ class SocialView extends BaseSiteView {
     $this->setTemplate(null, 'social_user_list.tpl.php');
     $this->set($data);
   }
-	public function Social_View($data) {
-		$this->setTemplate(null, 'social_view.tpl.php');
-		$this->set($data);
-	}
-  /*
-  public function Bookmarks_Manage($data) {
-    $this->setTemplate(null, 'bookmarks_manage.tpl.php');
+  public function Social_View($data) {
+    $this->setTemplate(null, 'social_view.tpl.php');
     $this->set($data);
   }
-  
-  public function Bookmarks_CategoryEdit($data) {
-    $this->setTemplate(null, 'bookmarks_category_edit.tpl.php');
+  public function Social_PosAdd($data) {
+    $this->setTemplate(null, 'social_pos_add.tpl.php');
     $this->set($data);
   }
-  
-  public function Bookmarks_Import($data) {
-    $this->setTemplate(null, 'bookmarks_import.tpl.php');
-    $this->set($data);
-  }
-*/  
 }
 
 ?>

@@ -78,7 +78,6 @@
           <td>
             <?php if($item['user_id'] == Project::getUser()->getDbUser()->id) { ?>
               <a href=<?=$this->createUrl('Social','SocialDelete',array($item['id']))?>>[Удалить]</a> 
-              <a href="<?=$this->createUrl('Social','SocialManage',array($item['id']))?>">[Редактировать]</a>
             <?php } ?>
           </td>
          </tr>
