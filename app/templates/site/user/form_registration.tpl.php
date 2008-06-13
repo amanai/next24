@@ -1,6 +1,12 @@
 <form action="<?=$this -> createUrl('User', 'Registration'); ?>" method="post" id="register_form">
 <?=$this -> flash_messages; ?>
-<table class="regdetails" id="user_profile_js" cellpadding="4">
+<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+<div class="block_title">
+		<div class="block_title_left"><h1>Обязательные данные</h1></div>
+		<div class="block_title_right"><img src="<?php echo $this -> image_url;?>/<?=(($this->helper->user_profile_js_state==1||!$this->helper->user_profile_js_state)?'close.png':'open.png')?>" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js'); setState('user_profile_js_state'); return false;" style="cursor: pointer;" /></div>
+</div>
+<input type="hidden" name="user_profile_js_state" id="user_profile_js_state" value="<?=($this->helper->user_profile_js_state?$this->helper->user_profile_js_state:1)?>"/>
+<table class="regdetails" id="user_profile_js" cellpadding="4" <?=(($this->helper->user_profile_js_state==1||!$this->helper->user_profile_js_state)?'':'style="display: none;"')?>>
 	<tr>
 		<td colspan="2">
 			<p>Символом <span class="necessary">*</span> отмечены поля, обязательные для заполнения.</p><br/>
@@ -45,18 +51,18 @@
 			<div id="micro2" style="width: 350px;">Введите текст, который вы видите на картинке.</div>
 		</td>
 	</tr>
-	
-	<tr>
-		<td class="rdiviner" colspan="2">
-			<img width="1" height="1" alt="" src="<?=$this -> image_url;?>spacer.gif"/>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<img width="1" height="1" alt="" src="<?=$this -> image_url;?>spacer.gif"/>
-		</td>
-	</tr>
-	
+</table>
+</div></div></div></div>
+
+
+<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+<div class="block_title">
+		<div class="block_title_left"><h1>Основная информация о себе (+15 баллов рейтинга максимально, +1.5 NextMoney максимально)</h1></div>
+		<div class="block_title_right"><img src="<?php echo $this -> image_url;?>/<?=(($this->helper->user_profile_js1_state==2||!$this->helper->user_profile_js1_state)?'open.png':'close.png')?>" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js1'); setState('user_profile_js1_state'); return false;" style="cursor: pointer;" /></div>
+</div>
+<input type="hidden" name="user_profile_js1_state" id="user_profile_js1_state" value="<?=($this->helper->user_profile_js1_state?$this->helper->user_profile_js1_state:2)?>"/>
+<table class="regdetails" id="user_profile_js1" cellpadding="4" <?=(($this->helper->user_profile_js_state==2||!$this->helper->user_profile_js_state)?'style="display: none;"':'')?>>
+
 	<tr>
 		<td class="label">Фамилия</td>
 		<td>
@@ -195,6 +201,18 @@
 			<input type="text" name="mobile_phone" value="<?php echo $this -> helper -> mobile_phone;?>" class="field"/>
 		</td>
 	</tr>
+</table>
+</div></div></div></div>
+
+
+<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+<div class="block_title">
+		<div class="block_title_left"><h1>Дополнительная информация о себе (+4 балла рейтинга максимально, +1.5 NextMoney максимально)</h1></div>
+		<div class="block_title_right"><img src="<?php echo $this -> image_url;?>/<?=(($this->helper->user_profile_js2_state==2||!$this->helper->user_profile_js2_state)?'open.png':'close.png')?>" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js2'); setState('user_profile_js2_state'); return false;" style="cursor: pointer;" /></div>
+</div>
+<input type="hidden" name="user_profile_js2_state" id="user_profile_js2_state" value="<?=($this->helper->user_profile_js2_state?$this->helper->user_profile_js2_state:2)?>"/>
+<table class="regdetails" id="user_profile_js2" cellpadding="4" <?=(($this->helper->user_profile_js2_state==2||!$this->helper->user_profile_js2_state)?'style="display: none;"':'')?>>
+	
 	<tr>
 		<td class="label">О себе</td>
 		<td>
@@ -236,10 +254,7 @@
 			<div id="micro2" style="width: 350px;">Логин пользователя, порекомендовавшего Вам зарегистрироваться в next24.ru.</div>
 		</td>
 	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td align="left">
-			<input type="submit" name="register" value="Зарегистрируйте меня" />
-		</td>
-	</tr>
 </table>
+</div></div></div></div>
+<input type="submit" name="register" value="Зарегистрируйте меня" />
+</form>

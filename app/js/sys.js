@@ -13,6 +13,14 @@ function ShowOrHide(ob, d1, d2)
 	}
 }
 
+function setState(id) {
+	if ($('#'+id).val()==1) {
+		$('#'+id).val(2);
+	} else {
+		$('#'+id).val(1);
+	}
+}
+
 function DoDiv(ob, id)
 {
 	var item = null;
@@ -36,12 +44,20 @@ function DoDiv(ob, id)
 		if (item.style.display == "none")
 		{
 			ob.src = ob.src.replace(/open/, 'close');
-			item.style.display = "";
+			//item.style.display = "";
+			$(item).animate({
+				  			height: 'toggle', opacity: 'toggle'
+							}, "normal");
+			//$(item).fadeIn("slow");
 		}
 		else
 		{
 			ob.src = ob.src.replace(/close/, 'open');
-			item.style.display = "none";
+			//item.style.display = "none";
+			$(item).animate({
+				  			height: 'toggle', opacity: 'toggle'
+							}, "normal");
+			//$(item).fadeOut("slow");
 		}
 	}
 	else
