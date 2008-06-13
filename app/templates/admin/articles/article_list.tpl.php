@@ -1,8 +1,7 @@
-<?php include($this -> _include('../header.tpl.php')); ?>
-<div class="list" id="list_block">
+
 	<div style="float: left;"><h3>Статьи</h3></div>
 	<div class="options">
-		<div class="button bnormal" style="float: left;"><a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'AddArticle');?>)'>Добавить</a></div>
+		<div class="button bnormal" style="float: left;"><a href="#" onclick='ajax(<?=$this->add_link?>)'>Добавить</a></div>
 	</div>
 <table class="list_table">
 	<tr class="head">
@@ -16,9 +15,9 @@
 			<td><?=$item['title']?></td>
 			<td><?=$item['comments']?></td>
 			<td>Статус</td>
-			<td><a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'ManagedSection', array($n['id']));?>)'>[Редактировать]</a> <a href="<?=$this->createUrl('AdminArticle', 'DeleteSection', array($n['id']));?>">[Удалить]</a> <a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'SetCompetition', array($n['id']));?>)'>[Добавить конкурс]</a> <a href="<?=$this->createUrl('AdminArticle', 'SetActive', array($n['id']));?>">[Активировать]</a></td>
+			<td><a href='#' onclick='ajax(<?=AjaxRequest::getJsonParam($this->edit_controller, $this->edit_action, array($item['id']));?>)'>Редактировать</a></td>
 		</tr>
 	<? endforeach;?>
 </table>
-</div>
-<?php include($this -> _include('../footer.tpl.php')); ?>
+<?=var_dump($this->page)?>
+<?=$this->list_pager_html?>

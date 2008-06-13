@@ -142,63 +142,70 @@ class AdminArticleController extends AdminController {
 		Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));
 	}
 	
-	public function AddArticleAction() {
+	public function EditArticleAction() {
 		$request = Project::getRequest();
-		if(!$request->submit) {
-			$data = array();
-			$data['action'] = "AddArticle";
-			$this->BaseAdminData();
-			$article_tree_model = new ArticleTreeModel();
-			$n = Node::by_key('', 'articles_tree');
-			$data['cat_list'] = $n->getBranch();
-			$this->_view->AddArticle($data);
-			$this->_view->ajax();
-		} else {
-			$parent_id = (int)$request->category;
-			if($request->cat_title != null) {
-				$node = Node::by_id($request->category, 'articles_tree');
-				$key = $node->getNewChildKey();
-				if($key->level <= 5) {
-					$article_tree_model = new ArticleTreeModel();
-					$article_tree_model->user_id = Project::getUser()->getDbUser()->id;
-					$article_tree_model->name = $request->cat_title;
-					$article_tree_model->key = $key;
-					$article_tree_model->level = $key->level;
-					$article_tree_model->active = 0;
-					$parent_id = $article_tree_model->save();
-				}				
-			}
-			$article_model = new ArticleModel();
-			$article_page_model = new ArticlePageModel();
-			$article_model->articles_tree_id = $parent_id;
-			$article_model->user_id = Project::getUser()->getDbUser()->id;
-			$article_model->title = $request->title;
-			$article_model->allowcomments = (bool)$request->allow_comment;
-			$article_model->rate_status = (bool)$request->allow_rate;
-			$article_model->creation_date = date("Y-m-d H:i:s");
-			$id = $article_model->save();
-			for($i = 0; $i < count($request->page_title); $i++) {
-				$article_page_model = new ArticlePageModel();
-				$article_page_model->article_id = $id;
-				$article_page_model->title = $request->page_title[$i];
-				$article_page_model->p_text = $request->page_text[$i];
-				$article_page_model->save();
-			}
-		}
+		$data = array();
+		$this->BaseAdminData();
+		$data['controller'] = null;
+		$data['save_action'] = "SaveArticle";
+		$article_model = new ArticleModel();
+		$data['edit_data'] = $article_model->load($request->getKeyByNumber(0));
+		$article_tree_model = new ArticleTreeModel();
+		$n = Node::by_key('', 'articles_tree');
+		$data['cat_list'] = $n->getBranch();
+		$this->_view->EditArticle($data);
+		$this->_view->ajax();
+	}
 		
+	public function SaveArticleAction() {
+		//die('eg');
+		$request = Project::getRequest();
+		$id = (int)$request->id;
+		$article_model = new ArticleModel();
+		$article_page_model = new ArticlePageModel();
+		$article_model->load($id);
+		$article_model->user_id = Project::getUser()->getDbUser()->id;
+		$article_model->title = $request->article_title;
+		$article_model->allowcomments = (bool)$request->allow_comment;
+		$article_model->rate_status = (bool)$request->allow_rate;
+		$article_model->creation_date = date("Y-m-d H:i:s");
+		$id = $article_model->save();
+		
+		for($i = 0; $i < count($request->title_page); $i++) {
+			$article_page_model = new ArticlePageModel();
+			$article_page_model->article_id = $id;
+			$article_page_model->title = $request->title_page[$i];
+			$article_page_model->p_text = $request->content_page[$i];
+			$article_page_model->save();
+		}
+		$data = array();
+		$data['page'] = $request;
+		$this->makeArticleList($data);
+		$this -> _view -> AjaxArticleList($data);
+		$this->_view->ajax();
 	}
 	
 	public function ListAction() {
 		$request = Project::getRequest();
 		$data = array();
 		$this->BaseAdminData();
-		$article_model = new ArticleModel();
-		$pager = new DbPager($request->getKeyByNumber(0), 10);
-		$article_model -> setPager($pager);
-		$data['article_list'] = $article_model->loadPage();
-		$data['list_pager'] = $article_model->getPager();
+		$this->makeArticleList($data);
 		$this->_view->ArticleList($data);
 		$this->_view->parse();
+	}
+	
+	public function makeArticleList(&$data) {
+		$request = Project::getRequest();
+		$article_model = new ArticleModel();
+		$pager = new DbPager($request->pn, 10); //TODO:
+		$article_model -> setPager($pager);
+		$data['article_list'] = $article_model->loadPage();
+		$data['list_pager'] = $article_model -> getPager();
+		$data['list_controller'] = null;
+		$data['list_action'] = 'List';
+		$data['edit_controller'] = null;
+		$data['edit_action'] = "EditArticle";
+		$data['add_link'] = AjaxRequest::getJsonParam($data['edit_controller'], $data['edit_action']);
 	}
 	
 	

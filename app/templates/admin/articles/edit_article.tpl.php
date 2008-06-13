@@ -1,4 +1,6 @@
+
 <script language="JavaScript">
+	
 	function addPage() {
 	/*	el = document.getElementById('pages');
 		el.innerHTML = el.innerHTML + '<tr><td>Загаловок страницы</td><td><input type="text" id="title_page[]" name="title_page[]" /></td></tr><tr><td>Текст страницы</td><td><?php
@@ -21,15 +23,16 @@
     	tbody.appendChild(row);
     	var td1 = document.createElement("TD");
     	var td2 = document.createElement("TD");
-    	row.appendChild(td1);
+      	row.appendChild(td1);
     	row.appendChild(td2);
     	td1.innerHTML = "Текст страницы";
     	td2.innerHTML = '<?php
-				$oFCKeditor = new FCKeditor('article_content[]') ;
+				$oFCKeditor = new FCKeditor("content_page[]") ;
 				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
 				$oFCKeditor -> Value = $this -> full_text;
 				$oFCKeditor -> Width = 700;
 				$oFCKeditor -> Create() ;
+				$page++;
 			?>';
 	}
 </script>
@@ -58,13 +61,13 @@
 			<td class="c_left">&nbsp;</td>
 			<td class="c_cen">
 				<!-- САМ ДИАЛОГ -->
-				<form action="<?=Project::getRequest()->createUrl('AdminArticle', 'AddArticle')?>" method="POST" id="edit_form">
+				<form id="edit_form">
 				<input type="hidden" name="sub" value="0" id="sub">
 				<table width="100%" id="dialog">
 				<tbody>
 					<tr>
 						<td width="20%">Заголовок статьи</td>
-						<td width="80%"><input type="text" id="article_title"></td>
+						<td width="80%"><input type="text" name="article_title[]" id="article_title[]" value="<?=$this->edit_data['title']?>"></td>
 					</tr>
 					<tr>
 						<td>Раздел</td>
@@ -81,15 +84,15 @@
 					</tr>
 					<tr>
 						<td>Разрешить комментарии</td>
-						<td><input type="checkbox" id="allow_comment"></td>
+						<td><input type="checkbox" id="allow_comment" name="allow_comment" <?if ($this->edit_data['allowcomments'])echo "checked"?>></td>
 					</tr>
 					<tr>
 						<td>Принимать участие в голосовании</td>
-						<td><input type="checkbox" name="allow_rate" id="allow_rate"></td>
+						<td><input type="checkbox" name="allow_rate" id="allow_rate" <?if ($this->edit_data['rate_status'])echo "checked"?>></td>
 					</tr>
 					<tr>
 						<td>Страницы</td>
-						<td><input type="button" onclick="addPage();" value="Добавить страницу"></td>
+						<td><input type="button" onClick="addPage();" value="Добавить страницу"></td>
 					</tr>
 					<tr>
 						<td>Загаловок страницы</td>
@@ -109,6 +112,7 @@
 				</tbody>
 				</table>
 				</form>
+
 				<!-- -->
 
 			</td>
@@ -117,10 +121,11 @@
 		<tr>
 			<td class="b_left">&nbsp;</td>
 			<td class="b_cen"><div class="b_delim">
-				<div class="button bbig" style="float: right;"><a href="#" onClick=''>Отмена</a></div>
-				<div class="button bbig" style="float: right;"><a href="#" onclick="getElementById('sub').value=1;getElementById('edit_form').submit()">Сохранить</a></div>
+				<div class="button bbig" style="float: right;"><a href="#" onClick='cancel(<?=$this->cancel_param;?>);'>Отмена</a></div>
+				<div class="button bbig" style="float: right;"><a href="#" onclick='save(<?=$this->save_param;?>);'>Сохранить</a></div>
 			</td>
 			<td class="b_right">&nbsp;</td>
 		</tr>
 	</tbody>
 </table>
+
