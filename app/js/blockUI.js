@@ -281,7 +281,9 @@ $.blockUI.impl = {
         this.bind(0, el);
         var full = el == window;
         if (full) {
-            $('body').children().filter('.blockUI').remove();
+            //$('body').children().filter('.blockUI').remove();
+			$('.blockUI').remove();
+			//document.write();
             this.pageBlock = this.pageBlockEls = null;
         }
         else $('.blockUI', el).remove();

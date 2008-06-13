@@ -1,11 +1,11 @@
 <?php
 class CountryModel extends BaseModel{
 		function __construct(){
-			parent::__construct('country');
+			parent::__construct('countries');
 		}
 		
 		function loadAll(){
-			return parent::loadAll('title');
+			return parent::loadAll('name');
 		}
 }
 ?>

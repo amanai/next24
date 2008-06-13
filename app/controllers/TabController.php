@@ -86,6 +86,39 @@ class TabController{
 			return $tabs;
 		}
 		
+		static public function getRegistrationTabs($selected1 = false, $selected2 = false, $selected3 = false, $complete_registration = false) {
+			$request = Project::getRequest();
+			$tabs = array(
+							0 => array(
+									'name' => 'Регистрация',
+									'title' => 'Регистрация нового пользователя',
+									'selected' => $selected1,
+								 	'url' => $request -> createUrl('User', 'RegistrationForm', null, false)
+									),
+							1 => array(
+									'name' => 'Зачем нужна регистрация',
+									'title' => 'Зачем нужна регистрация',
+									'selected' => $selected2,
+								 	'url' => $request -> createUrl('User', 'WhyPage', null, false)
+									),
+							2 => array(
+									'name' => 'Лицензионное соглашение',
+									'title' => 'Лицензионное соглашение',
+									'selected' => $selected3,
+								 	'url' => $request -> createUrl('User', 'License', null, false)
+									)
+							);
+			if ($complete_registration) {
+				$tabs[]= array(
+								'name' => 'Регистрация окончена',
+								'title' => 'Регистрация окончена',
+								'selected' => true,
+								'url' => $request -> createUrl('User', 'CompleteRegistration', null, false)
+								);
+			}
+			return $tabs;
+		}
+		
 		static public function getMainArticleTabs($selected_cat = false, $selected_last = false, $selected_top = false, /*$selected_user_list = false,*/ $selected_view_article = false, /*$selected_managed_article = false,*/ $view_article_name = ""/*, $managed_article_name = "Новая статья"*/ ) {
 			$request = Project::getRequest();
 			$tabs = array(

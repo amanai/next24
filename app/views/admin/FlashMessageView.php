@@ -1,9 +1,10 @@
 <?php
-class FlashMessageView extends BaseAdminView{
+class FlashMessageView extends BaseView{
 	
-		function show($list){
+		function show($list, $category=FM::INFO){
 			$this -> setTemplate(null, 'flash_message.tpl.php');
 			$this -> assign('messages', $list);
+			$this -> assign('category', $category);
 			return $this -> parse();
 			
 		}

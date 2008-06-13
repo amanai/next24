@@ -3,24 +3,27 @@
  * Base cobtroller for frontend controller
  */
 	class SiteController extends CBaseController{
-
+		private $_initialized=false;
 
 		function __construct($view_class = null){
 			if ($view_class === null){
 				$view_class = "SiteView";
 			}
 			parent::__construct($view_class);
+			$this->BaseSiteData();
 		}
 
 		protected function BaseSiteData(){
-			$router = Project::getRequest();
-
-			//$this -> _view -> assign('title', $this -> _action_model -> page_title);
-			$this -> _view -> assign('current_user', Project::getUser() -> getDbUser());
-			if ((int)Project::getUser() -> getDbUser() -> id > 0){
-				$this -> _view -> assign('is_logged', true);
-			} else {
-				$this -> _view -> assign('is_logged', false);
+			if (!$this->_initialized) {
+				//$this -> _view -> assign('title', $this -> _action_model -> page_title);
+				$this -> _view -> assign('current_user', Project::getUser() -> getDbUser());
+				
+				if ((int)Project::getUser() -> getDbUser() -> id > 0){
+					$this -> _view -> assign('is_logged', true);
+				} else {
+					$this -> _view -> assign('is_logged', false);
+				}
+				$this->_initialized=true;
 			}
 			// TODO:: read logged user information
 		}

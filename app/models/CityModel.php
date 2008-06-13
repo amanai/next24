@@ -1,15 +1,15 @@
 <?php
 class CityModel extends BaseModel{
 		function __construct(){
-			parent::__construct('city');
+			parent::__construct('cities');
 		}
 		
 		function loadAll(){
-			return parent::loadAll('title');
+			return parent::loadAll('name');
 		}
 		
 		function loadByState($state_id){
-			return Project::getDatabase() -> select("SELECT * FROM ".$this -> _table." WHERE state_id=?d ORDER BY title", (int)$state_id);
+			return Project::getDatabase() -> select("SELECT * FROM ".$this -> _table." WHERE region_id=?d ORDER BY name", (int)$state_id);
 		}
 		
 		

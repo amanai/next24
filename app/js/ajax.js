@@ -7,11 +7,32 @@ function blockUnblockUI(){
 }
 
 function block(){
-	$.blockUI('Пожалуйста, подождите...');
+	$.blockUI('<img src="/app/images/ajax-loader3.gif" align="absmiddle"/>&nbsp;&nbsp;Пожалуйста, подождите...', { 
+        border: 'none', 
+        padding: '15px', 
+        backgroundColor: '#4E9BD7', 
+        '-webkit-border-radius': '10px', 
+        '-moz-border-radius': '10px', 
+        opacity: '.5', 
+        color: '#fff' 
+    });
+	//document.write('Unblocked');
 }
-  
 
-function ajax(params){
+function changeList(params, list) {
+	var id=$(list).val();
+	params['url']=params['url'].replace('#id#', id);
+	ajax(params);
+}
+
+function sendParams(params, addition, nblockui, start, end) {
+	for (i in addition) {
+		params['data']+=i+'='+addition[i]+'&';
+	}
+	ajax(params, nblockui, start, end);
+}
+
+function ajax(params, nblockui, start, end){
 	if (params){
 		p = eval(params);
 		if (p.answer){
@@ -19,8 +40,19 @@ function ajax(params){
 				return false;
 			}
 		}
-		if (p.async == true){
-			blockUnblockUI();
+		
+		if (start)
+			start();
+		else {
+			if (p.async == true&&!nblockui) {
+				block();
+			}
+		}
+		
+		if (end) {
+			$().ajaxStop(end);
+		} else {
+			$().ajaxStop($.unblockUI);
 		}
 		
 		//cancel(p);

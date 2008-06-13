@@ -2,7 +2,7 @@
 class FM {
 	const	ERROR	= 1;
 	const	WARNING	= 2;
-	const	INFO		= 4;
+	const	INFO	= 3;
 }
 class BaseView{
 	private $_dataSource = array();
@@ -54,11 +54,13 @@ class BaseView{
 			foreach ($this -> _fm_priority as $category => $priority){
 				if (isset($this -> _flesh_messages[$category]) && count($this -> _flesh_messages[$category])){
 					$view = new FlashMessageView();
+					$view->setTemplate($this -> _base_dir);
 					// TODO:: write only hight priority messages
-					$this -> assign('flash_messages', $view -> show($this -> _flesh_messages[$category]));
+					$this -> assign('flash_messages', $view -> show($this -> _flesh_messages[$category], $category));
 					break;
 				}
 			}
+			
 			
 			$template_root = Project::getTemplateManager() -> getTemplateDir();
 			if ($this -> _base_dir !== null){

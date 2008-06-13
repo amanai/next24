@@ -2,9 +2,6 @@
 <head>
 	<title>Next24</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!--	<link href="<?php echo $this -> css_url;?>style.css" type="text/css" rel="StyleSheet" />
-	<link href="<?php echo $this -> css_url;?>date_input.css" type="text/css" rel="StyleSheet"/>-->
-	
 	
 	<!--<script type="text/javascript" src="<?php echo $this -> js_url;?>sys.js"></script>
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
@@ -113,4 +110,3 @@
 	<table width="100%" cellpadding="0">
 	<tr>
 		<td class="next24">
-			<div class="info" id="flash_message"><?php echo $this -> flash_messages; ?></div>

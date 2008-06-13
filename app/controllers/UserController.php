@@ -6,23 +6,16 @@
 				$view_class = "UserView";
 			}
 			parent::__construct($view_class);
-		}
-		
-	  // -- BaseSiteData - определяет набор закладок, доступных на странице
-		protected function _BaseSiteData(&$data) {
-			$data['tab_list_name']     = "Каталог закладок";
-			$data['tab_most_visit']    = "Самые посещаемые";
-			$data['tab_my_list_name']  = "Мои закладки";
-			$data['tab_add_bookmark']  = "Добавить закладку";
-	    	$data['tab_category_edit'] = "Категория";
-			parent::BaseSiteData();
-		}			
+		}		
 		
 		static public function getProfileUrl($username){
 			return Project::getRequest() -> createUrl('User', 'Profile', null, $username);
 		}
 		
-		function FillEditParams(&$info){
+		function FillEditParams(){
+			$request = Project::getRequest();
+			
+			$info=array();
 			$info['year_list'] = array();
 			for($i = 1945; $i < 2000; $i++){
 				$info['year_list'][$i] = array('id'=>$i, 'value'=>$i);
@@ -40,88 +33,128 @@
 			
 			$country_model = new CountryModel;
 			$info['country_list'] = $country_model -> loadAll();
-			foreach ($info['country_list'] as &$item) {
-				$item['change_country_param'] = AjaxRequest::getJsonParam("User", "ChangeCountry", array($item['id']));
+			$info['change_country_param'] = AjaxRequest::getJsonParam("User", "ChangeCountry", array('#id#'));
+			
+			if ($request->country) {
+				$state_model = new StateModel();
+				$info['state_list'] = $state_model -> loadByCountry($request->country);
+				$info['change_state_param'] = AjaxRequest::getJsonParam("User", "ChangeState", array('#id#'));
 			}
-		}
-		
-		function CheckLoginAction(){
-			die("!!!!");
+			
+			if ($request->state) {
+				$city_model = new CityModel();
+				$info['city_list'] = $city_model -> loadByState($request->state);
+			}
+			
+			//foreach ($info['country_list'] as &$item) {
+			//	$item['change_country_param'] = AjaxRequest::getJsonParam("User", "ChangeCountry", array($item['id']));
+			//}
+			
+			$this->_view->set($info);
 		}
 		
 		function RegistrationFormAction(){			
-			$request = Project::getRequest();
-			
-			$info = array();
-			$info['save_url'] = $request -> createUrl('User', 'Registration');
-			$info['validate_param'] = AjaxRequest::getJsonParam('User', 'ValidateRegistration', array('form_id' => 'register_form'), "POST");
-			$info['save_param'] = AjaxRequest::getJsonParam('User', 'Registration', array('form_id' => 'register_form'), "POST");
-
-			$this -> FillEditParams($info);
-			$this -> _view -> RegistrationForm($info);
-			$this -> _view -> parse();
+			if (!$this -> _view ->is_logged) {
+				
+				$this-> _view -> assign('tab_list', TabController::getRegistrationTabs(true)); // Show tabs
+				$this-> _view -> assign('check_login', AjaxRequest::getJsonParam("User", "CheckLogin"));
+				$this-> _view -> assign('check_email', AjaxRequest::getJsonParam("User", "CheckEmail"));
+				$this -> FillEditParams();
+				$this -> _view -> RegistrationForm();
+				$this -> _view -> parse();
+				
+			} else {
+				Project::getResponse()->redirect(Project::getRequest()->createUrl('Index', 'Index'));
+			}
 		}
 		
-		function ValidateRegistrationAction($ajax = true){
+		function ValidateRegistrationAction(){
 			$this -> _view -> clearFlashMessages();
 			$request = Project::getRequest();
 			$valid = true;
-			if (!$request -> login){
-				$this -> _view -> addFlashMessage(FM::ERROR, "Не заполнено поле логин");
+			
+
+			$res=$this->checkLogin($request->login);
+			if ($res['error']) {
+				$this -> _view -> addFlashMessage(FM::ERROR, $res['message']);
+				$this -> _view ->assign('login_error', true);
 				$valid = false;
-			} else {
-				$user_model = new UserModel;
-				$user_model -> loadByLogin($request -> login);
-				if ($user_model -> id > 0){
-					$this -> _view -> addFlashMessage(FM::ERROR, "Логин занят");
-					$valid = false;
-				}
+			}
+			$res=$this->checkEmail($request->email);
+			if ($res['error']) {
+				$this -> _view -> addFlashMessage(FM::ERROR, $res['message']);
+				$this -> _view ->assign('email_error', true);
+				$valid = false;
 			}
 			
 			if (!$request -> pwd){
-				$this -> _view -> addFlashMessage(FM::ERROR, "Пароль не заполнен");
+				$this -> _view -> addFlashMessage(FM::ERROR, "Не заполнено поле пароль");
+				$this -> _view -> assign('pass_error', true);
 				$valid = false;
-			}
+			} elseif (!HelpFunctions::isValidPassword($request -> pwd)) {
+				$this -> _view -> addFlashMessage(FM::ERROR, "Пароль слишком короткий или содержит недопустимые символы");
+				$this -> _view -> assign('pass_error', true);
+				$valid = false;				
+			} 
 			if (!$request -> pwd_repeat){
 				$this -> _view -> addFlashMessage(FM::ERROR, "Требуется подтверждение пароля");
+				$this -> _view -> assign('pass_error', true);
 				$valid = false;
 			}
 			if ($request -> pwd && $request -> pwd_repeat){
 				if ($request -> pwd != $request -> pwd_repeat){
 					$this -> _view -> addFlashMessage(FM::ERROR, "Пароль и подтверждение не совпадают");
+					$this -> _view -> assign('pass_error', true);
 					$valid = false;
 				} else {
 					if (strlen($request -> pwd) < 5){
 						$this -> _view -> addFlashMessage(FM::ERROR, "Пароль слишком короткий (нужно минимум 5 символов)");
+						$this -> _view ->assign('pass_error', true);
 					}
 				}
 			}
 			
-			if (!$request -> email){
-				$this -> _view -> addFlashMessage(FM::ERROR, "Не заполнено поле email");
+			if (!$request->captcha) {
+				$this -> _view -> addFlashMessage(FM::ERROR, "Вы должны ввести текст, который вы видите на картинке");
+				$this -> _view -> assign('captcha_error', true);
 				$valid = false;
-			} else {
-				$user_model = new UserModel;
-				$user_model -> loadByEmail($request -> email);
-				if ($user_model -> id > 0){
-					$this -> _view -> addFlashMessage(FM::ERROR, "Email занят");
-					$valid = false;
-				} else {
-					$is_ok = preg_match('/^[\.\-_A-Za-z0-9]+?@[\.\-A-Za-z0-9]+?\.[A-Za-z0-9]{2,6}$/', $request -> email);
-					if (!$is_ok){
-						$this -> _view -> addFlashMessage(FM::ERROR, "Email неверный");
-						$valid = false;
-					}
-				}
+			} elseif (!HelpFunctions::isValidCaptcha($request -> captcha)) {
+				$this -> _view -> addFlashMessage(FM::ERROR, "Текст на картинке введен неверно, повторите еще раз");
+				$this -> _view -> assign('captcha_error', true);
+				$valid = false;				
 			}
-			if ($ajax === true){
-				$this -> _view -> ajax();
-			}
+			
 			return $valid;
 		}
 		
+		function checkLogin($login) {
+			if (!HelpFunctions::isValidLogin($login)){
+				return array('error'=>true, 'message'=>'Логин слишком короткий или содержит недопустимые символы');			
+			} else {
+				$user_model = new UserModel;
+				$user_model -> loadByLogin($login);
+				if ($user_model -> id > 0){
+					return array('error'=>true, 'message'=>'Такой логин уже занят, выберите другой');	
+				}
+			}
+			return array('error'=>false, 'message'=>'Логин доступен для регистрации');
+		}
+		
+		function checkEmail($email) {
+			if (!HelpFunctions::isValidEmail($email)){
+				return array('error'=>true, 'message'=>'Email неверный');			
+			} else {
+				$user_model = new UserModel;
+				$user_model -> loadByEmail($email);
+				if ($user_model -> id > 0){
+					return array('error'=>true, 'message'=>'Пользователь с таким email уже зарегистрирован на сайте');	
+				}
+			}
+			return array('error'=>false, 'message'=>'Email доступен для регистрации');			
+		}
+		
 		function RegistrationAction(){
-			if ($this -> ValidateRegistrationAction(true)){
+			if ($this -> ValidateRegistrationAction()){
 				$request = Project::getRequest();
 				$user_model = new UserModel;
 				$user_model -> login = $request -> login;
@@ -133,27 +166,42 @@
 				$user_model -> middle_name = $request -> father_name;
 				$user_model -> birth_date = $request -> year . "-" . $request -> month . "-" . $request -> day;
 				$user_model -> gender = (int)$request -> gender;
+				$user_model -> marital_status = $request -> marital_status;
+				$user_model -> icq = $request -> icq;
+				$user_model -> website = $request -> website;
+				$user_model -> phone = $request -> phone;
+				$user_model -> mobile_phone = $request -> mobile_phone;
 				$user_model -> about = $request -> about;
+				
+				$user_model -> books = $request -> books;
+				$user_model -> films = $request -> films;
+				$user_model -> musicians = $request -> musicians;
+				
+				$referer=new UserModel;
+				$referer->loadByLogin($request->referer);
+				$user_model -> referal = $referer->id?$referer->id:0;
+				
 				$user_model -> country_id = (int)$request -> country;
 				$user_model -> state_id = (int)$request -> state;
 				$user_model -> city_id = (int)$request -> city;
-				$user_model -> user_type_id = UserTypeModel::UNREGISTRED;
+				$user_model -> user_type_id = UserTypeModel::REGISTRED;
 				$user_model -> reputation = 0;
 				$user_model -> nextmoney = 0;
 				$user_model -> registration_date = date("Y-m-d H:i:s");
 				$user_model -> banned = 0;
 				$user_id = (int)$user_model -> save();
 				
-				$separator = ";";
+				$separator = ",";
 				if ($user_id <= 0) {
 					$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка регистрации!");
-					$this -> _view -> ajax();
+					$this->RegistrationFormAction();
 					return;
 				}
-				$this -> sendActivationMail($user_model, $request -> pwd);
+				$this -> sendRegistrationMail($user_model, $request -> pwd);
 				if (strlen($request -> interest)){
 					$interest_list = explode($separator, $request -> interest);
 					foreach($interest_list as $interest){
+						$interest=trim($interest);
 						if (strlen($interest)){
 							$interest_model = new InterestModel;
 							$interest_id = $interest_model -> set($interest);
@@ -162,18 +210,20 @@
 						}
 					}
 				}
-				Project::getAjaxResponse() -> location("User", "CompleteRegistration");
-				$this -> _view -> ajax();
 				
+				Project::getResponse() -> redirect(Project::getRequest() -> createUrl("User", "CompleteRegistration"));
+			} else {
+				$this->RegistrationFormAction();
 			}
 		}
 		
 		function CompleteRegistrationAction(){
+			$this-> _view -> assign('tab_list', TabController::getRegistrationTabs(false, false, false, true)); // Show tabs
 			$this -> _view -> CompleteRegistration();
 			$this -> _view -> parse();
 		}
 		
-		function sendActivationMail(UserModel $user_model, $password = null){
+		function sendRegistrationMail(UserModel $user_model, $password = null){
 			if (!Project::isLocalhost()){
 				$request = Project::getRequest();
 				$mailer = new PHPMailer();
@@ -182,13 +232,12 @@
 				
 				$info['login_name'] = $user_model -> login;
 				$info['password'] = $password;
-				$info['registration_url'] = $request -> createUrl('User', 'RegistrationForm');
-				$info['activation_url'] = $request -> createUrl('User', 'Activation', array($user_model -> getActivationCode()));
+				$info['registration_url'] = $request -> createUrl('Index', 'Index');
 				$info['support_email'] = $this -> getParam('support_mail');
-				$view -> Activation($info);
+				$view -> Registration($info);
 				$bResult = $mailer -> sendMail($user_model -> email, 
 										      $user_model -> last_name . " " . $user_model -> first_name . " " . $user_model -> middle_name, 
-											  "Активация учетной записи Next24.ru", 
+											  "Регистрация на сайте Next24.ru", 
 											  $view -> parse() 
 											 );
 			}
@@ -219,10 +268,7 @@
 			$info = array();
 			$state_model = new StateModel();
 			$info['state_list'] = $state_model -> loadByCountry($country_id);
-			$item['change_empty_state_param'] = AjaxRequest::getJsonParam("User", "ChangeState", array(0));
-			foreach ($info['state_list'] as &$item) {
-				$item['change_state_param'] = AjaxRequest::getJsonParam("User", "ChangeState", array($item['id']));
-			}
+			$info['change_state_param'] = AjaxRequest::getJsonParam("User", "ChangeState", array('#id#'));
 			$this -> _view -> ChangeCountry($info);
 			$this -> _view -> ajax();
 		}
@@ -234,6 +280,32 @@
 			$state_model = new CityModel();
 			$info['city_list'] = $state_model -> loadByState($state_id);
 			$this -> _view -> ChangeState($info);
+			$this -> _view -> ajax();
+		}
+		
+		function CheckLoginAction(){
+			$request = Project::getRequest();
+			$login = $request -> getKey('login');
+			$res=$this->checkLogin($login);
+			if ($res['error']) {
+				$this -> _view -> CheckLogin('<span class="red">'.$res['message'].'</span>');
+			}
+			else {
+				$this -> _view -> CheckLogin('<span class="green">'.$res['message'].'</span>');
+			}
+			$this -> _view -> ajax();
+		}
+		
+		function CheckEmailAction(){
+			$request = Project::getRequest();
+			$email = $request -> getKey('email');
+			$res=$this->checkEmail($email);
+			if ($res['error']) {
+				$this -> _view -> CheckEmail('<span class="red">'.$res['message'].'</span>');
+			}
+			else {
+				$this -> _view -> CheckEmail('<span class="green">'.$res['message'].'</span>');
+			}
 			$this -> _view -> ajax();
 		}
 		

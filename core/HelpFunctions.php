@@ -201,5 +201,26 @@ class HelpFunctions{
 			}
 			return $res;
 		}
+		
+		// ------ Validation -------
+		static function isValidEmail($email) {
+			return preg_match('/^[\.\-_A-Za-z0-9]+?@[\.\-A-Za-z0-9]+?\.[A-Za-z0-9]{2,6}$/i', $email);
+		}
+		static function isValidLogin($login) {
+			if (self::isString($login)) {
+				return preg_match('/^[0-9a-z]{1}[a-z0-9\s-_]{3,}$/i', $login);
+			}
+			return false;
+		}
+		static function isValidPassword($pass) {
+			if (self::isString($pass)) {
+				return preg_match('/^.{6,}$/i', $pass);
+			}
+			return false;	
+		}
+		static function isValidCaptcha($entry) {
+			return trim($entry)==Project::getSession()->getKey('captcha_keystring');
+		}
+		
 }
 ?>

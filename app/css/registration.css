@@ -1,16 +1,96 @@
-.registration_form .label{
+.regdetails .label{
 	width:200px;
 }
 
-.registration_form input, .registration_form select{
-	width: 300px;
-}
-
-.registration_form input[type=radio]{
-	width: 10px;
-}
-
-.registration_form textarea{
-	width: 300px;
+textarea{
+	width: 350px;
 	height:100px;
+}
+
+.radio {
+	background: transparent;
+	border: 0px;
+	margin-right: 4px;
+}
+
+/* Стили регистрационной формы */
+
+.regdetails {
+  width:95%;
+  margin-top:20px;
+}
+
+.regdetails TD {
+  vertical-align:top;
+  padding-bottom:10px;
+}
+
+.regdetails TD.rcaption {
+  padding-right:15px;
+  padding-top:2px;
+  padding-bottom:0;
+}
+
+.regdetails DIV.notice {
+  font-size:11px;
+  margin-top:5px;
+  margin-bottom:5px;
+  width:350px;
+  color:#999;
+}
+
+.regdetails INPUT.field,
+.regdetails SELECT.field {
+  width:350px;
+}
+
+SELECT {
+  border:1px solid #ccc;
+}
+
+.regdetails TEXTAREA.field {
+  width:350px;
+  height:150px;
+}
+
+.necessary {
+  color:red;
+  margin-left:5px;
+  margin-right:5px;
+}
+
+.rdiviner {
+  border-bottom:1px solid #e6e6e6;
+}
+
+#regbutton {
+  width:350px;
+}
+
+.error {
+  color:#c00;
+}
+
+#loginChecker {
+  width:1px;
+  height:1px;
+  border:1px solid white;
+  position:absolute;
+  top:-100px;
+}
+
+.checkhidden {
+  display:none;
+}
+
+.checkok {
+  color:green;
+  font-size:11px;
+  margin-bottom:5px;
+}
+
+.checkerr {
+  color:#c00;
+  font-size:11px;
+  margin-bottom:5px;
 }

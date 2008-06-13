@@ -10,7 +10,7 @@
 				<!-- правый блок -->
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 						<div class="block_title">
-								<div class="block_title_left"><h2>Регистрация</h2></div>
+								<div class="block_title_left"><h1>Регистрация нового аккаунта</h1></div>
 								<div class="block_title_right"><img src="<?php echo $this -> image_url;?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" /></div>
 						</div>
 						<?php include($this -> _include('form_registration.tpl.php')); ?>

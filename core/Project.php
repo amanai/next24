@@ -4,7 +4,7 @@ spl_autoload_register(array('Project','autoload'));
 class OS{
 	const WINDOWS	= "WIN";
 	const LINUX		= "LINUX";
-	const UKNOWN	= "UKNOWN";
+	const UNKNOWN	= "UNKNOWN";
 }
 
 
@@ -14,8 +14,8 @@ class OS{
  */
 class Project{
 	public $_stack;
-	private $_eol = false;
-	private $_os = false;
+	private static $_eol = false;
+	private static $_os = false;
  
 	    function __construct() {
 	        $this -> _stack = array(array());
@@ -23,7 +23,7 @@ class Project{
 	    
 	    
 	    function detectOs(){
-	    	if (!self::$_eol || !self::$_os){
+	    	if (!isset(self::$_eol) || !self::$_eol || !self::$_os){
 		    	if (strtoupper(substr(PHP_OS, 0, 3)) === "WIN") {
 					self::$_eol = "\r\n";
 					self::$_os = OS::WINDOWS;
@@ -32,12 +32,13 @@ class Project{
 					self::$_os = OS::LINUX;
 				} else {
 					self::$_eol = "\n";
-					self::$_os = OS::UKNOWN;
+					self::$_os = OS::UNKNOWN;
 				}
 	    	}
 	    }
 	    
 	    function isLocalhost(){
+	    	self::detectOs();
 	    	if (self::$_os == OS::WINDOWS){
 	    		return true;
 	    	} else {

@@ -828,7 +828,28 @@ table { border-collapse: collapse; }
 	padding: 5px;
 }
 
+.info {
+	background-color: white;
+	border:1px solid #C7EEF8;
+	padding: 6px;
+	
+}
 
+.info ul {
+	margin-bottom: 0px;
+}
+
+.info li {
+	line-height: 140%;
+}
+
+.red {
+	color: red;
+}
+
+.green {
+	color: green;
+}
 
 
 /* --------------- */

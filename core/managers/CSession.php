@@ -50,7 +50,6 @@ class CSession extends CBaseManager implements IManager {
 		$this->inited = true;		
 		$this->_initialized=true;	
 		
-		
 		session_set_save_handler(
 			array($this, 'open'), 
 			array($this, 'close'), 
@@ -58,7 +57,7 @@ class CSession extends CBaseManager implements IManager {
 			array($this, 'write'), 
 			array($this, 'destroy'), 
 			array($this, 'gc'));
-		session_name("SSID");		
+		session_name("SSID");
 		session_start();
 		parent::init();
 	}

@@ -25,14 +25,18 @@ class UserView extends BaseSiteView{
 			$this -> setTemplate(null, 'login.tpl.php');
 		}
 		
-		function RegistrationForm($info){
-			$this -> set($info);
+		function RegistrationForm(){
+			$this->_css_files[]='registration.css';
+			$this->_js_files[]='jquery.js';
+			$this->_js_files[]='xpath.js';
+			$this->_js_files[]='blockUI.js';
+			$this->_js_files[]='ajax.js';
 			$this -> setTemplate(null, 'registration.tpl.php');
 		}
 		
-		function Activation($info){
+		function Registration($info){
 			$this -> set($info);
-			$this -> setTemplate(null, 'activation.tpl.php');
+			$this -> setTemplate(null, 'registration.tpl.php');
 		}
 		
 		function CompleteRegistration($info = array()){
@@ -58,6 +62,16 @@ class UserView extends BaseSiteView{
 			$this -> set($info);
 			$this -> setTemplate($this -> _dir, 'city_list.tpl.php');
 			$response -> block('city_div', true, $this -> parse());
+		}
+		
+		function CheckLogin($message){
+			$response = Project::getAjaxResponse();
+			$response -> block('login_check_result', true, $message);
+		}
+		
+		function CheckEmail($message){
+			$response = Project::getAjaxResponse();
+			$response -> block('email_check_result', true, $message);
 		}
 		
 		
