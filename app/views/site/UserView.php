@@ -36,7 +36,7 @@ class UserView extends BaseSiteView{
 		
 		function Registration($info){
 			$this -> set($info);
-			$this -> setTemplate(null, 'registration.tpl.php');
+			$this -> setTemplate('mail', 'registration.tpl.php');
 		}
 		
 		function CompleteRegistration($info = array()){
