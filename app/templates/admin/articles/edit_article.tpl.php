@@ -1,7 +1,11 @@
 
+
 <script language="JavaScript">
-	
+
+
+	var i = 0;
 	function addPage() {
+		i++;
 	/*	el = document.getElementById('pages');
 		el.innerHTML = el.innerHTML + '<tr><td>Загаловок страницы</td><td><input type="text" id="title_page[]" name="title_page[]" /></td></tr><tr><td>Текст страницы</td><td><?php
 				$oFCKeditor = new FCKeditor('article_content[]') ;
@@ -29,11 +33,11 @@
     	td2.innerHTML = '<?php
 				$oFCKeditor = new FCKeditor("content_page[]") ;
 				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
-				$oFCKeditor -> Value = $this -> full_text;
 				$oFCKeditor -> Width = 700;
-				$oFCKeditor -> Create() ;
-				$page++;
+				$oFCKeditor -> Create();
 			?>';
+
+		
 	}
 </script>
 
@@ -67,15 +71,14 @@
 				<tbody>
 					<tr>
 						<td width="20%">Заголовок статьи</td>
-						<td width="80%"><input type="text" name="article_title[]" id="article_title[]" value="<?=$this->edit_data['title']?>"></td>
+						<td width="80%"><input type="text" name="article_title" id="article_title" value="<?=$this->edit_data['title']?>"></td>
 					</tr>
 					<tr>
 						<td>Раздел</td>
 						<td>
-							<select>
-								<option> -- select -- </option>
+							<select name="article_cat">
 								<? foreach ($this->cat_list as $n): ?>
-									<option>
+									<option value="<?=$n['id']?>" <? if((int)$n['id'] == (int)$this->edit_data['articles_tree_id']) echo 'selected'; ?>>
 										<?=str_repeat("&nbsp;&nbsp;&nbsp;",  $n['level'] -1)?><?=$n['name']?>
 									</option>
 								<? endforeach;?>
@@ -94,6 +97,7 @@
 						<td>Страницы</td>
 						<td><input type="button" onClick="addPage();" value="Добавить страницу"></td>
 					</tr>
+					<? if(count($this->edit_pages) <= 0) {?>
 					<tr>
 						<td>Загаловок страницы</td>
 						<td><input type="text" id="title_page[]" name="title_page[]" /></td>
@@ -103,14 +107,33 @@
 						<td><?php
 								$oFCKeditor = new FCKeditor('content_page[]') ;
 								$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
-								$oFCKeditor -> Value = $this -> full_text;
 								$oFCKeditor -> Width = 700;
 								$oFCKeditor -> Create() ;
 							?>
 						</td>
 					</tr>
+					<? } else { ?>
+						<?foreach ($this->edit_pages as $page):?>
+							<tr>
+								<td>Загаловок страницы</td>
+								<td><input type="text" id="title_page[]" name="title_page[]" value="<?=$page['title']?>"/></td>
+							</tr>
+							<tr>
+								<td>Текст страницы</td>
+								<td><?php
+										$oFCKeditor = new FCKeditor('content_page[]') ;
+										$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
+										$oFCKeditor -> Value = $page['p_text'];
+										$oFCKeditor -> Width = 700;
+										$oFCKeditor -> Create() ;
+									?>
+								</td>
+							</tr>
+						<?endforeach;?>
+					<? } ?>
 				</tbody>
 				</table>
+
 				</form>
 
 				<!-- -->

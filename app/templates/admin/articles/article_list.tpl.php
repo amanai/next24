@@ -15,9 +15,9 @@
 			<td><?=$item['title']?></td>
 			<td><?=$item['comments']?></td>
 			<td>Статус</td>
-			<td><a href='#' onclick='ajax(<?=AjaxRequest::getJsonParam($this->edit_controller, $this->edit_action, array($item['id']));?>)'>Редактировать</a></td>
+			<td><a href='#' onclick='ajax(<?=AjaxRequest::getJsonParam($this->edit_controller, $this->edit_action, array($item['id']));?>)'>[Редактировать]</a> <a href="#" onclick=onclick='ajax(<?=AjaxRequest::getJsonParam('AdminArticle', 'DeleteArticle', array($item['id']));?>)'>[Удалить]</a></td>
 		</tr>
 	<? endforeach;?>
 </table>
-<?=var_dump($this->page)?>
+
 <?=$this->list_pager_html?>

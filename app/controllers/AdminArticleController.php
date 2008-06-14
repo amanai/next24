@@ -75,7 +75,9 @@ class AdminArticleController extends AdminController {
 			$article_model = new ArticleModel();
 			$article_model->delete($id);
 		}
-		Project::getResponse()->redirect($request->createUrl('Article', 'List'));		
+		$this->makeArticleList($data);
+		$this -> _view -> AjaxArticleList($data);
+		$this->_view->ajax();	
 	}
 	
 	public function SetCompetitionAction() {
@@ -150,6 +152,8 @@ class AdminArticleController extends AdminController {
 		$data['save_action'] = "SaveArticle";
 		$article_model = new ArticleModel();
 		$data['edit_data'] = $article_model->load($request->getKeyByNumber(0));
+		$article_page_model = new ArticlePageModel();
+		$data['edit_pages'] = $article_page_model->loadByArticleId($request->getKeyByNumber(0));
 		$article_tree_model = new ArticleTreeModel();
 		$n = Node::by_key('', 'articles_tree');
 		$data['cat_list'] = $n->getBranch();
@@ -158,13 +162,13 @@ class AdminArticleController extends AdminController {
 	}
 		
 	public function SaveArticleAction() {
-		//die('eg');
 		$request = Project::getRequest();
 		$id = (int)$request->id;
 		$article_model = new ArticleModel();
 		$article_page_model = new ArticlePageModel();
 		$article_model->load($id);
 		$article_model->user_id = Project::getUser()->getDbUser()->id;
+		$article_model->articles_tree_id = $request->article_cat;
 		$article_model->title = $request->article_title;
 		$article_model->allowcomments = (bool)$request->allow_comment;
 		$article_model->rate_status = (bool)$request->allow_rate;
@@ -178,8 +182,6 @@ class AdminArticleController extends AdminController {
 			$article_page_model->p_text = $request->content_page[$i];
 			$article_page_model->save();
 		}
-		$data = array();
-		$data['page'] = $request;
 		$this->makeArticleList($data);
 		$this -> _view -> AjaxArticleList($data);
 		$this->_view->ajax();

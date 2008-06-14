@@ -2,10 +2,15 @@
 
 class AdminArticleView extends BaseAdminView {
 	protected $_dir = 'articles';
+	static public $count_page = 0;
 	
 	public function ShowTree($data) {
 		$this->setTemplate($this->_dir, 'tree.tpl.php');
 		$this->set($data);
+	}
+	
+	public static function addPage() {
+		$this->count_page++;
 	}
 	
 	public function ManagedSection($data) {
