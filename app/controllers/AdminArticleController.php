@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AdminController.php');
 
 class AdminArticleController extends AdminController {
+	const DEFAULT_ARTICLE_PER_PAGE = 10;
 	
 	public function __construct() {
 		parent::__construct("AdminArticleView");
@@ -12,7 +13,7 @@ class AdminArticleController extends AdminController {
 		$request = Project::getRequest();
 		$article_vote_controller = new ArticleVoteModel();
 		$article_vote_controller->deleteByArticleId($request->getKeyByNumber(0));
-		Project::getResponse()->redirect($request->createUrl('Article', 'List'));
+		//Project::getResponse()->redirect($request->createUrl('Article', 'List'));
 	}
 	
 	public function ShowTreeAction() {
@@ -177,11 +178,14 @@ class AdminArticleController extends AdminController {
 		
 		for($i = 0; $i < count($request->title_page); $i++) {
 			$article_page_model = new ArticlePageModel();
+			$article_page_model->load($request->id_page[$i]);
 			$article_page_model->article_id = $id;
 			$article_page_model->title = $request->title_page[$i];
 			$article_page_model->p_text = $request->content_page[$i];
 			$article_page_model->save();
 		}
+		$data = array();
+		$data['req'] = $request;
 		$this->makeArticleList($data);
 		$this -> _view -> AjaxArticleList($data);
 		$this->_view->ajax();
@@ -199,15 +203,16 @@ class AdminArticleController extends AdminController {
 	public function makeArticleList(&$data) {
 		$request = Project::getRequest();
 		$article_model = new ArticleModel();
-		$pager = new DbPager($request->pn, 10); //TODO:
+		$pager = new DbPager($request->pn, self::DEFAULT_ARTICLE_PER_PAGE);
 		$article_model -> setPager($pager);
 		$data['article_list'] = $article_model->loadPage();
 		$data['list_pager'] = $article_model -> getPager();
-		$data['list_controller'] = null;
+		$data['controller'] = null;
 		$data['list_action'] = 'List';
-		$data['edit_controller'] = null;
 		$data['edit_action'] = "EditArticle";
-		$data['add_link'] = AjaxRequest::getJsonParam($data['edit_controller'], $data['edit_action']);
+		$data['delete_article_action'] = "DeleteArticle";
+		$data['reset_rate_action'] = "ResetRate";
+		$data['add_link'] = AjaxRequest::getJsonParam($data['controller'], $data['edit_action']);
 	}
 	
 	

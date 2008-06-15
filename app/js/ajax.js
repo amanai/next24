@@ -184,7 +184,7 @@ function getFormData(p){
 	parameter.p = p.p;
 	form_id = p.data.form_id;
 	a = $('#'+ form_id +' :text');
-	ind = 0;
+	ind = 10;
 	for (i = 0; i < a.length; i++){
 		//parameter += '&' + a[i].name + '=' + a[i].value;
 		
@@ -239,7 +239,15 @@ function getFormData(p){
 	a = $('#'+form_id+' :hidden');
 	for (i = 0; i < a.length; i++){
 		//parameter += '&' + a[i].name + '=' + a[i].value;
-		parameter[a[i].name] = a[i].value;
+		//parameter[a[i].name] = a[i].value;
+		if(a[i].name.substr(a[i].name.length-2,a[i].name.length-1) == '[]') {
+			parameter[a[i].name+'_'+ind] = a[i].value;
+			ind++;			
+			//alert (a[i].name+' = '+a[i].value);	
+		} else {
+			parameter[a[i].name] = a[i].value;	
+		}
+		
 	}
 	a = $('#'+form_id+' :password');
 	for (i = 0; i < a.length; i++){

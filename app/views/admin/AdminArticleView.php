@@ -44,7 +44,7 @@ class AdminArticleView extends BaseAdminView {
 	public function ArticleList($data) {
 		$this->setTemplate($this->_dir, 'main.tpl.php');
 		$pagerView = new DefaultPagerView();
-		$data['list_pager_html'] = $pagerView->show($data['list_pager'], $data['list_controller'], $data['list_action']); 
+		$data['list_pager_html'] = $pagerView->show($data['list_pager'], $data['controller'], $data['list_action']); 
 		$this->set($data);
 	}
 	
@@ -69,7 +69,7 @@ class AdminArticleView extends BaseAdminView {
 		$response->clearBlock('edit_block');
 		$response->hide('edit_block');
 		$pagerView = new DefaultPagerView();
-		$data['list_pager_html'] = $pagerView->show($data['list_pager'], $data['list_controller'], $data['list_action']); 
+		$data['list_pager_html'] = $pagerView->show($data['list_pager'], $data['controller'], $data['list_action']); 
 		$this->set($data);
 		$response->block('list_block', true, $this->parse());
 	}

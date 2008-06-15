@@ -116,7 +116,10 @@
 						<?foreach ($this->edit_pages as $page):?>
 							<tr>
 								<td>Загаловок страницы</td>
-								<td><input type="text" id="title_page[]" name="title_page[]" value="<?=$page['title']?>"/></td>
+								<td>
+									<input type="text" id="title_page[]" name="title_page[]" value="<?=$page['title']?>"/>
+									<input type="hidden" id="id_page[]" name="id_page[]" value="<?=$page['id']?>" />
+								</td>
 							</tr>
 							<tr>
 								<td>Текст страницы</td>
