@@ -33,7 +33,8 @@ $credits = ''; # if empty, HTTP_HOST will be shown
 //$foreground_color = array(0, 0, 0);
 //$background_color = array(220, 230, 255);
 $foreground_color = array(mt_rand(0,100), mt_rand(0,100), mt_rand(0,100));
-$background_color = array(mt_rand(200,255), mt_rand(200,255), mt_rand(200,255));
+//$background_color = array(mt_rand(200,255), mt_rand(200,255), mt_rand(200,255));
+$background_color = array(244, 250, 254);
 
 # JPEG quality of CAPTCHA image (bigger is better quality, but larger file size)
 $jpeg_quality = 90;

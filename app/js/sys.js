@@ -45,19 +45,19 @@ function DoDiv(ob, id)
 		{
 			ob.src = ob.src.replace(/open/, 'close');
 			//item.style.display = "";
-			$(item).animate({
+			$("#"+id).slideDown("slow");
+			/*$(item).animate({
 				  			height: 'toggle', opacity: 'toggle'
-							}, "normal");
-			//$(item).fadeIn("slow");
+							}, "normal");*/
 		}
 		else
 		{
 			ob.src = ob.src.replace(/close/, 'open');
 			//item.style.display = "none";
-			$(item).animate({
+			$("#"+id).slideUp("slow");
+			/*$(item).animate({
 				  			height: 'toggle', opacity: 'toggle'
-							}, "normal");
-			//$(item).fadeOut("slow");
+							}, "normal");*/
 		}
 	}
 	else
