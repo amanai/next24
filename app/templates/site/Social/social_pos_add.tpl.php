@@ -14,6 +14,16 @@
    echo "arr_criterias[".$key."]['social_criteria_name']= '".$val['social_criteria_name']."';\n";
  ?>  
  <? } ?>
+// -- Установка заголовка
+function _setCaption(p_id, p_caption){
+  var o = document.getElementById(p_id);
+  if (o.textContent) {
+    o.textContent = p_caption;
+  } else {
+    o.innerText = p_caption;
+  }
+}
+// -- Отработка изменения списка КАТЕГОРИЯ 
 function doChangeCat() {
   //alert('begin');
   var v_n = document.getElementById('id_sp_category').value;
@@ -22,12 +32,23 @@ function doChangeCat() {
     if (arr_criterias[vi]['social_tree_id'] == v_n) {
       cnt++;
       document.getElementById('id_num_criteria_'+cnt).value = arr_criterias[vi]['social_criteria_id'];
-      if (document.getElementById('cr_'+cnt).textContent) {
-        document.getElementById('cr_'+cnt).textContent = arr_criterias[vi]['social_criteria_name'];
-      } else {
-        document.getElementById('cr_'+cnt).innerText = arr_criterias[vi]['social_criteria_name'];
-      }
+      _setCaption('cr_'+cnt, arr_criterias[vi]['social_criteria_name']);
     }
+  }
+  
+  if (cnt == 0) {// -- Критерии для выбранной категории отсутствуют
+    for (var i=1; i<=3; i++) {
+      _setCaption('cr_'+i, '---');
+      document.getElementById('inp_select_'+i).disabled   = true;
+    }
+    _setCaption('id_sp_mess', "Для данной категории критерии не определены.");
+    document.getElementById('btn_submit').disabled   = true;
+  } else {
+    for (var i=1; i<=3; i++) {
+      document.getElementById('inp_select_'+i).disabled   = false;
+    }
+    _setCaption('id_sp_mess', "");
+    document.getElementById('btn_submit').disabled   = false;
   }
  // alert('end');
 } 
@@ -81,7 +102,7 @@ function doChangeCat() {
           <? foreach($this->arr_categories as $key => $val) { ?>
             <option value="<?=$val['id'];?>"><?=$val['name'];?></option>
           <? } ?>
-            </select></td>
+            </select><div style="color: blue;" id="id_sp_mess">Для данной категории критерии не определены.</div></td>
          </tr>
          <tr>
           <td><b>Оценка : </b></td>
