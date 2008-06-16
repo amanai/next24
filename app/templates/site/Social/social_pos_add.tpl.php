@@ -27,6 +27,7 @@ function _setCaption(p_id, p_caption){
 function doChangeCat() {
   //alert('begin');
   var v_n = document.getElementById('id_sp_category').value;
+  //alert(v_n);
   var cnt = 0;
   for (vi in arr_criterias) {
     if (arr_criterias[vi]['social_tree_id'] == v_n) {
@@ -39,16 +40,15 @@ function doChangeCat() {
   if (cnt == 0) {// -- Критерии для выбранной категории отсутствуют
     for (var i=1; i<=3; i++) {
       _setCaption('cr_'+i, '---');
-      document.getElementById('inp_select_'+i).disabled   = true;
     }
     _setCaption('id_sp_mess', "Для данной категории критерии не определены.");
-    document.getElementById('btn_submit').disabled   = true;
+    document.getElementById('id_div_vote1').style.visibility = 'hidden';
+    document.getElementById('id_div_vote2').style.visibility = 'hidden';
+    
   } else {
-    for (var i=1; i<=3; i++) {
-      document.getElementById('inp_select_'+i).disabled   = false;
-    }
-    _setCaption('id_sp_mess', "");
-    document.getElementById('btn_submit').disabled   = false;
+    _setCaption('id_sp_mess', " ");
+    document.getElementById('id_div_vote1').style.visibility = 'visible';
+    document.getElementById('id_div_vote2').style.visibility = 'visible';
   }
  // alert('end');
 } 
@@ -103,9 +103,11 @@ function doChangeCat() {
           <? foreach($this->arr_categories as $key => $val) { ?>
             <option value="<?=$val['id'];?>"><?=$val['name'];?></option>
           <? } ?>
-            </select><div style="color: blue;" id="id_sp_mess">Для данной категории критерии не определены.</div></td>
+            </select>
+            <div style="color: blue;" id="id_sp_mess">Для данной категории критерии не определены.</div>            
+            </td>
          </tr>
-         <tr>
+         <tr id="id_div_vote1">
           <td><b>Оценка : </b></td>
           <td style="text-align: left;">
             <table style="width: 75%";>
@@ -160,7 +162,7 @@ function doChangeCat() {
                 </td>
               </tr>
             </table>
-              <tr>
+              <tr id="id_div_vote2">
                 <td colspan="2" style="text-align: center;"><input type="submit" name="btn_submit" value="Создать"></td>
               </tr>
               
