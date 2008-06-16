@@ -2,6 +2,7 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 
 <script language="JavaScript" type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
+<link href="<?php echo $this -> css_url;?>vote.css" rel="stylesheet" type="text/css" />          
 
 		<div id="tabs">
 <?php $request = Project::getRequest(); ?>
@@ -28,10 +29,10 @@
      <div class="block_ee3">
       <div class="block_ee4">
        <div style="margin: 0px -10px;">
-        <table class="questions"  style="text-align: center;">
+        <table class="questions"  style="text-align: center;" border="0">
          <tr align="center">
-          <td style="width: 200; text-align: left;"><b>Название</b></td>
-          <td><b>Рейтинг</b></td>
+          <td style="width: 300px; text-align: left;"><b>Название</b></td>
+          <td style="text-align: center;"><b>Рейтинг</b></td>
           <td style="text-align: center;"><b>Автор</b></td>
           <td style="text-align: center;"><b>Категория</b></td>
           <td style="text-align: center;"><b>Дата создания</b></td>
@@ -41,10 +42,19 @@
           <td style="text-align: left; white-space: normal;"><p><img src="<?=$this->image_url; ?>d_ld_ico3.png" id="ico2" /><?=$this->social_row[0]['name'];?></p></td>
           
           <td>
+            <table border="0" width="100%">
+            <? $cnt=1; ?>
             <? foreach($this->social_row as $key => $value)  {?>
-            <?=$value['criteria_name'].' : '.number_format($value['votes_avg'], 2, '.',' ').'<br />';?>
-            <? } ?><hr />
-          <b>Общий : </b><?=number_format($this->social_row[0]['avg_rating'], 3, '.',' ');?>
+              <tr id="vote-grph">
+              <td class="vote<?=$cnt++;?>" style="text-align: left; width: 130px; padding: 0px; margin: 0px;"><?=$value['criteria_name'];?><br /><span><img width="<?=number_format($value['votes_avg'], 2, '.',' ')*10;?>" src="<?=$this->image_url; ?>spacer.gif" /></span></td>
+              <td style="padding: 0px; margin: 0px;"><br /><?=number_format($value['votes_avg'], 2, '.',' ');?></td>
+              </tr>
+            <? } ?>
+              <tr>
+                <td colspan="2"><hr /><b>Общий : </b><?=number_format($this->social_row[0]['avg_rating'], 3, '.',' ');?></td.
+              </tr>
+            </table>
+      
           </td>
           <td style="text-align: center;"><a href="<?=$request->createUrl('Index','Index', null, $this->social_row[0]['login']); ;?>"><?=$this->social_row[0]['login']; ?></a></td>
           <td style="text-align: center" width="70"><?=$this->social_row[0]['social_category']; ?></td>
@@ -84,12 +94,12 @@
            <? foreach($this->social_row as $key => $value) {?>
              <td style="text-align: left; width: 200px;">
                <?=$value['criteria_name'].' : ';?>
-               <select name="inp_select_<?=$v_i;?>" style="width: 35px;">
+               <select name="inp_select_<?=$v_i;?>" style="width: 40px;" id="vote<?=$v_i;?>">
                  <option value="1">1</option>
                  <option value="2">2</option>
                  <option value="3">3</option>
                  <option value="4">4</option>
-                 <option value="5">5</option>
+                 <option value="5" selected="">5</option>
                  <option value="6">6</option>
                  <option value="7">7</option>
                  <option value="8">8</option>

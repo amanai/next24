@@ -1,0 +1,21 @@
+.vote1 span img { background-image:url('../images/vote/vote1.gif'); }
+.vote2 span img { background-image:url('../images/vote/vote2.gif'); }
+.vote3 span img { background-image:url('../images/vote/vote3.gif'); }
+#vote-grph img {
+  border:1px solid #655252;
+  height:8px;
+  margin:1px 0pt 0pt 0px;
+}
+select#vote1, select#vote2, select#vote3  {
+  color: white;
+}
+select#vote1 {
+  background-color: #EA4C4C;
+}
+select#vote2 {
+  background-color: #3597E2;
+}
+select#vote3 {
+  background-color: #8DCF37;
+}
+}
