@@ -89,7 +89,7 @@
          <tr id="<?=$v_id; ?>">
           <td style="text-align: left; white-space: normal;">
            <img src="<?=$this->image_url; ?>d_ld_ico3.png" id="ico2" />
-             <a href="<?//=$this->createUrl('Social', 'BookmarksView', array($item['id']))?>" title="<?=$item['name'];?>"><?=$item['name_cut'];?></a>
+             <a href="<?=$this->createUrl('Social', 'SocialView', array($item['id']))?>" title="<?=$item['name'];?>"><?=$item['name_cut'];?></a>
                <!-- $this- >createUrl('Bookmarks', 'BookmarksView', array($item['id'])) -->
                <!-- $item['description'] -->
           </td>
