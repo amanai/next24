@@ -21,9 +21,8 @@
 <!-- тело страницы PageTab -->     
 <div class="tab-page tab-page-selected">
 <!-- отображение ошибки -->
-<div><?foreach ($this->error as $error) { ?>
-<span style="color: red;"><?=$error?></span><br />
-<? } ?>
+<div>
+<?=$this -> flash_messages; ?>
 </div>
 <!-- /отображение ошибки -->
 

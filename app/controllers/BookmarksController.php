@@ -189,7 +189,6 @@ class BookmarksController extends SiteController {
          or ($v_request->inp_bookmark_description == null)
         ) {    //TODO validator
       // Данные, введеные в форме неполные - переоткрыть форму с сообщ.об ошибке и введенными данными
-        $data['error'][] = 'Поля " * " должны быть заполнены';
         $v_bm_category_model = new BookmarksCategoryModel();
         $data['bookmarks_category_list'] = $v_bm_category_model -> loadCategoryList();
         $data['bookmarks_tag_list'] = $v_request->inp_tags;
@@ -201,6 +200,7 @@ class BookmarksController extends SiteController {
         $data['bookmark_row']['user_id'] = $v_current_userID;
         //$data['question']['creation_date'] = date("Y-m-d H:i:s");
         $this->_BaseSiteData($data);
+        $this->_view->addFlashMessage(FM::ERROR, 'Поля " * " должны быть заполнены');
         $this->_view->Bookmarks_Manage($data);
         $this->_view->parse();
         return;

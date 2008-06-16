@@ -174,7 +174,7 @@ class SocialController extends SiteController {
             $data['inp_sp_name']    = $v_request->inp_sp_name;
             $data['inp_sp_comment'] = $v_request->inp_sp_comment;
             $this->_view->Social_PosAdd($data);
-            $this ->_view->addFlashMessage(FM::ERROR, 'Поля " * " должны быть заполнены');
+            $this->_view->addFlashMessage(FM::ERROR, 'Поля " * " должны быть заполнены');
             $this->_view->parse();
           } else {
             // -- Сохранение данных  

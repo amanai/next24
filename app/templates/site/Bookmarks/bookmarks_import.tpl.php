@@ -28,6 +28,7 @@
      <div class="block_ee3">
       <div class="block_ee4">      
        <div style="margin: 0px 10px;">
+       <?=$this -> flash_messages; ?>
        <? if ($this->is_show_message == false) {?>
          Комментарии к импорту. Текст будет введен позже после согласования.
        <? } else { ?>

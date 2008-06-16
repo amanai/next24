@@ -79,6 +79,7 @@ function doChangeCat() {
      <div class="block_ee3">
       <div class="block_ee4">
        <div style="margin: 0px 10px;">
+       <?=$this -> flash_messages; ?>
        
          <?php $v_form_action = $this->createUrl('Social', 'SocialPosAdd'); ?>
          <form action="<?=$v_form_action;?>" method="post">
