@@ -31,8 +31,8 @@
        <div style="margin: 0px -10px;">
         <table class="questions"  style="text-align: center;" border="0">
          <tr align="center">
-          <td style="width: 300px; text-align: left;"><b>Название</b></td>
-          <td style="text-align: center;"><b>Рейтинг</b></td>
+          <td style="text-align: left; width: 300px;"><b>Название</b></td>
+          <td style="text-align: center; width: 150px;"><b>Рейтинг</b></td>
           <td style="text-align: center;"><b>Автор</b></td>
           <td style="text-align: center;"><b>Категория</b></td>
           <td style="text-align: center;"><b>Дата создания</b></td>
@@ -42,16 +42,20 @@
           <td style="text-align: left; white-space: normal;"><p><img src="<?=$this->image_url; ?>d_ld_ico3.png" id="ico2" /><?=$this->social_row[0]['name'];?></p></td>
           
           <td>
-            <table border="0" width="100%">
+            <table border="0" width="145" cellpadding="0" cellspacing="0">
             <? $cnt=1; ?>
             <? foreach($this->social_row as $key => $value)  {?>
               <tr id="vote-grph">
-              <td class="vote<?=$cnt++;?>" style="text-align: left; width: 130px; padding: 0px; margin: 0px;"><?=$value['criteria_name'];?><br /><span><img width="<?=number_format($value['votes_avg'], 2, '.',' ')*10;?>" src="<?=$this->image_url; ?>spacer.gif" /></span></td>
+              <td class="vote<?=$cnt++;?>" style="text-align: left; width: 110px; padding: 2px; margin: 0px;"><?=$value['criteria_name'];?><br />
+                 <div class="div_img">
+                   <img style="padding: 0px; margin: 0px;" width="<?=number_format($value['votes_avg'], 2, '.',' ')*10;?>" src="<?=$this->image_url; ?>spacer.gif" />
+                 </div></td>
               <td style="padding: 0px; margin: 0px;"><br /><?=number_format($value['votes_avg'], 2, '.',' ');?></td>
               </tr>
             <? } ?>
+              <tr><td colspan="2" style="border-bottom: 1px solid gray; height: 2px;"></td></tr>
               <tr>
-                <td colspan="2"><hr /><b>Общий : </b><?=number_format($this->social_row[0]['avg_rating'], 3, '.',' ');?></td.
+                <td colspan="2"><b>Общий : </b><?=number_format($this->social_row[0]['avg_rating'], 3, '.',' ');?></td.
               </tr>
             </table>
       

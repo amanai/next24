@@ -1,10 +1,19 @@
-.vote1 span img { background-image:url('../images/vote/vote1.gif'); }
-.vote2 span img { background-image:url('../images/vote/vote2.gif'); }
-.vote3 span img { background-image:url('../images/vote/vote3.gif'); }
+.vote1 div img { background-image:url('../images/vote/vote1.gif'); }
+.vote2 div img { background-image:url('../images/vote/vote2.gif'); }
+.vote3 div img { background-image:url('../images/vote/vote3.gif'); }
+
+div.div_img {
+ border: 1px solid #9BC9E4;
+ padding: 0px;
+ margin: 0px;
+ width: 105px;
+ background-color: #CDCCD4;
+}
+
 #vote-grph img {
-  border:1px solid #655252;
-  height:8px;
-  margin:1px 0pt 0pt 0px;
+  border: 1px solid #655252;
+  height: 8px;
+  margin: 1px 0pt 0pt 0px;
 }
 select#vote1, select#vote2, select#vote3  {
   color: white;
