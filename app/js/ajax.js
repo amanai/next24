@@ -184,7 +184,7 @@ function getFormData(p){
 	parameter.p = p.p;
 	form_id = p.data.form_id;
 	a = $('#'+ form_id +' :text');
-	ind = 10;
+	ind = 0;
 	for (i = 0; i < a.length; i++){
 		//parameter += '&' + a[i].name + '=' + a[i].value;
 		

@@ -35,8 +35,8 @@
 </style>
 <script language="javascript">
 function set(id_el, key) {
-	
-    el = document.getElementById(key);
+	//window.location='<?//=Project::getRequest()->createUrl('Article', 'List', array($node['id']));?>';
+  /*  el = document.getElementById(key);
     p_el = document.getElementById('p_'+id_el);
     if (el.style.display=="none") {
         el.style.display="block";
@@ -46,6 +46,7 @@ function set(id_el, key) {
         p_el.style.backgroundImage = "url(<?=$this -> image_url."icons/plus.gif"; ?>)";
         
     }
+    */
  
  
    
@@ -53,35 +54,39 @@ function set(id_el, key) {
 </script>
 
 
-				
-								
-					<?foreach ($this->root as $node):?> 
-						<?if (count($this->child[$node['key']]) > 0):?> 
-							<div class="close_folder" id="p_<?=$node['key']?>"><b><a href="javascript: set('<?=$node['key'];?>', '<?=$node['key'];?>')" style="text-decoration:none;"><?=$node['name']?></a></b>
-							<? tree($node['key'], $this->child, $this); ?>
+
+	
+			
+					
+					
+					<?foreach ($this->root as $node):?>
+						<?if (count($this->child[$node['key']]) > 0):?>
+							<div <?if(strpos($this->select_node['key'], $node['key']) === 0):?>class="open_folder" <?else :?>class="close_folder" <?endif;?>><a href="<?=Project::getRequest()->createUrl('Article', 'List', array($node['id']))?>"><b> <?=$node['name']?></b></a>
+								<? tree($node['key'], $this->child, $this); ?>
 							</div>
-						<?else :?> 
-							<div class="item"><b>»</b> <a href="<?=Project::getRequest()->createUrl('Article', 'List', array($subNode['id']));?>"><?=$node['name']?></a></div>
+						<?else :?>
+							<div class="item"><b>»</b> <a href="<?=Project::getRequest()->createUrl('Article', 'List', array($node['id']));?>"><?=$node['name']?></a></div>
 						<?endif;?>
 					<?endforeach;?>
 					
-					<?function tree($key, $child, $obj) { ?>					
-						<div id="<?=$key?>" <?if(strpos($key, substr($obj->key, 0, 4)) === 0 && count($obj->key) > 0) {?> style="display: block" <? } else { ?> style="display: none" <? } ?>>
+					<?function tree($key, $child, $obj) { ?>
+					
 						<?foreach ($child[$key] as $subNode) :?>
+				
+							<? if (strpos($obj->select_node['key'], substr($subNode['key'], 0, -4)) === 0) : ?>
 								<?if(count($child[$subNode['key']]) > 0):?>
-									<div class="close_folder" id="p_<?=$subNode['key']?>" ><b ><a href="javascript: set('<?=$subNode['key']?>', '<?=key($child[$key]);?>')" style="text-decoration:none;"><?=$subNode['name']?></a></b>
-									<?tree($subNode['key'], $child, $obj);?>
+									<div <?if(strpos($obj->select_node['key'], $subNode['key']) === 0) :?>class="open_folder"<?else :?> class="close_folder" <?endif;?> ><a href="<?=Project::getRequest()->createUrl('Article', 'List', array($subNode['id']))?>"><b> <?=$subNode['name']?></b></a>
+										<?tree($subNode['key'], $child, $obj);?>
 									</div>
-								<?else :?> 
-									<div class="item" id="p_<?=$subNode['key']?>" ><b>»</b> <a href="<?=Project::getRequest()->createUrl('Article', 'List', array($subNode['id']));?>"><?=$subNode['name']?></a></div>
+								<?else :?>
+									<div><b>»</b> <a href="<?=Project::getRequest()->createUrl('Article', 'List', array($subNode['id']))?>"><?=$subNode['name']?></a></div>
 								<?endif;?>
-									
+							<?endif;?>
 						<?endforeach;?>
-						</div>
 					<? } ?>
 
 	
-
+   
 			</div>
 		</div>
 	</div>

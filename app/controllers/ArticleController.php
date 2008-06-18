@@ -20,7 +20,7 @@ class ArticleController extends SiteController {
 		$n = Node::by_key('', 'articles_tree');
 		$tree = $n->getBranch();		
 		foreach ($tree as $node) {
-			if($node['id'] == (int)$request->getKeyByNumber(0)) $data['key'] = $node['key'];
+			if($node['id'] == (int)$request->getKeyByNumber(0)) $data['select_node'] = $node;
 			if($node['level'] == 1) {
 				$data[root][$node['key']] = $node;
 			} else {

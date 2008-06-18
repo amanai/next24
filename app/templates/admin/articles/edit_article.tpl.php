@@ -1,11 +1,8 @@
-
+<?php include($this -> _include('../header.tpl.php')); ?>
 
 <script language="JavaScript">
 
-
-	var i = 0;
 	function addPage() {
-		i++;
 	/*	el = document.getElementById('pages');
 		el.innerHTML = el.innerHTML + '<tr><td>Загаловок страницы</td><td><input type="text" id="title_page[]" name="title_page[]" /></td></tr><tr><td>Текст страницы</td><td><?php
 				$oFCKeditor = new FCKeditor('article_content[]') ;
@@ -31,14 +28,15 @@
     	row.appendChild(td2);
     	td1.innerHTML = "Текст страницы";
     	td2.innerHTML = '<?php
-				$oFCKeditor = new FCKeditor("content_page[]") ;
+				$oFCKeditor = new FCKeditor('content_page[]') ;
 				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
 				$oFCKeditor -> Width = 700;
 				$oFCKeditor -> Create();
+				$editors[] = $oFCKeditor;
 			?>';
 
-		
 	}
+	
 </script>
 
 <table class="dialog" width="100%">
@@ -65,7 +63,7 @@
 			<td class="c_left">&nbsp;</td>
 			<td class="c_cen">
 				<!-- САМ ДИАЛОГ -->
-				<form id="edit_form">
+				<form id="edit_form" action="<?=$this->createUrl($this->controller, $this->save_action, array('id' => $this->edit_data['id']));?>" method="POST">
 				<input type="hidden" name="sub" value="0" id="sub">
 				<table width="100%" id="dialog">
 				<tbody>
@@ -96,6 +94,7 @@
 					<tr>
 						<td>Страницы</td>
 						<td><input type="button" onClick="addPage();" value="Добавить страницу"></td>
+						<td><input type="button" onClick='addPage2();' value="Добавить страницу"></td>
 					</tr>
 					<? if(count($this->edit_pages) <= 0) {?>
 					<tr>
@@ -109,6 +108,7 @@
 								$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
 								$oFCKeditor -> Width = 700;
 								$oFCKeditor -> Create() ;
+								$editors[] = $oFCKeditor;
 							?>
 						</td>
 					</tr>
@@ -129,14 +129,16 @@
 										$oFCKeditor -> Value = $page['p_text'];
 										$oFCKeditor -> Width = 700;
 										$oFCKeditor -> Create() ;
+										$editors[] = $oFCKeditor;
 									?>
 								</td>
 							</tr>
+							
 						<?endforeach;?>
 					<? } ?>
 				</tbody>
 				</table>
-
+				
 				</form>
 
 				<!-- -->
@@ -147,11 +149,13 @@
 		<tr>
 			<td class="b_left">&nbsp;</td>
 			<td class="b_cen"><div class="b_delim">
-				<div class="button bbig" style="float: right;"><a href="#" onClick='cancel(<?=$this->cancel_param;?>);'>Отмена</a></div>
-				<div class="button bbig" style="float: right;"><a href="#" onclick='save(<?=$this->save_param;?>);'>Сохранить</a></div>
+				<div class="button bbig" style="float: right;"><a href="#" onClick='history.back()'>Отмена</a></div>
+				<div class="button bbig" style="float: right;"><a href="#" onclick='document.getElementById("edit_form").submit();'>Сохранить</a></div>
 			</td>
 			<td class="b_right">&nbsp;</td>
 		</tr>
 	</tbody>
 </table>
+
+<?php include($this -> _include('../footer.tpl.php')); ?>
 

@@ -9,10 +9,6 @@ class AdminArticleView extends BaseAdminView {
 		$this->set($data);
 	}
 	
-	public static function addPage() {
-		$this->count_page++;
-	}
-	
 	public function ManagedSection($data) {
 		$response = Project::getAjaxResponse();
 		$response->save();
@@ -57,7 +53,7 @@ class AdminArticleView extends BaseAdminView {
 		$response->enable('list_block');
 		$data['cancel_param'] = $response->getResponse();
 		$response->restore();
-		$data['save_param'] = AjaxRequest::getJsonParam($data['controller'], $data['save_action'],  array('id'=>$id, 'form_id' => 'edit_form'), "POST");
+		$data['save_param'] = AjaxRequest::getJsonParam($data['controller'], $data['save_action'],  array('id'=>$id, 'form_id' => 'edit_form', 'editors' => array('edit[]', 'edit[]')), "POST");
 		$this->set($data);
 		$this->setTemplate($this->_dir, 'edit_article.tpl.php');
 		$response->block('edit_block', true, $this->parse());

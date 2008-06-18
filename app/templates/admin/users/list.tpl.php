@@ -1,4 +1,5 @@
-	<div style="float: left;"><h3>Пользователи</h3></div>
+
+<div style="float: left;"><h3>Пользователи</h3></div>
 	<table class="list_table">
 		<tr class="head">
 			<td class="first" rowspan="100">&nbsp;</td>
@@ -47,6 +48,7 @@
 			<td>
 				<?php if ((int)$item['banned'] == 0){ echo 'нет'; } else { echo '<b>'.$item['banned_date'].'</b>'; } ?>
 			</td>
+			<td><?=$this->r?></td>
 			<td>
 				<div class="button bsmall" style="float: left;"><a href="#" onClick='ajax(<?php echo $item['edit_link'];?>);'><img src="<?php echo $this -> image_url;?>icons/small_edit.gif" alt="Правка"/></a></div>
 				<div class="button bsmall" style="float: left;"><a href="#" onclick='if (confirm("Удалить пользователя <?php echo $item['first_name'] . " " . $item['last_name']; ?>?")){document.location="<?php echo $item['delete_link'];?>"}'><img src="<?php echo $this -> image_url;?>icons/small_del.gif" alt="Удаление"/></a></div>

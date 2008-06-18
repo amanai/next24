@@ -159,7 +159,7 @@ class AdminArticleController extends AdminController {
 		$n = Node::by_key('', 'articles_tree');
 		$data['cat_list'] = $n->getBranch();
 		$this->_view->EditArticle($data);
-		$this->_view->ajax();
+		$this->_view->parse();
 	}
 		
 	public function SaveArticleAction() {
@@ -184,11 +184,7 @@ class AdminArticleController extends AdminController {
 			$article_page_model->p_text = $request->content_page[$i];
 			$article_page_model->save();
 		}
-		$data = array();
-		$data['req'] = $request;
-		$this->makeArticleList($data);
-		$this -> _view -> AjaxArticleList($data);
-		$this->_view->ajax();
+		Project::getResponse() -> redirect($request -> createUrl('AdminArticle', 'List'));
 	}
 	
 	public function ListAction() {
@@ -208,12 +204,13 @@ class AdminArticleController extends AdminController {
 		$data['article_list'] = $article_model->loadPage();
 		$data['list_pager'] = $article_model -> getPager();
 		$data['controller'] = null;
-		$data['list_action'] = 'List';
+		$data['list_action'] = "List";
 		$data['edit_action'] = "EditArticle";
 		$data['delete_article_action'] = "DeleteArticle";
 		$data['reset_rate_action'] = "ResetRate";
-		$data['add_link'] = AjaxRequest::getJsonParam($data['controller'], $data['edit_action']);
+		$data['add_link'] = $request->createUrl($data['controller'], $data['edit_action']);
 	}
+
 	
 	
 }
