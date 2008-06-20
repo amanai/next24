@@ -87,13 +87,13 @@
 					<td class="menu2"> </td>
 					<td class="menu3">
 						<a href="#">Новости</a><br />
-						<a href="<?php echo $this->createUrl('Article', 'List', null, false)?>">Статьи</a><br />
-						<a href="#">Найти знакомых</a><br />
+						<a href="<?php echo $this->createUrl('Article', 'List', null, false); ?>">Статьи</a><br />
+						<a href="<?php echo $this->createUrl('SearchUser','SearchUserMain'); ?>">Найти знакомых</a><br />
 						<a href="#">Дневники</a><br />
-						<a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false)?>">Вопрос-ответ</a><br />
-						<a href="<?php echo $this->createUrl('Album', 'LastList', null, false);?>">Фотоальбомы</a><br />
-            <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false)?>">Закладки</a><br />
-            <a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false)?>">Соц. разделы</a>
+						<a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false); ?>">Вопрос-ответ</a><br />
+						<a href="<?php echo $this->createUrl('Album', 'LastList', null, false); ?>">Фотоальбомы</a><br />
+            <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>">Закладки</a><br />
+            <a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false); ?>">Соц. разделы</a>
 					</td>
 				</tr>
 				</table>
