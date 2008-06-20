@@ -1,7 +1,7 @@
 <?php
-class UserInterestModel extends BaseModel{
+class UserInterestsModel extends BaseModel{
 		function __construct(){
-			parent::__construct('user_interest');
+			parent::__construct('user_interests');
 		}
 		
 		function set($user_id, $interest_id){
