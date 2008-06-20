@@ -204,9 +204,9 @@
 					foreach($interest_list as $interest){
 						$interest=trim($interest);
 						if (strlen($interest)){
-							$interest_model = new InterestModel;
+							$interest_model = new InterestsModel;
 							$interest_id = $interest_model -> set($interest);
-							$user_interest_model = new UserInterestModel;
+							$user_interest_model = new UserInterestsModel;
 							$user_interest_model -> set($user_id, $interest_id);
 						}
 					}
