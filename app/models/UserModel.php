@@ -67,5 +67,44 @@ class UserModel extends BaseModel{
 		function getActivationCode(){
 			return md5($this -> login . $this -> salt . $this -> pass);
 		}
+    
+    /**
+    * Запрос основного поиска
+    */
+    public function loadSearchUserMain($p_sex = null, $p_age_from = null, $p_age_to = null, $p_country = null, $p_login = null, $p_with_photo = null){
+      $v_where = '1=1';
+      if ($p_sex !== null) { 
+        if (((int)$p_sex == 0) or ((int)$p_sex == 1)) $v_where .= " and u.`gender` = ".(int)$p_sex;
+      }
+      if ((int)$p_age_from > 0)   $v_where .= ' and YEAR(now())-YEAR(u.`birth_date`) >= '.(int)$p_age_from;
+      if ((int)$p_age_to   > 0)   $v_where .= ' and YEAR(now())-YEAR(u.`birth_date`) <= '.(int)$p_age_to;
+      if ((int)$p_country  > 0)   $v_where .= ' and u.`country_id` = '.(int)$p_country;
+      if ($p_login !== null)      $v_where .= ' and u.`login` like "%'.$p_login.'%"';
+      if ($p_with_photo !== null) $v_where .= ' and p.cnt > 0';
+      $sql="
+      SELECT 
+          u.*,
+          YEAR(now())-YEAR(u.`birth_date`) as user_age,
+          cn.`name` as country_name,
+          ct.`name` as city_name,
+          IF(p.cnt is null, 0, p.cnt) as count_photos
+        FROM `users` u
+          LEFT JOIN `countries` cn ON u.`country_id` = cn.`id`
+          LEFT JOIN `cities` ct ON u.`city_id` = ct.`id`
+          LEFT JOIN (SELECT p2.`user_id`, count(*) as cnt FROM `photo` p2 GROUP BY p2.`user_id`) p ON u.`id` = p.`user_id`
+        WHERE ".$v_where."
+        ORDER BY u.`reputation` DESC, u.`registration_date`
+        LIMIT ?d, ?d 
+        ";
+      $result = Project::getDatabase() -> 
+          selectPage( $this -> _countRecords, 
+                      $sql, 
+                      $this -> _pager -> getStartLimit(), 
+                      $this -> _pager -> getPageSize() /* limit params */
+                    );
+      $this -> updatePagerAmount();
+      return $result;
+      
+    }
 }
 ?>
