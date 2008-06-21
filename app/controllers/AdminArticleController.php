@@ -151,15 +151,21 @@ class AdminArticleController extends AdminController {
 		$this->BaseAdminData();
 		$data['controller'] = null;
 		$data['save_action'] = "SaveArticle";
-		$article_model = new ArticleModel();
-		$data['edit_data'] = $article_model->load($request->getKeyByNumber(0));
-		$article_page_model = new ArticlePageModel();
-		$data['edit_pages'] = $article_page_model->loadByArticleId($request->getKeyByNumber(0));
+		$id = $request->getKeyByNumber(0);
+		if($id > 0) {
+			$article_model = new ArticleModel();
+			$data['edit_data'] = $article_model->load($id);
+			$article_page_model = new ArticlePageModel();
+			$data['edit_pages'] = $article_page_model->loadByArticleId($id);
+			$this->_createLinks($data, count($data['edit_pages']), $id);
+		} else {
+			$this->_createLinks($data, 1,10);
+		}
 		$article_tree_model = new ArticleTreeModel();
 		$n = Node::by_key('', 'articles_tree');
 		$data['cat_list'] = $n->getBranch();
 		$this->_view->EditArticle($data);
-		$this->_view->parse();
+		$this->_view->ajax();
 	}
 		
 	public function SaveArticleAction() {
@@ -175,7 +181,6 @@ class AdminArticleController extends AdminController {
 		$article_model->rate_status = (bool)$request->allow_rate;
 		$article_model->creation_date = date("Y-m-d H:i:s");
 		$id = $article_model->save();
-		
 		for($i = 0; $i < count($request->title_page); $i++) {
 			$article_page_model = new ArticlePageModel();
 			$article_page_model->load($request->id_page[$i]);
@@ -184,7 +189,10 @@ class AdminArticleController extends AdminController {
 			$article_page_model->p_text = $request->content_page[$i];
 			$article_page_model->save();
 		}
-		Project::getResponse() -> redirect($request -> createUrl('AdminArticle', 'List'));
+		$data = array();
+		$this->makeArticleList($data);
+		$this -> _view -> AjaxArticleList($data);
+		$this->_view->ajax();
 	}
 	
 	public function ListAction() {
@@ -204,13 +212,28 @@ class AdminArticleController extends AdminController {
 		$data['article_list'] = $article_model->loadPage();
 		$data['list_pager'] = $article_model -> getPager();
 		$data['controller'] = null;
-		$data['list_action'] = "List";
+		$data['list_action'] = 'List';
 		$data['edit_action'] = "EditArticle";
 		$data['delete_article_action'] = "DeleteArticle";
 		$data['reset_rate_action'] = "ResetRate";
-		$data['add_link'] = $request->createUrl($data['controller'], $data['edit_action']);
+		$data['add_link'] = AjaxRequest::getJsonParam($data['controller'], $data['edit_action']);
 	}
-
+	
+	public function AddPageAction() {
+		$data = array();
+		$this->_createLinks($data);
+		$this -> _view -> AddPage($data);
+		$this -> _view -> ajax();
+	}
+	
+	private function _createLinks(&$data, $num_page = null, $id = 0) {
+		$num_page === null ? $data['num_page'] = Project::getRequest()->getKeyByNumber(0) + 1: $data['num_page'] = $num_page;
+		$data['add_page_link'] = AjaxRequest::getJsonParam('AdminArticle', 'AddPage', array($data['num_page'], $id));
+    	for ($i = 0;$i < $data['num_page'] ;$i++) {
+    		$editors[] = "content_page[$i]"; 
+		}
+		$data['save_param'] = AjaxRequest::getJsonParam('AdminArticle', 'SaveArticle',  array('id' => $id, 'form_id' => 'edit_form', 'editor_form' => $editors), "POST");
+	}
 	
 	
 }

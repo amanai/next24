@@ -1,43 +1,3 @@
-<?php include($this -> _include('../header.tpl.php')); ?>
-
-<script language="JavaScript">
-
-	function addPage() {
-	/*	el = document.getElementById('pages');
-		el.innerHTML = el.innerHTML + '<tr><td>Загаловок страницы</td><td><input type="text" id="title_page[]" name="title_page[]" /></td></tr><tr><td>Текст страницы</td><td><?php
-				$oFCKeditor = new FCKeditor('article_content[]') ;
-				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
-				$oFCKeditor -> Value = $this -> full_text;
-				$oFCKeditor -> Width = 700;
-				$oFCKeditor -> Create() ;
-			?></td></tr>';*/
-		var tbody = document.getElementById('dialog').getElementsByTagName('TBODY')[0];
-		var row = document.createElement("TR");
-    	tbody.appendChild(row);
-    	var td1 = document.createElement("TD");
-    	var td2 = document.createElement("TD");
-    	row.appendChild(td1);
-    	row.appendChild(td2);
-    	td1.innerHTML = "Загаловок страницы";
-    	td2.innerHTML = '<input type="text" id="title_page[]" name="title_page[]" />';
-    	var row = document.createElement("TR");
-    	tbody.appendChild(row);
-    	var td1 = document.createElement("TD");
-    	var td2 = document.createElement("TD");
-      	row.appendChild(td1);
-    	row.appendChild(td2);
-    	td1.innerHTML = "Текст страницы";
-    	td2.innerHTML = '<?php
-				$oFCKeditor = new FCKeditor('content_page[]') ;
-				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
-				$oFCKeditor -> Width = 700;
-				$oFCKeditor -> Create();
-				$editors[] = $oFCKeditor;
-			?>';
-
-	}
-	
-</script>
 
 <table class="dialog" width="100%">
 	<tbody>
@@ -63,7 +23,7 @@
 			<td class="c_left">&nbsp;</td>
 			<td class="c_cen">
 				<!-- САМ ДИАЛОГ -->
-				<form id="edit_form" action="<?=$this->createUrl($this->controller, $this->save_action, array('id' => $this->edit_data['id']));?>" method="POST">
+				<form id="edit_form">
 				<input type="hidden" name="sub" value="0" id="sub">
 				<table width="100%" id="dialog">
 				<tbody>
@@ -93,48 +53,45 @@
 					</tr>
 					<tr>
 						<td>Страницы</td>
-						<td><input type="button" onClick="addPage();" value="Добавить страницу"></td>
-						<td><input type="button" onClick='addPage2();' value="Добавить страницу"></td>
+						<td><div id="add_btn"><input type="button" onClick='ajax(<?=$this->add_page_link?>)' value="Добавить страницу"></div></td>
 					</tr>
-					<? if(count($this->edit_pages) <= 0) {?>
+					<? if($this->num_page <= 0) {?>
 					<tr>
-						<td>Загаловок страницы</td>
+						<td>Загаловок страницы11</td>
 						<td><input type="text" id="title_page[]" name="title_page[]" /></td>
 					</tr>
 					<tr>
 						<td>Текст страницы</td>
 						<td><?php
-								$oFCKeditor = new FCKeditor('content_page[]') ;
+								$oFCKeditor = new FCKeditor("content_page[0]") ;
 								$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
 								$oFCKeditor -> Width = 700;
 								$oFCKeditor -> Create() ;
-								$editors[] = $oFCKeditor;
 							?>
 						</td>
 					</tr>
 					<? } else { ?>
-						<?foreach ($this->edit_pages as $page):?>
+						<?for($i = 0;$i < $this->num_page; $i++):?>
 							<tr>
 								<td>Загаловок страницы</td>
 								<td>
-									<input type="text" id="title_page[]" name="title_page[]" value="<?=$page['title']?>"/>
-									<input type="hidden" id="id_page[]" name="id_page[]" value="<?=$page['id']?>" />
+									<input type="text" id="title_page[]" name="title_page[]" value="<?=$this->edit_pages[$i]['title']?>"/>
+									<input type="hidden" id="id_page[]" name="id_page[]" value="<?=$this->edit_pages[$i]['id']?>" />
 								</td>
 							</tr>
 							<tr>
 								<td>Текст страницы</td>
 								<td><?php
-										$oFCKeditor = new FCKeditor('content_page[]') ;
-										$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
-										$oFCKeditor -> Value = $page['p_text'];
-										$oFCKeditor -> Width = 700;
-										$oFCKeditor -> Create() ;
-										$editors[] = $oFCKeditor;
+										$oFCKeditor[$i] = new FCKeditor("content_page[$i]") ;
+										$oFCKeditor[$i] -> BasePath = $this -> js_url.'fckeditor/' ;
+										$oFCKeditor[$i] -> Value = $this->edit_pages[$i]['p_text'];
+										$oFCKeditor[$i] -> Width = 700;
+										$oFCKeditor[$i] -> Create() ;
 									?>
 								</td>
 							</tr>
 							
-						<?endforeach;?>
+						<?endfor;?>
 					<? } ?>
 				</tbody>
 				</table>
@@ -149,13 +106,13 @@
 		<tr>
 			<td class="b_left">&nbsp;</td>
 			<td class="b_cen"><div class="b_delim">
-				<div class="button bbig" style="float: right;"><a href="#" onClick='history.back()'>Отмена</a></div>
-				<div class="button bbig" style="float: right;"><a href="#" onclick='document.getElementById("edit_form").submit();'>Сохранить</a></div>
+				<div class="button bbig" style="float: right;"><a href="#" onClick='cancel(<?=$this->cancel_param;?>);'>Отмена</a></div>
+				<div class="button bbig" style="float: right;" id="save_btn"><a href="#" onclick='save(<?=$this->save_param?>);'>Сохранить</a></div>
 			</td>
 			<td class="b_right">&nbsp;</td>
 		</tr>
 	</tbody>
 </table>
 
-<?php include($this -> _include('../footer.tpl.php')); ?>
+<div id="page_div"></div>
 

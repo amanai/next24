@@ -255,8 +255,8 @@ function getFormData(p){
 		parameter[a[i].name] = a[i].value;
 	}
 	
-	
 	if (p.editors){
+		
 		$.each(p.editors, function(i, item){
 			try{
 				var oEditor = FCKeditorAPI.GetInstance(item);
@@ -266,6 +266,17 @@ function getFormData(p){
 				parameter[editorName] = content;
 			} catch(e){}
 			});
+	}
+	
+	if (p.data.editor_form) {
+		$.each(p.data.editor_form, function(i, item) {
+			try{
+				var oEditor = FCKeditorAPI.GetInstance(item);
+				var content = oEditor.GetXHTML( true ) ;
+				content = encodeURIComponent(content);
+				parameter[item] = content;
+			} catch(e){}
+		})
 	}
 	return parameter;
 }

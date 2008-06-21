@@ -2,7 +2,6 @@
 
 class AdminArticleView extends BaseAdminView {
 	protected $_dir = 'articles';
-	static public $count_page = 0;
 	
 	public function ShowTree($data) {
 		$this->setTemplate($this->_dir, 'tree.tpl.php');
@@ -53,7 +52,6 @@ class AdminArticleView extends BaseAdminView {
 		$response->enable('list_block');
 		$data['cancel_param'] = $response->getResponse();
 		$response->restore();
-		$data['save_param'] = AjaxRequest::getJsonParam($data['controller'], $data['save_action'],  array('id'=>$id, 'form_id' => 'edit_form', 'editors' => array('edit[]', 'edit[]')), "POST");
 		$this->set($data);
 		$this->setTemplate($this->_dir, 'edit_article.tpl.php');
 		$response->block('edit_block', true, $this->parse());
@@ -69,6 +67,14 @@ class AdminArticleView extends BaseAdminView {
 		$this->set($data);
 		$response->block('list_block', true, $this->parse());
 	}
+	
+	public function AddPage($data) {
+		$response = Project::getAjaxResponse();
+		$this -> set($data);
+		$this -> setTemplate($this -> _dir, 'page.tpl.php');
+		$response -> block('page_div', true, $this -> parse());
+	}
+	
 	
 }
 
