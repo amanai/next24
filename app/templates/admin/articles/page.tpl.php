@@ -14,7 +14,7 @@ var tbody = document.getElementById('dialog').getElementsByTagName('TBODY')[0];
     	var td2 = document.createElement("TD");
       	row.appendChild(td1);
     	row.appendChild(td2);
-    	td1.innerHTML = "Текст страницы <?=$this->num_page-1?>";
+    	td1.innerHTML = "Текст страницы";
     	td2.innerHTML = '<?php
 				$oFCKeditor = new FCKeditor("content_page[".($this->num_page-1)."]") ;
 				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;

@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * Контролер администрирования статей
+ */
+
 require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AdminController.php');
 
 class AdminArticleController extends AdminController {
@@ -8,6 +13,7 @@ class AdminArticleController extends AdminController {
 		parent::__construct("AdminArticleView");
 	}
 	
+	//сбрасывает рейтинг статьи передаеться id статьи
 	public function ResetRateAction() {
 		
 		$request = Project::getRequest();
@@ -16,6 +22,7 @@ class AdminArticleController extends AdminController {
 		//Project::getResponse()->redirect($request->createUrl('Article', 'List'));
 	}
 	
+	//отображения дерева категорий статей
 	public function ShowTreeAction() {
 		$this->BaseAdminData();
 		$data = array();
@@ -25,6 +32,7 @@ class AdminArticleController extends AdminController {
 		$this->_view->parse();		
 	}
 	
+	// редактирование/создание категории
 	public function ManagedSectionAction() {
 		$request = Project::getRequest();
 		$data = array();
@@ -59,6 +67,7 @@ class AdminArticleController extends AdminController {
 		}
 	}
 	
+	//удаление категории статей
 	public function DeleteSectionAction() {
 		$request = Project::getRequest();
 		$id = (int)$request->getKeyByNumber(0);
@@ -69,6 +78,7 @@ class AdminArticleController extends AdminController {
 		Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));	
 	}
 	
+	// удаление статьи
 	public function DeleteArticleAction() {
 		$request = Project::getRequest();
 		$id = (int)$request->getKeyByNumber(0);
@@ -81,6 +91,7 @@ class AdminArticleController extends AdminController {
 		$this->_view->ajax();	
 	}
 	
+	//добавление конкурса к категории
 	public function SetCompetitionAction() {
 		$request = Project::getRequest();
 		if($request->sub == 0) {
@@ -108,6 +119,7 @@ class AdminArticleController extends AdminController {
 		}
 	}
 	
+	// проверка закончен ли онкурс, если да то опеределяем победителя
 	public function VerifyCompetitionAction() {
 		$article_competition_model = new ArticleCompetitionModel();
 		$endCompetition = $article_competition_model->selectEndCompetition();
@@ -133,6 +145,7 @@ class AdminArticleController extends AdminController {
 		}
 	}
 	
+	// модерирование категории
 	public function SetActiveAction() {
 		$request = Project::getRequest();
 		$id = (int)$request->getKeyByNumber(0);
@@ -145,6 +158,7 @@ class AdminArticleController extends AdminController {
 		Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));
 	}
 	
+	// диалог редактирования/создания статьи
 	public function EditArticleAction() {
 		$request = Project::getRequest();
 		$data = array();
@@ -167,7 +181,8 @@ class AdminArticleController extends AdminController {
 		$this->_view->EditArticle($data);
 		$this->_view->ajax();
 	}
-		
+	
+	//сохранение статьи
 	public function SaveArticleAction() {
 		$request = Project::getRequest();
 		$id = (int)$request->id;
@@ -195,6 +210,7 @@ class AdminArticleController extends AdminController {
 		$this->_view->ajax();
 	}
 	
+	// отображение списка статей
 	public function ListAction() {
 		$request = Project::getRequest();
 		$data = array();
@@ -204,6 +220,7 @@ class AdminArticleController extends AdminController {
 		$this->_view->parse();
 	}
 	
+	// формирования списка статей
 	public function makeArticleList(&$data) {
 		$request = Project::getRequest();
 		$article_model = new ArticleModel();
@@ -219,6 +236,7 @@ class AdminArticleController extends AdminController {
 		$data['add_link'] = AjaxRequest::getJsonParam($data['controller'], $data['edit_action']);
 	}
 	
+	// ajax добавление страницы к статье
 	public function AddPageAction() {
 		$data = array();
 		$this->_createLinks($data);
@@ -226,8 +244,11 @@ class AdminArticleController extends AdminController {
 		$this -> _view -> ajax();
 	}
 	
+	// формирование ссылок сохранениястатьи и добавления страницы
 	private function _createLinks(&$data, $num_page = null, $id = 0) {
-		$num_page === null ? $data['num_page'] = Project::getRequest()->getKeyByNumber(0) + 1: $data['num_page'] = $num_page;
+		$request = Project::getRequest();
+		$num_page === null ? $data['num_page'] = $request->getKeyByNumber(0) + 1: $data['num_page'] = $num_page;
+		$request->getKeyByNumber(1) > 0 ? $id = $request->getKeyByNumber(1) : $id = $id;
 		$data['add_page_link'] = AjaxRequest::getJsonParam('AdminArticle', 'AddPage', array($data['num_page'], $id));
     	for ($i = 0;$i < $data['num_page'] ;$i++) {
     		$editors[] = "content_page[$i]"; 

@@ -22,7 +22,7 @@
 					</div>	
 					<h1><?=$this->article['title']?></h1>
 					<b><?=$this->page_content['title']?></b>
-						<p><?=htmlspecialchars($this->page_content['p_text'])?></p>
+						<p><?=$this->page_content['p_text']?></p>
 						<div id="micro">
 							<img src="<?=$this -> image_url; ?>folder.png" width="15" height="12" id="ico1"/> Категория: <a href="<?=$this->createUrl('Article', 'List', $this->category['id'])?>"><?=$this->category['name']?></a>
 							<img src="<?=$this -> image_url; ?>time.png" width="16" height="16" /> <?=$this->article['creation_date']?>
