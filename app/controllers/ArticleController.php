@@ -177,7 +177,8 @@ class ArticleController extends SiteController {
 			$votes = $article_vote_model->loadByArticleUser($id, Project::getUser()->getDbUser()->id);
 			$pages = $article_page_model->loadByArticleId($id);
 			$data['article'] = $article_model->load($id);
-			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, true, false, $article_model->title);
+			
+			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, true, $article_model->title);
 			$data['category'] = $article_tree_model->load($article_model->articles_tree_id);
 			$data['page_content'] = $pages[$pageId];
 			$data['pager_view'] = $article_pager->ShowPager(count($pages), $pageId, 'Article', 'ArticleView', array($id));
@@ -185,6 +186,7 @@ class ArticleController extends SiteController {
 			$data = array_merge($data, $article_vote_model->rateByArticleId($id));
 			$article_model->views++;
 			$article_model->save();
+			
 			if($article_model->allowcomments > 0) {
 				$controller = new BaseCommentController();
 				$data['comment_list'] = $controller -> CommentList(
@@ -199,6 +201,7 @@ class ArticleController extends SiteController {
 				$data['add_comment_element_id'] = $id;
 				$data['add_comment_id'] = 0;
 			}
+			
 			$this->_view->ViewArticle($data);
 			$this->_view->parse();
 		}
