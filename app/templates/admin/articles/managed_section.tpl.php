@@ -16,7 +16,7 @@
 								Редактирование категории
 							</td>
 							<td>
-								<div class="button bclose"><a href="#">X</a></div>
+								<div class="button bclose"><a href="#" onclick='cancel(<?=$this->cancel_param;?>);'>X</a></div>
 							</td>
 						</tr>
 					</tbody>
@@ -67,7 +67,7 @@
 		<tr>
 			<td class="b_left">&nbsp;</td>
 			<td class="b_cen"><div class="b_delim">
-				<div class="button bbig" style="float: right;"><a href="#" >Отмена</a></div>
+				<div class="button bbig" style="float: right;"><a href="#" onclick='cancel(<?=$this->cancel_param;?>);'>Отмена</a></div>
 				<div class="button bbig" style="float: right;"><a href="#" onclick="getElementById('sub').value=1;getElementById('edit_form').submit()">Сохранить</a></div>
 			</td>
 			<td class="b_right">&nbsp;</td>

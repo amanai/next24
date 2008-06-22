@@ -6,7 +6,7 @@
 		<table width="100%" cellpadding="2">
 		<tr>
 			<td width="100">Оценка</td>
-			<td><?=$this->vote_result?></td>
+			<td><?=$this->article['rate_status'] == ARTICLE_RATE_STATUS::WINNER ? "Winner" : $this->vote_result;?></td>
 		</tr>
 		</table>
 

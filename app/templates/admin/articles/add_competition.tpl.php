@@ -10,7 +10,7 @@
 								Добавление конкурса
 							</td>
 							<td>
-								<div class="button bclose"><a href="#">X</a></div>
+								<div class="button bclose"><a href="#" onclick='cancel(<?=$this->cancel_param;?>);'>X</a></div>
 							</td>
 						</tr>
 					</tbody>

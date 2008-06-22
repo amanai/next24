@@ -181,8 +181,8 @@ class ArticleController extends SiteController {
 			$data['category'] = $article_tree_model->load($article_model->articles_tree_id);
 			$data['page_content'] = $pages[$pageId];
 			$data['pager_view'] = $article_pager->ShowPager(count($pages), $pageId, 'Article', 'ArticleView', array($id));
-			$data['vote_status'] = !count($votes) && $article_model->rate_status == ARTICLE_RATE_STATUS::IN_RATE;
-			//$data = array_merge($data, $article_vote_model->rateByArticleId($id));
+			$data['vote_status'] = count($votes);
+			$data = array_merge($data, $article_vote_model->rateByArticleId($id));
 			$article_model->views++;
 			$article_model->save();
 			if($article_model->allowcomments > 0) {

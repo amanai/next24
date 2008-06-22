@@ -39,6 +39,10 @@
 	<li><a href="<?=$this->createUrl('AdminQuestionAnswer','CatList')?>">Категории вопросов</a></li>
 	<li><a href="<?=$this->createUrl('AdminQuestionAnswer','QuestionList')?>">Вопросы</a></li>
 </ul></div>
+<div class="sm" id="sub3"><ul>
+	<li><a href="<?=$this->createUrl('AdminArticle','ShowTree')?>">Категории статей</a></li>
+	<li><a href="<?=$this->createUrl('AdminArticle','List')?>">Статьи</a></li>
+</ul></div>
 
 <table class="main">
 	<!-- Header -->
@@ -72,6 +76,7 @@
 						<li><a href="<?php echo $menu_item['link']; ?>"><?php echo $menu_item['name']; ?></a></li>
 					<?php } ?>
 					<li><a href="#" class="sub" id="_sub2">Вопросы</a></li>
+					<li><a href="#" class="sub" id="_sub3">Статьи</a></li>
 				</ul>
 				
 
