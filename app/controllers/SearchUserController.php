@@ -66,7 +66,7 @@ class SearchUserController extends SiteController {
     }       
     
     if ($v_session -> getKey('p_session_save', null) == true) {
-      $this->_getData($data, 'SearchUserMain', $v_n_page);
+      $this->_getData($data, 'SearchUserMain', $v_n_page, null);
     }
 		
 	  $this->_view->SearchUser_Main($data);
@@ -77,11 +77,18 @@ class SearchUserController extends SiteController {
   * Action: Поиск по интересам
   */
 	public function SearchByInterestAction() {
+    $v_request = Project::getRequest();
+    $v_session = Project::getSession();
 		$data = array();
 		$this->_BaseSiteData($data);
 		$data['action'] = 'SearchByInterest';
+    $v_id_interest  = (int)$v_request->getKeyByNumber(0);
+    $v_n_page       = (int)$v_request->getKeyByNumber(1);
     $v_model = new InterestsModel();
     $data['interests_list'] = $v_model->loadAll();
+    if ($v_id_interest > 0) {
+      $this->_getData($data, 'SearchByInterest', $v_n_page, $v_id_interest);
+    }
     $this->_view->Search_ByInterest($data);
 		$this->_view->parse();
 	}               
@@ -106,23 +113,30 @@ class SearchUserController extends SiteController {
   /**
   * Формирование всех основных данных для HTML-форм
   */
-  protected function _getData( &$data, $p_action, $p_n_page = null) {
+  protected function _getData( &$data, $p_action, $p_n_page = null, $p_id_interest = null) {
     $v_n_page     = (int)$p_n_page;
     $v_model      = new UserModel();
     $v_list_per_page = $this->getParam('search_user_per_page', 4);
     $v_DbPager = new DbPager($v_n_page, $v_list_per_page);
     $v_model -> setPager($v_DbPager);
-    $data['list_search_user'] = $v_model->loadSearchUserMain(
+    $data['list_search_user'] = $v_model->loadSearchUser(
             $data['p_search_sex'],
             $data['p_search_age_from'],
             $data['p_search_age_to'],
             $data['p_search_counrty'],
             $data['p_search_login'],
-            $data['p_search_with_photo']
+            $data['p_search_with_photo'],
+            $p_id_interest
             );
     $v_pager_view = new SitePagerView();
     // Формируем объект-постраничный вывод
-    $data['search_user_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'SearchUser', $p_action);
+    if ($p_id_interest == null) {
+      // -- Pager для вкладки "Найти знакомых"
+      $data['search_user_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'SearchUser', $p_action);
+    } else {
+      // -- Pager для вкладки "Поиск по интересам"
+      $data['search_user_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'SearchUser', $p_action, array($p_id_interest));
+    }
     // class SitePagerView -> function show2(IDbPager $pager, $controller = null, $action = null, $params = array(), $user = null)
   }
   

@@ -69,10 +69,11 @@ class UserModel extends BaseModel{
 		}
     
     /**
-    * Запрос основного поиска
+    * Запрос основного поиска пользователей
     */
-    public function loadSearchUserMain($p_sex = null, $p_age_from = null, $p_age_to = null, $p_country = null, $p_login = null, $p_with_photo = null){
+    public function loadSearchUser($p_sex = null, $p_age_from = null, $p_age_to = null, $p_country = null, $p_login = null, $p_with_photo = null, $p_id_interests_tag = null){
       $v_where = '1=1';
+      $v_left_join = '';
       if ($p_sex !== null) { 
         if (((int)$p_sex == 0) or ((int)$p_sex == 1)) $v_where .= " and u.`gender` = ".(int)$p_sex;
       }
@@ -81,6 +82,10 @@ class UserModel extends BaseModel{
       if ((int)$p_country  > 0)   $v_where .= ' and u.`country_id` = '.(int)$p_country;
       if ($p_login !== null)      $v_where .= ' and u.`login` like "%'.$p_login.'%"';
       if ($p_with_photo !== null) $v_where .= ' and p.cnt > 0';
+      if ((int)$p_id_interests_tag > 0) {
+        $v_left_join = ' LEFT JOIN `users_interests` ui ON ui.`user_id` = u.`id` ';
+        $v_where    .= ' and ui.`interest_id` = '.(int)$p_id_interests_tag;
+      }
       $sql="
       SELECT 
           u.*,
@@ -92,6 +97,7 @@ class UserModel extends BaseModel{
           LEFT JOIN `countries` cn ON u.`country_id` = cn.`id`
           LEFT JOIN `cities` ct ON u.`city_id` = ct.`id`
           LEFT JOIN (SELECT p2.`user_id`, count(*) as cnt FROM `photo` p2 GROUP BY p2.`user_id`) p ON u.`id` = p.`user_id`
+          ".$v_left_join."
         WHERE ".$v_where."
         ORDER BY u.`reputation` DESC, u.`registration_date`
         LIMIT ?d, ?d 
