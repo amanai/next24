@@ -51,19 +51,20 @@ class AdminArticleController extends AdminController {
 		} else {
 			$id = (int)$request->getKeyByNumber(0);
 			$article_tree_model = new ArticleTreeModel();
+			$article_tree_model->load($id);
+			$parentNode = Node::by_key($request->parent_id, 'articles_tree');
+			$article_tree_model->user_id = Project::getUser()->getDbUser()->id;
+			$article_tree_model->name = $request->section_name;
 			if($id > 0) {
-				$article_tree_model->load($id);
-			}
-			$node = Node::by_key($request->parent_id, 'articles_tree');
-			$key = $node->getNewChildKey();
-			if($key->level <= 5) {
-				$article_tree_model->user_id = Project::getUser()->getDbUser()->id;
-				$article_tree_model->name = $request->section_name;
+				$node = Node::by_key($article_tree_model->key, 'articles_tree');
+				$node->changeParent($parentNode);
+			} else {
+				$key = $parentNode->getNewChildKey();
 				$article_tree_model->key = $key;
 				$article_tree_model->level = $key->level;
 				$article_tree_model->save();
 			}
-			Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));			
+			Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));	
 		}
 	}
 	
