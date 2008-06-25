@@ -5,18 +5,8 @@
 <script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>category_panel.js"></script>
 
 <div id="tabs">
+<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 <?php $request = Project::getRequest(); ?>
-  <div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('Bookmarks','BookmarksList'); ?>"><?=$this->tab_list_name; ?></a>
-  </div>
-  <div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('Bookmarks','BookmarksMostVisit'); ?>" title="<?=$this->tab_most_visit; ?>"><?=$this->tab_most_visit; ?></a>
-  </div>
-<? if($this->current_user && $this->current_user->id > 0) { ?>
-  <div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('Bookmarks','BookmarksUser'); ?>" title="<?=$this->tab_my_list_name; ?>"><?=$this->tab_my_list_name; ?></a>
-  </div>
-<? } ?>
   
 <div class="tab-page tab-page-selected">
 <!-- Вопросы пользователей -->

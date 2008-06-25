@@ -3,14 +3,10 @@
 
 <script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>tab.js"></script>
 
+
 <div id="tabs">
 <?php $request = Project::getRequest(); ?>
-  <div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('SearchUser','SearchUserMain'); ?>"><?=$this->tab_main_search; ?></a>
-  </div>
-  <div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('SearchUser','SearchByInterest'); ?>"><?=$this->tab_search_interest; ?></a>
-  </div>
+<?php include($this -> _include('../tab_panel.tpl.php')); ?>
   
 <div class="tab-page tab-page-selected">
 <!-- Вкладка -->

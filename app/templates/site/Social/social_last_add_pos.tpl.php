@@ -6,17 +6,7 @@
 
 <div id="tabs">
 <?php $request = Project::getRequest(); ?>
-  <div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('Social','SocialMainList'); ?>"><?=$this->tab_main_list; ?></a>
-  </div>
-  <div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('Social','SocialLastAddPos'); ?>" title="<?=$this->tab_last_add_pos_list; ?>"><?=$this->tab_last_add_pos_list; ?></a>
-  </div>
-<? if($this->current_user && $this->current_user->id > 0) { ?>
-  <div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('Social','SocialUserList'); ?>" title="<?=$this->tab_user_list; ?>"><?=$this->tab_user_list; ?></a>
-  </div>
-<? } ?>
+<?php include($this -> _include('../tab_panel.tpl.php')); ?>
   
 <div class="tab-page tab-page-selected">
 <!-- Вопросы пользователей -->

@@ -36,7 +36,7 @@ class SocialController extends SiteController {
 		$v_request = Project::getRequest();
     $v_session = Project::getSession();
 		$data = array();   
-	  $this->_BaseSiteData($data);
+	  //$this->_BaseSiteData($data);
 	  $data['action'] = 'SocialMainList';
 	  // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/2/ ...bookmarks_list/0/0/2/
 	  // где bookmarks_list/{id_категории}/{id_тега}/{номер страницы}/
@@ -54,6 +54,7 @@ class SocialController extends SiteController {
 		$this->_getData($data, 'SocialMainList', $v_categoryID, $v_n_page, 0, $v_str_find, $v_sort_rating);
 	  $this->_get_categories($data, $v_categoryID);
 	  $this->_getSelectedCategory($data, $v_categoryID);
+    $this->_view->assign('tab_list', TabController::getSocialTabs(true, false)); // Show tabs
 	  $this->_view->Social_MainList($data);
 		$this->_view->parse();
   }
@@ -63,10 +64,11 @@ class SocialController extends SiteController {
   */
 	public function SocialLastAddPosAction() {
 		$data = array();
-		$this->_BaseSiteData($data);
+		//$this->_BaseSiteData($data);
 		$data['action'] = 'SocialLastAddPos';
     $v_sc_model = new SocialModel();
     $data['social_pos_list'] = $v_sc_model->loadLastAddPos();
+    $this->_view->assign('tab_list', TabController::getSocialTabs(false, true)); // Show tabs
     $this->_view->Social_LastAddPos($data);
 		$this->_view->parse();
 	}               
@@ -76,7 +78,7 @@ class SocialController extends SiteController {
     $v_request = Project::getRequest();
     $v_current_userID = (int)Project::getUser() -> getDbUser() -> id;
     $data = array();
-    $this->_BaseSiteData($data);
+    //$this->_BaseSiteData($data);
     $data['action'] = 'SocialView';
 
     $v_id = (int)$v_request->getKeyByNumber(0);
@@ -86,7 +88,7 @@ class SocialController extends SiteController {
       $v_tab_name = $data['social_row'][0]['name'];
       $v_encoding = mb_detect_encoding($v_tab_name);
       if (mb_strlen($v_tab_name, $v_encoding) > 50 ) $v_tab_name = mb_substr($v_tab_name, 0, 50, $v_encoding).'...';
-      $data['tab_social_view'] = $v_tab_name;
+      //$data['tab_social_view'] = $v_tab_name;
       // ---
       
       $controller = new BaseCommentController();
@@ -110,6 +112,7 @@ class SocialController extends SiteController {
       $data['count_comment'] = $v_count_comment;
       $data['count_votes'] = $v_count_votes;
       // ---
+      $this->_view->assign('tab_list', TabController::getSocialTabs(false, false, false, false, true, $v_tab_name)); // Show tabs
       $this->_view->Social_View($data);
       $this->_view->parse();
     } else {
@@ -121,7 +124,7 @@ class SocialController extends SiteController {
   public function SocialUserListAction() {
     $v_request = Project::getRequest();
     $data = array();
-    $this->_BaseSiteData($data);
+    //$this->_BaseSiteData($data);
     $data['action'] = 'SocialUserList';
     $v_current_userID = (int)Project::getUser() -> getDbUser() -> id;
     // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/ ...bookmarks_list/0/0/
@@ -131,6 +134,7 @@ class SocialController extends SiteController {
     $this->_getData($data, 'SocialUserList', $v_categoryID, $v_n_page, $v_current_userID);
     $this->_get_categories($data, $v_categoryID);
     $this->_getSelectedCategory($data, $v_categoryID);
+    $this->_view->assign('tab_list', TabController::getSocialTabs(false, false, true)); // Show tabs
     $this->_view->Social_UserList($data);
     $this->_view->parse();
   }
@@ -160,9 +164,10 @@ class SocialController extends SiteController {
     $v_sp_model = new SocialModel();
     $data['arr_social_tree_criteria'] = $v_sp_model->loadTreeCriteria();
     $data['arr_categories'] = $v_sp_model->loadCategories();
-    $this->_BaseSiteData($data);
+    //$this->_BaseSiteData($data);
     if ($v_request->btn_submit == null) {
       // -- Открытие формы для создания
+      $this->_view->assign('tab_list', TabController::getSocialTabs(false, false, false, true)); // Show tabs
       $this->_view->Social_PosAdd($data);
       $this->_view->parse();
     } else {
@@ -175,6 +180,7 @@ class SocialController extends SiteController {
             $data['inp_sp_comment'] = $v_request->inp_sp_comment;
             $this->_view->Social_PosAdd($data);
             $this->_view->addFlashMessage(FM::ERROR, 'Поля " * " должны быть заполнены');
+            $this->_view->assign('tab_list', TabController::getSocialTabs(false, false, false, true)); // Show tabs
             $this->_view->parse();
           } else {
             // -- Сохранение данных  

@@ -3,14 +3,10 @@
 
 <script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>tab.js"></script>
 
+
 <div id="tabs">
 <?php $request = Project::getRequest(); ?>
-  <div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('SearchUser','SearchUserMain'); ?>"><?=$this->tab_main_search; ?></a>
-  </div>
-  <div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);">
-    <a href="<?=$request->createUrl('SearchUser','SearchByInterest'); ?>"><?=$this->tab_search_interest; ?></a>
-  </div>
+<?php include($this -> _include('../tab_panel.tpl.php')); ?>
   
 <div class="tab-page tab-page-selected">
 <!-- Вкладка -->
@@ -24,7 +20,7 @@
      <div class="block_ee3">
       <div class="block_ee4">
       <div  style="margin: 0px 10px;">
-      <div class="block_title"><h3><?=$this->tab_main_search; ?></h3></div>
+      <div class="block_title"><h3>Найти знакомых</h3></div>
       <form name="frm_search" method="post" action="<?=$this->createUrl('SearchUser', 'SearchUserMain');?>">
       <table border="0" align="center">
         <tr style="height: 30px;"><td style="text-align: right;">

@@ -34,7 +34,9 @@ class SearchUserController extends SiteController {
 		$v_request = Project::getRequest();
     $v_session = Project::getSession();
 		$data = array();   
-	  $this->_BaseSiteData($data);
+//	  $this->_BaseSiteData($data);
+//    $this -> BaseSiteData();
+//    $data['tab_list'] = TabController::getSearchUserTabs(true, false);
 	  $data['action'] = 'SearchUserMain';
 	  // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/2/ ...bookmarks_list/0/0/2/
 	  // где bookmarks_list/{id_категории}/{id_тега}/{номер страницы}/
@@ -69,6 +71,7 @@ class SearchUserController extends SiteController {
       $this->_getData($data, 'SearchUserMain', $v_n_page, null);
     }
 		
+    $this-> _view -> assign('tab_list', TabController::getSearchUserTabs(true, false)); // Show tabs
 	  $this->_view->SearchUser_Main($data);
 		$this->_view->parse();
   }
@@ -89,6 +92,7 @@ class SearchUserController extends SiteController {
     if ($v_id_interest > 0) {
       $this->_getData($data, 'SearchByInterest', $v_n_page, $v_id_interest);
     }
+    $this-> _view -> assign('tab_list', TabController::getSearchUserTabs(false, true)); // Show tabs
     $this->_view->Search_ByInterest($data);
 		$this->_view->parse();
 	}               

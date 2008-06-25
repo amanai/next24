@@ -165,5 +165,158 @@ class TabController{
 			}
 			return $tabs;
 		}
+  
+  static public function getSearchUserTabs(
+    $p_selected_tab_main_search = false, 
+    $p_selected_tab_search_interest = false) {
+    $request = Project::getRequest();
+    $tabs = array(
+            0 => array(
+                'name' => 'Найти знакомых',
+                'title' => 'Найти знакомых',
+                'selected' => $p_selected_tab_main_search,
+                 'url' => $request -> createUrl('SearchUser', 'SearchUserMain', null, false)
+                ),
+            1 => array(
+                'name' => 'Поиск по интересам',
+                'title' => 'Поиск по интересам',
+                'selected' => $p_selected_tab_search_interest,
+                 'url' => $request -> createUrl('SearchUser', 'SearchByInterest', null, false)
+                ),
+            );
+    return $tabs;
+  }  
+
+  static public function getBookmarksTabs(
+    $p_selected_tab_list_name = false, 
+    $p_selected_tab_most_visit = false, 
+    $p_selected_tab_my_list_name = false, 
+    $p_selected_tab_add_bookmark = false, 
+    $p_selected_tab_category_edit = false, 
+    $p_selected_tab_bookmarks_import = false,
+    $p_selected_tab_bookmarks_view = false,
+    $p_selected_tab_bookmarks_view_name = ""
+    ) {
+    $request = Project::getRequest();
+    $tabs = array(
+            0 => array(
+                'name' => 'Каталог закладок',
+                'title' => 'Каталог закладок',
+                'selected' => $p_selected_tab_list_name,
+                 'url' => $request -> createUrl('Bookmarks', 'BookmarksList', null, false)
+                ),
+            1 => array(
+                'name' => 'Самые посещаемые',
+                'title' => 'Самые посещаемые',
+                'selected' => $p_selected_tab_most_visit,
+                 'url' => $request -> createUrl('Bookmarks', 'BookmarksMostVisit', null, false)
+                ),
+            );
+            
+            
+      $user_id = (int)Project::getUser() -> getDbUser() -> id;
+      if ($user_id > 0){
+        $tabs[] = array(
+              'name' => 'Мои закладки',
+              'title' => 'Мои закладки',
+              'selected' => $p_selected_tab_my_list_name,
+               'url' => $request -> createUrl('Bookmarks', 'BookmarksUser', null, false)
+              );
+      }
+
+      if($p_selected_tab_add_bookmark === true) {
+        $tabs[] = array(
+              'name' => 'Добавить закладку',
+              'title' => 'Добавить закладку',
+              'selected' => $p_selected_tab_add_bookmark,
+              'url' => '#'
+              );
+      }
+
+      if($p_selected_tab_category_edit === true) {
+        $tabs[] = array(
+              'name' => 'Категория',
+              'title' => 'Категория',
+              'selected' => $p_selected_tab_category_edit,
+              'url' => '#'
+              );
+      }
+
+      if($p_selected_tab_bookmarks_import === true) {
+        $tabs[] = array(
+              'name' => 'Импорт',
+              'title' => 'Импорт',
+              'selected' => $p_selected_tab_bookmarks_import,
+              'url' => '#'
+              );
+      }
+
+      if($p_selected_tab_bookmarks_view === true) {
+        $tabs[] = array(
+              'name' => $p_selected_tab_bookmarks_view_name,
+              'title' => $p_selected_tab_bookmarks_view_name,
+              'selected' => $p_selected_tab_bookmarks_view,
+              'url' => '#'
+              );
+      }
+    return $tabs;
+  }  
+
+  static public function getSocialTabs(
+    $p_selected_tab_main_list = false, 
+    $p_selected_tab_last_add_pos_list = false, 
+    $p_selected_tab_user_list = false, 
+    $p_selected_tab_soc_pos_add = false,
+    $p_selected_tab_view_soc_pos = false,
+    $p_selected_tab_view_soc_pos_name = ""
+    ) {
+    $request = Project::getRequest();
+    $tabs = array(
+            0 => array(
+                'name' => 'Каталог позиций',
+                'title' => 'Каталог позиций',
+                'selected' => $p_selected_tab_main_list,
+                 'url' => $request -> createUrl('Social', 'SocialMainList', null, false)
+                ),
+            1 => array(
+                'name' => 'Самые посещаемые',
+                'title' => 'Самые посещаемые',
+                'selected' => $p_selected_tab_last_add_pos_list,
+                 'url' => $request -> createUrl('Social', 'SocialLastAddPos', null, false)
+                ),
+            );
+            
+            
+      $user_id = (int)Project::getUser() -> getDbUser() -> id;
+      if ($user_id > 0){
+        $tabs[] = array(
+              'name' => 'Мои позиции',
+              'title' => 'Мои позиции',
+              'selected' => $p_selected_tab_user_list,
+               'url' => $request -> createUrl('Social', 'SocialUserList', null, false)
+              );
+      }
+
+      if($p_selected_tab_soc_pos_add === true) {
+        $tabs[] = array(
+              'name' => 'Добавление позиции',
+              'title' => 'Добавление позиции',
+              'selected' => $p_selected_tab_soc_pos_add,
+              'url' => '#'
+              );
+      }
+
+      if($p_selected_tab_view_soc_pos === true) {
+        $tabs[] = array(
+              'name' => $p_selected_tab_view_soc_pos_name,
+              'title' => $p_selected_tab_view_soc_pos_name,
+              'selected' => $p_selected_tab_view_soc_pos,
+              'url' => '#'
+              );
+      }
+
+    return $tabs;
+  }  
+
 }
 ?>

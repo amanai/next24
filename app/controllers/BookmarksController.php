@@ -37,7 +37,7 @@ class BookmarksController extends SiteController {
 	public function BookmarksListAction() {
 		$v_request = Project::getRequest();
 		$data = array();   
-	  $this->_BaseSiteData($data);
+	  //$this->_BaseSiteData($data);
 	  $data['action'] = 'BookmarksList';
     $data['show_imported_bookmarks'] = false;
 	  // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/2/ ...bookmarks_list/0/0/2/
@@ -49,6 +49,7 @@ class BookmarksController extends SiteController {
 	  $this->_get_catalogs($data, $v_categoryID);
 	  $this->_getSelectedCategory($data, $v_categoryID);
 	  $this->_getSelectedTag($data, $v_tagID);
+    $this->_view->assign('tab_list', TabController::getBookmarksTabs(true, false)); // Show tabs
 	  $this->_view->Bookmarks_MainList($data);
 		$this->_view->parse();
   }
@@ -56,10 +57,11 @@ class BookmarksController extends SiteController {
   // -- Action "Самые посещаемые" закладки. Критерий: 10 самых посещаемых
 	public function BookmarksMostVisitAction() {
 		$data = array();
-		$this->_BaseSiteData($data);
+		//$this->_BaseSiteData($data);
 		$data['action'] = 'BookmarksMostVisit';
     $v_bookmarks_model = new BookmarksModel();
     $data['bookmarks_list'] = $v_bookmarks_model->loadMostVisit();
+    $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, true)); // Show tabs
     $this->_view->Bookmarks_MostVisit($data);
 		$this->_view->parse();
 	}               
@@ -68,7 +70,7 @@ class BookmarksController extends SiteController {
   public function BookmarksViewAction() {
     $v_request = Project::getRequest();
     $data = array();
-    $this->_BaseSiteData($data);
+    //$this->_BaseSiteData($data);
     $data['action'] = 'BookmarksView';
 
     $v_id = (int)$v_request->getKeyByNumber(0);
@@ -96,6 +98,7 @@ class BookmarksController extends SiteController {
       $data['add_comment_element_id'] = $v_id;
       $data['add_comment_id'] = 0;
       // ---
+      $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, false, false, true, $v_tab_name)); // Show tabs
       $this->_view->Bookmarks_View($data);
       $this->_view->parse();
     } else {
@@ -107,7 +110,7 @@ class BookmarksController extends SiteController {
   public function BookmarksUserAction() {
     $v_request = Project::getRequest();
     $data = array();
-    $this->_BaseSiteData($data);
+    //$this->_BaseSiteData($data);
     $data['action'] = 'BookmarksUser';
     $data['show_imported_bookmarks'] = true;
     $v_current_userID = (int)Project::getUser() -> getDbUser() -> id;
@@ -120,6 +123,7 @@ class BookmarksController extends SiteController {
     $this->_get_catalogs($data, $v_categoryID);
     $this->_getSelectedCategory($data, $v_categoryID);
     $this->_getSelectedTag($data, $v_tagID);
+    $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, true)); // Show tabs
     $this->_view->Bookmarks_UserList($data);
     $this->_view->parse();
   }
@@ -168,7 +172,8 @@ class BookmarksController extends SiteController {
         $data['bookmarks_tag_list'] = rtrim($data['bookmarks_tag_list'], ', ');
       }
       $data['bookmarks_category_list'] = $v_bm_category_model -> loadCategoryList();
-      $this->_BaseSiteData($data);
+      //$this->_BaseSiteData($data);
+      $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, true)); // Show tabs
       $this->_view->Bookmarks_Manage($data);
       $this->_view->parse();
       return;
@@ -199,8 +204,9 @@ class BookmarksController extends SiteController {
         $data['bookmark_row']['is_public'] = (($v_request->inp_check_public == 'on') ? 1 : 0);
         $data['bookmark_row']['user_id'] = $v_current_userID;
         //$data['question']['creation_date'] = date("Y-m-d H:i:s");
-        $this->_BaseSiteData($data);
+        //$this->_BaseSiteData($data);
         $this->_view->addFlashMessage(FM::ERROR, 'Поля " * " должны быть заполнены');
+        $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, true)); // Show tabs
         $this->_view->Bookmarks_Manage($data);
         $this->_view->parse();
         return;
@@ -288,10 +294,11 @@ class BookmarksController extends SiteController {
     $v_request = Project::getRequest();
     $data = array();   
     $data['action'] = 'BookmarksCategoryEdit';
-    $this->_BaseSiteData($data);
+    //$this->_BaseSiteData($data);
     $v_category_id = ($p_category_id !== null) ? (int)$p_category_id : (int)$v_request -> getKeyByNumber(0);
     $this->_get_catalogs($data, $v_category_id);
     $this->_getSelectedCategory($data, $v_category_id);
+    $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, true)); // Show tabs
     $this -> _view -> Bookmarks_CategoryEdit($data);
     $this -> _view -> parse();
   }
@@ -304,7 +311,7 @@ class BookmarksController extends SiteController {
     $v_current_userID = (int)Project::getUser()->getDbUser()->id;
     $data = array();   
     $data['action'] = 'BookmarksCategoryEdit';
-    $this->_BaseSiteData($data);
+    //$this->_BaseSiteData($data);
     
     if ($v_request->inp_categiry_name == null) {
       // -- Название категории пусто - ничего не делаем - просто редирект
@@ -328,8 +335,9 @@ class BookmarksController extends SiteController {
     $v_request = Project::getRequest();
     $data = array();   
     $data['action'] = 'BookmarksCategorySaveMessage';
-    $this->_BaseSiteData($data);
+    //$this->_BaseSiteData($data);
    
+    $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, true)); // Show tabs
     $this -> _view -> Bookmarks_CategoryEdit($data);
     $this -> _view -> parse();
   }
@@ -340,12 +348,13 @@ class BookmarksController extends SiteController {
   public function BookmarksImportFormAction($p_is_message = null) {
     $v_request = Project::getRequest();
     $data = array();   
-    $this->_BaseSiteData($data);
+    //$this->_BaseSiteData($data);
     $data['action'] = 'BookmarksImportForm';
     // -- Открытие формы для вывода сообщения о успешности импорта = TRUE
     $data['is_show_message'] = ($p_is_message == true) ? true : false;
     $data['import_make_url'] = $v_request -> createUrl('Bookmarks', 'BookmarksImportMake');
     $data['max_file_upload_size'] = self::C_MAX_FILE_UPLOAD_SIZE;
+    $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, false, true)); // Show tabs
     $this->_view->Bookmarks_Import($data);
     $this->_view->parse();
   }
@@ -356,7 +365,7 @@ class BookmarksController extends SiteController {
   public function BookmarksImportMakeAction() {
     $v_request = Project::getRequest();
     $data = array();   
-    $this->_BaseSiteData($data);
+    //$this->_BaseSiteData($data);
     $data['action'] = 'BookmarksImportMake';
     $data['import_make_url'] = $v_request -> createUrl('Bookmarks', 'BookmarksImportMake');
     
