@@ -4,7 +4,7 @@ class AdminArticleView extends BaseAdminView {
 	protected $_dir = 'articles';
 	
 	public function ShowTree($data) {
-		$this->setTemplate($this->_dir, 'tree.tpl.php');
+		$this->setTemplate($this->_dir, 'main_section.tpl.php');
 		$this->set($data);
 	}
 	
@@ -73,6 +73,15 @@ class AdminArticleView extends BaseAdminView {
 		$this -> set($data);
 		$this -> setTemplate($this -> _dir, 'page.tpl.php');
 		$response -> block('page_div', true, $this -> parse());
+	}
+	
+	public function AjaxSectionList($data) {
+		$response = Project::getAjaxResponse();
+		$this->setTemplate($this->_dir, 'tree.tpl.php');
+		$response->clearBlock('edit_block');
+		$response->hide('edit_block');
+		$this->set($data);
+		$response->block('list_block', true, $this->parse());
 	}
 	
 	

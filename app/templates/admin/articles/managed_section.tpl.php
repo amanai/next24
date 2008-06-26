@@ -28,7 +28,7 @@
 			<td class="c_left">&nbsp;</td>
 			<td class="c_cen">
 				<!-- САМ ДИАЛОГ -->
-				<form action="<?=Project::getRequest()->createUrl('AdminArticle', 'ManagedSection', array($this->cat['id']))?>" method="POST" id="edit_form">
+				<form id="edit_form">
 				<input type="hidden" value="<?=$par?>" name="parent_id" id="parent_id">
 				<input type="hidden" name="sub" value="0" id="sub">
 				<table border="0" cellpadding="0" cellspacing="4">
@@ -68,7 +68,7 @@
 			<td class="b_left">&nbsp;</td>
 			<td class="b_cen"><div class="b_delim">
 				<div class="button bbig" style="float: right;"><a href="#" onclick='cancel(<?=$this->cancel_param;?>);'>Отмена</a></div>
-				<div class="button bbig" style="float: right;"><a href="#" onclick="getElementById('sub').value=1;getElementById('edit_form').submit()">Сохранить</a></div>
+				<div class="button bbig" style="float: right;"><a href="#" onclick='save(<?=AjaxRequest::getJsonParam('AdminArticle', 'SaveSection', array($this->cat['id'], 'form_id' => 'edit_form'), "POST")?>)'>Сохранить</a></div>
 			</td>
 			<td class="b_right">&nbsp;</td>
 		</tr>

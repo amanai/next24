@@ -19,53 +19,60 @@ class AdminArticleController extends AdminController {
 		$request = Project::getRequest();
 		$article_vote_controller = new ArticleVoteModel();
 		$article_vote_controller->deleteByArticleId($request->getKeyByNumber(0));
-		//Project::getResponse()->redirect($request->createUrl('Article', 'List'));
+		$data = array();
+		$this->_makeSectionList($data);
+		$this->_view->AjaxSectionList($data);
+		$this->_view->ajax();
 	}
 	
 	//отображения дерева категорий статей
 	public function ShowTreeAction() {
 		$this->BaseAdminData();
 		$data = array();
-		$n = Node::by_key('', 'articles_tree');
-		$data['tree'] = $n->getBranch();
+		$this->_makeSectionList($data);
 		$this->_view->ShowTree($data);
 		$this->_view->parse();		
 	}
 	
-	// редактирование/создание категории
-	public function ManagedSectionAction() {
+	public function EditSectionAction() {
 		$request = Project::getRequest();
 		$data = array();
-		if($request->sub == 0) {
-			$id = (int)$request->getKeyByNumber(0);
-			$article_tree_model = new ArticleTreeModel();
-			if($id > 0){
-				$data['cat'] = $article_tree_model->load($id);
-			}
-			
-			$this->BaseAdminData();
-			$n = Node::by_key('', 'articles_tree');
-			$data['tree'] = $n->getBranch();
-			$this->_view->ManagedSection($data);
-			$this->_view->ajax();
-		} else {
-			$id = (int)$request->getKeyByNumber(0);
-			$article_tree_model = new ArticleTreeModel();
-			$article_tree_model->load($id);
-			$parentNode = Node::by_key($request->parent_id, 'articles_tree');
-			$article_tree_model->user_id = Project::getUser()->getDbUser()->id;
-			$article_tree_model->name = $request->section_name;
-			if($id > 0) {
-				$node = Node::by_key($article_tree_model->key, 'articles_tree');
-				$node->changeParent($parentNode);
-			} else {
-				$key = $parentNode->getNewChildKey();
-				$article_tree_model->key = $key;
-				$article_tree_model->level = $key->level;
-				$article_tree_model->save();
-			}
-			Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));	
+		$id = (int)$request->getKeyByNumber(0);
+		$article_tree_model = new ArticleTreeModel();
+		if($id > 0){
+			$data['cat'] = $article_tree_model->load($id);
 		}
+		
+		$this->BaseAdminData();
+		$n = Node::by_key('', 'articles_tree');
+		$data['tree'] = $n->getBranch();
+		$this->_view->ManagedSection($data);
+		$this->_view->ajax();	
+	}
+	
+	// редактирование/создание категории
+	public function SaveSectionAction() {
+		$request = Project::getRequest();
+		$id = (int)$request->getKeyByNumber(0);
+		$article_tree_model = new ArticleTreeModel();
+		$article_tree_model->load($id);
+		$parentNode = Node::by_key($request->parent_id, 'articles_tree');
+		$article_tree_model->user_id = Project::getUser()->getDbUser()->id;
+		$article_tree_model->name = $request->section_name;
+		if($id > 0) {
+			$node = Node::by_key($article_tree_model->key, 'articles_tree');
+			$node->changeParent($parentNode);
+		} else {
+			$key = $parentNode->getNewChildKey();
+			$article_tree_model->key = $key;
+			$article_tree_model->level = $key->level;
+			$article_tree_model->save();
+		}
+		$data = array();
+		$data['req'] = $node;
+		$this->_makeSectionList($data);
+		$this->_view->AjaxSectionList($data);
+		$this->_view->ajax();
 	}
 	
 	//удаление категории статей
@@ -76,7 +83,10 @@ class AdminArticleController extends AdminController {
 			$article_tree_model = new ArticleTreeModel();
 			$article_tree_model->delete($id);
 		}
-		Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));	
+		$data = array();
+		$this->_makeSectionList($data);
+		$this->_view->AjaxSectionList($data);
+		$this->_view->ajax();	
 	}
 	
 	// удаление статьи
@@ -156,7 +166,10 @@ class AdminArticleController extends AdminController {
 			$article_tree_model->active = 1;
 			$article_tree_model->save();
 		}
-		Project::getResponse()->redirect($request->createUrl('AdminArticle', 'ShowTree'));
+		$data = array();
+		$this->_makeSectionList($data);
+		$this->_view->AjaxSectionList($data);
+		$this->_view->ajax();
 	}
 	
 	// диалог редактирования/создания статьи
@@ -255,6 +268,11 @@ class AdminArticleController extends AdminController {
     		$editors[] = "content_page[$i]"; 
 		}
 		$data['save_param'] = AjaxRequest::getJsonParam('AdminArticle', 'SaveArticle',  array('id' => $id, 'form_id' => 'edit_form', 'editor_form' => $editors), "POST");
+	}
+	
+	private function _makeSectionList(&$data) {
+		$n = Node::by_key('', 'articles_tree');
+		$data['tree'] = $n->getBranch();
 	}
 	
 	
