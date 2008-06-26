@@ -59,8 +59,10 @@ class AdminArticleController extends AdminController {
 		if($id > 0) {
 			$article_tree_model->load($id);
 			$node = Node::by_key($article_tree_model->key, 'articles_tree');
-			$node->changeParent($parentNode);
-			$article_tree_model->load($id);
+			if($node->key->getParent() != $request->parent_id) {
+				$node->changeParent($parentNode);
+				$article_tree_model->load($id);
+			}
 		} else {
 			$key = $parentNode->getNewChildKey();
 			$article_tree_model->key = $key;
