@@ -97,7 +97,7 @@ class AdminArticleController extends AdminController {
 			$article_model = new ArticleModel();
 			$article_model->delete($id);
 		}
-		$this->makeArticleList($data);
+		$this->_makeArticleList($data);
 		$this -> _view -> AjaxArticleList($data);
 		$this->_view->ajax();	
 	}
@@ -219,7 +219,7 @@ class AdminArticleController extends AdminController {
 			$article_page_model->save();
 		}
 		$data = array();
-		$this->makeArticleList($data);
+		$this->_makeArticleList($data);
 		$this -> _view -> AjaxArticleList($data);
 		$this->_view->ajax();
 	}
@@ -229,13 +229,13 @@ class AdminArticleController extends AdminController {
 		$request = Project::getRequest();
 		$data = array();
 		$this->BaseAdminData();
-		$this->makeArticleList($data);
+		$this->_makeArticleList($data);
 		$this->_view->ArticleList($data);
 		$this->_view->parse();
 	}
 	
 	// формирования списка статей
-	public function makeArticleList(&$data) {
+	private function _makeArticleList(&$data) {
 		$request = Project::getRequest();
 		$article_model = new ArticleModel();
 		$pager = new DbPager($request->pn, self::DEFAULT_ARTICLE_PER_PAGE);
@@ -274,6 +274,30 @@ class AdminArticleController extends AdminController {
 		$n = Node::by_key('', 'articles_tree');
 		$data['tree'] = $n->getBranch();
 	}
+	
+	public function UpSectionAction() {
+		$request = Project::getRequest();
+		$id = $request->getKeyByNumber(0);
+		$node = Node::by_id($id, 'articles_tree');
+		$node->moveUp();
+		$data = array();
+		$this->_makeSectionList($data);
+		$this->_view->AjaxSectionList($data);
+		$this->_view->ajax();
+	}
+	
+	public function DownSectionAction() {
+		$request = Project::getRequest();
+		$id = $request->getKeyByNumber(0);
+		$node = Node::by_id($id, 'articles_tree');
+		$node->moveDown();
+		$data = array();
+		$this->_makeSectionList($data);
+		$this->_view->AjaxSectionList($data);
+		$this->_view->ajax();
+	}
+	
+	
 	
 	
 }
