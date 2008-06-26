@@ -8,7 +8,7 @@ class AdminArticleView extends BaseAdminView {
 		$this->set($data);
 	}
 	
-	public function ManagedSection($data) {
+	public function EditSection($data) {
 		$response = Project::getAjaxResponse();
 		$response->save();
 		$response->clearBlock($this->_flesh_messages_block);
