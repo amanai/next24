@@ -12,7 +12,7 @@
 .close_folder {
   padding-left: 28px;
   line-height: 14px;
-  background-image: url(http://next24/app/images/icons/plus.gif);
+  background-image: url(<?=$this -> image_url."icons/plus.gif"; ?>);
   background-repeat: no-repeat;
   padding-bottom: 3px;
   
@@ -21,7 +21,7 @@
 .open_folder {
   padding-left: 28px;
   line-height: 14px; 
-  background-image: url(http://next24/app/images/icons/minus.gif);
+  background-image: url(<?=$this -> image_url."icons/minus.gif"; ?>);
   background-repeat: no-repeat;
   padding-bottom: 3px;
 }
@@ -33,25 +33,7 @@
 }
 
 </style>
-<script language="javascript">
-function set(id_el, key) {
-	//window.location='<?//=Project::getRequest()->createUrl('Article', 'List', array($node['id']));?>';
-  /*  el = document.getElementById(key);
-    p_el = document.getElementById('p_'+id_el);
-    if (el.style.display=="none") {
-        el.style.display="block";
-        p_el.style.backgroundImage = "url(<?=$this -> image_url."icons/minus.gif"; ?>)";
-    } else {
-        el.style.display="none";
-        p_el.style.backgroundImage = "url(<?=$this -> image_url."icons/plus.gif"; ?>)";
-        
-    }
-    */
- 
- 
-   
-}
-</script>
+
 
 
 

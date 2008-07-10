@@ -47,7 +47,7 @@
 						<td class="right_col" style="width: 100%;">
 							<div id="level1" style="padding-top:5px">
 							<select style="width:115px">
-								<option value="" > -- Select -- </option>
+								<option onclick='getElementById("parent_id").value="<?=$n['key']?>";' value="0" > -- Select -- </option>
 								<?foreach ($this->tree as $n):?>
 									<option onclick='getElementById("parent_id").value="<?=$n['key']?>";' value="<?=$n['key']?>" 
 									<? if($par == $n['key']) echo selected;?>><?=str_repeat("&nbsp;&nbsp;&nbsp;",  $n['level'] -1)?><?=$n['name']?></option>

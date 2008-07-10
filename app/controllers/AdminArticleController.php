@@ -42,7 +42,6 @@ class AdminArticleController extends AdminController {
 		if($id > 0){
 			$data['cat'] = $article_tree_model->load($id);
 		}
-		
 		$this->BaseAdminData();
 		$n = Node::by_key('', 'articles_tree');
 		$data['tree'] = $n->getBranch();
@@ -72,7 +71,6 @@ class AdminArticleController extends AdminController {
 		$article_tree_model->name = $request->section_name;
 		$article_tree_model->save();
 		$data = array();
-		$data['req'] = $node;
 		$this->_makeSectionList($data);
 		$this->_view->AjaxSectionList($data);
 		$this->_view->ajax();

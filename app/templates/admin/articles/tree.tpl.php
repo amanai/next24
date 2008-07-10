@@ -1,4 +1,3 @@
-
 <div class="list" id="list_block">
 	<div style="float: left;"><h3>Каталог статей</h3></div>
 	<div class="options">
