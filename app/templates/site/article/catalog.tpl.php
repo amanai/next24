@@ -11,29 +11,18 @@
 <style type="text/css">
 .close_folder {
   padding-left: 28px;
-  line-height: 14px;
-  background-image: url(<?=$this -> image_url."icons/plus.gif"; ?>);
-  background-repeat: no-repeat;
-  padding-bottom: 3px;
-  
 }
 
 .open_folder {
-  padding-left: 28px;
-  line-height: 14px; 
-  background-image: url(<?=$this -> image_url."icons/minus.gif"; ?>);
-  background-repeat: no-repeat;
-  padding-bottom: 3px;
+  padding-left: 28px; 
 }
 
 .item {
   padding-left: 0px;
   padding: 0px;
- 
 }
 
 </style>
-
 
 
 
@@ -43,7 +32,7 @@
 					
 					<?foreach ($this->root as $node):?>
 						<?if (count($this->child[$node['key']]) > 0):?>
-							<div <?if(strpos($this->select_node['key'], $node['key']) === 0):?>class="open_folder" <?else :?>class="close_folder" <?endif;?>><a href="<?=Project::getRequest()->createUrl('Article', 'List', array($node['id']))?>"><b> <?=$node['name']?></b></a>
+							<a href="<?=Project::getRequest()->createUrl('Article', 'List', array($node['id']))?>"><img src='<?if(strpos($this->select_node['key'], $node['key']) === 0):?><?=$this -> image_url."icons/minus.gif"; ?><?else :?><?=$this -> image_url."icons/plus.gif"; ?><?endif;?>' /><b> <?=$node['name']?></b></a><div <?if(strpos($this->select_node['key'], $node['key']) === 0):?>class="open_folder" <?else :?>class="close_folder" <?endif;?>>
 								<? tree($node['key'], $this->child, $this); ?>
 							</div>
 						<?else :?>
@@ -54,10 +43,10 @@
 					<?function tree($key, $child, $obj) { ?>
 					
 						<?foreach ($child[$key] as $subNode) :?>
-				
 							<? if (strpos($obj->select_node['key'], substr($subNode['key'], 0, -4)) === 0) : ?>
 								<?if(count($child[$subNode['key']]) > 0):?>
-									<div <?if(strpos($obj->select_node['key'], $subNode['key']) === 0) :?>class="open_folder"<?else :?> class="close_folder" <?endif;?> ><a href="<?=Project::getRequest()->createUrl('Article', 'List', array($subNode['id']))?>"><b> <?=$subNode['name']?></b></a>
+									<a href="<?=Project::getRequest()->createUrl('Article', 'List', array($subNode['id']))?>"><img src='<?if(strpos($obj->select_node['key'], $subNode['key']) === 0) :?><?=Project::getRequest()->getBaseUrl()."/app/images/icons/minus.gif"; ?><?else :?><?=Project::getRequest()->getBaseUrl()."/app/images/icons/plus.gif"; ?><?endif;?>' /><b> <?=$subNode['name']?></b></a>
+									<div <?if(strpos($obj->select_node['key'], $subNode['key']) === 0) :?>class="open_folder"<?else :?> class="close_folder" <?endif;?> >
 										<?tree($subNode['key'], $child, $obj);?>
 									</div>
 								<?else :?>
