@@ -15,24 +15,9 @@ class ArticleController extends SiteController {
 		$data = array();
 		$this->BaseSiteData();
 		$data['tab_list'] = TabController::getMainArticleTabs(true);
-		$tree_model = new ArticleTreeModel();
-		$article_model = new ArticleModel();		
-		$n = Node::by_key('', 'articles_tree');
-		$tree = $n->getBranch();		
-		foreach ($tree as $node) {
-			if($node['id'] == (int)$request->getKeyByNumber(0)) $data['select_node'] = $node;
-			if($node['level'] == 1) {
-				$data[root][$node['key']] = $node;
-			} else {
-				$data[child][substr($node['key'], 0, -4)][$node['key']] = $node;
-			}
-		}
-		$data['article_list'] = $article_model->loadByParentId((int)$request->getKeyByNumber(0));
-		$controller_model = new ControllerModel();
-		$action_model = new ActionModel();
-		$controller = $controller_model->loadByKey('AdminArticle');
-		$action = $action_model->loadByKey($controller['id'], 'ManagedSection');
-		$data['admin_access'] = Project::getSecurityManager()->getAuth()->checkAccess($controller['id'], $action['id']);
+		$status = array(ARTICLE_RATE_STATUS::COMPLETE, ARTICLE_RATE_STATUS::SHOW_IN_CATALOG);
+		$this->_listArticle($data, $status);
+		var_dump(localtime());
 		$this->_view->ArticleList($data);
 		$this->_view->parse();
 	}
@@ -74,6 +59,23 @@ class ArticleController extends SiteController {
 		$data['article_list'] = $article_model->loadWhere($userId, $sortName, $sortOrder);
 		$pager_view = new SitePagerView();
 		$data['article_list_pager'] = $pager_view->show2($article_model->getPager(), 'Article', $action);
+	}
+	
+	private function _listArticle(&$data, array $status) {
+		$request = Project::getRequest();
+		$tree_model = new ArticleTreeModel();
+		$article_model = new ArticleModel();		
+		$n = Node::by_key('', 'articles_tree');
+		$tree = $n->getBranch();		
+		foreach ($tree as $node) {
+			if($node['id'] == (int)$request->getKeyByNumber(0)) $data['select_node'] = $node;
+			if($node['level'] == 1) {
+				$data[root][$node['key']] = $node;
+			} else {
+				$data[child][substr($node['key'], 0, -4)][$node['key']] = $node;
+			}
+		}
+		$data['article_list'] = $article_model->loadByParentId((int)$request->getKeyByNumber(0), $status);
 	}
 	
 /*	public function AddArticleAction() {
@@ -294,6 +296,23 @@ class ArticleController extends SiteController {
 			$article_model->delete($articleId);
 		}
 		Project::getResponse()->redirect($request->createUrl('Article', 'UserArticleList'));
+	}
+	
+	public function CompetitionCatalog() {
+		$request = Project::getRequest();
+		$data = array();
+		$this->BaseSiteData();
+		$data['tab_list'] = TabController::getMainArticleTabs(true);
+		$date_time = localtime();
+		if($date_time[6] >= 1 && ($date_time[6] <= 2 || ($date_time[6] == 3 && $date_time[2] < 18))){
+			$status = array(ARTICLE_RATE_STATUS::NEW_ARTICLE);
+		} else {
+			$status = array(ARTICLE_RATE_STATUS::IN_RATE);	
+		}
+		
+		$this->_listArticle($data, $status);
+		$this->_view->ArticleList($data);
+		$this->_view->parse();
 	}
 }
 

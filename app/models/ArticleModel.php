@@ -6,8 +6,11 @@ class ArticleModel extends BaseModel {
 		parent::__construct("articles");
 	}
 	
-	public function loadByParentId($id) {
+	public function loadByParentId($id, array $status) {
 		$id = (int)$id;
+		$str = "a.`rate_status` = ?d ";
+		for($i = 0;$i<count($status)-1;$i++) $str .= "OR a.`rate_status` = ?d ";
+			
 		$sql =  "SELECT ".
 				"a.`id`, ".
 				"a.`articles_tree_id`, ".
@@ -23,11 +26,17 @@ class ArticleModel extends BaseModel {
 				"FROM articles a ".
 				"LEFT JOIN users u ".
 				"ON a.`user_id` = u.`id` ".
-				"WHERE a.`articles_tree_id` = ?d";
-		return Project::getDatabase()->select($sql, $id);
+				"WHERE a.`articles_tree_id` = ?d ".
+				"AND (".$str.")";
+		$params = array();
+		$params[] = $sql;
+		$params[] = $id;
+		$params = array_merge($params, $status);
+		$param[] = $user_id;
+		return call_user_func_array(array(Project::getDatabase(), 'select'), $params);
 	}
 	
-	public function loadWhere($userId, $sortName, $sortOrder) {
+	public function loadWhere($userId, $sortName = null, $sortOrder = null) {
 		$userId = (int)$userId;
 		$sortName == null ? $sortName = 'a.creation_date' : "";
 		$sortOrder == null ? $sortOrder = 'DESC' : "";
