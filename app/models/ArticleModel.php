@@ -25,14 +25,15 @@ class ArticleModel extends BaseModel {
 				"a.`creation_date` ".
 				"FROM articles a ".
 				"LEFT JOIN users u ".
-				"ON a.`user_id` = u.`id` ".
-				"WHERE a.`articles_tree_id` = ?d ".
-				"AND (".$str.")";
+				"ON a.`user_id` = u.`id` ";
+				$id > 0 ? $sql .= "WHERE a.`articles_tree_id` = ?d AND ($str)" : $sql .= "WHERE ($str)";
+				//$sql .= "AND (".$str.")";
 		$params = array();
 		$params[] = $sql;
-		$params[] = $id;
+		$id > 0 ? $params[] = $id : "";
 		$params = array_merge($params, $status);
-		$param[] = $user_id;
+		//$param[] = $user_id;
+		echo $sql;
 		return call_user_func_array(array(Project::getDatabase(), 'select'), $params);
 	}
 	

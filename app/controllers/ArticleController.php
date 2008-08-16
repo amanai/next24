@@ -298,7 +298,7 @@ class ArticleController extends SiteController {
 		Project::getResponse()->redirect($request->createUrl('Article', 'UserArticleList'));
 	}
 	
-	public function CompetitionCatalog() {
+	public function CompetitionCatalogAction() {
 		$request = Project::getRequest();
 		$data = array();
 		$this->BaseSiteData();
@@ -306,13 +306,22 @@ class ArticleController extends SiteController {
 		$date_time = localtime();
 		if($date_time[6] >= 1 && ($date_time[6] <= 2 || ($date_time[6] == 3 && $date_time[2] < 18))){
 			$status = array(ARTICLE_RATE_STATUS::NEW_ARTICLE);
+			$data['competition_action'] = 0;
 		} else {
-			$status = array(ARTICLE_RATE_STATUS::IN_RATE);	
+			$status = array(ARTICLE_RATE_STATUS::IN_RATE);
+			$data['competition_action'] = 1;
+			
 		}
-		
 		$this->_listArticle($data, $status);
-		$this->_view->ArticleList($data);
+		$this->_view->CompetitionArticleList($data);
 		$this->_view->parse();
+	}
+	
+	public function LastWinnersListAction() {
+		$request = Project::getRequest();
+		$data = array();
+		$this->BaseSiteData();
+		
 	}
 }
 

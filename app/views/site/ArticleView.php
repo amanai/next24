@@ -46,6 +46,12 @@ class ArticleView extends BaseSiteView {
 		$this->setTemplate(null, 'user_article_list.tpl.php');
 		$this->set($data);
 	}
+	
+	public function CompetitionArticleList($data) {
+		$this->setTemplate(null, 'competition.tpl.php');
+		$this->set($data);
+	}
+	
 
 }
 
