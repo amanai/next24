@@ -119,7 +119,7 @@ class TabController{
 			return $tabs;
 		}
 		
-		static public function getMainArticleTabs($selected_cat = false, $selected_last = false, $selected_top = false, /*$selected_user_list = false,*/ $selected_view_article = false, /*$selected_managed_article = false,*/ $view_article_name = ""/*, $managed_article_name = "Новая статья"*/ ) {
+		static public function getMainArticleTabs($selected_cat = false, $selected_last = false, $selected_top = false, $selectded_competition = false, /*$selected_user_list = false,*/ $selected_view_article = false, /*$selected_managed_article = false,*/ $view_article_name = ""/*, $managed_article_name = "Новая статья"*/ ) {
 			$request = Project::getRequest();
 			$tabs = array(
 							0 => array(
@@ -155,6 +155,15 @@ class TabController{
 							'url' => $request -> createUrl('Article', 'AddArticle', null, false)
 							);
 			}*/
+			$date_time = localtime();
+			if(ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_START || ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_VOTE) {
+				$tabs[] = array(
+							'name' => 'Конкурс тем',
+							'title' => 'Конкурс тем',
+							'selected' => $selectded_competition,
+							'url' => $request->createUrl('Article', 'CompetitionCatalog', null, false)
+							);
+			}
 			if($selected_view_article === true) {
 				$tabs[] = array(
 							'name' => $view_article_name,

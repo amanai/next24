@@ -15,7 +15,7 @@ class ArticleController extends SiteController {
 		$data = array();
 		$this->BaseSiteData();
 		$data['tab_list'] = TabController::getMainArticleTabs(true);
-		$status = array(ARTICLE_RATE_STATUS::COMPLETE, ARTICLE_RATE_STATUS::SHOW_IN_CATALOG);
+		$status = array(ARTICLE_COMPETITION_STATUS::COMPLETE, ARTICLE_COMPETITION_STATUS::SHOW_IN_CATALOG);
 		$this->_listArticle($data, $status);
 		var_dump(localtime());
 		$this->_view->ArticleList($data);
@@ -66,7 +66,9 @@ class ArticleController extends SiteController {
 		$tree_model = new ArticleTreeModel();
 		$article_model = new ArticleModel();		
 		$n = Node::by_key('', 'articles_tree');
-		$tree = $n->getBranch();		
+		$tree = $n->getBranch();
+		$key = $n->key;
+		echo $key;
 		foreach ($tree as $node) {
 			if($node['id'] == (int)$request->getKeyByNumber(0)) $data['select_node'] = $node;
 			if($node['level'] == 1) {
@@ -180,7 +182,7 @@ class ArticleController extends SiteController {
 			$pages = $article_page_model->loadByArticleId($id);
 			$data['article'] = $article_model->load($id);
 			
-			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, true, $article_model->title);
+			$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, false, true, $article_model->title);
 			$data['category'] = $article_tree_model->load($article_model->articles_tree_id);
 			$data['page_content'] = $pages[$pageId];
 			$data['pager_view'] = $article_pager->ShowPager(count($pages), $pageId, 'Article', 'ArticleView', array($id));
@@ -302,15 +304,15 @@ class ArticleController extends SiteController {
 		$request = Project::getRequest();
 		$data = array();
 		$this->BaseSiteData();
-		$data['tab_list'] = TabController::getMainArticleTabs(true);
-		$date_time = localtime();
-		if($date_time[6] >= 1 && ($date_time[6] <= 2 || ($date_time[6] == 3 && $date_time[2] < 18))){
-			$status = array(ARTICLE_RATE_STATUS::NEW_ARTICLE);
-			$data['competition_action'] = 0;
+		$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, true);
+		if(ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_START){
+			$status = array(ARTICLE_COMPETITION_STATUS::NEW_ARTICLE);
+			$data['competition_control'] = true;
+		} elseif (ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_VOTE) {
+			$status = array(ARTICLE_COMPETITION_STATUS::IN_RATE);
+			$data['competition_control'] = false;
 		} else {
-			$status = array(ARTICLE_RATE_STATUS::IN_RATE);
-			$data['competition_action'] = 1;
-			
+			Project::getResponse()->redirect($request->createUrl('Article', 'List'));
 		}
 		$this->_listArticle($data, $status);
 		$this->_view->CompetitionArticleList($data);
@@ -323,6 +325,7 @@ class ArticleController extends SiteController {
 		$this->BaseSiteData();
 		
 	}
+	
 }
 
 ?>

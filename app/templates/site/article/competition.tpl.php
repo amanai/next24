@@ -11,8 +11,8 @@
 					<tr>
 						<td class="next24u_left">
 							<!-- панель слева -->
-							<?php include($this -> _include('catalog.tpl.php')); ?>
-							<? if($this->competition_action == 0) include($this -> _include('control_panel.tpl.php')); ?>
+							<?php include($this -> _include('catalog_comp.tpl.php')); ?>
+							<? if($this->competition_control == true) include($this -> _include('control_panel.tpl.php')); ?>
 							<!-- /панель слева -->
 						</td>
 						<td class="next24u_right">
@@ -22,13 +22,11 @@
 										<div class="block_ee4">
 											<div style="margin: 0px -10px;">
 												<? 
-													if($this->competition_action == 0) {
+													if($this->competition_control == true) {
 														include($this -> _include('list_start_competition.tpl.php'));
 													} else {
 														include($this -> _include('list_rate_competition.tpl.php'));	
 													}?>
-}
-}
 											</div>
 							<!-- листинг -->	
 												
