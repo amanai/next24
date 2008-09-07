@@ -10,17 +10,7 @@
 			<table  width="100%" height="100%" cellpadding="0">
 				<tr>
 					<td>
-					<div style="float: right">
-					<?php 
-					if($this->article['rate_status'] == ARTICLE_RATE_STATUS::IN_RATE || $this->article['rate_status'] == ARTICLE_RATE_STATUS::WINNER ) {
-						if($this->vote_status <= 0) {
-							include($this -> _include('vote.tpl.php'));
-						} else {
-							include($this -> _include('vote_result.tpl.php'));
-						}
-					}
-					?>
-					</div>	
+
 					<h1><?=$this->article['title']?></h1>
 					<b><?=$this->page_content['title']?></b>
 						<p><?=$this->page_content['p_text']?></p>

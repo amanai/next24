@@ -17,7 +17,6 @@ class ArticleController extends SiteController {
 		$data['tab_list'] = TabController::getMainArticleTabs(true);
 		$status = array(ARTICLE_COMPETITION_STATUS::COMPLETE, ARTICLE_COMPETITION_STATUS::SHOW_IN_CATALOG);
 		$this->_listArticle($data, $status);
-		var_dump(localtime());
 		$this->_view->ArticleList($data);
 		$this->_view->parse();
 	}
@@ -33,7 +32,7 @@ class ArticleController extends SiteController {
 		$this->_view->parse();
 	}*/
 	
-	public function LastListAction() {
+/*	public function LastListAction() {
 		$data = array();
 		$this->BaseSiteData($data);
 		$data['tab_list'] = TabController::getMainArticleTabs(false, true);
@@ -50,8 +49,8 @@ class ArticleController extends SiteController {
 		$this->_view->TopList($data);
 		$this->_view->parse();
 	}
-	
-	private function _articleList(&$data, $userId, $sortName, $sortOrder, $per_page, $action) {
+*/	
+/*	private function _articleList(&$data, $userId, $sortName, $sortOrder, $per_page, $action) {
 		$request = Project::getRequest();
 		$article_model = new ArticleModel();
 		$pager = new DbPager($request -> getKeyByNumber(0), $per_page);
@@ -59,7 +58,7 @@ class ArticleController extends SiteController {
 		$data['article_list'] = $article_model->loadWhere($userId, $sortName, $sortOrder);
 		$pager_view = new SitePagerView();
 		$data['article_list_pager'] = $pager_view->show2($article_model->getPager(), 'Article', $action);
-	}
+	}*/
 	
 	private function _listArticle(&$data, array $status) {
 		$request = Project::getRequest();
@@ -67,8 +66,6 @@ class ArticleController extends SiteController {
 		$article_model = new ArticleModel();		
 		$n = Node::by_key('', 'articles_tree');
 		$tree = $n->getBranch();
-		$key = $n->key;
-		echo $key;
 		foreach ($tree as $node) {
 			if($node['id'] == (int)$request->getKeyByNumber(0)) $data['select_node'] = $node;
 			if($node['level'] == 1) {
@@ -78,6 +75,9 @@ class ArticleController extends SiteController {
 			}
 		}
 		$data['article_list'] = $article_model->loadByParentId((int)$request->getKeyByNumber(0), $status);
+		foreach ($data['article_list'] as &$article) {
+			$article += $article_model->getFullPathById($article['articles_tree_id']);
+		}
 	}
 	
 /*	public function AddArticleAction() {
@@ -276,15 +276,20 @@ class ArticleController extends SiteController {
 		$article_model = new ArticleModel();
 		$article_model->load($articleId);
 		$article_vote_model = new ArticleVoteModel();
-		if(count($article_vote_model->loadByArticleUser($articleId, $userId)) <= 0 && $article_model->rate_status == ARTICLE_RATE_STATUS::IN_RATE && $userId > 0) {
-			$article_vote_model->article_id = $articleId;
-			$article_vote_model->user_id = $userId;
-			$article_vote_model->vote = $request->vote;
-			$article_model->votes++;
-			$article_vote_model->save();
-			$article_model->save();
+		if(	count($article_vote_model->loadByArticleUser(0, $userId)) <= 0 &&
+			$article_model->rate_status == ARTICLE_COMPETITION_STATUS::IN_RATE &&
+			$userId > 0 &&
+			$userId != $article_model->user_id) {
+				$article_vote_model->clear();
+				$article_vote_model->article_id = $articleId;
+				$article_vote_model->user_id = $userId;
+				$article_vote_model->vote = 1;
+				$article_model->votes++;
+				$article_vote_model->save();
+				$article_model->save();
 		}
-		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($request->getKeyByNumber(0))));
+		
+		Project::getResponse()->redirect($request->createUrl('Article', 'CompetitionCatalog'));
 	}
 	
 	public function DeleteArticleAction() {
@@ -304,13 +309,15 @@ class ArticleController extends SiteController {
 		$request = Project::getRequest();
 		$data = array();
 		$this->BaseSiteData();
-		$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, true);
+		$data['tab_list'] = TabController::getMainArticleTabs(false, false, true);
 		if(ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_START){
 			$status = array(ARTICLE_COMPETITION_STATUS::NEW_ARTICLE);
 			$data['competition_control'] = true;
 		} elseif (ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_VOTE) {
 			$status = array(ARTICLE_COMPETITION_STATUS::IN_RATE);
 			$data['competition_control'] = false;
+			$article_vote_model = new ArticleVoteModel();
+			if(count($article_vote_model->loadByArticleUser(0, Project::getUser()->getDbUser()->id)) == 0) $data['can_vote'] = true;
 		} else {
 			Project::getResponse()->redirect($request->createUrl('Article', 'List'));
 		}
@@ -323,7 +330,69 @@ class ArticleController extends SiteController {
 		$request = Project::getRequest();
 		$data = array();
 		$this->BaseSiteData();
-		
+		$data['tab_list'] = TabController::getMainArticleTabs(false,true);
+		$article_model = new ArticleModel();
+		if(ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_FINAL) {
+			$status = array(ARTICLE_COMPETITION_STATUS::COMPLETE, ARTICLE_COMPETITION_STATUS::EDITED);
+		} else {
+			$status = array(ARTICLE_COMPETITION_STATUS::WINNER);
+		}
+		$data['article_list'] = $article_model->loadByParentId(0, $status);
+		foreach ($data['article_list'] as &$article) {
+			$article += $article_model->getFullPathById($article['articles_tree_id']);
+		}
+		$this->_view->LastWinnersList($data);
+		$this->_view->parse();
+	}
+	
+	public function AddSubjectAction() {
+		//$request = Project::getRequest();
+		$data = array();
+		$this->BaseSiteData();
+		$article_model = new ArticleModel();
+		$data['tab_list'] = TabController::getMainArticleTabs(false, false, false, true);
+		if(count($article_model->loadByParentId(0, array(ARTICLE_COMPETITION_STATUS::NEW_ARTICLE), Project::getUser()->getDbUser()->id)) >= 5) {
+			$data['message'] = "Нельзя добавить больше 5 тем за конкурс";
+			$data['active'] = false;
+		} else {
+			$data['active'] = true;
+			$n = Node::by_key('', 'articles_tree');
+			$data['tree'] = $n->getBranch();
+		}
+		$this->_view->AddSubject($data);
+		$this->_view->parse();
+	}
+	
+	public function SaveSubjectAction() {
+		$request = Project::getRequest();
+		$article_model = new ArticleModel();
+		if(count($article_model->loadByParentId(0, array(ARTICLE_COMPETITION_STATUS::NEW_ARTICLE), Project::getUser()->getDbUser()->id)) < 5) {
+			$article_model->title = $request->title;
+			$article_model->articles_tree_id = $request->parent_id;
+			$article_model->user_id = Project::getUser()->getDbUser()->id;
+			$article_model->rate_status = ARTICLE_COMPETITION_STATUS::NEW_ARTICLE;
+			$article_model->creation_date = date("Y-m-d H:i:s");
+			$article_model->save();
+		}
+		Project::getResponse()->redirect($request->createUrl('Article', 'CompetitionCatalog'));
+	}
+	
+	//запускаем kron в среду в 18.00
+	public function CompetitionStage1Action() {
+		$article_model = new ArticleModel();
+		$article_model->CompetitionStage1();
+	}
+	
+	//запускаем kron в пятницу в 18.00
+	public function CompetitionStage2Action() {
+		$article_model = new ArticleModel();
+		$article_model->CompetitionStage2();
+	}
+	
+	//запускаем kron в понедельник в 00.00
+	public function CompetitionStage3Action() {
+		$article_model = new ArticleModel();
+		$article_model->CompetitionStage3();
 	}
 	
 }

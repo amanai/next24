@@ -4,7 +4,7 @@
 			<div class="block_ee4">
 				<div class="block_title"><h2>Управление</h2></div>
 				
-				<a href="#">Предложить тему</a>
+				<a href="<?=$this->createUrl('Article', 'AddSubject')?>">Предложить тему</a>
 				
 			</div>
 		</div>

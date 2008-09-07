@@ -45,7 +45,7 @@
 						<?foreach ($child[$key] as $subNode) :?>
 							<? if (strpos($obj->select_node['key'], substr($subNode['key'], 0, -4)) === 0) : ?>
 								<?if(count($child[$subNode['key']]) > 0):?>
-									<a href="<?=Project::getRequest()->createUrl('Article', 'List', array($subNode['id']))?>"><img src='<?if(strpos($obj->select_node['key'], $subNode['key']) === 0) :?><?=Project::getRequest()->getBaseUrl()."/app/images/icons/minus.gif"; ?><?else :?><?=Project::getRequest()->getBaseUrl()."/app/images/icons/plus.gif"; ?><?endif;?>' /><b> <?=$subNode['name']?></b></a>
+									<a href="<?=Project::getRequest()->createUrl('Article', 'CompetitionCatalog', array($subNode['id']))?>"><img src='<?if(strpos($obj->select_node['key'], $subNode['key']) === 0) :?><?=Project::getRequest()->getBaseUrl()."/app/images/icons/minus.gif"; ?><?else :?><?=Project::getRequest()->getBaseUrl()."/app/images/icons/plus.gif"; ?><?endif;?>' /><b> <?=$subNode['name']?></b></a>
 									<div <?if(strpos($obj->select_node['key'], $subNode['key']) === 0) :?>class="open_folder"<?else :?> class="close_folder" <?endif;?> >
 										<?tree($subNode['key'], $child, $obj);?>
 									</div>

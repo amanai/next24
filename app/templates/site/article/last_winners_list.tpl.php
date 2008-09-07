@@ -9,12 +9,7 @@
 			
 			<table  width="100%" height="100%" cellpadding="0">
 					<tr>
-						<td class="next24u_left">
-							<!-- панель слева -->
-							<?php include($this -> _include('catalog.tpl.php')); ?>					
-							<!-- /панель слева -->
-						</td>
-						<td class="next24u_right">
+						<td>
 						<div class="block_ee1">
 								<div class="block_ee2">
 									<div class="block_ee3">
@@ -31,6 +26,7 @@
 														<td style="text-align: center;"><b>Голосов за тему</b></td>
 														<td style="text-align: center;"><b>Автор темы</b></td>
 														<td style="text-align: center;"><b>Рейтинг</b></td>
+														<td style="text-align: center;"><b>Статус</b></td>
 													</tr>
 													<?foreach ($this->article_list as $key => $item):?>
 														<tr id=<?php if($key%2==0) { ?>"cmod_tab2"<?php } else { ?>"cmod_tab1"<?php } ?>>
@@ -42,6 +38,11 @@
 															<td style="text-align: center;"><?=$item['votes']?></td>
 															<td style="text-align: center;"><?=$item['login']?></td>
 															<td style="text-align: center;"><?=$item['rate']?></td>
+															<td style="text-align: center;">
+																<? 	if($item['rate_status'] == ARTICLE_COMPETITION_STATUS::EDITED) echo "В редакции";
+																	if($item['rate_status'] == ARTICLE_COMPETITION_STATUS::COMPLETE) echo "Готова";
+																?>
+															</td>
 													<?endforeach;?>
 												</table>
 											</div>

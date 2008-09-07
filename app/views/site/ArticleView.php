@@ -8,7 +8,7 @@ class ArticleView extends BaseSiteView {
 		$this->set($data);
 	}
 	
-	public function AddArticle($data) {
+/*	public function AddArticle($data) {
 		$this->setTemplate(null, 'add_article.tpl.php');
 		$this->set($data);
 	}
@@ -36,22 +36,31 @@ class ArticleView extends BaseSiteView {
 		$this->setTemplate(null, 'list.tpl.php');
 		$this->set($data);
 	}
-	
+*/	
 	public function ViewArticle($data) {
 		$this->setTemplate(null, 'view_article.tpl.php');
 		$this->set($data);
 	}
 	
-	public function UserArticleList($data) {
+/*	public function UserArticleList($data) {
 		$this->setTemplate(null, 'user_article_list.tpl.php');
 		$this->set($data);
 	}
-	
+*/	
 	public function CompetitionArticleList($data) {
 		$this->setTemplate(null, 'competition.tpl.php');
 		$this->set($data);
 	}
 	
+	public function AddSubject($data) {
+		$this->setTemplate(null, 'add_subject.tpl.php');
+		$this->set($data);
+	}
+	
+	public function LastWinnersList($data) {
+		$this->setTemplate(null, 'last_winners_list.tpl.php');
+		$this->set($data);
+	}
 
 }
 

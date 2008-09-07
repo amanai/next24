@@ -9,8 +9,13 @@ class ArticleVoteModel extends BaseModel {
 	public function loadByArticleUser($articleId, $userId) {
 		$articleId = (int)$articleId;
 		$userId = (int)$userId;
-		$sql = "SELECT * FROM $this->_table WHERE article_id = ?d AND user_id = ?d";
-		$result = Project::getDatabase()->selectRow($sql, $articleId, $userId);
+		$sql = 	"SELECT * FROM $this->_table ";
+		$articleId > 0 ? $sql .= "WHERE article_id = ?d AND user_id = ?d" : $sql .= "WHERE user_id = ?d";
+		$params = array();
+		$params[] = $sql;
+		$articleId > 0 ? $params[] = $articleId : "";
+		$params[] = $userId;
+		$result = call_user_func_array(array(Project::getDatabase(), 'select'), $params);
 		$this->bind($result);
 		return $result;
 	}

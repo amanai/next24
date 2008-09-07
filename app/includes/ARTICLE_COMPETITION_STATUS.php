@@ -14,13 +14,13 @@ class ARTICLE_COMPETITION_STATUS {
 	
 	public static function getCompetitionStage() {
 		$date_time = localtime();
-		if($date_time[6] >= 1 && ($date_time[6] <= 2 || ($date_time[6] == 3 && $date_time[2] < 18))){
+		if(($date_time[6] >= 1 && ($date_time[6] <= 2) || ($date_time[6] == 3 && $date_time[2] < 18))){
 			return self::COMPETITION_START;
 		}
-		if(($date_time[6] > 3 || ($date_time[6] == 3 && $date_time[2] < 18)) && ($date_time[6] < 5 || ($date_time[6] == 5 && $date_time[2] < 18))) {
+		if(($date_time[6] > 3 || ($date_time[6] == 3 && $date_time[2] > 18)) && ($date_time[6] < 5 || ($date_time[6] == 5 && $date_time[2] < 18))) {
 			return self::COMPETITION_VOTE;
 		}
-		if($date_time[6] > 5 || ($date_time[6] == 5 && $date_time[2] > 17)) {
+		if($date_time[6] > 5 || $date_time[6] == 0 || ($date_time[6] == 5 && $date_time[2] > 17)) {
 			return self::COMPETITION_FINAL;
 		}
 	}

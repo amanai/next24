@@ -119,7 +119,7 @@ class TabController{
 			return $tabs;
 		}
 		
-		static public function getMainArticleTabs($selected_cat = false, $selected_last = false, $selected_top = false, $selectded_competition = false, /*$selected_user_list = false,*/ $selected_view_article = false, /*$selected_managed_article = false,*/ $view_article_name = ""/*, $managed_article_name = "Новая статья"*/ ) {
+		static public function getMainArticleTabs($selected_cat = false, $selected_last_wins = false,/* $selected_top = false,*/ $selectded_competition = false, $selected_add_subject = false, $selected_view_article = false, /*$selected_managed_article = false,*/ $view_article_name = ""/*, $managed_article_name = "Новая статья"*/ ) {
 			$request = Project::getRequest();
 			$tabs = array(
 							0 => array(
@@ -129,6 +129,12 @@ class TabController{
 								 	'url' => $request -> createUrl('Article', 'List', null, false)
 									),
 							1 => array(
+									'name' => 'Победители прошлого конкурса',
+									'title' => 'Победители прошлого конкурса',
+									'selected' => $selected_last_wins,
+									'url' => $request->createUrl('Article', 'LastWinnersList', null, false)
+									),
+			/*				1 => array(
 									'name' => 'Последние статьи',
 									'title' => 'Последние статьи',
 									'selected' => $selected_last,
@@ -139,7 +145,7 @@ class TabController{
 									'title' => 'Топ статей',
 									'selected' => $selected_top,
 								 	'url' => $request -> createUrl('Article', 'TopList', null, false)
-									),
+									),*/
 							);
 		/*	if(Project::getUser()->getDbUser()->id > 0) {
 				$tabs[] = array(
@@ -155,8 +161,9 @@ class TabController{
 							'url' => $request -> createUrl('Article', 'AddArticle', null, false)
 							);
 			}*/
-			$date_time = localtime();
-			if(ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_START || ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_VOTE) {
+			if(	(ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_START ||
+				 ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_VOTE) &&
+				 Project::getUser()->getDbUser()->id > 0) {
 				$tabs[] = array(
 							'name' => 'Конкурс тем',
 							'title' => 'Конкурс тем',
@@ -170,6 +177,14 @@ class TabController{
 							'title' => $view_article_name,
 							'selected' => $selected_view_article,
 							'url' => '#',
+							);
+			}
+			if(Project::getUser()->getDbUser()->id > 0 && $selected_add_subject === true) {
+				$tabs[] = array(
+							'name' => 'Предложение темы',
+							'title' => 'Предложение темы',
+							'selected' => $selected_add_subject,
+							'url' => $request->createUrl('Article', 'AddSubject', null, false)
 							);
 			}
 			return $tabs;

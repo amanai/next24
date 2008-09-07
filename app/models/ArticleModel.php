@@ -6,8 +6,9 @@ class ArticleModel extends BaseModel {
 		parent::__construct("articles");
 	}
 	
-	public function loadByParentId($id, array $status) {
+	public function loadByParentId($id, array $status, $userId = 0) {
 		$id = (int)$id;
+		$userId = (int)$userId;
 		$str = "a.`rate_status` = ?d ";
 		for($i = 0;$i<count($status)-1;$i++) $str .= "OR a.`rate_status` = ?d ";
 			
@@ -22,18 +23,18 @@ class ArticleModel extends BaseModel {
 				"a.`votes`, ".
 				"a.`comments`, ".
 				"a.`views`, ".
-				"a.`creation_date` ".
+				"a.`creation_date`, ".
+				"u.`login` ".
 				"FROM articles a ".
 				"LEFT JOIN users u ".
 				"ON a.`user_id` = u.`id` ";
 				$id > 0 ? $sql .= "WHERE a.`articles_tree_id` = ?d AND ($str)" : $sql .= "WHERE ($str)";
-				//$sql .= "AND (".$str.")";
+				$userId > 0 ? $sql .= "AND a.`user_id` = ?d" : "";
 		$params = array();
 		$params[] = $sql;
 		$id > 0 ? $params[] = $id : "";
 		$params = array_merge($params, $status);
-		//$param[] = $user_id;
-		echo $sql;
+		$userId > 0 ? $params[] = $userId : "";
 		return call_user_func_array(array(Project::getDatabase(), 'select'), $params);
 	}
 	
@@ -101,6 +102,44 @@ class ArticleModel extends BaseModel {
 		return $result;
 	}
 	
+	public function getFullPathById($id) {
+		$sql = "CALL sp_get_path_by_key($id, @path);";
+		Project::getDatabase()->query($sql);
+		$sql = "SELECT @path as full_path";
+		$result = Project::getDatabase()->selectRow($sql);
+		return $result;
+	}
+	
+	//в среду 18.00
+	public function CompetitionStage1() {
+		$sql = 	"UPDATE $this->_table SET `rate_status` = ".ARTICLE_COMPETITION_STATUS::IN_RATE.
+				" WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::NEW_ARTICLE;
+		return Project::getDatabase()->query($sql);
+	}
+	
+	//в пятницу в 18.00
+	public function CompetitionStage2() {
+		$sql =  "UPDATE $this->_table SET `rate_status` = ".ARTICLE_COMPETITION_STATUS::EDITED.
+				" WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::IN_RATE." ORDER BY `votes` ".
+				"TOP 5";
+		Project::getDatabase()->query($sql);
+		$sql =  "DELETE FROM $this->_table ".
+				"WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::IN_RATE;
+		return Project::getDatabase()->query($sql);
+	}
+	
+	//в понедельник в 18.00
+	public function CompetitionStage3() {
+		$sql =  "UPDATE $this->_table SET `rate_status` = ".ARTICLE_COMPETITION_STATUS::SHOW_IN_CATALOG.
+				" WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::WINNER;
+		Project::getDatabase()->query($sql);
+		echo $sql;
+		$sql =  "UPDATE $this->_table SET `rate_status` = ".ARTICLE_COMPETITION_STATUS::WINNER.
+				" WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::COMPLETE.
+				" OR `rate_status` = ".ARTICLE_COMPETITION_STATUS::EDITED;
+		echo $sql;
+		return Project::getDatabase()->query($sql);
+	}
 }
 
 ?>
