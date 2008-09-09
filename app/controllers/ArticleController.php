@@ -269,27 +269,39 @@ class ArticleController extends SiteController {
 		$this->_view->ajax();
 	}*/
 	
-	public function VoteAction() {
+	public function SubjectVoteAction() {
 		$request = Project::getRequest();
 		$articleId = (int)$request->getKeyByNumber(0);
 		$userId = Project::getUser()->getDbUser()->id;
 		$article_model = new ArticleModel();
 		$article_model->load($articleId);
-		$article_vote_model = new ArticleVoteModel();
-		if(	count($article_vote_model->loadByArticleUser(0, $userId)) <= 0 &&
+		$subject_vote_model = new SubjectVoteModel();
+		if(	count($subject_vote_model->loadUserId($userId)) <= 0 &&
 			$article_model->rate_status == ARTICLE_COMPETITION_STATUS::IN_RATE &&
 			$userId > 0 &&
 			$userId != $article_model->user_id) {
-				$article_vote_model->clear();
-				$article_vote_model->article_id = $articleId;
-				$article_vote_model->user_id = $userId;
-				$article_vote_model->vote = 1;
+				$subject_vote_model->clear();
+				$subject_vote_model->user_id = $userId;
 				$article_model->votes++;
-				$article_vote_model->save();
+				$subject_vote_model->save();
 				$article_model->save();
 		}
 		
 		Project::getResponse()->redirect($request->createUrl('Article', 'CompetitionCatalog'));
+	}
+	
+	public function VoteAction() {
+		$request = Project::getRequest();
+		$articleId = (int)$request->getKeyByNumber(0);
+		$userId = Project::getUser()->getDbUser()->id;
+		$article_vote_model = new ArticleVoteModel();
+		if(count($article_vote_model->loadByArticleUser($articleId, $userId)) <= 0 && $userId > 0) {
+			$article_vote_model->article_id = $articleId;
+			$article_vote_model->user_id = $userId;
+			$article_vote_model->vote = $request->vote;
+			$article_vote_model->save();
+		}
+		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($request->getKeyByNumber(0))));
 	}
 	
 	public function DeleteArticleAction() {

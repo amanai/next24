@@ -128,7 +128,7 @@ class ArticleModel extends BaseModel {
 		return Project::getDatabase()->query($sql);
 	}
 	
-	//в понедельник в 18.00
+	//в понедельник в 00.00
 	public function CompetitionStage3() {
 		$sql =  "UPDATE $this->_table SET `rate_status` = ".ARTICLE_COMPETITION_STATUS::SHOW_IN_CATALOG.
 				" WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::WINNER;
