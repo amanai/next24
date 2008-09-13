@@ -128,12 +128,7 @@ class TabController{
 									'selected' => $selected_cat,
 								 	'url' => $request -> createUrl('Article', 'List', null, false)
 									),
-							1 => array(
-									'name' => 'Победители прошлого конкурса',
-									'title' => 'Победители прошлого конкурса',
-									'selected' => $selected_last_wins,
-									'url' => $request->createUrl('Article', 'LastWinnersList', null, false)
-									),
+							
 			/*				1 => array(
 									'name' => 'Последние статьи',
 									'title' => 'Последние статьи',
@@ -185,6 +180,12 @@ class TabController{
 							'title' => 'Предложение темы',
 							'selected' => $selected_add_subject,
 							'url' => $request->createUrl('Article', 'AddSubject', null, false)
+							);
+				$tabs[] = array(
+							'name' => 'Победители прошлого конкурса',
+							'title' => 'Победители прошлого конкурса',
+							'selected' => $selected_last_wins,
+							'url' => $request->createUrl('Article', 'LastWinnersList', null, false)
 							);
 			}
 			return $tabs;
