@@ -10,6 +10,7 @@ class ArticleController extends SiteController {
 		parent::__construct($view_class);
 	}
 	
+	// каталог статей
 	public function ListAction() {
 		$request = Project::getRequest();
 		$data = array();
@@ -166,6 +167,7 @@ class ArticleController extends SiteController {
 		}
 	}*/
 	
+	// отображение самой статьи
 	public function ArticleViewAction() {
 		$request = Project::getRequest();
 		$data = array();
@@ -211,6 +213,7 @@ class ArticleController extends SiteController {
 		}
 	}
 	
+	// добавление комментария
 	public function AddCommentAction() {
 		$request = Project::getRequest();
 		$article_model = new ArticleModel();
@@ -225,6 +228,7 @@ class ArticleController extends SiteController {
 		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($article_model->id)));
 	}
 	
+	// удаление комментария
 	public function DeleteCommentAction() {
 		$request = Project::getRequest();
 		$request_user_id = (int)Project::getUser()->getShowedUser()->id;
@@ -269,6 +273,7 @@ class ArticleController extends SiteController {
 		$this->_view->ajax();
 	}*/
 	
+	// голосование за тему
 	public function SubjectVoteAction() {
 		$request = Project::getRequest();
 		$articleId = (int)$request->getKeyByNumber(0);
@@ -290,6 +295,7 @@ class ArticleController extends SiteController {
 		Project::getResponse()->redirect($request->createUrl('Article', 'CompetitionCatalog'));
 	}
 	
+	// голосование за статью
 	public function VoteAction() {
 		$request = Project::getRequest();
 		$articleId = (int)$request->getKeyByNumber(0);
@@ -304,6 +310,7 @@ class ArticleController extends SiteController {
 		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($request->getKeyByNumber(0))));
 	}
 	
+	/*
 	public function DeleteArticleAction() {
 		$request = Project::getRequest();
 		$article_model = new ArticleModel();
@@ -315,8 +322,9 @@ class ArticleController extends SiteController {
 			$article_model->delete($articleId);
 		}
 		Project::getResponse()->redirect($request->createUrl('Article', 'UserArticleList'));
-	}
+	}*/
 	
+	// конкурс тем
 	public function CompetitionCatalogAction() {
 		$request = Project::getRequest();
 		$data = array();
@@ -338,6 +346,7 @@ class ArticleController extends SiteController {
 		$this->_view->parse();
 	}
 	
+	// последние победители
 	public function LastWinnersListAction() {
 		$request = Project::getRequest();
 		$data = array();
@@ -357,6 +366,7 @@ class ArticleController extends SiteController {
 		$this->_view->parse();
 	}
 	
+	// диалог добавления темы пользователем
 	public function AddSubjectAction() {
 		//$request = Project::getRequest();
 		$data = array();
@@ -375,6 +385,7 @@ class ArticleController extends SiteController {
 		$this->_view->parse();
 	}
 	
+	// сохранение темы
 	public function SaveSubjectAction() {
 		$request = Project::getRequest();
 		$article_model = new ArticleModel();
@@ -391,20 +402,26 @@ class ArticleController extends SiteController {
 	
 	//запускаем kron в среду в 18.00
 	public function CompetitionStage1Action() {
-		$article_model = new ArticleModel();
-		$article_model->CompetitionStage1();
+		if(ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_VOTE) {
+			$article_model = new ArticleModel();
+			$article_model->CompetitionStage1();
+		}
 	}
 	
 	//запускаем kron в пятницу в 18.00
 	public function CompetitionStage2Action() {
-		$article_model = new ArticleModel();
-		$article_model->CompetitionStage2();
+		if(ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_FINAL) {
+			$article_model = new ArticleModel();
+			$article_model->CompetitionStage2();
+		}
 	}
 	
 	//запускаем kron в понедельник в 00.00
 	public function CompetitionStage3Action() {
-		$article_model = new ArticleModel();
-		$article_model->CompetitionStage3();
+		if(ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_START) {
+			$article_model = new ArticleModel();
+			$article_model->CompetitionStage3();
+		}
 	}
 	
 }
