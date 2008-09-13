@@ -174,13 +174,15 @@ class TabController{
 							'url' => '#',
 							);
 			}
-			if(Project::getUser()->getDbUser()->id > 0 && $selected_add_subject === true) {
-				$tabs[] = array(
-							'name' => 'Предложение темы',
-							'title' => 'Предложение темы',
-							'selected' => $selected_add_subject,
-							'url' => $request->createUrl('Article', 'AddSubject', null, false)
-							);
+			if(Project::getUser()->getDbUser()->id > 0) {
+				if($selected_add_subject === true) {
+					$tabs[] = array(
+								'name' => 'Предложение темы',
+								'title' => 'Предложение темы',
+								'selected' => $selected_add_subject,
+								'url' => $request->createUrl('Article', 'AddSubject', null, false)
+								);
+				}
 				$tabs[] = array(
 							'name' => 'Победители прошлого конкурса',
 							'title' => 'Победители прошлого конкурса',
