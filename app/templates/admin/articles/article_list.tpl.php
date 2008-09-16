@@ -14,7 +14,13 @@
 		<tr>
 			<td><?=$item['title']?></td>
 			<td><?=$item['comments']?></td>
-			<td>Статус</td>
+			<td>
+				<?
+					if($item['rate_status'] == ARTICLE_COMPETITION_STATUS::COMPLETE || $item['rate_status'] == ARTICLE_COMPETITION_STATUS::SHOW_IN_CATALOG || $item['rate_status'] == ARTICLE_COMPETITION_STATUS::WINNER) echo "Готова";
+					if($item['rate_status'] == ARTICLE_COMPETITION_STATUS::EDITED) echo "В редакции";
+					if($item['rate_status'] == ARTICLE_COMPETITION_STATUS::NEW_ARTICLE || $item['rate_status'] == ARTICLE_COMPETITION_STATUS::IN_RATE) echo "Новая тема";
+				?>
+			</td>
 			<td>
 				<a href='#' onclick='ajax(<?=AjaxRequest::getJsonParam($this->controller, $this->edit_action, array($item['id']));?>)'>[Редактировать]</a> 
 				<a href="#" onclick='ajax(<?=AjaxRequest::getJsonParam($this->controller, $this->delete_article_action, array($item['id']));?>)'>[Удалить]</a> 
