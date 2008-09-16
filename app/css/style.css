@@ -1000,3 +1000,23 @@ font-weight:bold;
 	visibility: visible;
 	display: block;
 	}
+
+/* Cat Tree */
+.cat_tree
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.cat_tree li
+{
+	margin: 2px 0 2px 20px;
+}
+
+.cat_tree li img
+{
+	vertical-align: middle;
+	position: relative;
+	right: 3px;
+}

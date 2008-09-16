@@ -11,6 +11,18 @@ class ArticleModel extends BaseModel {
 		$userId = (int)$userId;
 		$str = "a.`rate_status` = ?d ";
 		for($i = 0;$i<count($status)-1;$i++) $str .= "OR a.`rate_status` = ?d ";
+		$result = array();
+		if ($id > 0) {
+			$sql = 	"SELECT a.`id` ".
+					"FROM articles_tree a ".
+					"JOIN articles_tree b ".
+					"ON a.`key` LIKE CONCAT(b.`key`, '%') ".
+					"WHERE b.`id` = ?d";
+			$result = Project::getDatabase()->select($sql, $id);
+			foreach ($result as $val)$res[] = (int)$val['id'];
+			$str2 = "a.`articles_tree_id` = ?d ";
+			for($i = 0;$i<count($res)-1;$i++) $str2 .= "OR a.`articles_tree_id` = ?d ";
+		}
 			
 		$sql =  "SELECT ".
 				"a.`id`, ".
@@ -28,11 +40,11 @@ class ArticleModel extends BaseModel {
 				"FROM articles a ".
 				"LEFT JOIN users u ".
 				"ON a.`user_id` = u.`id` ";
-				$id > 0 ? $sql .= "WHERE a.`articles_tree_id` = ?d AND ($str)" : $sql .= "WHERE ($str)";
+				$id > 0 ? $sql .= "WHERE ($str2) AND ($str)" : $sql .= "WHERE ($str)";
 				$userId > 0 ? $sql .= "AND a.`user_id` = ?d" : "";
 		$params = array();
 		$params[] = $sql;
-		$id > 0 ? $params[] = $id : "";
+		$id > 0 ? $params = array_merge($params, $res) : "";
 		$params = array_merge($params, $status);
 		$userId > 0 ? $params[] = $userId : "";
 		return call_user_func_array(array(Project::getDatabase(), 'select'), $params);

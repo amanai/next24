@@ -17,7 +17,7 @@ class ArticleController extends SiteController {
 		$this->BaseSiteData();
 		$data['tab_list'] = TabController::getMainArticleTabs(true);
 		$status = array(ARTICLE_COMPETITION_STATUS::COMPLETE, ARTICLE_COMPETITION_STATUS::SHOW_IN_CATALOG);
-		$this->_listArticle($data, $status);
+		$this->_listArticle($data, "List", $status);
 		$this->_view->ArticleList($data);
 		$this->_view->parse();
 	}
@@ -61,20 +61,23 @@ class ArticleController extends SiteController {
 		$data['article_list_pager'] = $pager_view->show2($article_model->getPager(), 'Article', $action);
 	}*/
 	
-	private function _listArticle(&$data, array $status) {
+	private function _listArticle(&$data, $action, array $status) {
 		$request = Project::getRequest();
 		$tree_model = new ArticleTreeModel();
 		$article_model = new ArticleModel();		
 		$n = Node::by_key('', 'articles_tree');
 		$tree = $n->getBranch();
 		foreach ($tree as $node) {
-			if($node['id'] == (int)$request->getKeyByNumber(0)) $data['select_node'] = $node;
-			if($node['level'] == 1) {
+			if($node['id'] == (int)$request->getKeyByNumber(0)) $data['selected_node'] = $node;
+		/*	if($node['level'] == 1) {
 				$data[root][$node['key']] = $node;
 			} else {
 				$data[child][substr($node['key'], 0, -4)][$node['key']] = $node;
-			}
+			}*/
+			$data['tree'][$node['key']] = $node;
+			$data['tree'][$node['key']]['link'] = $request->createUrl('Article', $action, array($node['id']));
 		}
+		
 		$data['article_list'] = $article_model->loadByParentId((int)$request->getKeyByNumber(0), $status);
 		foreach ($data['article_list'] as &$article) {
 			$article += $article_model->getFullPathById($article['articles_tree_id']);
@@ -341,7 +344,7 @@ class ArticleController extends SiteController {
 		} else {
 			Project::getResponse()->redirect($request->createUrl('Article', 'List'));
 		}
-		$this->_listArticle($data, $status);
+		$this->_listArticle($data, "CompetitionCatalog", $status);
 		$this->_view->CompetitionArticleList($data);
 		$this->_view->parse();
 	}
