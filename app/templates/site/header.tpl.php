@@ -68,8 +68,8 @@
 									<td><input type="password" style="width: 130px;" name="pass"/></td>
 								</tr>
 								</table>
-								<div class="user2_x"><input type="checkbox" style="padding: 0px;" /> Запомнить <input type="submit" value="Вход" style="width: 45px;" /></div>
-								<div class="user2_x"><a href="#">Потеряли пароль?</a> | <a href="<?php echo $this->createUrl('User', 'RegistrationForm');?>">Регистрация</a></div>
+								<div class="user2_x"><input type="checkbox" id="remember" name="remember" value="1" style="padding: 0px;" /> <label for="remember"></>Запомнить</label> <input type="submit" value="Вход" style="width: 45px;" /></div>
+								<div class="user2_x"><a href="#">Забыли пароль?</a> | <a href="<?php echo $this->createUrl('User', 'RegistrationForm');?>">Регистрация</a></div>
 							</form>
 						</td>
 						<td class="user3"> </td>

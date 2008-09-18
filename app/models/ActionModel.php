@@ -40,6 +40,14 @@ class ActionModel extends BaseModel{
 			return $result;
 		}
 		
+		function loadByController($controller_id){
+			$DE = Project::getDatabase();
+			$result = array();
+			$result = $DE -> select("SELECT * FROM ".$this -> _table." WHERE controller_id=?d ORDER BY `name`", (int)$controller_id);
+			$this -> bind($result);
+			return $result;
+		}
+		
 		function getRightsByUserTypeController($user_type_id, $controller_id){
 			$DE = Project::getDatabase();
 			$sql = "SELECT " .

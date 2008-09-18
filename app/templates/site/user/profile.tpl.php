@@ -16,47 +16,47 @@
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 						<div class="block_title">
 								<div class="block_title_left"><h2>Профиль пользователя</h2></div>
-								<div class="block_title_right"><img src="<?php echo $this -> image_url;?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" /></div>
+								<div class="block_title_right"><img src="<?=$this -> image_url;?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" /></div>
 						</div>
 
 						<div id="user_profile_js">
 							<table width="100%" cellpadding="3">
 							<tr>
 								<td width="150"><b>Пользователь</b></td>
-								<td><?php echo $this->user_profile['login'];?></td>
+								<td><?=$this->user_profile['login'];?></td>
 							</tr>
 								<td><b>Имя пользователя</b></td>
-								<td><?php echo $this->user_profile['last_name'].' '.$this->user_profile['first_name'].' '.$this->user_profile['middle_name'];?></td>
+								<td><?=$this->user_profile['last_name'].' '.$this->user_profile['first_name'].' '.$this->user_profile['middle_name'];?></td>
 							</tr>
 								<td><b>Дата рождения</b></td>
-								<td><?php echo $this->user_profile['birth_date'];?></td>
+								<td><?=$this->user_profile['birth_date'];?></td>
 							</tr>
 								<td><b>Дата регистрации</b></td>
-								<td><?php echo $this->user_profile['registration_date'];?></td>
+								<td><?=$this->user_profile['registration_date'];?></td>
 							</tr>
 								<td><b>Пол</b></td>
-								<td><?php echo isset($this->user_profile['gender_formatted'])?$this->user_profile['gender_formatted']:null;?></td>
+								<td><?=$this->user_profile['gender']?'мужской':'женский';?></td>
 							</tr>
 								<td><b>Расположение</b></td>
-								<td><?php echo $this->user_profile['city'];?></td>
+								<td><?=$this->user_profile['city'];?></td>
 							</tr>
 								<td><b>Интересы</b></td>
-								<td><?php echo $this->user_profile['interest'];?></td>
+								<td><?=$this->user_profile['interest'];?></td>
 							</tr>
 								<td><b>Репутация</b></td>
-								<td><?php echo $this->user_profile['reputation'];?> Посмотреть репутацию  (Плюс - Минус)</td>
+								<td><?=$this->user_profile['reputation'];?></td>
 							</tr>
 							
 							</tr>
 								<td><b>Друзья</b></td>
 								<td>
-									<?php echo $this -> friend_list; ?>
+									<?=$this -> friend_list; ?>
 								</td>
 							</tr>
 							</tr>
 								<td><b>В друзьях у</b></td>
 								<td>
-									<?php echo $this -> in_friend_list; ?>
+									<?=$this -> in_friend_list; ?>
 								</td>
 							</tr>
 							</table>
@@ -66,7 +66,7 @@
 							</tr>
 							<tr>
 								<td colspan="2"><i>
-									<?php echo $this->user_profile['about'];?>
+									<?=$this->user_profile['about'];?>
 								</i></td>
 							</tr>
 							</table>

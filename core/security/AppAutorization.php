@@ -183,7 +183,11 @@ class AppAutorization extends ApplicationManager implements IManager{
 							$url = Project::getRequest() -> createUrl($controller_model -> request_key, $action_model -> name);
 							// TODO:: check, if it's ajax request, then change location!!!
 							//Project::getAjaxResponse() -> location($url);
-							Project::getResponse() -> redirect($url);
+							
+							//header("HTTP/1.0 404 Not Found");
+							//exit;
+							
+							//Project::getResponse() -> redirect($url);
 						}
 					}
 				}

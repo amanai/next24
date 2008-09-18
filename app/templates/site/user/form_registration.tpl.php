@@ -3,7 +3,9 @@
 <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 <div class="block_title">
 		<div class="block_title_left"><h1>Обязательные данные</h1></div>
-		<div class="block_title_right"><img src="<?php echo $this -> image_url;?>/<?=(($this->helper->user_profile_js_state==1||!$this->helper->user_profile_js_state)?'close.png':'open.png')?>" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js'); setState('user_profile_js_state'); return false;" style="cursor: pointer;" /></div>
+		<div class="block_title_right">
+			<img src="<?php echo $this -> image_url;?>/<?=(($this->helper->user_profile_js_state==1||!$this->helper->user_profile_js_state)?'close.png':'open.png')?>" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js'); setState('user_profile_js_state'); return false;" style="cursor: pointer;" />
+		</div>
 </div>
 
 <input type="hidden" name="user_profile_js_state" id="user_profile_js_state" value="<?=($this->helper->user_profile_js_state?$this->helper->user_profile_js_state:1)?>"/>
@@ -61,8 +63,11 @@
 <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 <div class="block_title">
 		<div class="block_title_left"><h1>Основная информация о себе (+15 баллов рейтинга максимально, +1.5 NextMoney максимально)</h1></div>
-		<div class="block_title_right"><img src="<?php echo $this -> image_url;?>/<?=(($this->helper->user_profile_js1_state==2||!$this->helper->user_profile_js1_state)?'open.png':'close.png')?>" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js1'); setState('user_profile_js1_state'); return false;" style="cursor: pointer;" /></div>
+		<div class="block_title_right">
+			<img src="<?php echo $this -> image_url;?>/<?=(($this->helper->user_profile_js1_state==2||!$this->helper->user_profile_js1_state)?'open.png':'close.png')?>" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js1'); setState('user_profile_js1_state'); return false;" style="cursor: pointer;" />
+		</div>
 </div>
+
 <input type="hidden" name="user_profile_js1_state" id="user_profile_js1_state" value="<?=($this->helper->user_profile_js1_state?$this->helper->user_profile_js1_state:2)?>"/>
 <div id="user_profile_js1" <?=(($this->helper->user_profile_js_state==2||!$this->helper->user_profile_js_state)?'style="display: none;"':'')?>>
 <table class="regdetails" cellpadding="4">

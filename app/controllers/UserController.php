@@ -17,12 +17,12 @@
 			
 			$info=array();
 			$info['year_list'] = array();
-			for($i = 1945; $i < 2000; $i++){
+			for($i = date('Y')-100; $i < date('Y')-8; $i++){
 				$info['year_list'][$i] = array('id'=>$i, 'value'=>$i);
 			}
 			
 			$info['month_list'] = array();
-			for($i = 1; $i < 12; $i++){
+			for($i = 0; $i < 12; $i++){
 				$info['month_list'][$i] = array('id'=>$i, 'value'=>iconv("cp1251", "UTF-8", strftime("%B", mktime(0, 0, 0, $i  , 1, 2008))));
 			}
 			
@@ -248,8 +248,6 @@
 			}
 		}
 		
-		
-		
 		function ActivationAction(){
 			$request = Project::getRequest();
 			$act_code = $request -> getKeyByNumber(0);
@@ -314,19 +312,6 @@
 			$this -> _view -> ajax();
 		}
 		
-		function ProfileEditAction(){
-			$info = array();
-			$this -> BaseSiteData();
-			$user_model = Project::getUser() -> getDbUser();
-			$user_model -> year = date("Y", strtotime($user_model -> birth_date));
-			$user_model -> month = date("m", strtotime($user_model -> birth_date));
-			$user_model -> day = date("d", strtotime($user_model -> birth_date));
-			$info['user_model'] = $user_model;
-			$this -> FillEditParams($info);
-			$this -> _view -> ProfileEdit($info);
-			$this -> _view -> parse();
-		}
-		
 		public function SaveprofileAction(){
 			$this->model->load($this->view->userData['id']);
 			$this->model->set("email", $this->params['email']);
@@ -375,26 +360,27 @@
 		}
 		
 		public function ProfileAction(){
-			$info = array();
 			$user = Project::getUser() -> getShowedUser();
-			$this -> BaseSiteData();
+			
 			$friend_model = new FriendModel;
-			$info['friend_list'] = $friend_model -> getFriends($user -> id);
-			$info['in_friend_list'] = $friend_model -> getInFriends($user -> id);
-			
-			$info['user_profile'] = $user -> data();
-			$info['tab_list'] = TabController::getOwnTabs(true);
-			$this -> _view -> Profile($info);
+			$this -> _view -> assign('friend_list', $friend_model -> getFriends($user -> id));
+			$this -> _view -> assign('in_friend_list', $friend_model -> getInFriends($user -> id));
+			$this -> _view -> assign('user_profile', $user -> data());
+			$this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
+			$this -> _view -> Profile();
 			$this -> _view -> parse();
-			/*$this->view->userData['birth_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['birth_date']));
-			$this->view->userData['registration_date_formatted'] = strftime("%d.%m.%Y", strtotime($this->view->userData['registration_date']));
-			$this->view->userData['gender_formatted'] = 'мужской';
-			if($this->view->userData['gender'] == 1) $this->view->userData['gender_formatted'] = 'женский';
-			
-			
-			$this->model->set("userData", $this->view->userData);
-			$this->view->content .= $this->view->render(VIEWS_PATH.'user/view_profile.tpl.php');
-			$this->view->display();*/
+		}
+		
+		function ProfileEditAction(){
+			$info = array();
+			/*$user_model = Project::getUser() -> getDbUser();
+			$user_model -> year = date("Y", strtotime($user_model -> birth_date));
+			$user_model -> month = date("m", strtotime($user_model -> birth_date));
+			$user_model -> day = date("d", strtotime($user_model -> birth_date));
+			$info['user_model'] = $user_model;
+			$this -> FillEditParams($info);*/
+			$this -> _view -> ProfileEdit($info);
+			$this -> _view -> parse();
 		}
 		
 		public function LogoutAction(){
