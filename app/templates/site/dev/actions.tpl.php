@@ -1,5 +1,5 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-<? print_r($this);?>
+<? //print_r($this);?>
 <? if (!$this->controller) { ?>
 	Выберите <a href="<?=$this -> createUrl('Dev', 'Controllers')?>">контроллер</a>.
 <? } else { ?>
