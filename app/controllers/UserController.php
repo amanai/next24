@@ -389,14 +389,18 @@
 		}
 		
 		function ProfileEditAction(){
-			$info = array();
+			$user = Project::getUser() -> getShowedUser();
+			
 			/*$user_model = Project::getUser() -> getDbUser();
 			$user_model -> year = date("Y", strtotime($user_model -> birth_date));
 			$user_model -> month = date("m", strtotime($user_model -> birth_date));
 			$user_model -> day = date("d", strtotime($user_model -> birth_date));
 			$info['user_model'] = $user_model;
 			$this -> FillEditParams($info);*/
-			$this -> _view -> ProfileEdit($info);
+			
+			$this -> _view -> assign('user_profile', $user -> data());
+			$this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
+			$this -> _view -> ProfileEdit();
 			$this -> _view -> parse();
 		}
 		

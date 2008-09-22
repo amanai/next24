@@ -8,7 +8,7 @@
 		<tr>
 			<td class="next24u_left">
 				<!-- левый блок -->
-					<?php  include($this -> _include('control_panel.tpl.php')); ?>
+					<?php include($this -> _include('control_panel.tpl.php')); ?>
 				<!-- /левый блок -->
 			</td>
 			<td class="next24u_right">
@@ -28,10 +28,14 @@
 								<td width="150"><b>Пользователь</b></td>
 								<td><?=$this->user_profile['login'];?></td>
 							</tr>
+							<? if ($this->user_name) { ?>
 							<tr>
 								<td><b>Имя пользователя</b></td>
-								<td><?=$this->user_profile['last_name'].' '.$this->user_profile['first_name'].' '.$this->user_profile['middle_name'];?></td>
+								<td>
+									<?=$this->user_name;?>
+								</td>
 							</tr>
+							<? } ?>
 							<tr>
 								<td><b>Дата рождения</b></td>
 								<td><?=$this->user_profile['birth_date'];?></td>
@@ -44,22 +48,30 @@
 								<td><b>Пол</b></td>
 								<td><?=$this->user_profile['gender']?'мужской':'женский';?></td>
 							</tr>
+							<? if ($this->user_profile['user_location']) { ?>
 							<tr>
 								<td><b>Расположение</b></td>
-								<td><?=implode(", ", array($this->user_profile['country'], $this->user_profile['state'], $this->user_profile['city']));?></td>
+								<td><?=$this->user_location;?></td>
 							</tr>
+							<? } ?>
+							<? if ($this->user_profile['marital_status']) { ?>
 							<tr>
 								<td><b>Семейное положение</b></td>
 								<td><?=$this->user_profile['marital_status'];?></td>
 							</tr>
+							<? } ?>
+							<? if ($this->user_profile['phone']) { ?>
 							<tr>
 								<td><b>Телефон</b></td>
 								<td><?=$this->user_profile['phone'];?></td>
 							</tr>
+							<? } ?>
+							<? if ($this->user_profile['mobile_phone']) { ?>
 							<tr>
 								<td><b>Мобильный телефон</b></td>
 								<td><?=$this->user_profile['mobile_phone'];?></td>
 							</tr>
+							<? } ?>
 							
 							</table>
 						</div>
@@ -76,35 +88,45 @@
 
 						<div id="user_profile_js1" style="display: none;">
 							<table width="100%" cellpadding="3">
+							<? if ($this->user_profile['about']) { ?>
 							<tr>
-								<td><b>О себе</b></td>
+								<td width="150"><b>О себе</b></td>
 								<td align="left">
 									<?=$this->user_profile['about'];?>
 								</td>
 							</tr>
+							<? } ?>
+							<? if ($this->user_interests) { ?>
 							<tr>
 								<td><b>Интересы</b></td>
 								<td><?=$this->user_interests;?></td>
 							</tr>
+							<? } ?>
+							<? if ($this->user_profile['books']) { ?>
 							<tr>
 								<td><b>Любимые книги</b></td>
 								<td align="left">
 									<?=$this->user_profile['books'];?>
 								</td>
 							</tr>
+							<? } ?>
+							<? if ($this->user_profile['films']) { ?>
 							<tr>
 								<td><b>Любимые фильмы</b></td>
 								<td align="left">
 									<?=$this->user_profile['films'];?>
 								</td>
 							</tr>
+							<? } ?>
+							<? if ($this->user_profile['musicians']) { ?>
 							<tr>
 								<td><b>Любимые музыканты</b></td>
 								<td align="left">
 									<?=$this->user_profile['musicians'];?>
 								</td>
 							</tr>
-							
+							<? } ?>
+							<? if ($this->friend_list) { ?>
 							<tr>
 								<td><b>Друзья</b></td>
 								<td>
@@ -112,12 +134,15 @@
 									<?=$this -> friend_list; ?>
 								</td>
 							</tr>
+							<? } ?>
+							<? if ($this->in_friend_list) { ?>
 							<tr>
 								<td><b>В друзьях у</b></td>
 								<td>
 									<?=$this -> in_friend_list; ?>
 								</td>
 							</tr>
+							<? } ?>
 							</table>
 						</div>
 
@@ -134,7 +159,7 @@
 						<div id="user_profile_js2" style="display: none;">
 							<table width="100%" cellpadding="3">
 							<tr>
-								<td><b>&nbsp;</b></td>
+								<td width="150"><b>&nbsp;</b></td>
 								<td>
 									&nbsp;
 								</td>
