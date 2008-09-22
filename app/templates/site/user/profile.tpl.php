@@ -16,7 +16,10 @@
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 						<div class="block_title">
 								<div class="block_title_left"><h2>Профиль пользователя</h2></div>
-								<div class="block_title_right"><img src="<?=$this -> image_url;?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" /></div>
+								<div class="block_title_right">
+									<!--<img src="<?=$this -> image_url;?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" />-->
+									<img src="<?php echo $this -> image_url;?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js'); return false;" style="cursor: pointer;" />
+								</div>
 						</div>
 
 						<div id="user_profile_js">
@@ -25,49 +28,116 @@
 								<td width="150"><b>Пользователь</b></td>
 								<td><?=$this->user_profile['login'];?></td>
 							</tr>
+							<tr>
 								<td><b>Имя пользователя</b></td>
 								<td><?=$this->user_profile['last_name'].' '.$this->user_profile['first_name'].' '.$this->user_profile['middle_name'];?></td>
 							</tr>
+							<tr>
 								<td><b>Дата рождения</b></td>
 								<td><?=$this->user_profile['birth_date'];?></td>
 							</tr>
+							<tr>
 								<td><b>Дата регистрации</b></td>
 								<td><?=$this->user_profile['registration_date'];?></td>
 							</tr>
+							<tr>
 								<td><b>Пол</b></td>
 								<td><?=$this->user_profile['gender']?'мужской':'женский';?></td>
 							</tr>
+							<tr>
 								<td><b>Расположение</b></td>
-								<td><?=$this->user_profile['city'];?></td>
+								<td><?=implode(", ", array($this->user_profile['country'], $this->user_profile['state'], $this->user_profile['city']));?></td>
 							</tr>
-								<td><b>Интересы</b></td>
-								<td><?=$this->user_profile['interest'];?></td>
+							<tr>
+								<td><b>Семейное положение</b></td>
+								<td><?=$this->user_profile['marital_status'];?></td>
 							</tr>
-								<td><b>Репутация</b></td>
-								<td><?=$this->user_profile['reputation'];?></td>
+							<tr>
+								<td><b>Телефон</b></td>
+								<td><?=$this->user_profile['phone'];?></td>
+							</tr>
+							<tr>
+								<td><b>Мобильный телефон</b></td>
+								<td><?=$this->user_profile['mobile_phone'];?></td>
 							</tr>
 							
+							</table>
+						</div>
+
+					</div></div></div></div>
+					
+					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+						<div class="block_title">
+								<div class="block_title_left"><h2>О пользователе</h2></div>
+								<div class="block_title_right">
+									<img src="<?php echo $this -> image_url;?>/open.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js1'); return false;" style="cursor: pointer;" />
+								</div>
+						</div>
+
+						<div id="user_profile_js1" style="display: none;">
+							<table width="100%" cellpadding="3">
+							<tr>
+								<td><b>О себе</b></td>
+								<td align="left">
+									<?=$this->user_profile['about'];?>
+								</td>
 							</tr>
+							<tr>
+								<td><b>Интересы</b></td>
+								<td><?=$this->user_interests;?></td>
+							</tr>
+							<tr>
+								<td><b>Любимые книги</b></td>
+								<td align="left">
+									<?=$this->user_profile['books'];?>
+								</td>
+							</tr>
+							<tr>
+								<td><b>Любимые фильмы</b></td>
+								<td align="left">
+									<?=$this->user_profile['films'];?>
+								</td>
+							</tr>
+							<tr>
+								<td><b>Любимые музыканты</b></td>
+								<td align="left">
+									<?=$this->user_profile['musicians'];?>
+								</td>
+							</tr>
+							
+							<tr>
 								<td><b>Друзья</b></td>
 								<td>
+									
 									<?=$this -> friend_list; ?>
 								</td>
 							</tr>
-							</tr>
+							<tr>
 								<td><b>В друзьях у</b></td>
 								<td>
 									<?=$this -> in_friend_list; ?>
 								</td>
 							</tr>
 							</table>
+						</div>
+
+					</div></div></div></div>
+					
+					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+						<div class="block_title">
+								<div class="block_title_left"><h2>Последние данные</h2></div>
+								<div class="block_title_right">
+									<img src="<?php echo $this -> image_url;?>/open.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js2'); return false;" style="cursor: pointer;" />
+								</div>
+						</div>
+
+						<div id="user_profile_js2" style="display: none;">
 							<table width="100%" cellpadding="3">
 							<tr>
-								<td colspan="2"><b>О себе</b></td>
-							</tr>
-							<tr>
-								<td colspan="2"><i>
-									<?=$this->user_profile['about'];?>
-								</i></td>
+								<td><b>&nbsp;</b></td>
+								<td>
+									&nbsp;
+								</td>
 							</tr>
 							</table>
 						</div>

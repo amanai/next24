@@ -4,21 +4,27 @@ class UserView extends BaseSiteView{
 		
 		
 		function Profile(){
+			$this->_js_files[]='jquery.js';
+			
 			$request = Project::getRequest();
 			
+			$tmp=array();
 			foreach($this->friend_list as &$item){
 				$login = $item;
-				$item = '<a href="' . $request -> createUrl('User', 'Profile', null, $login) . '">' . $login . '</a>';
+				$tmp[] = '<a href="' . $request -> createUrl('User', 'Profile', null, $login) . '">' . $login . '</a>';
 			}
+			$this->friend_list = implode(', ', $tmp);
 			
+			$tmp=array();
 			foreach($this->in_friend_list as &$item){
 				$login = $item['login'];
-				$item = '<a href="' . $request -> createUrl('User', 'Profile', null, $login) . '">' . $login . '</a>';
+				$tmp[] = '<a href="' . $request -> createUrl('User', 'Profile', null, $login) . '">' . $login . '</a>';
 			}
+			$this->in_friend_list = implode(', ', $tmp);
 			
-			$this->assign('friend_list', implode(',', $info['friend_list']));
-			$this->assign('in_friend_list', implode(',', $info['in_friend_list']));
-			//$this -> set($info);
+			//$this->assign('friend_list', implode(', ', $this->friend_list));
+			//$this->assign('in_friend_list', implode(', ', $this->in_friend_list));
+			$this->assign('user_interests', implode(', ', $this->user_interests));
 			$this -> setTemplate(null, 'profile.tpl.php');
 		}
 		

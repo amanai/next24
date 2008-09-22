@@ -53,7 +53,7 @@
 			$this->_view->set($info);
 		}
 		
-		function RegistrationFormAction(){			
+		function RegistrationFormAction(){
 			if (!$this -> _view ->is_logged) {
 				
 				$mailer = new PHPMailer();
@@ -363,9 +363,26 @@
 			$user = Project::getUser() -> getShowedUser();
 			
 			$friend_model = new FriendModel;
+			$ui_model = new UserInterestsModel;
+			
+			$country_model = new CountryModel;
+			$country_model -> load($user->country_id);
+			$user -> __set('country', $country_model ->name);
+			$state_model = new StateModel;
+			$state_model -> load($user->state_id);
+			$user -> __set('state', $state_model ->name);
+			$city_model = new CityModel;
+			$city_model -> load($user->city_id);
+			$user -> __set('city', $city_model ->name);
+			
+			
 			$this -> _view -> assign('friend_list', $friend_model -> getFriends($user -> id));
 			$this -> _view -> assign('in_friend_list', $friend_model -> getInFriends($user -> id));
 			$this -> _view -> assign('user_profile', $user -> data());
+			$this -> _view -> assign('user_interests', $ui_model -> getInterests($user -> id));
+			
+			//print_r($this -> _view);
+			
 			$this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
 			$this -> _view -> Profile();
 			$this -> _view -> parse();
