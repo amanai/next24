@@ -36,12 +36,15 @@ class ArticleModel extends BaseModel {
 				"a.`comments`, ".
 				"a.`views`, ".
 				"a.`creation_date`, ".
-				"u.`login` ".
+				"u.`login`, ".
+				"AVG(v.vote) as vote_result ".
 				"FROM articles a ".
 				"LEFT JOIN users u ".
-				"ON a.`user_id` = u.`id` ";
-				$id > 0 ? $sql .= "WHERE ($str2) AND ($str)" : $sql .= "WHERE ($str)";
-				$userId > 0 ? $sql .= "AND a.`user_id` = ?d" : "";
+				"ON a.`user_id` = u.`id` ".
+				"LEFT JOIN article_votes v ".
+				"ON a.`id` = v.`article_id` ";
+				$id > 0 ? $sql .= "WHERE ($str2) AND ($str)" : $sql .= "WHERE ($str) GROUP BY a.`id`";
+				$userId > 0 ? $sql .= "AND a.`user_id` = ?d GROUP BY a.`id`" : "";
 		$params = array();
 		$params[] = $sql;
 		$id > 0 ? $params = array_merge($params, $res) : "";
@@ -126,6 +129,7 @@ class ArticleModel extends BaseModel {
 	public function CompetitionStage1() {
 		$sql = 	"UPDATE $this->_table SET `rate_status` = ".ARTICLE_COMPETITION_STATUS::IN_RATE.
 				" WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::NEW_ARTICLE;
+		echo $sql;
 		return Project::getDatabase()->query($sql);
 	}
 	

@@ -41,10 +41,11 @@
 															<td style="text-align: center;"><?=$item['views']?></td>
 															<td style="text-align: center;"><?=$item['votes']?></td>
 															<td style="text-align: center;"><?=$item['login']?></td>
-															<td style="text-align: center;"><?=$item['rate']?></td>
+															<td style="text-align: center;"><?=number_format($item['vote_result'], 2)?></td>
 													<?endforeach;?>
 												</table>
 											</div>
+										
 							<!-- листинг -->	
 												
 							<!-- /листинг -->
