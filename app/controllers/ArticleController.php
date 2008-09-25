@@ -339,8 +339,8 @@ class ArticleController extends SiteController {
 		} elseif (ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_VOTE) {
 			$status = array(ARTICLE_COMPETITION_STATUS::IN_RATE);
 			$data['competition_control'] = false;
-			$article_vote_model = new ArticleVoteModel();
-			if(count($article_vote_model->loadByArticleUser(0, Project::getUser()->getDbUser()->id)) == 0) $data['can_vote'] = true;
+			$subject_vote_model = new SubjectVoteModel();
+			if(count($subject_vote_model->loadUserId(Project::getUser()->getDbUser()->id)) == 0) $data['can_vote'] = true;
 		} else {
 			Project::getResponse()->redirect($request->createUrl('Article', 'List'));
 		}
