@@ -18,7 +18,7 @@
 		<td style="text-align: center;">
 			<?
 				if($this->can_vote && $item['user_id'] != Project::getUser()->getDbUser()->id) {
-					echo "<a href=".$this->createUrl('Article', 'Vote', array($item['id'])).">Голосовать за тему</a></td>";
+					echo "<a href=".$this->createUrl('Article', 'SubjectVote', array($item['id'])).">Голосовать за тему</a></td>";
 				} else {
 					echo " - ";
 				}
