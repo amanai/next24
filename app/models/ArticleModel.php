@@ -43,7 +43,7 @@ class ArticleModel extends BaseModel {
 				"ON a.`user_id` = u.`id` ".
 				"LEFT JOIN article_votes v ".
 				"ON a.`id` = v.`article_id` ";
-				$id > 0 ? $sql .= "WHERE ($str2) AND ($str)" : $sql .= "WHERE ($str) GROUP BY a.`id`";
+				$id > 0 ? $sql .= "WHERE ($str2) AND ($str) GROUP BY a.`id`" : $sql .= "WHERE ($str) GROUP BY a.`id`";
 				$userId > 0 ? $sql .= "AND a.`user_id` = ?d GROUP BY a.`id`" : "";
 		$params = array();
 		$params[] = $sql;
