@@ -137,7 +137,8 @@ class ArticleModel extends BaseModel {
 	public function CompetitionStage2() {
 		$sql =  "UPDATE $this->_table SET `rate_status` = ".ARTICLE_COMPETITION_STATUS::EDITED.
 				" WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::IN_RATE." ORDER BY `votes` ".
-				"TOP 5";
+				"LIMIT 5";
+		echo $sql;
 		Project::getDatabase()->query($sql);
 		$sql =  "DELETE FROM $this->_table ".
 				"WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::IN_RATE;
