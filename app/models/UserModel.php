@@ -18,11 +18,33 @@ class UserModel extends BaseModel{
 			}
 		}
 		
+		function afterLoad() {
+			$ui_model = new UserInterestsModel;
+			$this->interest = implode(", ", $ui_model -> getInterests($this -> id));
+		}
+		
+		function afterSave() {
+			
+		}
+		
+		function load($id) {
+			$result=parent::load($id);
+			$this->afterLoad();
+			return $result;
+		}
+		
+		function save() {
+			$result=parent::save();
+			$this->afterSave();
+			return $result;
+		}
+		
 		function loadByActivationCode($code, $user_group_id){
 			$DE = Project::getDatabase();
 			$result = array();
 			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE md5(concat(login,salt,pass))=? AND user_type_id=?d LIMIT 1", $code, (int)$user_group_id);
 			$this -> bind($result);
+			$this->afterLoad();
 		}
 		
 		/** 
@@ -41,6 +63,7 @@ class UserModel extends BaseModel{
 			$result = array();
 			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE login=? LIMIT 1", $login);
 			$this -> bind($result);
+			$this->afterLoad();
 		}
 		
 		function loadByEmail($email){
@@ -48,6 +71,7 @@ class UserModel extends BaseModel{
 			$result = array();
 			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE LOWER(TRIM(email))=? LIMIT 1", strtolower(trim($email)));
 			$this -> bind($result);
+			$this->afterLoad();
 		}
 		
 		function &getBlog(){

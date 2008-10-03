@@ -128,6 +128,39 @@
 			return $valid;
 		}
 		
+		function ValidateSaveAction(){
+			$this -> _view -> clearFlashMessages();
+			$request = Project::getRequest();
+			$valid = true;
+			
+			if ($request -> pwd){
+				if (!HelpFunctions::isValidPassword($request -> pwd)) {
+					$this -> _view -> addFlashMessage(FM::ERROR, "Пароль слишком короткий или содержит недопустимые символы");
+					$this -> _view -> assign('pass_error', true);
+					$valid = false;
+				}
+				if (!$request -> pwd_repeat){
+					$this -> _view -> addFlashMessage(FM::ERROR, "Требуется подтверждение пароля");
+					$this -> _view -> assign('pass_error', true);
+					$valid = false;
+				}
+				if ($request -> pwd && $request -> pwd_repeat){
+					if ($request -> pwd != $request -> pwd_repeat){
+						$this -> _view -> addFlashMessage(FM::ERROR, "Пароль и подтверждение не совпадают");
+						$this -> _view -> assign('pass_error', true);
+						$valid = false;
+					} else {
+						if (strlen($request -> pwd) < 5){
+							$this -> _view -> addFlashMessage(FM::ERROR, "Пароль слишком короткий (нужно минимум 5 символов)");
+							$this -> _view ->assign('pass_error', true);
+						}
+					}
+				}
+			} 
+			
+			return $valid;
+		}
+		
 		function checkLogin($login) {
 			if (!HelpFunctions::isValidLogin($login)){
 				return array('error'=>true, 'message'=>'Логин слишком короткий или содержит недопустимые символы');			
@@ -313,6 +346,11 @@
 		}
 		
 		public function SaveprofileAction(){
+			if ($this -> ValidateSaveAction()) {
+				
+			}
+			$this -> ProfileEditAction();
+			/*
 			$this->model->load($this->view->userData['id']);
 			$this->model->set("email", $this->params['email']);
 			$this->model->set("last_name", $this->params['last_name']);
@@ -326,7 +364,7 @@
 			$this->model->set("interest", $this->params['interest']);
 			$this->model->update();
 
-			$this->model->resetSql();			
+			$this->model->resetSql();
 			$this->model->where('users.id="'.$this->view->userData['id'].'"');
 			$this->model->join('user_types', "user_types.id=users.user_type_id");
 			$userData = $this->model->getOne();
@@ -336,6 +374,7 @@
 			
 			$router = getManager('CRouter');
 			$router->redirect($router->createUrl("User", "Viewprofile"));
+			*/
 		}
 		
 		
@@ -390,18 +429,20 @@
 		
 		function ProfileEditAction(){
 			$user = Project::getUser() -> getShowedUser();
+			$request = Project::getRequest();
 			
-			/*$user_model = Project::getUser() -> getDbUser();
-			$user_model -> year = date("Y", strtotime($user_model -> birth_date));
-			$user_model -> month = date("m", strtotime($user_model -> birth_date));
-			$user_model -> day = date("d", strtotime($user_model -> birth_date));
-			$info['user_model'] = $user_model;
-			$this -> FillEditParams($info);*/
+			$request->country = $user->country_id?$user->country_id:0;
+			$request->city = $user->city_id?$user->city_id:0;
+			$request->state = $user->state_id?$user->state_id:0;
 			
-			$this -> _view -> assign('user_profile', $user -> data());
+			$this -> FillEditParams();
+			
+			$this -> _view -> assign('user', $user);
 			$this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
 			$this -> _view -> ProfileEdit();
+			
 			$this -> _view -> parse();
+			
 		}
 		
 		public function LogoutAction(){

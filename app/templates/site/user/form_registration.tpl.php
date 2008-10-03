@@ -1,4 +1,4 @@
-<form action="<?=$this -> createUrl('User', 'Registration'); ?>" method="post" id="register_form">
+<form action="<?=$this->edit?$this -> createUrl('User', 'Saveprofile'):$this -> createUrl('User', 'Registration'); ?>" method="post" id="register_form">
 <?=$this -> flash_messages; ?>
 <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 <div class="block_title">
@@ -10,32 +10,39 @@
 
 <input type="hidden" name="user_profile_js_state" id="user_profile_js_state" value="<?=($this->helper->user_profile_js_state?$this->helper->user_profile_js_state:1)?>"/>
 <div id="user_profile_js" <?=(($this->helper->user_profile_js_state==1||!$this->helper->user_profile_js_state)?'':'style="display: none;"')?>>
+
 <table class="regdetails" cellpadding="4">
 	<tr>
 		<td colspan="2">
 			<p>Символом <span class="necessary">*</span> отмечены поля, обязательные для заполнения.</p><br/>
 		</td>
 	</tr>
-	<? if (!$this->edit) { ?>
 	<tr>
 		<td class="label<?=($this->email_error?' red':'')?>">Email</td>
 		<td>
+			<? if (!$this->edit) { ?>
 			<input type="text" name="email" onBlur='if ($(this).val().length>0) { sendParams(<?=$this->check_email; ?>, {"email":$(this).val()}, true); }' value="<?php echo $this -> helper -> email;?>" class="field"/><span class="necessary">*</span>
 			<div id="email_check_result"></div>
 			<div id="micro2" style="width: 350px;">Ваш электронный адрес. Пожалуйста, указывайте существующий адрес, так как на него вам будет отправлена техническая информация о доступе на сайт.</div>
+			<? } else { ?>
+			<?=$this -> helper -> email;?>
+			<? } ?>		
 		</td>
 	</tr>
 	<tr>
 		<td class="label<?=($this->login_error?' red':'')?>">Логин</td>
 		<td>
+			<? if (!$this->edit) { ?>
 			<input type="text" name="login" onBlur='if ($(this).val().length>0) { sendParams(<?=$this->check_login; ?>, {"login":$(this).val()}, true); }' id="login" value="<?php echo $this -> helper -> login;?>" class="field"/><span class="necessary">*</span>
 			<div id="login_check_result"></div>
 			<div id="micro2" style="width: 350px;">Логин — это ваше имя внутри сайта, старайтесь выбирать осмысленное название. Вы можете использовать латинские буквы и цифры, а также подчеркивание и символ дефиса. Имя не должно начинаться с дефиса или подчеркивания и должно быть не короче четырех символов.</div>
+			<? } else { ?>
+			<?=$this -> helper -> login;?>
+			<? } ?>
 		</td>
 	</tr>
-	<? } ?>
 	<tr>
-		<td class="label<?=($this->pass_error?' red':'')?>">Пароль</td>
+		<td class="label<?=($this->pass_error?' red':'')?>"><? if (!$this->edit) { ?>Пароль<? } else { ?>Новый пароль<? } ?></td>
 		<td>
 			<input type="password" name="pwd" class="field"/><span class="necessary">*</span>
 			<div id="micro2" style="width: 350px;">Пароль может содержать латинские буквы, цифры и спецсимволы и должен быть не короче 6 символов.</div>
@@ -101,17 +108,17 @@
 		<td>
 			<select style="width:40px;" name="day">
 				<?php foreach($this -> day_list as $item) { ?>
-					<option value="<?php echo $item['id'];?>" <?php if ((int)$this -> helper -> day === (int)$item['id']){ echo 'selected';}?>><?php echo $item['value'];?></option>
+					<option value="<?php echo $item['id'];?>" <?php if ((int)$this -> helper -> day === (int)$item['id']){ echo 'selected="selected"';}?>><?php echo $item['value'];?></option>
 				<?php } ?>
 			</select>
 			<select style="width:120px;" name="month">
 				<?php foreach($this -> month_list as $item) { ?>
-					<option value="<?php echo $item['id'];?>" <?php if ((int)$this -> helper -> month === (int)$item['id']){ echo 'selected';}?>><?php echo $item['value'];?></option>
+					<option value="<?php echo $item['id'];?>" <?php if ((int)$this -> helper -> month === (int)$item['id']){ echo 'selected="selected"';}?>><?php echo $item['value'];?></option>
 				<?php } ?>
 			</select>
 			<select style="width:50px;" name="year">
 				<?php foreach($this -> year_list as $item) { ?>
-					<option value="<?php echo $item['id'];?>" <?php if ((int)$this -> helper -> year === (int)$item['id']){ echo 'selected';}?>><?php echo $item['value'];?></option>
+					<option value="<?php echo $item['id'];?>" <?php if ((int)$this -> helper -> year === (int)$item['id']){ echo 'selected="selected"';}?>><?php echo $item['value'];?></option>
 				<?php } ?>
 			</select>
 		</td>
@@ -261,6 +268,7 @@
 			<div id="micro2" style="width: 350px;">Ваши любимые музаканты, перечисленные через запятую.</div>
 		</td>
 	</tr>
+	<? if (!$this->edit) { ?>
 	<tr>
 		<td class="label">Логин порекомендовавшего зарегистрироваться</td>
 		<td>
@@ -268,8 +276,9 @@
 			<div id="micro2" style="width: 350px;">Логин пользователя, порекомендовавшего Вам зарегистрироваться в next24.ru.</div>
 		</td>
 	</tr>
+	<? } ?>
 </table>
 </div>
 </div></div></div></div>
-<input type="submit" name="register" value="Зарегистрируйте меня" />
+<input type="submit" name="register" value="<? if (!$this->edit) { ?>Зарегистрируйте меня<? } else { ?>Сохранить профиль<? } ?>" />
 </form>

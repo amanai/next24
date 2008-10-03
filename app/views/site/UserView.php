@@ -101,6 +101,20 @@ class UserView extends BaseSiteView{
 			$this->_js_files[]='jquery.js';
 			$this->_css_files[]='registration.css';
 			
+			$this->helper = $this->user;
+			$date = explode('-', $this->user->birth_date);
+			$this -> helper -> day = $date[2];
+			$this -> helper -> month = $date[1];
+			$this -> helper -> year = $date[0];
+			
+			$this -> helper -> surname = $this->helper->first_name;
+			$this -> helper -> name = $this->helper->middle_name;
+			$this -> helper -> father_name = $this->helper->last_name;
+			
+			$this -> helper -> country = $this->helper->country_id;
+			$this -> helper -> city = $this->helper->city_id;
+			$this -> helper -> state = $this->helper->state_id;
+			
 			$this -> assign('edit', true);
 			$this -> setTemplate(null, 'profile_edit.tpl.php');
 		}
