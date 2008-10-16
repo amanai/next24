@@ -50,8 +50,6 @@ class ArticleModel extends BaseModel {
 		$id > 0 ? $params = array_merge($params, $res) : "";
 		$params = array_merge($params, $status);
 		$userId > 0 ? $params[] = $userId : "";
-		echo $sql;
-		var_dump($status);
 		return call_user_func_array(array(Project::getDatabase(), 'select'), $params);
 	}
 	
