@@ -139,7 +139,8 @@ class ArticleModel extends BaseModel {
 		$sql =  "UPDATE $this->_table SET `rate_status` = ".ARTICLE_COMPETITION_STATUS::EDITED.
 				" WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::IN_RATE." ORDER BY `votes` ".
 				"LIMIT 5";
-		echo $sql;
+		Project::getDatabase()->query($sql);
+		$sql = "DELETE FROM subject_votes";
 		Project::getDatabase()->query($sql);
 		$sql =  "DELETE FROM $this->_table ".
 				"WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::IN_RATE;
@@ -151,11 +152,9 @@ class ArticleModel extends BaseModel {
 		$sql =  "UPDATE $this->_table SET `rate_status` = ".ARTICLE_COMPETITION_STATUS::SHOW_IN_CATALOG.
 				" WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::WINNER;
 		Project::getDatabase()->query($sql);
-		echo $sql;
 		$sql =  "UPDATE $this->_table SET `rate_status` = ".ARTICLE_COMPETITION_STATUS::WINNER.
 				" WHERE `rate_status` = ".ARTICLE_COMPETITION_STATUS::COMPLETE.
 				" OR `rate_status` = ".ARTICLE_COMPETITION_STATUS::EDITED;
-		echo $sql;
 		return Project::getDatabase()->query($sql);
 	}
 }
