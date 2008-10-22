@@ -16,7 +16,7 @@ class ArticleController extends SiteController {
 		$data = array();
 		$this->BaseSiteData();
 		$data['tab_list'] = TabController::getMainArticleTabs(true);
-		$status = array(ARTICLE_COMPETITION_STATUS::COMPLETE, ARTICLE_COMPETITION_STATUS::SHOW_IN_CATALOG);
+		$status = array(ARTICLE_COMPETITION_STATUS::COMPLETE, ARTICLE_COMPETITION_STATUS::SHOW_IN_CATALOG, ARTICLE_COMPETITION_STATUS::WINNER);
 		$this->_listArticle($data, "List", $status);
 		$this->_view->ArticleList($data);
 		$this->_view->parse();
