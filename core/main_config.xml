@@ -6,6 +6,7 @@
 										 core/managers;
 										 core/utils;
 										 core/cache;
+										 core/phpmailer;
 										 app/controllers;
 										 app/includes;
 										 core/interfaces;
@@ -67,7 +68,7 @@
 		<param key="value_delimiter" value=":" />
 		<param key="request_action_key" value="act" />
 		<param key="set_to_registry" value="false" />
-		<param key="base_host" value="next24.home" />
+		<param key="base_host" value="gek_next24.ru" />
 	</module>
 	
 	<!-- Sesion module -->

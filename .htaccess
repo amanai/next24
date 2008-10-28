@@ -6,3 +6,5 @@ RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule ^(.*)$ index.php?_path=$1 [QSA]
 
 DirectoryIndex index.php
+
+AddDefaultCharset utf8

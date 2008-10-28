@@ -450,5 +450,19 @@
 			Project::getResponse() -> redirect(Project::getRequest() -> createUrl('Index', 'Index', null, false));
 		}
 		
+		public function WhyPageAction(){
+			$this-> _view -> assign('tab_list', TabController::getRegistrationTabs(false, true)); // Show tabs
+			$this-> _view -> assign('pageContent', "Why, Why, Why, Why, Why?  Hello World!"); // Page Contenet
+			$this -> _view -> ContentPage();
+			$this -> _view -> parse();
+		}
+		
+		public function LicenseAction(){
+			$this-> _view -> assign('tab_list', TabController::getRegistrationTabs(false, false, true)); // Show tabs
+			$this-> _view -> assign('pageContent', "License here."); // Page Contenet
+			$this -> _view -> ContentPage();
+			$this -> _view -> parse();
+		}
+		
 	}
 ?>

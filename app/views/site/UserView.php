@@ -119,5 +119,9 @@ class UserView extends BaseSiteView{
 			$this -> setTemplate(null, 'profile_edit.tpl.php');
 		}
 		
+		function ContentPage(){
+			$this -> setTemplate(null, 'content_page.tpl.php');
+		}
+		
 }
 ?>

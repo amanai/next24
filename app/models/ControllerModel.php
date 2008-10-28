@@ -2,14 +2,14 @@
 class ControllerModel extends BaseModel{
 		function __construct(){
 			parent::__construct('controller');
-			$this -> _caches(true, true, true);
+			$this -> _caches(false, false, false);
 		}
 		
 		function loadByKey($key){
 			$cache = Project::getDatabaseManager() -> getCache();
 			if ($cache !== null){
 				$result = $cache -> get($this -> getCachePrefix('_controller_by_key_'.$key));
-				if ($result !== null){
+				if ($result){
 					$this -> bind($result);
 					return $result;
 				}
