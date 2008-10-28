@@ -119,6 +119,20 @@ class TabController{
 			return $tabs;
 		}
 		
+		static public function getNewsTabs($selected1 = false) {
+			$request = Project::getRequest();
+			$tabs = array(
+							0 => array(
+									'name' => 'Новости',
+									'title' => 'Новости ввиде дерева',
+									'selected' => $selected1,
+								 	'url' => $request -> createUrl('News', 'News', null, false)
+									)
+							);
+
+			return $tabs;
+		}
+		
 		static public function getMainArticleTabs($selected_cat = false, $selected_last_wins = false,/* $selected_top = false,*/ $selectded_competition = false, $selected_add_subject = false, $selected_view_article = false, /*$selected_managed_article = false,*/ $view_article_name = ""/*, $managed_article_name = "Новая статья"*/ ) {
 			$request = Project::getRequest();
 			$tabs = array(
