@@ -1,0 +1,425 @@
+<html>
+<head>
+	<title>Next24</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+	<link href="style.css" type="text/css" rel="StyleSheet" />
+	<link href="tabpane.css" type="text/css" rel="StyleSheet"	/>
+	<script type="text/javascript" src="tabpane.js"></script>
+	<script type="text/javascript" src="sys.js"></script>
+</head>
+<body>
+
+
+<table width="100%" height="100%" cellpadding="0">
+<tr>
+	<td class="header">
+		<!-- HEADER -->
+		<table width="100%" height="180" cellpadding="0">
+		<tr>
+			<td width="270"><a href="#"><img src="img/logo.png" width="270" height="180" /></a></td>
+			<td class="header2" align="right">
+				<!-- Блок авторизации -->
+				<table width="210" height="125" cellpadding="0">
+				<tr>
+					<td class="user1"> </td>
+					<td class="user2">
+
+						<div class="user2_title">ДОБРО ПОЖАЛОВАТЬ</div>
+						<div class="user2_zz">
+							<a href="#">Профиль</a><br />
+							<a href="#">Фотоальбом</a><br />
+							<a href="#">Дневник</a><br />
+							<a href="#">Сообщения</a><br />
+							<a href="#">Мои подписки</a>
+						</div>
+
+						<div style="float: left;"><a href="#"><img src="img/open.png" width="21" height="24" /></a></div>
+						<div align="right" style="padding-top: 7px;">Вы вошли как: <a href="#">Hunter</a></div>
+
+					</td>
+					<td class="user3"> </td>
+					<td width="20"><a href="#"><img src="img/exit.png" width="20" height="63" /></a></td>
+				</tr>
+				</table>			
+				<!-- /Блок авторизации -->
+			</td>
+			<td width="170">
+				<!-- Навигация -->
+				<table width="170" height="180" cellpadding="0">
+				<tr>
+					<td class="menu1"> </td>
+					<td class="menu2"> </td>
+					<td class="menu3">
+						<a href="#">Новости</a><br />
+						<a href="#">Статьи</a><br />
+						<a href="#">Найти знакомых</a><br />
+						<a href="#">Дневники</a><br />
+						<a href="#">Вопрос-ответ</a><br />
+						<a href="#">Фотоальбомы</a><br />
+						<a href="#">Топы</a>
+					</td>
+				</tr>
+				</table>
+				<!-- /Навигация -->
+			</td>
+		</tr>
+		</table>		
+		<!-- /HEADER -->
+	</td>
+</tr>
+<tr>
+	<td class="next24">
+
+			<!-- Главный блок, с вкладками (Контент) -->
+			<div class="tab-page" id="modules-cpanel">
+				<script type="text/javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "modules-cpanel" ), 1 )</script>
+
+
+
+<!-- Подписка -->
+<div class="tab-page">
+	<h2 class="tab">Подписка</h2>
+
+
+	<!-- RSS -->
+	<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+		
+		<div class="block_title">
+			<div class="block_title_left">
+				<h2>RSS-Новости / RSS-Каналы / Новости-RSS</h2>
+			</div>
+				
+			<div class="block_title_right">
+				<div class="checkbox_tree_m">
+					<a href="#">отображать все</a> |
+					<a href="#" class="active">только подписанные</a> |
+					<a href="#">только неподписанные</a>
+					
+					<img src="img/close.png" width="21" height="24" onclick="ShowOrHide(this, 'rss_lenta_1')" style="cursor: pointer;" align="middle" />
+				</div>
+			</div>
+		</div>
+
+
+		<div id="rss_lenta_1" style="overflow: hidden;">
+
+			<!-- Левая часть -->
+			<div style="float: left; margin: 0 30px;">
+
+
+					<ul class="checkbox_tree">
+						<li>
+
+							<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+							<label><input type="checkbox"> Уровень 1</label>
+							<ul class="checkbox_tree">
+
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+
+								<li>
+
+									<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+									<ul class="checkbox_tree">
+										<li><label><input type="checkbox"> Уровень 3</label></li>
+										<li><label><input type="checkbox"> Уровень 3</label></li>
+									</ul>
+
+								</li>
+
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+
+							</ul>
+
+						</li>
+
+						<li>
+							<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+							<label><input type="checkbox"> Уровень 1</label>
+						</li>
+
+						<li>
+
+							<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+							<label><input type="checkbox"> Уровень 1</label>
+							<ul class="checkbox_tree">
+								
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+								
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+
+								<li>
+
+									<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+									<ul class="checkbox_tree">
+
+										<li>
+											<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+											<label><input type="checkbox"> Уровень 3</label>
+										</li>
+
+										<li>
+											<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+											<label><input type="checkbox"> Уровень 3</label>
+										</li>
+
+										<li>
+
+											<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+											<label><input type="checkbox"> Уровень 3</label>
+											<ul class="checkbox_tree">
+
+												<li>
+													<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+													<label><input type="checkbox"> Уровень 4</label>
+												</li>
+
+												<li>
+													<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+													<label><input type="checkbox"> Уровень 4</label>
+												</li>
+
+												<li>
+
+													<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+													<label><input type="checkbox"> Уровень 4</label>
+													<ul class="checkbox_tree">
+														<li><label><input type="checkbox"> Уровень 5</label></li>
+														<li><label><input type="checkbox"> Уровень 5</label></li>
+													</ul>
+
+												</li>
+
+												<li>
+													<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+													<label><input type="checkbox"> Уровень 4</label>
+												</li>
+
+											</ul>
+
+										</li>
+
+										<li>
+											<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+											<label><input type="checkbox"> Уровень 3</label>
+										</li>
+
+									</ul>
+
+								</li>
+								
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+
+							</ul>
+
+						</li>
+
+						<li>
+							<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+							<label><input type="checkbox"> Уровень 1</label>
+						</li>
+					</ul>
+				
+
+			</div>
+			<!-- /Левая часть -->
+			<!-- Правая чать -->
+			<div style="float: right; margin: 0 30px;">
+
+
+					<ul class="checkbox_tree">
+						<li>
+
+							<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+							<label><input type="checkbox"> Уровень 1</label>
+							<ul class="checkbox_tree">
+
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+
+								<li>
+
+									<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+									<ul class="checkbox_tree">
+										<li><label><input type="checkbox"> Уровень 3</label></li>
+										<li><label><input type="checkbox"> Уровень 3</label></li>
+									</ul>
+
+								</li>
+
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+
+							</ul>
+
+						</li>
+
+						<li>
+							<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+							<label><input type="checkbox"> Уровень 1</label>
+						</li>
+
+						<li>
+
+							<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+							<label><input type="checkbox"> Уровень 1</label>
+							<ul class="checkbox_tree">
+								
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+								
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+
+								<li>
+
+									<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+									<ul class="checkbox_tree">
+
+										<li>
+											<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+											<label><input type="checkbox"> Уровень 3</label>
+										</li>
+
+										<li>
+											<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+											<label><input type="checkbox"> Уровень 3</label>
+										</li>
+
+										<li>
+
+											<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+											<label><input type="checkbox"> Уровень 3</label>
+											<ul class="checkbox_tree">
+
+												<li>
+													<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+													<label><input type="checkbox"> Уровень 4</label>
+												</li>
+
+												<li>
+													<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+													<label><input type="checkbox"> Уровень 4</label>
+												</li>
+
+												<li>
+
+													<a href="#"><img src="img/chb_minus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+													<label><input type="checkbox"> Уровень 4</label>
+													<ul class="checkbox_tree">
+														<li><label><input type="checkbox"> Уровень 5</label></li>
+														<li><label><input type="checkbox"> Уровень 5</label></li>
+													</ul>
+
+												</li>
+
+												<li>
+													<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+													<label><input type="checkbox"> Уровень 4</label>
+												</li>
+
+											</ul>
+
+										</li>
+
+										<li>
+											<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+											<label><input type="checkbox"> Уровень 3</label>
+										</li>
+
+									</ul>
+
+								</li>
+								
+								<li>
+									<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+									<label><input type="checkbox"> Уровень 2</label>
+								</li>
+
+							</ul>
+
+						</li>
+
+						<li>
+							<a href="#"><img src="img/chb_plus.png" width="11" height="11" alt="" align="absmiddle" /></a>
+							<label><input type="checkbox"> Уровень 1</label>
+						</li>
+					</ul>
+
+
+			</div>
+			<!-- /Правая чать -->
+			
+			<div style="clear: both; text-align: center; padding-top: 10px;">
+				<input type="button" value="Сохранить" />
+			</div>
+
+		</div>
+
+
+	</div></div></div></div>
+	<!-- /RSS -->
+
+
+
+</div>
+<!-- /Подписка -->
+
+
+
+
+
+			</div>
+			<!-- /Главный блок, с вкладками (Контент) -->
+
+	</td>
+</tr>
+<tr>
+	<td class="footer">
+		<!-- FOOTER -->
+			Все права защищены.<br />
+			<a href="http://ruster.info/" target="_blank">Design by Ruster</a><br />
+			Электронная почта: <a href="#">info@next24.ru</a>
+		<!-- /footer -->
+	</td>
+</tr>
+</table>
+
+</body>
+</html>
