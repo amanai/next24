@@ -24,7 +24,7 @@
 .checkbox_tree li img
 {
 	position: absolute;
-	top: 5px;
+	top: 4px;
 	_top: 7px;
 	left: 6px;
 	_left: -16px;
@@ -58,7 +58,6 @@
 
 
 
-
 /* RSS Cat */
 .rss_cat
 {
@@ -88,7 +87,7 @@
 
 .list_style1 li
 {
-	background: url('img/list_box.gif') 0 50% no-repeat;
+	background: url('../images/list_box.gif') 0 50% no-repeat;
 	padding: 0 0 0 10px;
 }
 
@@ -112,4 +111,15 @@
 	vertical-align: middle;
 	position: relative;
 	right: 3px;
+}
+
+
+.minus{
+    display: inline-block;
+    background: url('../images/chb_minus.png') 0 50% no-repeat;
+}
+
+.plus{
+    display: inline-block;
+    background: url('../images/chb_plus.png') 0 50% no-repeat;
 }

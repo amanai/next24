@@ -127,7 +127,13 @@ class TabController{
 									'title' => 'Новости ввиде дерева',
 									'selected' => $selected1,
 								 	'url' => $request -> createUrl('News', 'News', null, false)
-									)
+									),
+							1 => array(
+									'name' => 'Добавить RSS ленту',
+									'title' => 'Добавить RSS ленту',
+									'selected' => $selected1,
+								 	'url' => $request -> createUrl('News', 'AddFeed', null, false)
+									)		
 							);
 
 			return $tabs;

@@ -1,11 +1,19 @@
 
 $(document).ready(function(){  
-    alert(123);
-    $(".minus").click(function(){
-        alert(123);
+
+    $(".checkbox_tree li img").click(function(){
+        if ($(this).hasClass("minus")){
+            $(this).removeClass("minus");
+            $(this).addClass("plus");
+            $(this).next("label").next("ul").slideUp("slow");
+        }
+        else{
+            $(this).removeClass("plus");
+            $(this).addClass("minus");
+            $(this).next("label").next("ul").slideToggle("slow");
+        }
+        
     });
     
-    $(".test").click(function(){
-        alert(456);
-    });
+    
 });
