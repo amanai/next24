@@ -86,7 +86,7 @@
 					<td class="menu1"> </td>
 					<td class="menu2"> </td>
 					<td class="menu3">
-						<a href="#">Новости</a><br />
+						<a href="<?php echo $this->createUrl('News', 'News', null, false); ?>">Новости</a><br />
 						<a href="<?php echo $this->createUrl('Article', 'List', null, false); ?>">Статьи</a><br />
 						<a href="<?php echo $this->createUrl('SearchUser','SearchUserMain'); ?>">Найти знакомых</a><br />
 						<a href="#">Дневники</a><br />
