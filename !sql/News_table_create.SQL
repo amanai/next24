@@ -1,13 +1,13 @@
-CREATE TABLE feeds
-(
-	id BIGINT NOT NULL AUTO_INCREMENT,
-	user_id BIGINT,
-	url TEXT,
-	type TINYINT,
-	state TINYINT,
-	creation_date INTEGER,
-	last_parse_date INTEGER,
-	PRIMARY KEY (id)
+CREATE TABLE `feeds` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `user_id` bigint(20) default NULL,
+  `name` varchar(50) default NULL,
+  `url` text,
+  `type` tinyint(4) default NULL,
+  `state` tinyint(4) default NULL,
+  `creation_date` datetime default NULL,
+  `last_parse_date` datetime default NULL,
+  PRIMARY KEY  (`id`)
 )  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE news_tree_feeds

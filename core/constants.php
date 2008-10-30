@@ -1,6 +1,8 @@
 <?php
 	
 	define('USER_TYPE_GUEST', '0');
+	
+	define('DAYS_TO_DELETE_NEWS_FROM_FEEDS', 10);
 		
 	class FLASH_MSG_TYPES{
 		static public $error 	= 0;

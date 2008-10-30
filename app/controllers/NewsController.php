@@ -45,6 +45,19 @@
 		    $newsModel = new NewsModel();
 		    $request = Project::getRequest();
 		    
+		    if ($request->frmAction == 'add'){
+		        $user = Project::getUser()->getDbUser();
+		        $category_tag = trim($request->category_tag);
+		        $type = ($category_tag)?1:0; // 0 - 1 Rss => 1 NewsTreeCastegory; 1 - 1 Rss => N NewsTreeCategory
+		        $creation_date = date("Y-m-d H:i:s");
+		        
+		        $feed_id = $newsModel -> addFeeds($user->id, $request->feed_name, $request->feed_url, $type, 0, $creation_date);
+		        $news_banner_id = $newsModel -> addNewsBanner($user->id, $request->code, 0);
+		        $news_tree_feeds_id = $newsModel -> addNewsTreeFeeds($request->news_tree_id, $feed_id, $news_banner_id, $category_tag);
+		        
+		        header("Location: http://".$_SERVER['HTTP_HOST']."/news");
+		    }
+		    
 		    $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, true)); // Show tabs
 			
 			$aListNews = $newsModel->getAllNews();
@@ -52,6 +65,35 @@
 			
 			$this -> _view -> AddFeedPage();
 			$this -> _view -> parse();
+		    
+		}
+		
+		
+		public function CronNewsAction(){
+		    ini_set('max_execution_time', 0);
+		    $newsModel = new NewsModel();
+		    $lastRSS = new lastRSS();
+		    $lastRSS->cache_dir = './rss_cache';
+            $lastRSS->cache_time = 3600; // one hour
+            
+            echo "<br>";
+	        $aFeeds = $lastRSS->Get('http://news.liga.net/all/rss.xml');
+	        echo "<pre>";
+	        print_r($aFeeds);
+	        echo "</pre>";
+            return;
+		    
+		    $aNewsTreeFeeds = $newsModel -> getAllNewsTreeFeeds(true, true, true);
+		    foreach ($aNewsTreeFeeds as $newsTreeFeeds){
+		        echo $newsTreeFeeds['url'];
+		        echo "<br>";
+		        $aFeeds = $lastRSS->Get($newsTreeFeeds['url']);
+		        echo "<pre>";
+		        print_r($aFeeds);
+		        echo "</pre>";
+
+		        echo "<hr>";
+		    }
 		    
 		}
 		

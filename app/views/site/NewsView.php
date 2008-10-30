@@ -20,29 +20,84 @@ class NewsView extends BaseSiteView{
 	}
 	
 	/* build News Tree , and save it in $_htmlTree */
-	public function BuildTree($aNews,$bossId = 0){
+	public function BuildTree($aLeafs, $aNews,$parentId = 0){
         $imgUrl = $this -> image_url;
         foreach( $aNews as $id=>$news){
-          if($bossId!=$news['parent_id'])continue;
+          if($parentId!=$news['parent_id'])continue;
           $newsUrl = $this->newsUrl;
+          // get RSS-feeds for leaves on tree
+          $aFeeds = $this -> getFeedsByNewsTreeId($news['id']);
+          
+          if (in_array($news['id'], $aLeafs) && count($aFeeds)==0){
+            $htmlImg = '';
+          }else {
+            $htmlImg = '<img class="minus" height="11" width="11" alt="" /> ';
+          }
+          
           $this->_htmlTree .= '
           <li >
-            <img class="minus" height="11" width="11" alt="" /> 
-            <label><input type="checkbox"/> <a href="'.$newsUrl.'/news_tree_id:'.$news['id'].'">'.$news['name'].'</a></label>
+            '.$htmlImg.'
+            <label><input type="checkbox" name="" value="" /> <a href="'.$newsUrl.'/news_tree_id:'.$news['id'].'">'.$news['name'].'</a></label>
             <ul class="checkbox_tree">';
           
-          // get feeds for leaves on tree
-          $aFeeds = $this -> getFeedsByNewsTreeId($news['id']);
+          
           foreach ($aFeeds as $feed){
               $this->_htmlTree .= '<li><label><input type="checkbox"/> '.$feed['name'].'</label></li>';
           }
           
-          $this->BuildTree($aNews,$news['id']);
+          $this->BuildTree($aLeafs, $aNews,$news['id']);
           $this->_htmlTree .= '
             </ul>
           </li>';
           
        }
+    }
+    
+    
+    /* build News Tree with Radio buttons for Site-partners, for adding RSS-feeds, and save it in $_htmlTree */
+	public function BuildTree_radio($aLeafs, $aNews, $parentId = 0){
+        $imgUrl = $this -> image_url;
+        foreach( $aNews as $id=>$news){
+          if($parentId!=$news['parent_id']) continue;
+          $newsUrl = $this->newsUrl;
+          
+          if (in_array($news['id'], $aLeafs)){
+            $htmlInputRadio = '<input type="radio" name="news_tree_id" value="'.$news['id'].'" />';
+            $htmlImg = '';
+          }else {
+            $htmlInputRadio = '';
+            $htmlImg = '<img class="minus" height="11" width="11" alt="" /> ';
+          }
+          
+          $this->_htmlTree .= '
+          <li >
+            '.$htmlImg.'
+            <label>'.$htmlInputRadio.' '.$news['name'].'</label>
+            <ul class="checkbox_tree">';
+          
+          $this->BuildTree_radio($aLeafs, $aNews, $news['id']);
+          $this->_htmlTree .= '
+            </ul>
+          </li>';
+          
+       }
+    }
+    
+    // return Array of leafs
+    function getAllLeafs($aNews){
+        $aLeafs = array();
+        foreach ($aNews as $news){
+            if ($this->isLeaf($news['id'])){
+                $aLeafs[]=$news['id'];
+            }
+        }
+        return $aLeafs;
+    }
+    
+    // check is this element have children (is last element in tree hierarchy)
+    function isLeaf($elementId){
+        $newsModel = new NewsModel();
+        return $newsModel->isLeaf($elementId);
     }
     
     public function ShowNewsTreeBreadCrumb($aNewsTreeBreadCrumb){
