@@ -140,6 +140,23 @@ class NewsModel extends BaseModel{
         return mysql_insert_id();
     }
     
+    function setParseDate($feed_id, $last_parse_date){
+        $DE = Project::getDatabase();
+        $sql = "
+            UPDATE `feeds` SET `last_parse_date` = ? WHERE id = ?
+        ";
+        $DE -> query($sql, $last_parse_date, $feed_id);
+    }
+    
+    // $lastDate - last date to keep this news in DB
+    function deleteOldNews($lastDate){
+        $DE = Project::getDatabase();
+        $sql = "
+            DELETE FROM `news` WHERE pub_date < ? 
+        ";
+        $DE -> query($sql, $lastDate);
+    }
+    
     function ReadFile($url){
         $handle = fopen($url, "rb");
         $contents = '';

@@ -2,7 +2,7 @@
 	
 	define('USER_TYPE_GUEST', '0');
 	
-	define('DAYS_TO_DELETE_NEWS_FROM_FEEDS', 10);
+	//define('SEC_TO_DELETE_NEWS_FROM_FEEDS', 172800);
 		
 	class FLASH_MSG_TYPES{
 		static public $error 	= 0;

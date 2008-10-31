@@ -517,7 +517,7 @@ class DbSimple_Generic_Database extends DbSimple_Generic_LastError
     function _query($query, &$total)
     {
         $this->_resetLastError();
-        
+
         // Fetch query attributes.
         $this->attributes = $this->_transformQuery($query, 'GET_ATTRIBUTES');
 
@@ -525,6 +525,7 @@ class DbSimple_Generic_Database extends DbSimple_Generic_LastError
         if ($total) {
             $this->_transformQuery($query, 'CALC_TOTAL');
         }
+        
         $is_cacher_callable = (is_callable($this->_cacher) || (method_exists($this->_cacher, 'get') && method_exists($this->_cacher, 'save')));
         $rows = null;
         $cache_it = false;

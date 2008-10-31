@@ -1,4 +1,6 @@
 <?php
+define('SEC_TO_DELETE_NEWS_FROM_FEEDS', 172800);
+
 	class NewsController extends SiteController{
 	    var $_aNewsTreeBreadCrumb = array();
 		
@@ -72,6 +74,9 @@
 		public function CronNewsAction(){
 		    ini_set('max_execution_time', 0);
 		    $newsModel = new NewsModel();
+
+		    $newsModel -> deleteOldNews(date("Y-m-d H:i:s", time()-SEC_TO_DELETE_NEWS_FROM_FEEDS));	    
+		    
 		    $lastRSS = new lastRSS();
 		    $lastRSS->cache_dir = './rss_cache';
             $lastRSS->cache_time = 3600; // one hour
@@ -83,9 +88,9 @@
 		        echo "<br>";
 		        $aFeeds = $lastRSS->Get($newsTreeFeeds['url']);
 		        echo "<pre>";
-		        print_r($newsTreeFeeds);
-		        print_r($aFeeds);
-		        
+		        //print_r($newsTreeFeeds);
+		        //echo $newsTreeFeeds['last_parse_date']."<br>";
+		        $n = 0;
 		        if (is_array($aFeeds) && count($aFeeds)>0 && is_array($aFeeds['items'])){
 		            foreach ($aFeeds['items'] as $item){
                         $pubDate = (isset($item['pubDate']))?$item['pubDate']:date("Y-m-d H:i:s");
@@ -108,19 +113,24 @@
     		            $pub_date = date("Y-m-d H:i:s", strtotime($pubDate));
     		            if (!$newsTreeFeeds['category_tag'] || strtoupper($newsTreeFeeds['category_tag']) == strtoupper($item['category'])){
     		            // if RSS-feeds have different categories => it should be same as in item
-    		            
-    		                $sameNews = $newsModel -> getNewsSame($newsTreeFeeds['id'], $title, $link, $description, $category, $pub_date);
-    		                if (!is_array($sameNews) || count($sameNews)==0){ // not found same news
-    		                  $newsModel -> addNews(
+    		                $pub_date_in_sec = strtotime($pub_date);
+    		                if (
+    		                      (!$newsTreeFeeds['last_parse_date'] || $newsTreeFeeds['last_parse_date'] < $pub_date) && // check parse date
+    		                      (time()-SEC_TO_DELETE_NEWS_FROM_FEEDS < $pub_date_in_sec) // check news publication date
+    		                   ){ // not parsed yet
+    		                    $n++;
+    		                    $newsModel -> addNews(
     		                              $newsTreeFeeds['id'], $title, $link, $short_text, $description, 
     		                              $category, $pub_date, $enclosure, $enclosure_type, 0, 0, 0);
+    		                    $newsModel -> setParseDate($newsTreeFeeds['feed_id'], date("Y-m-d H:i:s"));
     		                }
     		            }
 		            }
 		        }
+		        echo "Added ".$n." News";
 		        echo "</pre>";
 
-		        echo "<hr>";exit;
+		        echo "<hr>";
 		    }
 		    
 		}

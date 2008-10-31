@@ -518,7 +518,7 @@ class DbSimple_Generic_Database extends DbSimple_Generic_LastError
     function _query($query, &$total)
     {
         $this->_resetLastError();
-        
+
         // Fetch query attributes.
         $this->attributes = $this->_transformQuery($query, 'GET_ATTRIBUTES');
 
