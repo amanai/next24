@@ -64,19 +64,21 @@ CREATE TABLE news_banners
 )  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE news
-(
-	id BIGINT NOT NULL AUTO_INCREMENT,
-	news_tree_feeds_id BIGINT,
-	title VARCHAR(255),
-	short_text TEXT,
-	full_text TEXT,
-	views BIGINT,
-	comments BIGINT,
-	event_date DATETIME,
-	creation_date DATETIME,
-	favorite_users BIGINT,
-	PRIMARY KEY (id)
+CREATE TABLE `news` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `news_tree_feeds_id` bigint(20) default NULL,
+  `title` varchar(255) default NULL,
+  `link` varchar(255) default NULL,
+  `short_text` text,
+  `full_text` text,
+  `category` varchar(100) default NULL,
+  `pub_date` datetime default NULL,
+  `enclosure` varchar(255) default NULL,
+  `enclosure_type` varchar(50) default NULL,
+  `comments` bigint(20) default NULL,
+  `views` bigint(20) default NULL,
+  `favorite_users` bigint(20) default NULL,
+  PRIMARY KEY  (`id`)
 )  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE favorite_news

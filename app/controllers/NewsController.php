@@ -76,26 +76,56 @@
 		    $lastRSS->cache_dir = './rss_cache';
             $lastRSS->cache_time = 3600; // one hour
             
-            echo "<br>";
-	        $aFeeds = $lastRSS->Get('http://news.liga.net/all/rss.xml');
-	        echo "<pre>";
-	        print_r($aFeeds);
-	        echo "</pre>";
-            return;
-		    
 		    $aNewsTreeFeeds = $newsModel -> getAllNewsTreeFeeds(true, true, true);
 		    foreach ($aNewsTreeFeeds as $newsTreeFeeds){
+		        		        
 		        echo $newsTreeFeeds['url'];
 		        echo "<br>";
 		        $aFeeds = $lastRSS->Get($newsTreeFeeds['url']);
 		        echo "<pre>";
+		        print_r($newsTreeFeeds);
 		        print_r($aFeeds);
+		        
+		        if (is_array($aFeeds) && count($aFeeds)>0 && is_array($aFeeds['items'])){
+		            foreach ($aFeeds['items'] as $item){
+                        $pubDate = (isset($item['pubDate']))?$item['pubDate']:date("Y-m-d H:i:s");
+                        $title = (isset($item['title']))?$item['title']:"";
+                        $link = (isset($item['link']))?$item['link']:"";
+                        $description = (isset($item['description']))?$item['description']:"";
+                        $category = (isset($item['category']))?$item['category']:"";
+                        $enclosure = (isset($item['enclosure']))?$item['enclosure']:"";
+                        $enclosure_type = (isset($item['enclosure_type']))?$item['enclosure_type']:"";
+                        
+                        if (strtoupper($aFeeds['encoding']) != 'UTF-8' ){
+                            $title = iconv(strtoupper($aFeeds['encoding']), 'UTF-8', $title);
+                            $description = iconv(strtoupper($aFeeds['encoding']), 'UTF-8', $description);
+                            $category = iconv(strtoupper($aFeeds['encoding']), 'UTF-8', $category);
+                            $enclosure = iconv(strtoupper($aFeeds['encoding']), 'UTF-8', $enclosure);
+                        }
+                        
+                        
+    		            $short_text = substr($description,0,200);
+    		            $pub_date = date("Y-m-d H:i:s", strtotime($pubDate));
+    		            if (!$newsTreeFeeds['category_tag'] || strtoupper($newsTreeFeeds['category_tag']) == strtoupper($item['category'])){
+    		            // if RSS-feeds have different categories => it should be same as in item
+    		            
+    		                $sameNews = $newsModel -> getNewsSame($newsTreeFeeds['id'], $title, $link, $description, $category, $pub_date);
+    		                if (!is_array($sameNews) || count($sameNews)==0){ // not found same news
+    		                  $newsModel -> addNews(
+    		                              $newsTreeFeeds['id'], $title, $link, $short_text, $description, 
+    		                              $category, $pub_date, $enclosure, $enclosure_type, 0, 0, 0);
+    		                }
+    		            }
+		            }
+		        }
 		        echo "</pre>";
 
-		        echo "<hr>";
+		        echo "<hr>";exit;
 		    }
 		    
 		}
+		
+		
 		
 	}
 ?>

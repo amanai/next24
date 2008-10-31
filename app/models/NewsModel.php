@@ -113,18 +113,32 @@ class NewsModel extends BaseModel{
         return mysql_insert_id();
     }
     
-    function addNews($news_tree_feeds_id, $title, $short_text, $full_text, $views, $comments, $event_date, $creation_date, $favorite_users){
+    function getNewsSame($news_tree_feeds_id, $title, $link, $full_text, $category, $pub_date){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql = "
+            SELECT *
+            FROM news
+            WHERE news_tree_feeds_id = ?  AND title LIKE ? AND link LIKE ? AND full_text LIKE ? AND category LIKE ? AND pub_date LIKE ?
+        ";
+        $result = $DE -> select($sql, $news_tree_feeds_id, $title, $link, $full_text, $category, $pub_date);
+        return $result;
+    }
+    
+    function addNews($news_tree_feeds_id, $title, $link, $short_text, $full_text, $category, $pub_date, $enclosure, $enclosure_type, $comments, $views, $favorite_users){
         $DE = Project::getDatabase();
         $sql = "
-            INSERT INTO `news` (`news_tree_feeds_id` , `title` , `short_text` , `full_text` , `views` , `comments` , `event_date` , `creation_date`  , `favorite_users` )
+            INSERT INTO `news` (`news_tree_feeds_id` , `title` , `link` , `short_text` , `full_text` ,  `category` , `pub_date` , `enclosure`  ,
+                 `enclosure_type` , `comments` , `views`  , `favorite_users` )
             VALUES (
-            '".$news_tree_feeds_id."', '".htmlspecialchars($title)."', '".htmlspecialchars($short_text)."', '".htmlspecialchars($full_text)."', '".$views."', '".$comments."', '".$event_date."', '".$creation_date."', '".$favorite_users."'
+            '".$news_tree_feeds_id."', '".htmlspecialchars($title)."',  '".urlencode($link)."', '".htmlspecialchars($short_text)."', 
+            '".htmlspecialchars($full_text)."', '".htmlspecialchars($category)."', '".$pub_date."', '".$enclosure."', '".$enclosure_type."', '".$comments."',  '".$views."', 
+            '".$favorite_users."'
             );
         ";
         $DE -> query($sql);
         return mysql_insert_id();
     }
-    
     
     function ReadFile($url){
         $handle = fopen($url, "rb");
