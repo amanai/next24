@@ -114,6 +114,45 @@ class NewsView extends BaseSiteView{
         return  $sNewsTreeBreadCrumb;
     }
     
+    public function ShowNewsListPreview(){
+        $request = Project::getRequest();
+        $newsModel = new NewsModel();
+        
+        $htmlNewsListPreview = '<table>';
+        if ($request->news_tree_id){
+            $aNews = $newsModel -> getNewsByNewsTreeId($request->news_tree_id, true, true, true);
+            $isFirstTd = true;
+            foreach ($aNews as $news){
+                $htmlNewsListPreview .= '
+                    <tr>
+                        <td class="arh_x1">
+							<h3><a href="#">'.$news['news_title'].'</a><span style="font-weight: normal;"> &nbsp; ('.$news['pub_date'].')</span></h3><br />
+							'.$news['news_short_text'].'
+						</td>';
+                if ($isFirstTd){
+                    $htmlNewsListPreview .= '
+                        <td class="arh_x2">
+    						<ul class="list_style1">
+    							<li><a href="#">Самолет "Аэрофлота" сел в "Шереметьево" с отказавшим двигателем</a> (18.07.2007)</li>
+    							<li><a href="#">МИД РФ не спешит с ответными мерами в адрес Великобритании</a> (17.07.2007)</li>
+    							<li><a href="#">В Назрани обстреляли дом родственников Зязикова</a> (16.07.2007)</li>
+    						</ul>
+    					</td>
+                    ';
+                    $isFirstTd = false;
+                } else $htmlNewsListPreview .= '<td>&nbsp;</td>';
+                $htmlNewsListPreview .= '
+				    </tr>';
+                
+            }
+        }
+        $htmlNewsListPreview .= '</table>';
+        
+        return $htmlNewsListPreview;
+    }
+    
+    
+    
     function AddFeedPage(){
 	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[] = 'news_tree.js';
