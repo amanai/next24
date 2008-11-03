@@ -119,7 +119,7 @@ class TabController{
 			return $tabs;
 		}
 		
-		static public function getNewsTabs($selected1 = false, $selected2 = false) {
+		static public function getNewsTabs($selected1 = false, $selected2 = false, $selected3 = false) {
 			$request = Project::getRequest();
 			$tabs = array(
 							0 => array(
@@ -133,6 +133,12 @@ class TabController{
 									'title' => 'Добавить RSS ленту',
 									'selected' => $selected2,
 								 	'url' => $request -> createUrl('News', 'AddFeed', null, false)
+									),
+							2 => array(
+									'name' => 'Мои RSS ленты',
+									'title' => 'Мои RSS ленты',
+									'selected' => $selected3,
+								 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
 									)		
 							);
 

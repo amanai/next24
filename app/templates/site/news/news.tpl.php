@@ -37,7 +37,7 @@
 			<!-- Категория -->
 			<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 				<div class="block_title">
-					<div class="block_title_left"><h2><?php echo $this->ShowNewsTreeBreadCrumb($this->aNewsTreeBreadCrumb); ?> (все новости)</h2></div>
+					<div class="block_title_left"><h2><?php echo $this->ShowNewsTreeBreadCrumb($this->aNewsTreeBreadCrumb); ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false); ?>">все новости</a>)</h2></div>
 					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n1')" style="cursor: pointer;" /></div>
 				</div>
 				

@@ -55,14 +55,16 @@ class NewsView extends BaseSiteView{
     
     
     /* build News Tree with Radio buttons for Site-partners, for adding RSS-feeds, and save it in $_htmlTree */
-	public function BuildTree_radio($aLeafs, $aNews, $parentId = 0){
-        $imgUrl = $this -> image_url;
+	public function BuildTree_radio($aLeafs, $aNews, $parentId = 0, $checkId = 0){
+        if (!$checkId && is_array($aLeafs) && count($aLeafs)>0) $checkId = $aLeafs[0];
+	    $imgUrl = $this -> image_url;
         foreach( $aNews as $id=>$news){
           if($parentId!=$news['parent_id']) continue;
           $newsUrl = $this->newsUrl;
-          
           if (in_array($news['id'], $aLeafs)){
-            $htmlInputRadio = '<input type="radio" name="news_tree_id" value="'.$news['id'].'" />';
+            $bChecked = ($news['id'] == $checkId)?'checked="yes"':'';
+            //echo $news['id']." = ".$checkId." ; ".$bChecked."<hr>";
+            $htmlInputRadio = '<input type="radio" name="news_tree_id" value="'.$news['id'].'" '.$bChecked.' />';
             $htmlImg = '';
           }else {
             $htmlInputRadio = '';
@@ -75,7 +77,7 @@ class NewsView extends BaseSiteView{
             <label>'.$htmlInputRadio.' '.$news['name'].'</label>
             <ul class="checkbox_tree">';
           
-          $this->BuildTree_radio($aLeafs, $aNews, $news['id']);
+          $this->BuildTree_radio($aLeafs, $aNews, $news['id'], $checkId);
           $this->_htmlTree .= '
             </ul>
           </li>';
@@ -114,41 +116,56 @@ class NewsView extends BaseSiteView{
         return  $sNewsTreeBreadCrumb;
     }
     
+    public function ShowNewsTreeBreadCrumbByNewsTreeId($news_tree_id){
+        $newsModel = new NewsModel();
+        $newsModel -> getNewsTreeBreadCrumb($news_tree_id);
+	    $newsModel ->_aNewsTreeBreadCrumb = array_reverse($newsModel ->_aNewsTreeBreadCrumb);
+	    $aNewsTreeBreadCrumb = $newsModel ->_aNewsTreeBreadCrumb;
+        $sNewsTreeBreadCrumb = $this->ShowNewsTreeBreadCrumb($aNewsTreeBreadCrumb);
+        return  $sNewsTreeBreadCrumb;
+    }
+    
     public function ShowNewsListPreview(){
         $request = Project::getRequest();
         $newsModel = new NewsModel();
         
+        $news_tree_id = ($request->news_tree_id)?$request->news_tree_id:0;
         $htmlNewsListPreview = '<table>';
-        if ($request->news_tree_id){
-            $aNews = $newsModel -> getNewsByNewsTreeId($request->news_tree_id, true, true, true);
-            $isFirstTd = true;
-            foreach ($aNews as $news){
+        $aNews = $newsModel -> getNewsByNewsTreeId($news_tree_id, true, true, true);
+        $isFirstTd = true;
+        foreach ($aNews as $news){
+            $htmlNewsListPreview .= '
+                <tr>
+                    <td class="arh_x1">
+						<h3><a href="#">'.$news['news_title'].'</a><span style="font-weight: normal;"> &nbsp; ('.$news['pub_date'].')</span></h3><br />
+						'.$news['news_short_text'].'
+					</td>';
+            if ($isFirstTd){
                 $htmlNewsListPreview .= '
-                    <tr>
-                        <td class="arh_x1">
-							<h3><a href="#">'.$news['news_title'].'</a><span style="font-weight: normal;"> &nbsp; ('.$news['pub_date'].')</span></h3><br />
-							'.$news['news_short_text'].'
-						</td>';
-                if ($isFirstTd){
-                    $htmlNewsListPreview .= '
-                        <td class="arh_x2">
-    						<ul class="list_style1">
-    							<li><a href="#">Самолет "Аэрофлота" сел в "Шереметьево" с отказавшим двигателем</a> (18.07.2007)</li>
-    							<li><a href="#">МИД РФ не спешит с ответными мерами в адрес Великобритании</a> (17.07.2007)</li>
-    							<li><a href="#">В Назрани обстреляли дом родственников Зязикова</a> (16.07.2007)</li>
-    						</ul>
-    					</td>
-                    ';
-                    $isFirstTd = false;
-                } else $htmlNewsListPreview .= '<td>&nbsp;</td>';
-                $htmlNewsListPreview .= '
-				    </tr>';
-                
-            }
+                    <td class="arh_x2">
+						<ul class="list_style1">
+							<li><a href="#">Самолет "Аэрофлота" сел в "Шереметьево" с отказавшим двигателем</a> (18.07.2007)</li>
+							<li><a href="#">МИД РФ не спешит с ответными мерами в адрес Великобритании</a> (17.07.2007)</li>
+							<li><a href="#">В Назрани обстреляли дом родственников Зязикова</a> (16.07.2007)</li>
+						</ul>
+					</td>
+                ';
+                $isFirstTd = false;
+            } else $htmlNewsListPreview .= '<td>&nbsp;</td>';
+            $htmlNewsListPreview .= '
+			    </tr>';
+
         }
         $htmlNewsListPreview .= '</table>';
         
         return $htmlNewsListPreview;
+    }
+    
+    
+    public function ShowUserFeeds(){
+        $request = Project::getRequest();
+        $newsModel = new NewsModel();
+        $user = Project::getUser()->getDbUser();
     }
     
     
@@ -158,6 +175,10 @@ class NewsView extends BaseSiteView{
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
 	   $this -> setTemplate(null, 'add_feed.tpl.php');
+	}
+	
+	function MyFeedPage(){
+	   $this -> setTemplate(null, 'my_feed.tpl.php');
 	}
 		
 }

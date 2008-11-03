@@ -50,11 +50,94 @@ class NewsController extends SiteController{
 	    }
 	    
 	    $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, true)); // Show tabs
+	    $this-> _view -> assign('frmAction', 'add'); 
+	    $this-> _view -> assign('submitValue', 'Добавить'); 
+	    $this-> _view -> assign('feed_name', ''); 
+        $this-> _view -> assign('feed_url', ''); 
+        $this-> _view -> assign('category_tag', ''); 
+        $this-> _view -> assign('code', ''); 
 		
 		$aListNews = $newsModel->getAllNews();
 		$this-> _view -> assign('news_list', $aListNews); // all News tree
 		
 		$this -> _view -> AddFeedPage();
+		$this -> _view -> parse();
+	    
+	}
+	
+	public function ChangeFeedAction(){
+	    $newsModel = new NewsModel();
+	    $request = Project::getRequest();
+	    $news_tree_feeds_id = $request->news_tree_feeds_id;
+	    $newsTreeFeed = $newsModel->getNewsTreeFeedsById($news_tree_feeds_id, false, false, false);
+	    $user = Project::getUser()->getDbUser();
+	    $isAdmin = ($user->user_type_id == 1)?true:false;
+	    
+	    if ( $news_tree_feeds_id && $newsTreeFeed && is_array($newsTreeFeed)){
+	        if ($request->deleteRss){
+	            
+	            $newsModel -> deleteFeeds($newsTreeFeed['feed_id']);
+	            $newsModel -> deleteNewsBanner($newsTreeFeed['news_banner_id']);
+	            $newsModel -> deleteNewsTreeFeeds($news_tree_feeds_id);
+	            $newsModel -> deleteNewsByNewsTreeFeedsId($news_tree_feeds_id);
+	            header("Location: http://".$_SERVER['HTTP_HOST']."/my_feeds");
+	        }elseif ($request->frmAction == 'change'){
+    	        
+    	        $category_tag = trim($request->category_tag);
+    	        $type = ($category_tag)?1:0; // 0 - 1 Rss => 1 NewsTreeCastegory; 1 - 1 Rss => N NewsTreeCategory
+    	        $creation_date = date("Y-m-d H:i:s");
+    	        
+    	        if ($user->id == $newsTreeFeed['feeds_user_id'] || $isAdmin){
+    	        // if OWNER or ADMIN
+    	            if ($isAdmin) $text_parse_type = $request->text_parse_type; else $text_parse_type = -1;
+        	        $newsModel -> changeFeeds($newsTreeFeed['feed_id'], $request->feed_name, $request->feed_url, $type, 0, $text_parse_type);
+        	        $newsModel -> changeNewsTreeFeeds($news_tree_feeds_id, $request->news_tree_id, $newsTreeFeed['feed_id'], $newsTreeFeed['news_banner_id'], $category_tag);
+        	        if ($newsTreeFeed['news_banner_id']){
+        	           $newsModel -> changeNewsBanner($newsTreeFeed['news_banner_id'], $request->code, 0);
+        	        }else {
+        	           $news_banner_id = $newsModel -> addNewsBanner($user->id, $request->code, 0);
+        	           $newsModel -> changeOneValue('news_tree_feeds', $news_tree_feeds_id, 'news_banner_id', $news_banner_id);
+        	        }
+    	        }
+    	        header("Location: http://".$_SERVER['HTTP_HOST']."/change_feed/news_tree_feeds_id:".$news_tree_feeds_id."/");
+    	    }
+	        $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, false, true)); // Show tabs
+	        $this-> _view -> assign('frmAction', 'change'); 
+	        $this-> _view -> assign('submitValue', 'Изменить'); 
+	        $this-> _view -> assign('feed_name', $newsTreeFeed['feeds_name']); 
+	        $this-> _view -> assign('feed_url', $newsTreeFeed['url']); 
+	        $this-> _view -> assign('category_tag', $newsTreeFeed['category_tag']); 
+	        $this-> _view -> assign('code', $newsTreeFeed['code']); 
+	        $this-> _view -> assign('news_tree_id', $newsTreeFeed['news_tree_id']); 
+	        $this-> _view -> assign('text_parse_type', $newsTreeFeed['text_parse_type']); 
+	        $this-> _view -> assign('news_tree_feeds_id', $news_tree_feeds_id); 
+	        $this-> _view -> assign('isChange', true); 
+	        $this-> _view -> assign('isAdmin', $isAdmin); 
+		
+    		$aListNews = $newsModel->getAllNews();
+    		$this-> _view -> assign('news_list', $aListNews); // all News tree
+    		
+    		$this -> _view -> AddFeedPage();
+    		$this -> _view -> parse();
+	    }else{
+	        header("Location: http://".$_SERVER['HTTP_HOST']."/my_feeds");
+	    }
+	}
+	
+	public function MyFeedsAction(){
+	    $newsModel = new NewsModel();
+	    $request = Project::getRequest();
+	    $user = Project::getUser()->getDbUser();
+	    
+	    $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, false, true)); // Show tabs
+		
+		$aListNewsTreeFeeds = $newsModel->getNewsTreeFeedsByUserId($user->id, false, false, false);
+		$this-> _view -> assign('aListNewsTreeFeeds', $aListNewsTreeFeeds); //  News tree feeds for current user
+		
+		$aListNews = $newsModel->getAllNews();
+		$this-> _view -> assign('news_list', $aListNews); // all News tree
+		
+		$this -> _view -> MyFeedPage();
 		$this -> _view -> parse();
 	    
 	}
@@ -77,11 +160,13 @@ class NewsController extends SiteController{
 	        echo "<br>";
 	        $aFeeds = $lastRSS->Get($newsTreeFeeds['url']);
 	        echo "<pre>";
+	        //print_r($aFeeds);
 	        //print_r($newsTreeFeeds);
 	        //echo $newsTreeFeeds['last_parse_date']."<br>";
 	        $n = 0;
 	        if (is_array($aFeeds) && count($aFeeds)>0 && is_array($aFeeds['items'])){
 	            foreach ($aFeeds['items'] as $item){
+	                //print_r($item); echo "<hr>";
                     $pubDate = (isset($item['pubDate']))?$item['pubDate']:date("Y-m-d H:i:s");
                     $title = (isset($item['title']))?$item['title']:"";
                     $link = (isset($item['link']))?$item['link']:"";
@@ -96,21 +181,20 @@ class NewsController extends SiteController{
                         $category = iconv(strtoupper($aFeeds['encoding']), 'UTF-8', $category);
                         $enclosure = iconv(strtoupper($aFeeds['encoding']), 'UTF-8', $enclosure);
                     }
-                    
-                    
-		            $short_text = $newsModel -> getNWordsFromText($description, 40);
+		            $short_text = $newsModel -> getNWordsFromText($description, 40)."...";
 		            $pub_date = date("Y-m-d H:i:s", strtotime($pubDate));
-		            if (!$newsTreeFeeds['category_tag'] || strtoupper($newsTreeFeeds['category_tag']) == strtoupper($item['category'])){
+		            if (!$newsTreeFeeds['category_tag'] || strtoupper($newsTreeFeeds['category_tag']) == strtoupper($category)){
 		            // if RSS-feeds have different categories => it should be same as in item
 		                $pub_date_in_sec = strtotime($pub_date);
 		                if (
 		                      (!$newsTreeFeeds['last_parse_date'] || $newsTreeFeeds['last_parse_date'] < $pub_date) && // check parse date
 		                      (time()-SEC_TO_DELETE_NEWS_FROM_FEEDS < $pub_date_in_sec) // check news publication date
-		                   ){ // not parsed yet
+		                   )
+		                { // not parsed yet
 		                    $n++;
 		                    $newsModel -> addNews(
 		                              $newsTreeFeeds['id'], $title, $link, $short_text, $description, 
-		                              $category, $pub_date, $enclosure, $enclosure_type, 0, 0, 0);
+		                              $category, $pub_date, $enclosure, $enclosure_type, 0, 0, 0, $newsTreeFeeds['text_parse_type']);
 		                    $newsModel -> setParseDate($newsTreeFeeds['feed_id'], date("Y-m-d H:i:s"));
 		                }
 		            }

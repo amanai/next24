@@ -190,6 +190,8 @@ class lastRSS {
 				if ($i < $this->items_limit || $this->items_limit == 0) {
 					foreach($this->itemtags as $itemtag) {
 						$temp = $this->my_preg_match("'<$itemtag.*?>(.*?)</$itemtag>'si", $rss_item);
+						$temp2= $this -> my_preg_match("'<!\[CDATA\[(.*?)\]\]>'si", $temp);
+						if ($temp2) $temp = $temp2;
 						if ($temp != '') $result['items'][$i][$itemtag] = $temp; // Set only if not empty
 						elseif ($itemtag == 'enclosure'){ // media files
 						    $temp = $this->my_preg_match("'<enclosure\s*url=\"(.*?)\"'si", $rss_item);
