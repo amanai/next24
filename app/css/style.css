@@ -1021,3 +1021,8 @@ font-weight:bold;
 	position: relative;
 	right: 3px;
 }
+
+.list_status{
+   font-weight: bold;
+   font-style: italic
+}

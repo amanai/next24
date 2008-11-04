@@ -13,17 +13,33 @@ class NewsController extends SiteController{
 	public function NewsAction(){
 	    $newsModel = new NewsModel();
 	    $request = Project::getRequest();
+	    $user = Project::getUser()->getDbUser();
+	    $isAdmin = ($user->user_type_id == 1)?true:false;	    
 	    
 	    $news_tree_id = $request->news_tree_id;
 	    if ($news_tree_id){
 	        $newsModel -> getNewsTreeBreadCrumb($news_tree_id);
 	        $newsModel ->_aNewsTreeBreadCrumb = array_reverse($newsModel ->_aNewsTreeBreadCrumb);
-	    }
-	    
+	    }	    
 		$this-> _view -> assign('tab_list', TabController::getNewsTabs(true)); // Show tabs
-		$this-> _view -> assign('aNewsTreeBreadCrumb', $newsModel ->_aNewsTreeBreadCrumb); // Show tabs
 		
-		
+		if ($request->news_id){
+		    if ($isAdmin) {
+		        $isNewsTreeActive = false;
+		        $isNewsBannersActive = false;
+		    }else{
+		        $isNewsTreeActive = true;
+		        $isNewsBannersActive = true;
+		    }		    
+		    $news = $newsModel -> getNewsById($request->news_id, $isNewsTreeActive, $isNewsBannersActive);
+		    if (!$news) Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'News'));
+		    $this-> _view -> assign('news', $news); 
+		    $this-> _view -> assign('isShowOneNews', true); 
+		}else{
+		    $this-> _view -> assign('aNewsTreeBreadCrumb', $newsModel ->_aNewsTreeBreadCrumb); // Show tabs
+		    $this-> _view -> assign('isShowOneNews', false); 
+		}
+				
 		$aListNews = $newsModel->getAllNews();
 		$this-> _view -> assign('news_list', $aListNews); // all News tree
 		
@@ -46,7 +62,7 @@ class NewsController extends SiteController{
 	        $news_banner_id = $newsModel -> addNewsBanner($user->id, $request->code, 0);
 	        $news_tree_feeds_id = $newsModel -> addNewsTreeFeeds($request->news_tree_id, $feed_id, $news_banner_id, $category_tag);
 	        
-	        header("Location: http://".$_SERVER['HTTP_HOST']."/news");
+	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'News'));
 	    }
 	    
 	    $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, true)); // Show tabs
@@ -80,7 +96,7 @@ class NewsController extends SiteController{
 	            $newsModel -> deleteNewsBanner($newsTreeFeed['news_banner_id']);
 	            $newsModel -> deleteNewsTreeFeeds($news_tree_feeds_id);
 	            $newsModel -> deleteNewsByNewsTreeFeedsId($news_tree_feeds_id);
-	            header("Location: http://".$_SERVER['HTTP_HOST']."/my_feeds");
+	            Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'MyFeeds'));
 	        }elseif ($request->frmAction == 'change'){
     	        
     	        $category_tag = trim($request->category_tag);
@@ -99,7 +115,7 @@ class NewsController extends SiteController{
         	           $newsModel -> changeOneValue('news_tree_feeds', $news_tree_feeds_id, 'news_banner_id', $news_banner_id);
         	        }
     	        }
-    	        header("Location: http://".$_SERVER['HTTP_HOST']."/change_feed/news_tree_feeds_id:".$news_tree_feeds_id."/");
+    	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'ChangeFeed')."/change_feed/news_tree_feeds_id:".$news_tree_feeds_id."/");
     	    }
 	        $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, false, true)); // Show tabs
 	        $this-> _view -> assign('frmAction', 'change'); 
@@ -120,7 +136,7 @@ class NewsController extends SiteController{
     		$this -> _view -> AddFeedPage();
     		$this -> _view -> parse();
 	    }else{
-	        header("Location: http://".$_SERVER['HTTP_HOST']."/my_feeds");
+	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'MyFeeds'));
 	    }
 	}
 	
@@ -128,7 +144,9 @@ class NewsController extends SiteController{
 	    $newsModel = new NewsModel();
 	    $request = Project::getRequest();
 	    $user = Project::getUser()->getDbUser();
+	    $isAdmin = ($user->user_type_id == 1)?true:false;
 	    
+	    $this-> _view -> assign('isAdmin', $isAdmin); 
 	    $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, false, true)); // Show tabs
 		
 		$aListNewsTreeFeeds = $newsModel->getNewsTreeFeedsByUserId($user->id, false, false, false);
@@ -142,7 +160,33 @@ class NewsController extends SiteController{
 	    
 	}
 	
+	public function ChangeStateAction(){
+	    $newsModel = new NewsModel();
+	    $request = Project::getRequest();
+	    
+	    $message = array();
+	    $table = $request->element;;
+	    $message[] = $request->id;
+	    $message[] = $table;
+	    $oldBanner = $newsModel -> getOneRecord($table, $request->id);
+        if ($oldBanner){
+            if ($oldBanner['state']){
+                $newsModel -> changeOneValue($table, $request->id, 'state', 0);
+                $message[] = "not moderated";
+            }else{
+                $newsModel -> changeOneValue($table, $request->id, 'state', 1);
+                $message[] = "active";
+            }
+        }
+	    $this -> _view -> ActivateBanner($message);
+		$this -> _view -> ajax();
+	}
 	
+	
+	
+	/**
+	 * ADD News by cron
+	 * */
 	public function CronNewsAction(){
 	    ini_set('max_execution_time', 0);
 	    $newsModel = new NewsModel();

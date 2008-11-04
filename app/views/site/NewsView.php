@@ -31,7 +31,7 @@ class NewsView extends BaseSiteView{
           if (in_array($news['id'], $aLeafs) && count($aFeeds)==0){
             $htmlImg = '';
           }else {
-            $htmlImg = '<img class="minus" height="11" width="11" alt="" /> ';
+            $htmlImg = '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" /> ';
           }
           
           $this->_htmlTree .= '
@@ -68,7 +68,7 @@ class NewsView extends BaseSiteView{
             $htmlImg = '';
           }else {
             $htmlInputRadio = '';
-            $htmlImg = '<img class="minus" height="11" width="11" alt="" /> ';
+            $htmlImg = '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" /> ';
           }
           
           $this->_htmlTree .= '
@@ -128,6 +128,7 @@ class NewsView extends BaseSiteView{
     public function ShowNewsListPreview(){
         $request = Project::getRequest();
         $newsModel = new NewsModel();
+        $newsUrl = $this->newsUrl;
         
         $news_tree_id = ($request->news_tree_id)?$request->news_tree_id:0;
         $htmlNewsListPreview = '<table>';
@@ -137,21 +138,26 @@ class NewsView extends BaseSiteView{
             $htmlNewsListPreview .= '
                 <tr>
                     <td class="arh_x1">
-						<h3><a href="#">'.$news['news_title'].'</a><span style="font-weight: normal;"> &nbsp; ('.$news['pub_date'].')</span></h3><br />
+						<h3><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">'.$news['news_title'].'</a><span style="font-weight: normal;"> &nbsp; ('.$news['pub_date'].')</span></h3><br />
 						'.$news['news_short_text'].'
 					</td>';
             if ($isFirstTd){
                 $htmlNewsListPreview .= '
-                    <td class="arh_x2">
+                    <td class="arh_x2" rowspan="'.count($aNews).'">
 						<ul class="list_style1">
 							<li><a href="#">Самолет "Аэрофлота" сел в "Шереметьево" с отказавшим двигателем</a> (18.07.2007)</li>
 							<li><a href="#">МИД РФ не спешит с ответными мерами в адрес Великобритании</a> (17.07.2007)</li>
+							<li><a href="#">В Назрани обстреляли дом родственников Зязикова</a> (16.07.2007)</li>
+							<li><a href="#">В Назрани обстреляли дом родственников Зязикова</a> (16.07.2007)</li>
+							<li><a href="#">В Назрани обстреляли дом родственников Зязикова</a> (16.07.2007)</li>
+							<li><a href="#">В Назрани обстреляли дом родственников Зязикова</a> (16.07.2007)</li>
+							<li><a href="#">В Назрани обстреляли дом родственников Зязикова</a> (16.07.2007)</li>
 							<li><a href="#">В Назрани обстреляли дом родственников Зязикова</a> (16.07.2007)</li>
 						</ul>
 					</td>
                 ';
                 $isFirstTd = false;
-            } else $htmlNewsListPreview .= '<td>&nbsp;</td>';
+            } else $htmlNewsListPreview .= '';
             $htmlNewsListPreview .= '
 			    </tr>';
 
@@ -178,7 +184,16 @@ class NewsView extends BaseSiteView{
 	}
 	
 	function MyFeedPage(){
+	   $this->_js_files[] = 'jquery.js';
+	   $this->_js_files[]='blockUI.js';
+	   $this->_js_files[]='ajax.js';
 	   $this -> setTemplate(null, 'my_feed.tpl.php');
+	}
+	
+	function ActivateBanner($message){
+		$response = Project::getAjaxResponse();
+		$response -> block($message[1].$message[0], true, $message[2]);
+		//print_r($response -> getResponse());
 	}
 		
 }

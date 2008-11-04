@@ -325,5 +325,6 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			}
 			return $url;
 		}
+		
 }
 ?>
