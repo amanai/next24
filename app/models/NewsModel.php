@@ -30,7 +30,12 @@ class NewsModel extends BaseModel{
     function getAllNews(){
         $DE = Project::getDatabase();
         $result = array();
-        $result = $DE -> select("SELECT * FROM news_tree ORDER BY name");
+        $sql ="
+            SELECT * 
+            FROM news_tree 
+            ORDER BY name
+        ";
+        $result = $DE -> select($sql);
         return $result;
     }
     
@@ -185,7 +190,7 @@ class NewsModel extends BaseModel{
         $DE = Project::getDatabase();
         $result = array();
         $sql = "
-            SELECT feeds.*
+            SELECT feeds.*, ntf.id as news_tree_feeds_id
             FROM news_tree_feeds as ntf
             INNER JOIN feeds 
                 ON ntf.feed_id = feeds.id
@@ -393,6 +398,7 @@ class NewsModel extends BaseModel{
         return $sText;
     }
     
+    // get all parents. Ex.: mainCat -> cat1 -> cat2 -> lastCat
     function getNewsTreeBreadCrumb($news_tree_id){
 	    if ($news_tree_id){
             $newsTree = $this -> getNewsTree($news_tree_id);
@@ -403,14 +409,39 @@ class NewsModel extends BaseModel{
         }
 	}
 	
+	// get all leafs
 	function getNewsTreeChildren($news_tree_id){
-	    //$newsTree = $this -> getNewsTree($news_tree_id);
-	    //$parent_id = $newsTree['parent_id'];
         $aNewsTree = $this -> getNewsTreeByParentId($news_tree_id);
         foreach ($aNewsTree as $newsTree){
             $this->_aNewsTreeChildren[] = $newsTree;
             $this->getNewsTreeChildren($newsTree['id']);
         }
+	}
+	
+	function setNewsSubscribe($userId, $aNewsTreeFeedsId){
+	    $DE = Project::getDatabase();
+        $sql = "DELETE FROM `news_subscribe` WHERE user_id=? ";
+        $DE -> query($sql, $userId);
+        if (is_array($aNewsTreeFeedsId) && count($aNewsTreeFeedsId)>0){
+            $sql = "INSERT INTO `news_subscribe` (  `user_id` , `news_tree_feeds_id` ) VALUES ";
+            foreach ($aNewsTreeFeedsId as $newsTreeFeeds){
+                $sql .= "(".$userId.", ".$newsTreeFeeds."),";
+            }
+            $sql = substr($sql, 0, -1);
+            $DE -> query($sql, $userId);
+        }
+	}
+	
+	function getNewsSubscribeByUserId($userId){
+	    $DE = Project::getDatabase();
+        $result = array();
+        $sql = "
+            SELECT *
+            FROM news_subscribe
+            WHERE user_id = ?  
+        ";
+        $result = $DE -> select($sql, $userId);
+        return $result;
 	}
 	
 }

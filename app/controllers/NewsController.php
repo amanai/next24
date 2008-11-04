@@ -17,10 +17,6 @@ class NewsController extends SiteController{
 	    $isAdmin = ($user->user_type_id == 1)?true:false;	    
 	    
 	    $news_tree_id = $request->news_tree_id;
-	    if ($news_tree_id){
-	        $newsModel -> getNewsTreeBreadCrumb($news_tree_id);
-	        $newsModel ->_aNewsTreeBreadCrumb = array_reverse($newsModel ->_aNewsTreeBreadCrumb);
-	    }	    
 		$this-> _view -> assign('tab_list', TabController::getNewsTabs(true)); // Show tabs
 		
 		if ($request->news_id){
@@ -36,12 +32,14 @@ class NewsController extends SiteController{
 		    $this-> _view -> assign('news', $news); 
 		    $this-> _view -> assign('isShowOneNews', true); 
 		}else{
-		    $this-> _view -> assign('aNewsTreeBreadCrumb', $newsModel ->_aNewsTreeBreadCrumb); // Show tabs
 		    $this-> _view -> assign('isShowOneNews', false); 
 		}
 				
 		$aListNews = $newsModel->getAllNews();
 		$this-> _view -> assign('news_list', $aListNews); // all News tree
+		
+		$aNewsSubscribe = $newsModel -> getNewsSubscribeByUserId($user->id);
+		$this-> _view -> assign('aNewsSubscribe', $aNewsSubscribe); // all NewsSubscribe
 		
 		$this -> _view -> NewsPage();
 		$this -> _view -> parse();
@@ -62,7 +60,7 @@ class NewsController extends SiteController{
 	        $news_banner_id = $newsModel -> addNewsBanner($user->id, $request->code, 0);
 	        $news_tree_feeds_id = $newsModel -> addNewsTreeFeeds($request->news_tree_id, $feed_id, $news_banner_id, $category_tag);
 	        
-	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'News'));
+	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'MyFeeds'));
 	    }
 	    
 	    $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, true)); // Show tabs
@@ -182,6 +180,15 @@ class NewsController extends SiteController{
 		$this -> _view -> ajax();
 	}
 	
+	public function SubscribeNewsAction(){
+	    $request = Project::getRequest();
+	    if ($request->subscribe){
+    	    $newsModel = new NewsModel();
+    	    $user = Project::getUser()->getDbUser();
+    	    $newsModel -> setNewsSubscribe($user->id, $request->news_tree_feeds);
+	    }
+	    Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'News'));
+	}
 	
 	
 	/**

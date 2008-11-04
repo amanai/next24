@@ -73,16 +73,6 @@
     				    echo '
     					   </td>
     					   <td>'.$this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTreeFeeds['news_tree_id']).'<div class="list_status" id="news_tree'.$newsTreeFeeds['news_tree_id'].'">'.$news_tree_state.'</div>';
-    					if ($this -> isAdmin){
-    				        echo '<a onclick=\'
-        				        document.getElementById("news_tree'.$newsTreeFeeds['news_tree_id'].'").innerHTML="<img src='.$this -> image_url.'loader2.gif >";
-        				        ajax
-        				        ('.
-        				        AjaxRequest::getJsonParam("News", "ChangeState", array("id"=>$newsTreeFeeds['news_tree_id'], "element"=>"news_tree"), "POST").', true
-        				        );
-        				        \' href="javascript: void(0);">
-                                Изменить статус</a>';
-    				    }    				    
     				    echo '
     					   </td>
     					   <td>'.$text_parse_type.'</td>

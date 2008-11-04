@@ -92,8 +92,8 @@
 						<a href="#">Дневники</a><br />
 						<a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false); ?>">Вопрос-ответ</a><br />
 						<a href="<?php echo $this->createUrl('Album', 'LastList', null, false); ?>">Фотоальбомы</a><br />
-            <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>">Закладки</a><br />
-            <a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false); ?>">Соц. разделы</a>
+                        <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>">Закладки</a><br />
+                        <a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false); ?>">Соц. разделы</a>
 					</td>
 				</tr>
 				</table>

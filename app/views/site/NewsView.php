@@ -20,7 +20,7 @@ class NewsView extends BaseSiteView{
 	}
 	
 	/* build News Tree , and save it in $_htmlTree */
-	public function BuildTree($aLeafs, $aNews,$parentId = 0){
+	public function BuildTree($aLeafs, $aNews, $parentId = 0){
         $imgUrl = $this -> image_url;
         foreach( $aNews as $id=>$news){
           if($parentId!=$news['parent_id'])continue;
@@ -37,19 +37,18 @@ class NewsView extends BaseSiteView{
           $this->_htmlTree .= '
           <li >
             '.$htmlImg.'
-            <label><input type="checkbox" name="" value="" /> <a href="'.$newsUrl.'/news_tree_id:'.$news['id'].'">'.$news['name'].'</a></label>
+            <label><input type="checkbox" />'.$news['name'].'</label>
             <ul class="checkbox_tree">';
           
           
           foreach ($aFeeds as $feed){
-              $this->_htmlTree .= '<li><label><input type="checkbox"/> '.$feed['name'].'</label></li>';
+              $this->_htmlTree .= '<li><label><input type="checkbox"  name="news_tree_feeds[]" value="'.$feed['news_tree_feeds_id'].'" /> '.$feed['name'].'</label></li>';
           }
           
           $this->BuildTree($aLeafs, $aNews,$news['id']);
           $this->_htmlTree .= '
             </ul>
           </li>';
-          
        }
     }
     
@@ -102,14 +101,17 @@ class NewsView extends BaseSiteView{
         return $newsModel->isLeaf($elementId);
     }
     
-    public function ShowNewsTreeBreadCrumb($aNewsTreeBreadCrumb){
+    public function ShowNewsTreeBreadCrumb($aNewsTreeBreadCrumb, $isSetAnchor=true){
         $sNewsTreeBreadCrumb = '';
         $newsUrl = $this->newsUrl;
         if (count($aNewsTreeBreadCrumb)>0){
             foreach ($aNewsTreeBreadCrumb as $newsTree){
-                $sNewsTreeBreadCrumb .= '<a href="'.$newsUrl.'/news_tree_id:'.$newsTree['id'].'">'.$newsTree['name'].'</a> -> ';
+                if ($isSetAnchor) $sNewsTreeBreadCrumb .= '<a href="'.$newsUrl.'/news_tree_id:'.$newsTree['id'].'">';
+                $sNewsTreeBreadCrumb .= $newsTree['name'];
+                if ($isSetAnchor) $sNewsTreeBreadCrumb .= '</a>';
+                $sNewsTreeBreadCrumb .= '->';
             }
-            $sNewsTreeBreadCrumb = substr($sNewsTreeBreadCrumb, 0, -3);
+            $sNewsTreeBreadCrumb = substr($sNewsTreeBreadCrumb, 0, -2);
         }else{
             $sNewsTreeBreadCrumb = 'Категория';
         }
@@ -125,7 +127,18 @@ class NewsView extends BaseSiteView{
         return  $sNewsTreeBreadCrumb;
     }
     
-    public function ShowNewsListPreview(){
+    public function ShowNewsTreeBreadCrumbByNewsTreeFeedsId($news_tree_feeds_id){
+        $newsModel = new NewsModel();
+        $newsTreeFeeds = $newsModel -> getNewsTreeFeedsById($news_tree_feeds_id);
+        $newsModel -> getNewsTreeBreadCrumb($newsTreeFeeds['news_tree_id']);
+	    $newsModel ->_aNewsTreeBreadCrumb = array_reverse($newsModel ->_aNewsTreeBreadCrumb);
+	    $aNewsTreeBreadCrumb = $newsModel ->_aNewsTreeBreadCrumb;
+        $sNewsTreeBreadCrumb = $this->ShowNewsTreeBreadCrumb($aNewsTreeBreadCrumb, false);
+        if ($newsTreeFeeds['feeds_name']) $sNewsTreeBreadCrumb .= '->'.$newsTreeFeeds['feeds_name'];
+        return  $sNewsTreeBreadCrumb;
+    }
+    
+    public function ShowNewsListPreview($news_tree_feeds_id){
         $request = Project::getRequest();
         $newsModel = new NewsModel();
         $newsUrl = $this->newsUrl;
@@ -143,7 +156,7 @@ class NewsView extends BaseSiteView{
 					</td>';
             if ($isFirstTd){
                 $htmlNewsListPreview .= '
-                    <td class="arh_x2" rowspan="'.count($aNews).'">
+                    <td class="arh_x2">
 						<ul class="list_style1">
 							<li><a href="#">Самолет "Аэрофлота" сел в "Шереметьево" с отказавшим двигателем</a> (18.07.2007)</li>
 							<li><a href="#">МИД РФ не спешит с ответными мерами в адрес Великобритании</a> (17.07.2007)</li>

@@ -12,8 +12,15 @@
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<div class="block_title"><h2>Отображать каналы RSS</h2></div>
 					
-					<?php include($this -> _include('news_tree.tpl.php')); ?>
-
+					<form action="<?php echo $this->createUrl('News', 'SubscribeNews', null, false); ?>" method="POST">
+					<ul class="checkbox_tree">
+                        <?php 
+                        $aLeafs = $this->getAllLeafs($this->news_list);
+                        $this->BuildTree($aLeafs, $this->news_list, 0); echo $this->_htmlTree; 
+                        ?>
+                    </ul>
+                    <input type="submit" name="subscribe" value="Подписаться на новости" />
+                    </form>
 					
 
 				</div></div></div></div>
@@ -33,19 +40,16 @@
 		<td class="next24u_right">
 
 
-
-			<!-- Категория -->
+           <?php
+	       if ($this -> isShowOneNews){ // одна новость
+	       ?>  
+	         <!-- Одна новость -->
 			<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 				<div class="block_title">
 					<div class="block_title_left">
 					   <h2>
 					       <?php 
-					       if ($this -> isShowOneNews){
-					           echo $this->news['news_title'];
-					       }else{
-					           echo $this->ShowNewsTreeBreadCrumb($this->aNewsTreeBreadCrumb); ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false); ?>">все новости</a>)
-					       <?php
-					       }
+				           echo $this->news['news_title'];
 					       ?>
 					   </h2>
 					</div>
@@ -54,17 +58,38 @@
 				
 				<div id="rss_cat_n1">
 				    <?php 
-			       if ($this -> isShowOneNews){
-			           if (strpos($this->news['enclosure_type'], "image") !== false){
-			               echo '<img src="'.$this->news['enclosure'].'">';
-			           }
-			           echo $this->news['news_full_text'];
-			           if ($this->news['code']){
-			               echo "<hr>".$this->news['code'];
-			           }
-			       }else{
-			           echo $this->ShowNewsListPreview();
-			       }
+		           if (strpos($this->news['enclosure_type'], "image") !== false){
+		               echo '<img src="'.$this->news['enclosure'].'">';
+		           }
+		           echo $this->news['news_full_text'];
+		           if ($this->news['code']){
+		               echo "<hr>".$this->news['code'];
+		           }
+			       ?>
+					<div class="rmb14"></div>
+
+				</div>
+
+			</div></div></div></div>
+			<!-- /Одна новость -->
+	       <?php    
+	       }else{ // много категорий
+	           foreach ($this->aNewsSubscribe as $newsSubscribe){
+	       ?>
+			<!-- Категория -->
+			<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+				<div class="block_title">
+					<div class="block_title_left">
+					   <h2>
+					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($newsSubscribe['news_tree_feeds_id']); ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false); ?>">все новости</a>)
+					   </h2>
+					</div>
+					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n1')" style="cursor: pointer;" /></div>
+				</div>
+				
+				<div id="rss_cat_n1">
+				   <?php 
+		           echo $this->ShowNewsListPreview($newsSubscribe['news_tree_feeds_id']);
 			       ?>
 					<div class="rmb14"></div>
 
@@ -72,6 +97,10 @@
 
 			</div></div></div></div>
 			<!-- /Категория -->
+		   <?php
+	           }
+	       }
+		   ?>
 
 		</td>
 	</tr>
