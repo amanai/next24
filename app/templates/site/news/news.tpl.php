@@ -19,7 +19,7 @@
                         $this->BuildTree($aLeafs, $this->news_list, 0, $this->aNewsSubscribe); echo $this->_htmlTree; 
                         ?>
                     </ul>
-                    <input type="submit" name="subscribe" value="Подписаться на новости" />
+                    <input type="submit" name="subscribe" value="Сохранить подписку" />
                     </form>
 					
 
@@ -62,8 +62,13 @@
 					<div class="block_title_left">
 					   <h2>
 					       <?php 
-				           echo $this->news['news_title'];
+					       if ($this->news['favorite_news_id']) $starGif = "star_on.gif"; else $starGif = "star_off.gif"; 
+				           echo $this->news['news_title'].' 
+				           <a onclick=\'
+    				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$this->news['news_id'], "imgUrl"=>$this -> image_url), "POST").', true);
+    				        \' href="javascript: void(0);"><img src="'.$this -> image_url.$starGif.'" id="imgstar'.$this->news['news_id'].'"></a>';
 					       ?>
+					        
 					   </h2>
 					</div>
 					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n1')" style="cursor: pointer;" /></div>
@@ -76,10 +81,14 @@
 		           }
 		           echo $this->news['news_full_text'];
 		           if ($this->news['code']){
-		               echo "<hr>".$this->news['code'];
+		               echo '<div class="news_banner">'.$this->news['code'].'</div>';
 		           }
 			       ?>
-					<div class="rmb14"></div>
+			       <div class="block_title_left">
+			         <b>Категория: </b><?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($this->news['news_tree_id'], false); ?>&nbsp;&nbsp;&nbsp;
+			         <b>Дата публикации: </b><?php echo $this->news['pub_date']; ?>&nbsp;&nbsp;&nbsp;&nbsp;
+			         <b>Лента: </b><?php echo $this->news['feeds_name']; ?>
+			       </div>
 
 				</div>
 
@@ -105,15 +114,19 @@
 	                   break;
 	           }
 	           
+	           $isShowSomeNews = false;
+	           
 	           if ($this->filterNewsTreeFeeds){ // filter by news_tree_feeds_ID
 	               $newsCount = $this -> getNewsCountByNewsTreeFeedsId($this->filterNewsTreeFeeds, $this->user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
+	               if ($newsCount){
+	                   $isShowSomeNews=true;
 	       ?>
 	           <!-- Категория -->
     			<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
     				<div class="block_title">
     					<div class="block_title_left">
     					   <h2>
-    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, false); ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTreeFeeds:".$this->filterNewsTreeFeeds; ?>">все новости [<?php echo $newsCount; ?>]</a>)
+    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, false); if (!$this->shownow){?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTreeFeeds:".$this->filterNewsTreeFeeds; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?>
     					   </h2>
     					</div>
     					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n<?php echo $this->filterNewsTreeFeeds;?>')" style="cursor: pointer;" /></div>
@@ -130,6 +143,7 @@
     			</div></div></div></div>
     			<!-- /Категория -->
 	       <?php
+	               }
 	           }else{ // NO filter by news_tree_feeds_ID
     	           
     	           foreach ($aNewsTree as $newsTree){
@@ -139,6 +153,7 @@
     	               }
     	               $newsCount = $this -> getNewsCountByNewsTreeId($newsTree['id'], $this->user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
     	               if ($newsCount < 1) continue;
+    	               $isShowSomeNews = true;
     	               
     	   ?>
     			<!-- Категория -->
@@ -146,7 +161,7 @@
     				<div class="block_title">
     					<div class="block_title_left">
     					   <h2>
-    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false); ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>">все новости [<?php echo $newsCount; ?>]</a>)
+    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false);  if (!$this->shownow){ ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?>
     					   </h2>
     					</div>
     					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n<?php echo $newsTree['id'];?>')" style="cursor: pointer;" /></div>
@@ -164,8 +179,9 @@
     			<!-- /Категория -->
     	   <?php
     	           }
-    	           if (count($aNewsTree)<1){
-    	   ?>
+	           }
+	           if (!$isShowSomeNews){
+	       ?>
     	        <!-- Нет новостей -->
     			<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
     				<div class="block_title">
@@ -179,16 +195,15 @@
     				
     				<div id="rss_cat_n2">
     				    Вы не подписаны ни на одну ленту новостей, либо в лентах на которые вы подписаны нет новостей.<br />
-                        Вы можете выбрать ленты для подписки в меню «Категории» слева. После выбора лент нажмите «Подписаться на новости».       
+                        Вы можете выбрать ленты для подписки в меню «Категории» слева. После выбора лент нажмите «Сохранить подписку».       
     					<div class="rmb14"></div>
     
     				</div>
     
     			</div></div></div></div>
     			<!-- / Нет новостей -->       
-    	   <?php            
-    	           }
-	           }    
+    	   <?php             
+	           }
 	       }
 		   ?>
 

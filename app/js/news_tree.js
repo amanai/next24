@@ -22,3 +22,15 @@ $(document).ready(function(){
     */
     
 });
+
+function validateAddRss(frm){
+    if (!frm.feed_name.value){
+        alert ("Введите название RSS-ленты");
+        return false;
+    }
+    if (!frm.feed_url.value){
+        alert ("Введите URL RSS-ленты");
+        return false;
+    }
+    return true;
+}

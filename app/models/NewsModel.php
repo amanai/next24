@@ -306,7 +306,7 @@ class NewsModel extends BaseModel{
         return $result['c'];
     }
     
-    function getNewsById($news_id, $isNewsTreeActive = true, $isNewsBannersActive = true){
+    function getNewsById($news_id, $user_id, $isNewsTreeActive = true, $isNewsBannersActive = true){
         $DE = Project::getDatabase();
         $result = array();
         $sql = "
@@ -315,20 +315,29 @@ class NewsModel extends BaseModel{
                     news_banners.user_id as news_banners_user_id, news_banners.code, news_banners.state as news_banners_state ,
                     news.id as news_id, news.title as news_title, news.link as news_link, news.short_text as news_short_text, 
                     news.full_text as news_full_text,  news.pub_date,  news.enclosure,  news.enclosure_type,  
-                    news.comments,  news.views, news.favorite_users
+                    news.comments,  news.views, news.favorite_users,
+                    feeds.user_id as feeds_user_id, feeds.name as feeds_name, feeds.url, feeds.type, feeds.state as feeds_state, 
+                    feeds.creation_date, feeds.last_parse_date, feeds.text_parse_type,
+                    favorite_news.id as favorite_news_id 
             FROM news
             INNER JOIN news_tree_feeds as ntf
                 ON news.news_tree_feeds_id = ntf.id 
             INNER JOIN news_tree
-                ON ntf.news_tree_id = news_tree.id ";
+                ON ntf.news_tree_id = news_tree.id 
+            INNER JOIN feeds
+                ON ntf.feed_id = feeds.id ";
         if ($isNewsTreeActive) $sql .= " AND news_tree.state=1 ";
         $sql .= "
             LEFT JOIN news_banners 
                 ON ntf.news_banner_id = news_banners.id ";
         if ($isNewsBannersActive) $sql .= " AND news_banners.state=1 ";
         $sql .= "
+            LEFT JOIN favorite_news 
+                ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
+        $sql .= "
             WHERE news.id = ?
         ";
+//echo $sql;exit;
         $result = $DE -> selectRow($sql, $news_id);
         return $result;
     }

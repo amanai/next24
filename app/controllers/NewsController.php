@@ -65,6 +65,7 @@ class NewsController extends SiteController{
 	        $this-> _view -> assign('newsViewType', $_SESSION['newsViewType']);
 	        $this-> _view -> assign('nShowRows', 4); // Show all news records
 	    }
+	    $this-> _view -> assign('shownow', $request->shownow);
 	    
 	    $this-> _view -> assign('newsViewFilter', $_SESSION['newsViewFilter']);
 	    $this-> _view -> assign('viewCheckedClass', $viewCheckedClass);
@@ -85,7 +86,7 @@ class NewsController extends SiteController{
 		        $isNewsTreeActive = true;
 		        $isNewsBannersActive = true;
 		    }		    
-		    $news = $newsModel -> getNewsById($request->news_id, $isNewsTreeActive, $isNewsBannersActive);
+		    $news = $newsModel -> getNewsById($request->news_id, $user->id, $isNewsTreeActive, $isNewsBannersActive);
 		    if (!$news) Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'News'));
 		    $this-> _view -> assign('news', $news); 
 		    $tabsNews = array("title"=>$newsModel -> getNWordsFromText($news['news_title'], 6)."...", "id"=>$request->news_id);

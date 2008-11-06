@@ -5,85 +5,74 @@
 	
 	<div class="tab-page tab-page-selected">
 	
-	<form name="frmFeeds" action="" method="POST">
+	<form name="frmFeeds" action="" method="POST" onsubmit="return validateAddRss(this);">
 	<input type="hidden" name="frmAction" value="<?php echo $this -> frmAction; ?>">
-	<table width="100%" height="100%" cellpadding="0">
-	<tr>
-		<td class="next24u_left">
-			<!-- левый блок -->
+	
+	<!-- Загрузка изображений -->
+	<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 
-				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-					<div class="block_title"><h2>Выберите раздел</h2></div>
-					
-					<ul class="checkbox_tree">
-                        <?php 
-                        $aLeafs = $this->getAllLeafs($this->news_list);
-                        $this->BuildTree_radio($aLeafs, $this->news_list, 0, $this->news_tree_id); echo $this->_htmlTree; 
-                        ?>
-                    </ul>
+		<h1><?php echo $this -> submitValue; ?> RSS-ленту</h1>
+		<br /><br />
+		<table width="10%" cellpadding="5">
+		<tr>
+			<td nowrap>Название RSS-ленты <span class="red">*</span>:</td>
+			<td><input type="text" name="feed_name" value="<?php echo $this -> feed_name; ?>" /><br />
+			     <span id="micro2">Будет отображаться в дереве лент.</span>
+			</td>
+		</tr>
+		<tr>
+			<td nowrap>URL RSS-ленты  <span class="red">*</span>:</td>
+			<td><input type="text" name="feed_url" value="<?php echo $this -> feed_url; ?>" /><br />
+			     <span id="micro2">Полный URL вашей RSS-ленты.</span>
+			</td>
+		</tr>
+		<tr>
+			<td nowrap>Код баннера:</td>
+			<td><textarea name="code" cols="45" rows="7"><?php echo $this -> code; ?></textarea><br />
+			     <span id="micro2">Можно будет заполнить позже или заменить.</span>
+			</td>
+		</tr>
+		<tr>
+			<td nowrap>Категория в ленте:</td>
+			<td><input type="text" name="category_tag" value="<?php echo $this -> category_tag; ?>" /><br />
+			     <span id="micro2">Если лента экспортирует новости одной категории, либо вы не хотите сопоставлять категории – оставьте это поле пустым.
+                        Если лента экспортирует новости разных категорий, то вам нужно провести сопоставление всех категорий в ленте с категориями на сайте. Для этого напишите в этом поле символическое название категории, так, как оно пишется в ленте, например «Авто». Одну ленту можно добавлять несколько раз с разными значениями этого поля – тогда все категории будут сопоставлены.
+                </span>
+			</td>
+		</tr>
+		<tr>
+			<td nowrap>Выберите категорию <span class="red">*</span>:</td>
+			<td>
+			    <ul class="checkbox_tree">
+                    <?php 
+                    $aLeafs = $this->getAllLeafs($this->news_list);
+                    $this->BuildTree_radio($aLeafs, $this->news_list, 0, $this->news_tree_id); echo $this->_htmlTree; 
+                    ?>
+                </ul>
+			</td>
+		</tr>
+		<?php if ($this->isChange && $this -> isAdmin){ ?>
+		<tr>
+			<td nowrap>Способ преобразования текста:</td>
+			<td>
+			    <select name="text_parse_type">
+        		    <option value=0 <?php if ($this->text_parse_type == 0) echo 'selected'; ?>> striptags
+        		    <option value=1 <?php if ($this->text_parse_type == 1) echo 'selected'; ?>> htmlspecialchars
+        		    <option value=2 <?php if ($this->text_parse_type == 2) echo 'selected'; ?>> ничего не менять, для доверенных сайтов
+        		</select>
+			</td>
+		</tr>
+		<?php } ?>	
+		<tr>
+			<td colspan="2" align="right">&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="right"><input type="submit" value="<?php echo $this -> submitValue; ?>"> <input type="reset" value="Сброс"> <?php if ($this->isChange){ ?><input type="submit" name="deleteRss" value="Delete"><?php } ?></td>
+		</tr>
+		</table>
 
-				</div></div></div></div>
-				
-
-			<!-- /левый блок -->
-
-		</td>
-		<td class="next24u_right">
-
-			<!-- Категория -->
-			<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-			
-			    <div class="block_title">
-					<div class="block_title_left"><h2>Введите название RSS ленты</h2></div>
-				</div>
-				<div id="rss_cat_n1">
-				<input type="text" name="feed_name" value="<?php echo $this -> feed_name; ?>" />
-				</div>
-				
-				<div class="block_title">
-					<div class="block_title_left"><h2>Введите URL RSS ленты</h2></div>
-				</div>
-				<div id="rss_cat_n1">
-				<input type="text" name="feed_url" value="<?php echo $this -> feed_url; ?>" />
-				</div>
-				
-				<div class="block_title">
-					<div class="block_title_left"><h2>Если в ленте нужно использовать только конкретную категорию, можно ввести ее имя</h2></div>
-				</div>
-				<div id="rss_cat_n1">
-				<input type="text" name="category_tag" value="<?php echo $this -> category_tag; ?>" />
-				</div>				
-				
-				<div class="block_title">
-					<div class="block_title_left"><h2>Код баннера</h2></div>
-				</div>
-				<div id="rss_cat_n1">
-				<textarea name="code" cols="45" rows="7"><?php echo $this -> code; ?></textarea>
-				</div>	
-				
-				<?php if ($this->isChange && $this -> isAdmin){ ?>
-				<div class="block_title">
-					<div class="block_title_left"><h2>Способ преобразования текста</h2></div>
-				</div>
-				<div id="rss_cat_n1">
-				<select name="text_parse_type">
-				    <option value=0 <?php if ($this->text_parse_type == 0) echo 'selected'; ?>> striptags
-				    <option value=1 <?php if ($this->text_parse_type == 1) echo 'selected'; ?>> htmlspecialchars
-				    <option value=2 <?php if ($this->text_parse_type == 2) echo 'selected'; ?>> ничего не менять, для доверенных сайтов
-				</select>
-				</div>
-				<?php } ?>	
-				
-				<div class="block_title">
-					<div class="block_title_left"><input type="submit" value="<?php echo $this -> submitValue; ?>"> <input type="reset" value="Сброс"> <?php if ($this->isChange){ ?><input type="submit" name="deleteRss" value="Delete"><?php } ?></div>
-				</div>
-
-			</div></div></div></div>
-			<!-- /Категория -->
-
-		</td>
-	</tr>
-	</table>
+	</div></div></div></div>
+	<!-- /Загрузка изображений -->
 	</form>
 		
 	</div>
