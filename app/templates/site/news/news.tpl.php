@@ -87,15 +87,33 @@
 			<!-- /Одна новость -->
 	       <?php    
 	       }else{ // много категорий
+	           switch ($this->newsViewFilter){ // Filter options
+	               case 'news_all':
+	                   $aNewsTree = $this -> getAllNewsTree();
+	                   $isOnlyFavoriteNews = false;
+	                   $isOnlySubscribeNewsTree = false;
+	                   break;
+	               case 'news_subscribe':
+	                   $aNewsTree = $this -> getNewsTreeByListNewsSubscribe($this->aNewsSubscribe);
+	                   $isOnlyFavoriteNews = false;
+	                   $isOnlySubscribeNewsTree = true;
+	                   break;
+	               case 'news_stared':
+	                   $aNewsTree = $this -> getNewsTreeByUserFavorite($this->user_id);
+	                   $isOnlyFavoriteNews = true;
+	                   $isOnlySubscribeNewsTree = false;
+	                   break;
+	           }
+	           
 	           if ($this->filterNewsTreeFeeds){ // filter by news_tree_feeds_ID
-	               $newsCount = $this -> getNewsCountByNewsTreeFeedsId($this->filterNewsTreeFeeds);
+	               $newsCount = $this -> getNewsCountByNewsTreeFeedsId($this->filterNewsTreeFeeds, $this->user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
 	       ?>
 	           <!-- Категория -->
     			<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
     				<div class="block_title">
     					<div class="block_title_left">
     					   <h2>
-    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, false); ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false); ?>">все новости [<?php echo $newsCount; ?>]</a>)
+    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, false); ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTreeFeeds:".$this->filterNewsTreeFeeds; ?>">все новости [<?php echo $newsCount; ?>]</a>)
     					   </h2>
     					</div>
     					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n<?php echo $this->filterNewsTreeFeeds;?>')" style="cursor: pointer;" /></div>
@@ -103,7 +121,7 @@
     				
     				<div id="rss_cat_n<?php echo $this->filterNewsTreeFeeds;?>">
     				   <?php 
-    		           echo $this->ShowNewsListPreviewByNewsTreeFeedsId($this->filterNewsTreeFeeds, $this->newsViewType);
+    		           echo $this->ShowNewsListPreviewByNewsTreeFeedsId($this->filterNewsTreeFeeds, $this->newsViewType, $this->user_id, $this->nShowRows, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
     			       ?>
     					<div class="rmb14"></div>
     
@@ -113,13 +131,13 @@
     			<!-- /Категория -->
 	       <?php
 	           }else{ // NO filter by news_tree_feeds_ID
-    	           $aNewsTree = $this -> getNewsTreeByListNewsSubscribe($this->aNewsSubscribe);
+    	           
     	           foreach ($aNewsTree as $newsTree){
     	               if ($this->filterNewsTree){
     	                   $aNewsTreeChildren = $this -> getNewsTreeChildren($this->filterNewsTree);
     	                   if ($newsTree['id'] != $this->filterNewsTree && !$this -> isChild($aNewsTreeChildren, $newsTree['id'])) continue;
     	               }
-    	               $newsCount = $this -> getNewsCountByNewsTreeId($newsTree['id'], $this->user_id);
+    	               $newsCount = $this -> getNewsCountByNewsTreeId($newsTree['id'], $this->user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
     	               if ($newsCount < 1) continue;
     	               
     	   ?>
@@ -128,7 +146,7 @@
     				<div class="block_title">
     					<div class="block_title_left">
     					   <h2>
-    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false); ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false); ?>">все новости [<?php echo $newsCount; ?>]</a>)
+    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false); ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>">все новости [<?php echo $newsCount; ?>]</a>)
     					   </h2>
     					</div>
     					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n<?php echo $newsTree['id'];?>')" style="cursor: pointer;" /></div>
@@ -136,7 +154,7 @@
     				
     				<div id="rss_cat_n<?php echo $newsTree['id'];?>">
     				   <?php 
-    		           echo $this->ShowNewsListPreviewByNewsTreeId($newsTree['id'], $this->newsViewType, $this->user_id);
+    		           echo $this->ShowNewsListPreviewByNewsTreeId($newsTree['id'], $this->newsViewType, $this->user_id, $this->nShowRows, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
     			       ?>
     					<div class="rmb14"></div>
     
@@ -145,6 +163,30 @@
     			</div></div></div></div>
     			<!-- /Категория -->
     	   <?php
+    	           }
+    	           if (count($aNewsTree)<1){
+    	   ?>
+    	        <!-- Нет новостей -->
+    			<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+    				<div class="block_title">
+    					<div class="block_title_left">
+    					   <h2>
+    					    Нет новостей для отображения
+    					   </h2>
+    					</div>
+    					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n2')" style="cursor: pointer;" /></div>
+    				</div>
+    				
+    				<div id="rss_cat_n2">
+    				    Вы не подписаны ни на одну ленту новостей, либо в лентах на которые вы подписаны нет новостей.<br />
+                        Вы можете выбрать ленты для подписки в меню «Категории» слева. После выбора лент нажмите «Подписаться на новости».       
+    					<div class="rmb14"></div>
+    
+    				</div>
+    
+    			</div></div></div></div>
+    			<!-- / Нет новостей -->       
+    	   <?php            
     	           }
 	           }    
 	       }

@@ -5,15 +5,6 @@ class NewsView extends BaseSiteView{
 	protected $newsUrl = '/news';
 
 	
-	
-	
-	function NewsPage(){
-	    $this->_js_files[] = 'jquery.js';
-	    $this->_js_files[] = 'news_tree.js';
-	    $this->_css_files[] = 'news_tree.css';
-	   $this -> setTemplate(null, 'news.tpl.php');
-	}
-	
 	function getFeedsByNewsTreeId($news_tree_id){
 	    $newsModel = new NewsModel();
 	    return $newsModel->getFeedsByNewsTreeId($news_tree_id);
@@ -142,76 +133,40 @@ class NewsView extends BaseSiteView{
         return  $sNewsTreeBreadCrumb;
     }
     
-    public function ShowNewsListPreviewByNewsTreeFeedsId($news_tree_feeds_id, $newsViewType){
-        $request = Project::getRequest();
+    public function ShowNewsListPreviewByNewsTreeFeedsId($news_tree_feeds_id, $newsViewType, $user_id = 0, $nShowRows=4, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false){
         $newsModel = new NewsModel();
-        $newsUrl = Project::getRequest()->createUrl('News', 'News');
-        $imgUrl = $this -> image_url;
         
-        $htmlNewsListPreview = '<table>';
-        $aNews = $newsModel -> getNewsByNewsTreeFeedsId($news_tree_feeds_id, true, true, true);
-        $countNews = count($aNews);
-        if ($newsViewType == 'report'){ // report news list
-            if ($countNews > 0){
-                $news = array_shift($aNews);
-                $htmlNewsListPreview .= '
-                    <tr>';
-                $htmlNewsListPreview .= '
-                        <td class="arh_x1">
-    						<h3><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">'.$news['news_title'].'</a><span style="font-weight: normal;"> <img src="'.$imgUrl.'star.gif">&nbsp; ('.$news['pub_date'].')</span></h3><br />
-    						'.$news['news_short_text'].'
-    					</td>';
-                $countNews --;
-            }
-            $nRows = ($countNews>3)?3:$countNews;
-            $htmlNewsListPreview .= '
-                        <td class="arh_x2">
-    						<ul class="list_style1">';
-            for($i=0; $i<$nRows; $i++){
-                $htmlNewsListPreview .= '                    
-    							<li><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a> <img src="'.$imgUrl.'star.gif"> ('.$aNews[$i]['pub_date'].')</li>
-                ';
-            }
-            $htmlNewsListPreview .= '
-                            </ul>
-    					</td>
-    			    </tr>';
-        } else{ // full news list
-            $nRows = ($countNews>4)?4:$countNews;
-            for($i=0; $i<$nRows; $i++){
-                $htmlNewsListPreview .= '
-                    <tr>
-                        <td class="arh_x1">
-    						<h3><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a><span style="font-weight: normal;"> <img src="'.$imgUrl.'star.gif">&nbsp; ('.$aNews[$i]['pub_date'].')</span></h3><br />
-    						'.$aNews[$i]['news_short_text'].'
-    					</td>
-    				</tr>';
-            }
-        }
-        $htmlNewsListPreview .= '
-            </table>';
-        
-        return $htmlNewsListPreview;
+        $aNews = $newsModel -> getNewsByNewsTreeFeedsId($news_tree_feeds_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, true, true, true);
+        return $this -> ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows);
     }
     
-    public function ShowNewsListPreviewByNewsTreeId($news_tree_id, $newsViewType, $user_id = 0){
-        $request = Project::getRequest();
+    public function ShowNewsListPreviewByNewsTreeId($news_tree_id, $newsViewType, $user_id = 0, $nShowRows=4, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false){
         $newsModel = new NewsModel();
+        
+        $aNews = $newsModel -> getNewsByNewsTreeId($news_tree_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, true, true, true);
+        return $this -> ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows);
+    }
+    
+    
+    public function ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows=4){
         $newsUrl = Project::getRequest()->createUrl('News', 'News');
         $imgUrl = $this -> image_url;
-        
-        $htmlNewsListPreview = '<table>';
-        $aNews = $newsModel -> getNewsByNewsTreeId($news_tree_feeds_id, $user_id, true, true, true);
         $countNews = count($aNews);
+
+        $htmlNewsListPreview = '<table>';
         if ($newsViewType == 'report'){ // report news list
             if ($countNews > 0){
                 $news = array_shift($aNews);
-                if ($news['favorite_news_id']) $starGif = "star.gif"; else $starGif = "star_no.gif"; 
+                if ($news['favorite_news_id']) $starGif = "star_on.gif"; else $starGif = "star_off.gif"; 
                 $htmlNewsListPreview .= '
                     <tr>';
                 $htmlNewsListPreview .= '
                         <td class="arh_x1">
-    						<h3><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">'.$news['news_title'].'</a><span style="font-weight: normal;"> <img src="'.$imgUrl.$starGif.'">&nbsp; ('.$news['pub_date'].')</span></h3><br />
+    						<h3><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">'.$news['news_title'].'</a><span style="font-weight: normal;"> 
+    						    <a onclick=\'
+        				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$news['news_id'], "imgUrl"=>$imgUrl), "POST").', true);
+        				        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$news['news_id'].'"></a>
+        				        &nbsp; ('.$news['pub_date'].')</span></h3><br />
     						'.$news['news_short_text'].'
     					</td>';
                 $countNews --;
@@ -221,8 +176,13 @@ class NewsView extends BaseSiteView{
                         <td class="arh_x2">
     						<ul class="list_style1">';
             for($i=0; $i<$nRows; $i++){
+                if ($aNews[$i]['favorite_news_id']) $starGif = "star_on.gif"; else $starGif = "star_off.gif"; 
                 $htmlNewsListPreview .= '                    
-    							<li><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a> <img src="'.$imgUrl.'star.gif"> ('.$aNews[$i]['pub_date'].')</li>
+    							<li><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a> 
+    							<a onclick=\'
+        				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$aNews[$i]['news_id'], "imgUrl"=>$imgUrl), "POST").', true);
+        				        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$aNews[$i]['news_id'].'"></a> 
+    							('.$aNews[$i]['pub_date'].')</li>
                 ';
             }
             $htmlNewsListPreview .= '
@@ -230,12 +190,18 @@ class NewsView extends BaseSiteView{
     					</td>
     			    </tr>';
         }else{ // full news list
-            $nRows = ($countNews>4)?4:$countNews;
+            if ($nShowRows) $nRows = ($countNews>$nShowRows)?$nShowRows:$countNews;
+            else $nRows = $countNews;
             for($i=0; $i<$nRows; $i++){
+                if ($aNews[$i]['favorite_news_id']) $starGif = "star_on.gif"; else $starGif = "star_off.gif"; 
                 $htmlNewsListPreview .= '
                     <tr>
                         <td class="arh_x1">
-    						<h3><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a><span style="font-weight: normal;"> <img src="'.$imgUrl.'star.gif"> &nbsp; ('.$aNews[$i]['pub_date'].')</span></h3><br />
+    						<h3><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a><span style="font-weight: normal;"> 
+    						<a onclick=\'
+    				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$aNews[$i]['news_id'], "imgUrl"=>$imgUrl), "POST").', true);
+    				        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$aNews[$i]['news_id'].'"></a>
+    						 &nbsp; ('.$aNews[$i]['pub_date'].')</span></h3><br />
     						'.$aNews[$i]['news_short_text'].'
     					</td>
     				</tr>';
@@ -247,20 +213,34 @@ class NewsView extends BaseSiteView{
         return $htmlNewsListPreview;
     }
     
+    
+    public function getAllNewsTree(){
+        $newsModel = new NewsModel();
+        return $newsModel -> getAllNewsTree();
+    }
+    
+    
     public function getNewsTreeByListNewsSubscribe($aNewsSubscribe){
         $newsModel = new NewsModel();
         return $newsModel -> getNewsTreeByListNewsSubscribe($aNewsSubscribe);
     }
     
-    public function getNewsCountByNewsTreeFeedsId($news_tree_feeds_id, $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
+    public function getNewsTreeByUserFavorite($user_id){
         $newsModel = new NewsModel();
-        $newsCount = $newsModel -> getNewsCountByNewsTreeFeedsId($news_tree_feeds_id, $isFeedActive, $isNewsTreeActive, $isNewsBannersActive);
+        return $newsModel -> getNewsTreeByUserFavorite($user_id);
+    }
+    
+    
+    
+    public function getNewsCountByNewsTreeFeedsId($news_tree_feeds_id, $user_id = 0, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false, $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
+        $newsModel = new NewsModel();
+        $newsCount = $newsModel -> getNewsCountByNewsTreeFeedsId($news_tree_feeds_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, $isFeedActive, $isNewsTreeActive, $isNewsBannersActive);
         return  $newsCount;
     }
     
-    public function getNewsCountByNewsTreeId($news_tree_id, $user_id = 0, $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
+    public function getNewsCountByNewsTreeId($news_tree_id, $user_id = 0, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false, $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
         $newsModel = new NewsModel();
-        $newsCount = $newsModel -> getNewsCountByNewsTreeId($news_tree_id, $user_id, $isFeedActive, $isNewsTreeActive, $isNewsBannersActive);
+        $newsCount = $newsModel -> getNewsCountByNewsTreeId($news_tree_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, $isFeedActive, $isNewsTreeActive, $isNewsBannersActive);
         return  $newsCount;
     }
     
@@ -284,7 +264,27 @@ class NewsView extends BaseSiteView{
         return false;
     }
     
+    function isInArrayNewsSubscribe($aNewsSubscribe, $news_tree_feeds_id){
+	    foreach ($aNewsSubscribe as $newsSubscribe){
+	        if ($news_tree_feeds_id == $newsSubscribe['news_tree_feeds_id']) return true;
+	    }
+	    return false;
+	}
     
+    
+    /**
+     * Pages VIEW
+     *
+     */
+    
+    function NewsPage(){
+	    $this->_js_files[] = 'jquery.js';
+	    $this->_js_files[]='blockUI.js';
+	   $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'news_tree.js';
+	    $this->_css_files[] = 'news_tree.css';
+	   $this -> setTemplate(null, 'news.tpl.php');
+	}
     
     function AddFeedPage(){
 	    $this->_js_files[] = 'jquery.js';
@@ -300,18 +300,33 @@ class NewsView extends BaseSiteView{
 	   $this -> setTemplate(null, 'my_feed.tpl.php');
 	}
 	
+	/**
+     * END Pages VIEW
+     *
+     */
+	
+	/**
+     * AJAX Functions
+     *
+     */
+	
 	function ActivateBanner($message){
 		$response = Project::getAjaxResponse();
 		$response -> block($message[1].$message[0], true, $message[2]);
 		//print_r($response -> getResponse());
 	}
 	
-	function isInArrayNewsSubscribe($aNewsSubscribe, $news_tree_feeds_id){
-	    foreach ($aNewsSubscribe as $newsSubscribe){
-	        if ($news_tree_feeds_id == $newsSubscribe['news_tree_feeds_id']) return true;
-	    }
-	    return false;
+    function ChangeNewsFavorite($message){
+		$response = Project::getAjaxResponse();
+		if ($message['val']) $starGif = "star_on.gif"; else $starGif = "star_off.gif"; 
+		$response -> attribute('imgstar'.$message['newsId'], 'src', $message['imgUrl'].$starGif);
+		//print_r($response -> getResponse());
 	}
+	
+	/**
+     * END AJAX Functions
+     *
+     */
 		
 }
 ?>

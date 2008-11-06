@@ -131,10 +131,10 @@ class NewsModel extends BaseModel{
      * News
      */
     
-    function getNewsByNewsTreeId($news_tree_id, $user_id=0, $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
+    function getNewsByNewsTreeId($news_tree_id, $user_id=0, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false, $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
         $DE = Project::getDatabase();
         $result = array(); $addWhere = " AND (";
-        
+        /*
         $this -> getNewsTreeChildren($news_tree_id);
         $this -> _aNewsTreeChildren[] = $this -> getNewsTree($news_tree_id);
         //echo "<pre>";print_r($this -> _aNewsTreeChildren); echo "</pre><hr>";
@@ -142,7 +142,8 @@ class NewsModel extends BaseModel{
             if ($news_tree) $addWhere .= " news_tree.id = ".$news_tree['id']." OR ";
         }
         if ($addWhere == ' AND (') $addWhere=""; else $addWhere = substr($addWhere, 0, -3)." ) ";
-                
+        */
+
         $sql = "
             SELECT  ntf.*, ntf.id as news_tree_feeds_id,
                     feeds.user_id as feeds_user_id, feeds.name as feeds_name, feeds.url, feeds.type, feeds.state as feeds_state, 
@@ -159,7 +160,7 @@ class NewsModel extends BaseModel{
         if ($isFeedActive) $sql .= " AND feeds.state=1 ";
         $sql .= "
             INNER JOIN news_tree 
-                ON ntf.news_tree_id = news_tree.id  ".$addWhere;
+                ON ntf.news_tree_id = news_tree.id ";//.$addWhere;
         if ($isNewsTreeActive) $sql .= " AND news_tree.state=1 ";
         $sql .= "
             INNER JOIN news 
@@ -168,22 +169,30 @@ class NewsModel extends BaseModel{
             LEFT JOIN news_banners 
                 ON ntf.news_banner_id = news_banners.id ";
         if ($isNewsBannersActive) $sql .= " AND news_banners.state=1 ";
-        $sql .= "
-            LEFT JOIN favorite_news 
-                ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
-        if ($user_id){
+        
+        if ($isOnlySubscribeNewsTree){
             $sql .= "
             INNER JOIN news_subscribe 
                 ON ntf.id = news_subscribe.news_tree_feeds_id AND news_subscribe.user_id = ".$user_id;
         }
+        if ($isOnlyFavoriteNews){
+            $sql .= "
+            INNER JOIN favorite_news 
+                ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
+        }else{
+            $sql .= "
+            LEFT JOIN favorite_news 
+                ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
+        }
+        $sql .= " WHERE news_tree.id = ".$news_tree_id;
         $sql .= "
             ORDER BY pub_date DESC ";
-//echo "<hr>".$sql;
+//echo "<hr>".$sql."<hr>";
         $result = $DE -> select($sql);
         return $result;
     }
     
-    function getNewsByNewsTreeFeedsId($news_tree_feeds_id, $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
+    function getNewsByNewsTreeFeedsId($news_tree_feeds_id, $user_id=0, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false, $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
         $DE = Project::getDatabase();
         $result = array();
         $sql = "
@@ -194,7 +203,8 @@ class NewsModel extends BaseModel{
                     news_banners.user_id as news_banners_user_id, news_banners.code, news_banners.state as news_banners_state ,
                     news.id as news_id, news.title as news_title, news.link as news_link, news.short_text as news_short_text, 
                     news.full_text as news_full_text,  news.pub_date,  news.enclosure,  news.enclosure_type,  
-                    news.comments,  news.views, news.favorite_users  
+                    news.comments,  news.views, news.favorite_users,
+                    favorite_news.id as favorite_news_id  
             FROM news_tree_feeds as ntf
             INNER JOIN feeds 
                 ON ntf.feed_id = feeds.id ";
@@ -210,7 +220,21 @@ class NewsModel extends BaseModel{
             LEFT JOIN news_banners 
                 ON ntf.news_banner_id = news_banners.id ";
         if ($isNewsBannersActive) $sql .= " AND news_banners.state=1 ";
-        $sql .= "WHERE ntf.id = ".$news_tree_feeds_id;
+        if ($isOnlySubscribeNewsTree){
+            $sql .= "
+            INNER JOIN news_subscribe 
+                ON ntf.id = news_subscribe.news_tree_feeds_id AND news_subscribe.user_id = ".$user_id;
+        }
+        if ($isOnlyFavoriteNews){
+            $sql .= "
+            INNER JOIN favorite_news 
+                ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
+        }else{
+            $sql .= "
+            LEFT JOIN favorite_news 
+                ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
+        }
+        $sql .= " WHERE ntf.id = ".$news_tree_feeds_id;
         $sql .= "
             ORDER BY pub_date DESC ";
 //echo "<hr>".$sql;
@@ -218,7 +242,7 @@ class NewsModel extends BaseModel{
         return $result;
     }
     
-    function getNewsCountByNewsTreeFeedsId($news_tree_feeds_id, $isFeedActive = true, $isNewsTreeActive = true){
+    function getNewsCountByNewsTreeFeedsId($news_tree_feeds_id, $user_id = 0, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false, $isFeedActive = true, $isNewsTreeActive = true){
         $DE = Project::getDatabase();
         $result = array();
         $sql = "
@@ -234,13 +258,23 @@ class NewsModel extends BaseModel{
         $sql .= "
             INNER JOIN news 
                 ON ntf.id = news.news_tree_feeds_id ";
-        $sql .= "WHERE ntf.id = ".$news_tree_feeds_id;
+        if ($isOnlySubscribeNewsTree){
+            $sql .= "
+            INNER JOIN news_subscribe 
+                ON ntf.id = news_subscribe.news_tree_feeds_id AND news_subscribe.user_id = ".$user_id;
+        }
+        if ($isOnlyFavoriteNews){
+            $sql .= "
+            INNER JOIN favorite_news 
+                ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
+        }
+        $sql .= " WHERE ntf.id = ".$news_tree_feeds_id;
 
         $result = $DE -> selectRow($sql);
         return $result['c'];
     }
     
-    function getNewsCountByNewsTreeId($news_tree_id, $user_id = 0, $isFeedActive = true, $isNewsTreeActive = true){
+    function getNewsCountByNewsTreeId($news_tree_id, $user_id = 0, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false, $isFeedActive = true, $isNewsTreeActive = true){
         $DE = Project::getDatabase();
         $result = array();
         $sql = "
@@ -256,13 +290,18 @@ class NewsModel extends BaseModel{
         $sql .= "
             INNER JOIN news 
                 ON ntf.id = news.news_tree_feeds_id ";
-        if ($user_id){
+        if ($isOnlySubscribeNewsTree){
             $sql .= "
             INNER JOIN news_subscribe 
                 ON ntf.id = news_subscribe.news_tree_feeds_id AND news_subscribe.user_id = ".$user_id;
         }
+        if ($isOnlyFavoriteNews){
+            $sql .= "
+            INNER JOIN favorite_news 
+                ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
+        }
         $sql .= " WHERE news_tree.id = ".$news_tree_id;
-        
+//echo "<hr>".$sql;        
         $result = $DE -> selectRow($sql);
         return $result['c'];
     }
@@ -358,7 +397,42 @@ class NewsModel extends BaseModel{
             ".$addWhere."
             GROUP BY news_tree.id
         ";
-        $result = $DE -> select($sql, $parent_id);
+        $result = $DE -> select($sql);
+        return $result;
+    }
+    
+    
+    function getNewsTreeByUserFavorite($user_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        
+        $sql = "
+            SELECT news_tree.id
+            FROM news_tree
+            INNER JOIN news_tree_feeds as ntf
+                ON ntf.news_tree_id = news_tree.id
+            INNER JOIN news
+                ON ntf.id = news.news_tree_feeds_id
+            INNER JOIN favorite_news
+                ON news.id = favorite_news.news_id
+            GROUP BY news_tree.id
+        ";
+        $result = $DE -> select($sql);
+        return $result;
+    }
+    
+    function getAllNewsTree(){
+        $DE = Project::getDatabase();
+        
+        $result = array();
+        $sql = "
+            SELECT news_tree.id
+            FROM news_tree
+            INNER JOIN news_tree_feeds as ntf
+                ON ntf.news_tree_id = news_tree.id
+            GROUP BY news_tree.id
+        ";
+        $result = $DE -> select($sql);
         return $result;
     }
     
@@ -505,6 +579,21 @@ class NewsModel extends BaseModel{
         return mysql_insert_id();
     }
     
+    function setNews_FavoriteUsers($news_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT count(*) as c
+            FROM favorite_news
+            WHERE news_id = ?
+        ";
+        $nFavoriteUsers = $DE -> selectRow($sql, $news_id);
+        $nFavoriteUsers = $nFavoriteUsers['c'];
+        $sql = "
+            UPDATE news SET favorite_users=? WHERE id=?
+        ";
+        $DE -> query($sql, $nFavoriteUsers, $news_id);
+    }
+    
     function setParseDate($feed_id, $last_parse_date){
         $DE = Project::getDatabase();
         $sql = "
@@ -517,7 +606,7 @@ class NewsModel extends BaseModel{
     function deleteOldNews($lastDate){
         $DE = Project::getDatabase();
         $sql = "
-            DELETE FROM `news` WHERE pub_date < ? 
+            DELETE FROM news WHERE pub_date < ? AND favorite_users<1
         ";
         $DE -> query($sql, $lastDate);
     }
@@ -591,13 +680,14 @@ class NewsModel extends BaseModel{
 	
 	function setNewsFavorite($news_id, $user_id){
 	    $DE = Project::getDatabase();
-	    $favorineNews = $this -> getNewsFavorite($news_id, $user_id);
-	    if ($favorineNews){
-	        $sql = "DELETE FROM `favorite_news` WHERE id=".$favorineNews['id'];
+	    $favoriteNews = $this -> getNewsFavorite($news_id, $user_id);
+	    if ($favoriteNews){
+	        $sql = "DELETE FROM `favorite_news` WHERE user_id = ".$user_id." AND news_id = ".$news_id;
 	    }else{
 	        $sql = "INSERT INTO `favorite_news` (  `user_id` , `news_id` ) VALUES (".$user_id.", ".$news_id.") ";
 	    }
         $DE -> query($sql);
+        $this -> setNews_FavoriteUsers($news_id);
 	}
 	
 	function getNewsFavorite($news_id, $user_id){
@@ -608,6 +698,7 @@ class NewsModel extends BaseModel{
             FROM favorite_news
             WHERE user_id = ? AND news_id = ?  
         ";
+        //echo $sql.$user_id." ".$news_id."\n";
         $result = $DE -> selectRow($sql, $user_id, $news_id);
         return $result;
 	}

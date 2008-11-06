@@ -1,5 +1,5 @@
 <?php
-define('SEC_TO_DELETE_NEWS_FROM_FEEDS', 172800);
+define('SEC_TO_DELETE_NEWS_FROM_FEEDS', 259200); // 259200 = 3 days
 
 class NewsController extends SiteController{
 	
@@ -58,7 +58,14 @@ class NewsController extends SiteController{
 	           $newsViewFilter = array('', '', 'viewCheckedClass');;
 	           break;
 	    }
-	    $this-> _view -> assign('newsViewType', $_SESSION['newsViewType']);
+	    if ($request -> shownow == 'allnews'){ // if click on "(все новости [15])"
+	        $this-> _view -> assign('newsViewType', 'full');
+	        $this-> _view -> assign('nShowRows', 0); // Show all news records
+	    }else {
+	        $this-> _view -> assign('newsViewType', $_SESSION['newsViewType']);
+	        $this-> _view -> assign('nShowRows', 4); // Show all news records
+	    }
+	    
 	    $this-> _view -> assign('newsViewFilter', $_SESSION['newsViewFilter']);
 	    $this-> _view -> assign('viewCheckedClass', $viewCheckedClass);
 	    $this-> _view -> assign('viewFilterCheckedClass', $newsViewFilter);
@@ -222,9 +229,9 @@ class NewsController extends SiteController{
 	    $table = $request->element;;
 	    $message[] = $request->id;
 	    $message[] = $table;
-	    $oldBanner = $newsModel -> getOneRecord($table, $request->id);
-        if ($oldBanner){
-            if ($oldBanner['state']){
+	    $oldSet = $newsModel -> getOneRecord($table, $request->id);
+        if ($oldSet){
+            if ($oldSet['state']){
                 $newsModel -> changeOneValue($table, $request->id, 'state', 0);
                 $message[] = "not moderated";
             }else{
@@ -233,6 +240,25 @@ class NewsController extends SiteController{
             }
         }
 	    $this -> _view -> ActivateBanner($message);
+		$this -> _view -> ajax();
+	}
+	
+	public function ChangeNewsFavoriteAction(){
+	    $newsModel = new NewsModel();
+	    $request = Project::getRequest();
+	    $user = Project::getUser()->getDbUser();
+	    
+	    $message = array();
+	    $message['imgUrl'] = $request->imgUrl;
+	    $message['newsId'] = $request->news_id;
+	    $newsModel -> setNewsFavorite($request->news_id, $user->id);
+	    $newSet = $newsModel -> getNewsFavorite($request->news_id, $user->id);
+        if ($newSet){
+            $message['val'] = 1;
+        }else{
+            $message['val'] = 0;        
+        }
+	    $this -> _view -> ChangeNewsFavorite($message);
 		$this -> _view -> ajax();
 	}
 	

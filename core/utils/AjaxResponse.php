@@ -41,6 +41,13 @@ class AjaxResponse{
 			$this -> _response['blocks'][] = $param;
 		}
 		
+		public function attribute($id, $attr_name, $attr_value){
+			$param = array('id'=>$id);
+			$param['attr_name'] = $attr_name;
+			$param['attr_value'] = $attr_value;
+			$this -> _response['attr'][] = $param;
+		}
+		
 		public function error($id, $show = true, $msg = null){
 			$param = array('id'=>$id, 'show'=>(bool)$show);
 			if ($show === true){

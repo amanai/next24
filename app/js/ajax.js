@@ -91,6 +91,13 @@ function handleResponse(msg){
 						}
 			          });
 			}
+			if (p.attr){
+				$.each(p.attr, function(i, item){
+						var attr_name = item.attr_name;
+						var attr_value = ''+item.attr_value;
+						$("#"+item.id).attr(attr_name, attr_value);
+			          });
+			}
 		    if (p.new_blocks){
 		    	$.each(p.new_blocks, function(i, item){
 		    		//if ($("div#" + item.id).length == 0){
