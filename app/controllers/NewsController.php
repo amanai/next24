@@ -14,10 +14,61 @@ class NewsController extends SiteController{
 	    $newsModel = new NewsModel();
 	    $request = Project::getRequest();
 	    $user = Project::getUser()->getDbUser();
-	    $isAdmin = ($user->user_type_id == 1)?true:false;	    
+	    $isAdmin = ($user->user_type_id == 1)?true:false;
+	    $isPartner = ($user->user_type_id == 4)?true:false;
+	    
+	    //  view type and filters
+	    switch ($request->view){ // View type
+	        case 'full': // full news list
+	           $_SESSION['newsViewType'] = 'full';
+	           break;
+	        case 'report': // report news list
+	           $_SESSION['newsViewType'] = 'report';
+	           break;
+	           
+	        case 'news_all': // no filter, all news
+	           $_SESSION['newsViewFilter'] = 'news_all';
+	           break;
+	        case 'news_subscribe': // filter, only subscribe news
+	           $_SESSION['newsViewFilter'] = 'news_subscribe';
+	           break;
+	        case 'news_stared': // filter, only news star
+	           $_SESSION['newsViewFilter'] = 'news_stared';
+	           break;
+	           
+	    }
+	    $_SESSION['newsViewType'] = ($_SESSION['newsViewType'])?$_SESSION['newsViewType']:'report';
+	    $_SESSION['newsViewFilter'] = ($_SESSION['newsViewFilter'])?$_SESSION['newsViewFilter']:'news_subscribe';
+	    switch ($_SESSION['newsViewType']){ // View type
+	        case 'full': // full news list
+	           $viewCheckedClass = array('viewCheckedClass', '');
+	           break;
+	        case 'report': // report news list
+	           $viewCheckedClass = array('', 'viewCheckedClass');
+	           break;
+	    }
+	    switch ($_SESSION['newsViewFilter']){ // View filter
+	        case 'news_all': // no filter, all news
+	           $newsViewFilter = array('viewCheckedClass', '', '');
+	           break;
+	        case 'news_subscribe': // filter, only subscribe news
+	           $newsViewFilter = array('', 'viewCheckedClass', '');;
+	           break;
+	        case 'news_stared': // filter, only news star
+	           $newsViewFilter = array('', '', 'viewCheckedClass');;
+	           break;
+	    }
+	    $this-> _view -> assign('newsViewType', $_SESSION['newsViewType']);
+	    $this-> _view -> assign('newsViewFilter', $_SESSION['newsViewFilter']);
+	    $this-> _view -> assign('viewCheckedClass', $viewCheckedClass);
+	    $this-> _view -> assign('viewFilterCheckedClass', $newsViewFilter);
+	    // END view type and filters
+	    
+	    $this-> _view -> assign('user_id', $user->id);
+	    $this-> _view -> assign('isAdmin', $isAdmin);
+	    $this-> _view -> assign('isPartner', $isPartner);
 	    
 	    $news_tree_id = $request->news_tree_id;
-		$this-> _view -> assign('tab_list', TabController::getNewsTabs(true)); // Show tabs
 		
 		if ($request->news_id){
 		    if ($isAdmin) {
@@ -30,13 +81,18 @@ class NewsController extends SiteController{
 		    $news = $newsModel -> getNewsById($request->news_id, $isNewsTreeActive, $isNewsBannersActive);
 		    if (!$news) Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'News'));
 		    $this-> _view -> assign('news', $news); 
+		    $tabsNews = array("title"=>$newsModel -> getNWordsFromText($news['news_title'], 6)."...", "id"=>$request->news_id);
+		    $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, false, false, true, $tabsNews)); // Show tabs
 		    $this-> _view -> assign('isShowOneNews', true); 
 		}else{
+		    $this-> _view -> assign('tab_list', TabController::getNewsTabs(true)); // Show tabs
 		    $this-> _view -> assign('isShowOneNews', false); 
 		}
 				
 		$aListNews = $newsModel->getAllNews();
 		$this-> _view -> assign('news_list', $aListNews); // all News tree
+		$this-> _view -> assign('filterNewsTree', $request->filterNewsTree); // filter by News tree ID
+		$this-> _view -> assign('filterNewsTreeFeeds', $request->filterNewsTreeFeeds); // filter by News tree feeds ID
 		
 		$aNewsSubscribe = $newsModel -> getNewsSubscribeByUserId($user->id);
 		$this-> _view -> assign('aNewsSubscribe', $aNewsSubscribe); // all NewsSubscribe

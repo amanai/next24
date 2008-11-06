@@ -1026,3 +1026,8 @@ font-weight:bold;
    font-weight: bold;
    font-style: italic
 }
+
+.viewCheckedClass{
+    font-weight: bold;
+    background: #FFFF99;
+}

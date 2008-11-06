@@ -14,6 +14,11 @@ $(document).ready(function(){
         }
         
     });
-    
+    /*
+    $(".bCheckTree").click(function(){
+        var isChecked = $(this).attr('checked');
+        $(this).parent().parent().find(".bCheckTree").attr({checked:isChecked});
+    });
+    */
     
 });

@@ -119,7 +119,7 @@ class TabController{
 			return $tabs;
 		}
 		
-		static public function getNewsTabs($selected1 = false, $selected2 = false, $selected3 = false) {
+		static public function getNewsTabs($selected1 = false, $selected2 = false, $selected3 = false, $one_news = false, $aNews = array()) {
 			$request = Project::getRequest();
 			$tabs = array(
 							0 => array(
@@ -129,12 +129,6 @@ class TabController{
 								 	'url' => $request -> createUrl('News', 'News', null, false)
 									),
 							1 => array(
-									'name' => 'Добавить RSS ленту',
-									'title' => 'Добавить RSS ленту',
-									'selected' => $selected2,
-								 	'url' => $request -> createUrl('News', 'AddFeed', null, false)
-									),
-							2 => array(
 									'name' => 'Мои RSS ленты',
 									'title' => 'Мои RSS ленты',
 									'selected' => $selected3,
@@ -142,6 +136,23 @@ class TabController{
 									)		
 							);
 
+			if ($selected2){
+				$tabs[]= array(
+								'name' => 'Добавить RSS ленту',
+								'title' => 'Добавить RSS ленту',
+								'selected' => true,
+							 	'url' => $request -> createUrl('News', 'AddFeed', null, false)
+								);
+			}
+			
+			if ($one_news){
+				$tabs[]= array(
+								'name' => $aNews['title'],
+								'title' => $aNews['title'],
+								'selected' => true,
+								'url' => $request -> createUrl('News', 'News', null, false)."/news_id:".$aNews['id']
+								);
+			}
 			return $tabs;
 		}
 		
