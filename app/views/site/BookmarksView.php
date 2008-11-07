@@ -1,7 +1,7 @@
 <?php
 
 class BookmarksView extends BaseSiteView {
-	protected $_dir = 'Bookmarks'; // - ññûëêà íà äèððåêòîðèþ, ãäå õðàíÿòñÿ øàáëîíû
+	protected $_dir = 'Bookmarks'; // - ÑÑÑ‹Ð»ÐºÐ° Ð½Ð° Ð´Ð¸Ñ€Ñ€ÐµÐºÑ‚Ð¾Ñ€Ð¸ÑŽ, Ð³Ð´Ðµ Ñ…Ñ€Ð°Ð½ÑÑ‚ÑÑ ÑˆÐ°Ð±Ð»Ð¾Ð½Ñ‹
 
 	public function Bookmarks_MainList($data) {
 		$this->setTemplate(null, 'bookmarks_main_list.tpl.php');

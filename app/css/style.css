@@ -689,12 +689,23 @@ table { border-collapse: collapse; }
 {
 	float: left;
 }
+
+.block_subtitle_left
+{
+    text-align: left;
+	margin-right: 10px;
+	font-size: 10px;
+    margin-top: 10px;
+}
+
 .block_ee4 .block_title .block_title_right
 {
 	text-align: right;
 	margin-right: 10px;
 	font-size: 9px;
 }
+
+
 
 .block_ee4 .block_title .block_title_right img
 {

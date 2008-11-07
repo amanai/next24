@@ -131,9 +131,15 @@ class NewsModel extends BaseModel{
      * News
      */
     
-    function getNewsByNewsTreeId($news_tree_id, $user_id=0, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false, $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
+    function getNewsByNewsTreeId($news_tree_id, $user_id=0, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false, $page_settings=array(), $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
         $DE = Project::getDatabase();
-        $result = array(); $addWhere = " AND (";
+        $result = array(); 
+        if (is_array($page_settings) && count($page_settings)>0){
+            $record_per_page = $page_settings['record_per_page'];
+            $current_page_number = $page_settings['current_page_number'];
+            $sqlLimit = " LIMIT ".(($current_page_number-1)*$record_per_page).", ".$record_per_page." ";;
+        }else $sqlLimit ="";
+        
         /*
         $this -> getNewsTreeChildren($news_tree_id);
         $this -> _aNewsTreeChildren[] = $this -> getNewsTree($news_tree_id);
@@ -147,7 +153,7 @@ class NewsModel extends BaseModel{
         $sql = "
             SELECT  ntf.*, ntf.id as news_tree_feeds_id,
                     feeds.user_id as feeds_user_id, feeds.name as feeds_name, feeds.url, feeds.type, feeds.state as feeds_state, 
-                    feeds.creation_date, feeds.last_parse_date, feeds.text_parse_type, 
+                    feeds.creation_date, feeds.last_parse_date, feeds.text_parse_type, feeds.is_partner,  
                     news_tree.parent_id, news_tree.user_id as news_tree_user_id, news_tree.name as news_tree_name, news_tree.state as news_tree_state, 
                     news_banners.user_id as news_banners_user_id, news_banners.code, news_banners.state as news_banners_state ,
                     news.id as news_id, news.title as news_title, news.link as news_link, news.short_text as news_short_text, 
@@ -184,21 +190,27 @@ class NewsModel extends BaseModel{
             LEFT JOIN favorite_news 
                 ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
         }
-        $sql .= " WHERE news_tree.id = ".$news_tree_id;
+        $sql .= " WHERE news_tree.id = ".$news_tree_id. " AND (feeds.is_partner = 1 OR feeds.user_id = ".$user_id." ) ";
         $sql .= "
-            ORDER BY pub_date DESC ";
+            ORDER BY pub_date DESC ".$sqlLimit;
 //echo "<hr>".$sql."<hr>";
         $result = $DE -> select($sql);
         return $result;
     }
     
-    function getNewsByNewsTreeFeedsId($news_tree_feeds_id, $user_id=0, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false, $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
+    function getNewsByNewsTreeFeedsId($news_tree_feeds_id, $user_id=0, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false, $page_settings=array(), $isFeedActive = true, $isNewsTreeActive = true, $isNewsBannersActive = true){
         $DE = Project::getDatabase();
         $result = array();
+        if (is_array($page_settings) && count($page_settings)>0){
+            $record_per_page = $page_settings['record_per_page'];
+            $current_page_number = $page_settings['current_page_number'];
+            $sqlLimit = " LIMIT ".(($current_page_number-1)*$record_per_page).", ".$record_per_page." ";;
+        }else $sqlLimit ="";
+        
         $sql = "
             SELECT  ntf.*, ntf.id as news_tree_feeds_id,
                     feeds.user_id as feeds_user_id, feeds.name as feeds_name, feeds.url, feeds.type, feeds.state as feeds_state, 
-                    feeds.creation_date, feeds.last_parse_date, feeds.text_parse_type, 
+                    feeds.creation_date, feeds.last_parse_date, feeds.text_parse_type, feeds.is_partner, 
                     news_tree.parent_id, news_tree.user_id as news_tree_user_id, news_tree.name as news_tree_name, news_tree.state as news_tree_state, 
                     news_banners.user_id as news_banners_user_id, news_banners.code, news_banners.state as news_banners_state ,
                     news.id as news_id, news.title as news_title, news.link as news_link, news.short_text as news_short_text, 
@@ -234,9 +246,9 @@ class NewsModel extends BaseModel{
             LEFT JOIN favorite_news 
                 ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
         }
-        $sql .= " WHERE ntf.id = ".$news_tree_feeds_id;
+        $sql .= " WHERE ntf.id = ".$news_tree_feeds_id. " AND (feeds.is_partner = 1 OR feeds.user_id = ".$user_id." ) ";
         $sql .= "
-            ORDER BY pub_date DESC ";
+            ORDER BY pub_date DESC ".$sqlLimit;
 //echo "<hr>".$sql;
         $result = $DE -> select($sql);
         return $result;
@@ -268,7 +280,7 @@ class NewsModel extends BaseModel{
             INNER JOIN favorite_news 
                 ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
         }
-        $sql .= " WHERE ntf.id = ".$news_tree_feeds_id;
+        $sql .= " WHERE ntf.id = ".$news_tree_feeds_id." AND (feeds.is_partner = 1 OR feeds.user_id = ".$user_id.") ";
 
         $result = $DE -> selectRow($sql);
         return $result['c'];
@@ -300,7 +312,7 @@ class NewsModel extends BaseModel{
             INNER JOIN favorite_news 
                 ON news.id = favorite_news.news_id AND favorite_news.user_id = ".$user_id;
         }
-        $sql .= " WHERE news_tree.id = ".$news_tree_id;
+        $sql .= " WHERE news_tree.id = ".$news_tree_id. " AND (feeds.is_partner = 1 OR feeds.user_id = ".$user_id." ) ";
 //echo "<hr>".$sql;        
         $result = $DE -> selectRow($sql);
         return $result['c'];
@@ -445,6 +457,60 @@ class NewsModel extends BaseModel{
         return $result;
     }
     
+    function addNewsTree($parent_id, $user_id, $name, $state){
+        $DE = Project::getDatabase();
+        $sql = "
+            INSERT INTO `news_tree` (`parent_id` , `user_id` , `name` , `state`)
+            VALUES (
+            '".$parent_id."', '".$user_id."', '".htmlspecialchars($name)."', '".$state."'
+            );
+        ";
+        $DE -> query($sql);
+        return mysql_insert_id();
+    }
+    
+    function changeNewsTree($news_tree_id, $parent_id, $user_id, $name, $state){
+        $DE = Project::getDatabase();
+        $sql = "
+            UPDATE `news_tree` SET `parent_id` = '".$parent_id."' , `user_id` = '".$user_id."' , `name`='".htmlspecialchars($name)."' , `state`='".$state."'
+            WHERE id = ?
+        ";
+        $DE -> query($sql, $news_tree_id);
+        return mysql_insert_id();
+    }
+    
+    function deleteNewsTree($news_tree_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            DELETE FROM `news_tree` WHERE id = ?
+        ";
+        $DE -> query($sql, $news_tree_id);
+        return mysql_insert_id();
+    }
+    
+    function deleteNewsTreeCascade($news_tree_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            DELETE news_tree, news_tree_feeds, feeds, news_banners, news, news_subscribe, favorite_news 
+            FROM  news_tree
+            LEFT JOIN news_tree_feeds
+                ON news_tree.id = news_tree_feeds.news_tree_id
+            LEFT JOIN feeds
+                ON news_tree_feeds.feed_id = feeds.id 
+            LEFT JOIN news_banners
+                ON news_tree_feeds.news_banner_id=news_banners.id
+            LEFT JOIN news_subscribe
+                ON news_tree_feeds.id=news_subscribe.news_tree_feeds_id
+            LEFT JOIN news
+                ON news_tree_feeds.id=news.id
+            LEFT JOIN favorite_news
+                ON favorite_news.news_id=news.id
+            WHERE news_tree.id = ? 
+        ";
+        $DE -> query($sql, $news_tree_id);
+        return mysql_insert_id();
+    }
+    
     
     /**
      * END NewsTree
@@ -464,24 +530,25 @@ class NewsModel extends BaseModel{
         return true;        
     }
     
-    function addFeeds($user_id, $name, $url, $type, $state, $creation_date){
+    function addFeeds($user_id, $name, $url, $type, $state, $creation_date, $text_parse_type, $is_partner){
         $DE = Project::getDatabase();
         $sql = "
-            INSERT INTO `feeds` (`user_id` , `name` , `url` , `type` , `state` , `creation_date` )
+            INSERT INTO `feeds` (`user_id` , `name` , `url` , `type` , `state` , `creation_date` ,  `text_parse_type` , `is_partner` )
             VALUES (
-            '".$user_id."', '".htmlspecialchars($name)."', '".$url."', '".$type."', '".$state."', '".$creation_date."'
+            '".$user_id."', '".htmlspecialchars($name)."', '".$url."', '".$type."', '".$state."', '".$creation_date."', '".$text_parse_type."', '".$is_partner."'
             );
         ";
         $DE -> query($sql);
         return mysql_insert_id();
     }
     
-    function changeFeeds($id, $name, $url, $type, $state, $text_parse_type){
+    function changeFeeds($id, $name, $url, $type, $state, $text_parse_type, $is_partner){
         $DE = Project::getDatabase();
         $addSql = ($text_parse_type<0)?"":" , `text_parse_type`='".$text_parse_type."'";
         $sql = "
             UPDATE `feeds` SET 
-                `name`='".htmlspecialchars($name)."', `url`='".$url."' , `type`='".$type."' , `state`='".$state."' ".$addSql."
+                `name`='".htmlspecialchars($name)."', `url`='".$url."' , `type`='".$type."' , `state`='".$state."' , `is_partner`='".$is_partner."' 
+                ".$addSql."
             WHERE id = ".$id."
         ";
         $DE -> query($sql);
@@ -601,6 +668,16 @@ class NewsModel extends BaseModel{
             UPDATE news SET favorite_users=? WHERE id=?
         ";
         $DE -> query($sql, $nFavoriteUsers, $news_id);
+    }
+    
+    function setNews_Views($news_id, $inc){
+        $DE = Project::getDatabase();
+        $sql = "
+            UPDATE news 
+            SET views = views+?
+            WHERE id = ?
+        ";
+        $DE -> query($sql, $inc, $news_id);
     }
     
     function setParseDate($feed_id, $last_parse_date){

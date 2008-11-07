@@ -1,27 +1,27 @@
 <?php
 /*
-  Класс BookmarksModel - Модель для модуля Закладки (Bookmarks)
-  Содержит функции, работающие непосредственно с данными из БД
+  РљР»Р°СЃСЃ BookmarksModel - РњРѕРґРµР»СЊ РґР»СЏ РјРѕРґСѓР»СЏ Р—Р°РєР»Р°РґРєРё (Bookmarks)
+  РЎРѕРґРµСЂР¶РёС‚ С„СѓРЅРєС†РёРё, СЂР°Р±РѕС‚Р°СЋС‰РёРµ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ СЃ РґР°РЅРЅС‹РјРё РёР· Р‘Р”
 */
 
 class BookmarksModel extends BaseModel {
-  const C_MAX_LENGTH_TITLE = 50; // -- Длина строк поля TITLE, выше которой строка обрезается
-  const C_MAX_LENGTH_URL   = 30; // -- Длина строк поля URL, выше которой строка обрезается
+  const C_MAX_LENGTH_TITLE = 50; // -- Р”Р»РёРЅР° СЃС‚СЂРѕРє РїРѕР»СЏ TITLE, РІС‹С€Рµ РєРѕС‚РѕСЂРѕР№ СЃС‚СЂРѕРєР° РѕР±СЂРµР·Р°РµС‚СЃСЏ
+  const C_MAX_LENGTH_URL   = 30; // -- Р”Р»РёРЅР° СЃС‚СЂРѕРє РїРѕР»СЏ URL, РІС‹С€Рµ РєРѕС‚РѕСЂРѕР№ СЃС‚СЂРѕРєР° РѕР±СЂРµР·Р°РµС‚СЃСЏ
 
   public function __construct() {
-    parent::__construct('bookmarks'); // - передаем параметром имя таблицы
-                  // конструктор родителя содержит базовые функции по работе с БД:
+    parent::__construct('bookmarks'); // - РїРµСЂРµРґР°РµРј РїР°СЂР°РјРµС‚СЂРѕРј РёРјСЏ С‚Р°Р±Р»РёС†С‹
+                  // РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЂРѕРґРёС‚РµР»СЏ СЃРѕРґРµСЂР¶РёС‚ Р±Р°Р·РѕРІС‹Рµ С„СѓРЅРєС†РёРё РїРѕ СЂР°Р±РѕС‚Рµ СЃ Р‘Р”:
                   // _caches, load($id), loadAll, loadPage, delete($id), count(), save(),
                   // __get($var), __set($var, $val), bind($result), data(), setPager, 
                   // getPager(), updatePagerAmount(), getCountRecords(), clear()
   }
                                       
   /**
-   Выборка списка закладок. Формируется с Pager (страничной листалкой) 
-     $p_categoryID - ID категории
-     $p_userID - ID пользователя (для "Каталог закладок" $p_userID=null, "Мои закладки" - $p_userID>0)
-     $p_tagID - ID выбранного тега
-     $p_show_only_public - Показывать только публичные закладки (true), все (false)
+   Р’С‹Р±РѕСЂРєР° СЃРїРёСЃРєР° Р·Р°РєР»Р°РґРѕРє. Р¤РѕСЂРјРёСЂСѓРµС‚СЃСЏ СЃ Pager (СЃС‚СЂР°РЅРёС‡РЅРѕР№ Р»РёСЃС‚Р°Р»РєРѕР№) 
+     $p_categoryID - ID РєР°С‚РµРіРѕСЂРёРё
+     $p_userID - ID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (РґР»СЏ "РљР°С‚Р°Р»РѕРі Р·Р°РєР»Р°РґРѕРє" $p_userID=null, "РњРѕРё Р·Р°РєР»Р°РґРєРё" - $p_userID>0)
+     $p_tagID - ID РІС‹Р±СЂР°РЅРЅРѕРіРѕ С‚РµРіР°
+     $p_show_only_public - РџРѕРєР°Р·С‹РІР°С‚СЊ С‚РѕР»СЊРєРѕ РїСѓР±Р»РёС‡РЅС‹Рµ Р·Р°РєР»Р°РґРєРё (true), РІСЃРµ (false)
   */
   public function loadBookmarksList($p_categoryID = null, $p_userID = null, $p_tagID = null, $p_show_only_public = false){
     $v_categoryID = (int)$p_categoryID;
@@ -79,8 +79,8 @@ class BookmarksModel extends BaseModel {
     return $result;
   }
 
-  // -- Выборка для самых посещаемых закладок. Критерий: 10 самых посещаемых
-  //  $p_count - количество строк из запроса, самых посещаемых
+  // -- Р’С‹Р±РѕСЂРєР° РґР»СЏ СЃР°РјС‹С… РїРѕСЃРµС‰Р°РµРјС‹С… Р·Р°РєР»Р°РґРѕРє. РљСЂРёС‚РµСЂРёР№: 10 СЃР°РјС‹С… РїРѕСЃРµС‰Р°РµРјС‹С…
+  //  $p_count - РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє РёР· Р·Р°РїСЂРѕСЃР°, СЃР°РјС‹С… РїРѕСЃРµС‰Р°РµРјС‹С…
   public function loadMostVisit($p_count = 10) {
     $sql = "
     SELECT
@@ -115,9 +115,9 @@ class BookmarksModel extends BaseModel {
     return $result;
   }
 
-  // -- Выборка категории, которая открыта и получение ID предка
-  // id=8 parent_id=2 name='Авто -> Автомобили'
-  // Предполагаем, что входящий параметр точно является ID дочерним
+  // -- Р’С‹Р±РѕСЂРєР° РєР°С‚РµРіРѕСЂРёРё, РєРѕС‚РѕСЂР°СЏ РѕС‚РєСЂС‹С‚Р° Рё РїРѕР»СѓС‡РµРЅРёРµ ID РїСЂРµРґРєР°
+  // id=8 parent_id=2 name='РђРІС‚Рѕ -> РђРІС‚РѕРјРѕР±РёР»Рё'
+  // РџСЂРµРґРїРѕР»Р°РіР°РµРј, С‡С‚Рѕ РІС…РѕРґСЏС‰РёР№ РїР°СЂР°РјРµС‚СЂ С‚РѕС‡РЅРѕ СЏРІР»СЏРµС‚СЃСЏ ID РґРѕС‡РµСЂРЅРёРј
   public function loadCategoryByChildID($p_category_childID) {
     $sql = "
     SELECT 
@@ -131,8 +131,8 @@ class BookmarksModel extends BaseModel {
     return $result;
   }
   
-  // -- Выборка 1 строки конкретной закладки
-  // Используется для просмотра закладки BookmarksViewAction
+  // -- Р’С‹Р±РѕСЂРєР° 1 СЃС‚СЂРѕРєРё РєРѕРЅРєСЂРµС‚РЅРѕР№ Р·Р°РєР»Р°РґРєРё
+  // РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР° Р·Р°РєР»Р°РґРєРё BookmarksViewAction
   public function loadBookmarkRow($p_id = 0) {
     $v_id = (int)$p_id;
     $sql = "
@@ -160,7 +160,7 @@ class BookmarksModel extends BaseModel {
     WHERE bm.`id` = ?d
     ";
     $result = Project::getDatabase() -> selectRow($sql, $v_id);
-    $this -> bind($result); // - пока не знаю надо ли или это только для selectRow
+    $this -> bind($result); // - РїРѕРєР° РЅРµ Р·РЅР°СЋ РЅР°РґРѕ Р»Рё РёР»Рё СЌС‚Рѕ С‚РѕР»СЊРєРѕ РґР»СЏ selectRow
     return $result;
   }
   

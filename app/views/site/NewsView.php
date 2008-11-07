@@ -11,10 +11,10 @@ class NewsView extends BaseSiteView{
 	}
 	
 	/* build News Tree , and save it in $_htmlTree */
-	public function BuildTree($aLeafs, $aNews, $parentId = 0, $aNewsSubscribe, $isNewsTreeStateActive = true, $isFeedsStateActive = true ){
+	public function BuildTree($aLeafs, $aNewsTreeList, $parentId = 0, $aNewsSubscribe, $user_id, $isNewsTreeStateActive = true, $isFeedsStateActive = true ){
         $imgUrl = $this -> image_url;
         $newsUrl = Project::getRequest()->createUrl('News', 'News');
-        foreach( $aNews as $id=>$news){
+        foreach( $aNewsTreeList as $id=>$news){
           if ($isNewsTreeStateActive && !$news['state']) continue;
           if($parentId!=$news['parent_id'])continue;
           $newsUrl = Project::getRequest()->createUrl('News', 'News');
@@ -36,11 +36,16 @@ class NewsView extends BaseSiteView{
           
           foreach ($aFeeds as $feed){
               if ($isFeedsStateActive && !$feed['state']) continue;
+              if (!$feed['is_partner'] && $feed['user_id'] != $user_id) continue;
               $checked = ($this-> isInArrayNewsSubscribe($aNewsSubscribe, $feed['news_tree_feeds_id']))?'checked':'';
-              $this->_htmlTree .= '<li><input type="checkbox" class="bCheckTree" name="news_tree_feeds[]" value="'.$feed['news_tree_feeds_id'].'" '.$checked.' /> <i><a href="'.$newsUrl.'/filterNewsTreeFeeds:'.$feed['news_tree_feeds_id'].'">'.$feed['name'].'</a></i></li>';
+              $this->_htmlTree .= '<li>';
+              if ($user_id){
+                $this->_htmlTree .= '<input type="checkbox" class="bCheckTree" name="news_tree_feeds[]" value="'.$feed['news_tree_feeds_id'].'" '.$checked.' />';
+              }
+              $this->_htmlTree .= ' <i><a href="'.$newsUrl.'/filterNewsTreeFeeds:'.$feed['news_tree_feeds_id'].'">'.$feed['name'].'</a></i></li>';
           }
           
-          $this->BuildTree($aLeafs, $aNews, $news['id'], $aNewsSubscribe);
+          $this->BuildTree($aLeafs, $aNewsTreeList, $news['id'], $aNewsSubscribe, $user_id, $isNewsTreeStateActive, $isFeedsStateActive);
           $this->_htmlTree .= '
             </ul>
           </li>';
@@ -49,21 +54,52 @@ class NewsView extends BaseSiteView{
     
     
     /* build News Tree with Radio buttons for Site-partners, for adding RSS-feeds, and save it in $_htmlTree */
-	public function BuildTree_radio($aLeafs, $aNews, $parentId = 0, $checkId = 0){
+	public function BuildTree_radio($aLeafs, $aNews, $parentId = 0, $checkId = 0, $showAllRadioButtons = true){
         if (!$checkId && is_array($aLeafs) && count($aLeafs)>0) $checkId = $aLeafs[0];
 	    $imgUrl = $this -> image_url;
         foreach( $aNews as $id=>$news){
           if($parentId!=$news['parent_id']) continue;
           $newsUrl = Project::getRequest()->createUrl('News', 'News');
           if (in_array($news['id'], $aLeafs)){
-            $bChecked = ($news['id'] == $checkId)?'checked="yes"':'';
-            //echo $news['id']." = ".$checkId." ; ".$bChecked."<hr>";
-            $htmlInputRadio = '<input type="radio" name="news_tree_id" value="'.$news['id'].'" '.$bChecked.' />';
+            $isLeaf = true;
             $htmlImg = '';
           }else {
-            $htmlInputRadio = '';
+            $isLeaf = false;
             $htmlImg = '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" /> ';
           }
+          if ($isLeaf || $showAllRadioButtons){
+              $bChecked = ($news['id'] == $checkId)?'checked="yes"':'';
+              $htmlInputRadio = '<input type="radio" name="news_tree_id" value="'.$news['id'].'" '.$bChecked.' />';
+          }else $htmlInputRadio = "";
+          
+          $this->_htmlTree .= '
+          <li >
+            '.$htmlImg.'
+            <label style="white-space: nowrap; ">'.$htmlInputRadio.' '.$news['name'].'</label>
+            <ul class="checkbox_tree">';
+          
+          $this->BuildTree_radio($aLeafs, $aNews, $news['id'], $checkId, $showAllRadioButtons);
+          $this->_htmlTree .= '
+            </ul>
+          </li>';
+          
+       }
+    }
+    
+    /* build News Tree with Radio buttons for all branches */
+	public function BuildTree_radio2($aLeafs, $aNews, $parentId = 0, $checkId = 0){
+        if (!$checkId && is_array($aLeafs) && count($aLeafs)>0) $checkId = $aLeafs[0];
+	    $imgUrl = $this -> image_url;
+        foreach( $aNews as $id=>$news){
+          if($parentId!=$news['parent_id']) continue;
+          $newsUrl = Project::getRequest()->createUrl('News', 'News');
+          if (in_array($news['id'], $aLeafs)){
+            $htmlImg = '';
+          }else {
+            $htmlImg = '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" /> ';
+          }
+          $bChecked = ($news['id'] == $checkId)?'checked="yes"':'';
+          $htmlInputRadio = '<input type="radio" name="news_tree_id" value="'.$news['id'].'" '.$bChecked.' />';
           
           $this->_htmlTree .= '
           <li >
@@ -90,7 +126,7 @@ class NewsView extends BaseSiteView{
         return $aLeafs;
     }
     
-    // check is this element have children (is last element in tree hierarchy)
+    // check is this element have children (or is last element in tree hierarchy)
     function isLeaf($elementId){
         $newsModel = new NewsModel();
         return $newsModel->isLeaf($elementId);
@@ -101,7 +137,7 @@ class NewsView extends BaseSiteView{
         $newsUrl = Project::getRequest()->createUrl('News', 'News');
         if (count($aNewsTreeBreadCrumb)>0){
             foreach ($aNewsTreeBreadCrumb as $newsTree){
-                if ($isSetAnchor) $sNewsTreeBreadCrumb .= '<a href="'.$newsUrl.'/news_tree_id:'.$newsTree['id'].'">';
+                if ($isSetAnchor) $sNewsTreeBreadCrumb .= '<a href="'.$newsUrl.'/filterNewsTree:'.$newsTree['id'].'">';
                 $sNewsTreeBreadCrumb .= $newsTree['name'];
                 if ($isSetAnchor) $sNewsTreeBreadCrumb .= '</a>';
                 $sNewsTreeBreadCrumb .= ' -> ';
@@ -124,26 +160,32 @@ class NewsView extends BaseSiteView{
     
     public function ShowNewsTreeBreadCrumbByNewsTreeFeedsId($news_tree_feeds_id, $isSetAnchor=true){
         $newsModel = new NewsModel();
+        $newsUrl = Project::getRequest()->createUrl('News', 'News');
         $newsTreeFeeds = $newsModel -> getNewsTreeFeedsById($news_tree_feeds_id);
         $newsModel -> getNewsTreeBreadCrumb($newsTreeFeeds['news_tree_id']);
 	    $newsModel ->_aNewsTreeBreadCrumb = array_reverse($newsModel ->_aNewsTreeBreadCrumb);
 	    $aNewsTreeBreadCrumb = $newsModel ->_aNewsTreeBreadCrumb;
         $sNewsTreeBreadCrumb = $this->ShowNewsTreeBreadCrumb($aNewsTreeBreadCrumb, $isSetAnchor);
-        if ($newsTreeFeeds['feeds_name']) $sNewsTreeBreadCrumb .= ' -> '.$newsTreeFeeds['feeds_name'];
+        if ($newsTreeFeeds['feeds_name']){
+            $sNewsTreeBreadCrumb .= ' -> ';
+            if ($isSetAnchor) $sNewsTreeBreadCrumb .= '<a href="'.$newsUrl.'/filterNewsTreeFeeds:'.$news_tree_feeds_id.'">';
+            $sNewsTreeBreadCrumb .= $newsTreeFeeds['feeds_name'];
+            if ($isSetAnchor) $sNewsTreeBreadCrumb .= '</a>'; 
+        }
         return  $sNewsTreeBreadCrumb;
     }
     
-    public function ShowNewsListPreviewByNewsTreeFeedsId($news_tree_feeds_id, $newsViewType, $user_id = 0, $nShowRows=4, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false){
+    public function ShowNewsListPreviewByNewsTreeFeedsId($news_tree_feeds_id, $newsViewType, $user_id = 0, $nShowRows=4, $page_settings, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false){
         $newsModel = new NewsModel();
         
-        $aNews = $newsModel -> getNewsByNewsTreeFeedsId($news_tree_feeds_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, true, true, true);
+        $aNews = $newsModel -> getNewsByNewsTreeFeedsId($news_tree_feeds_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, $page_settings, true, true, true);
         return $this -> ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows);
     }
     
-    public function ShowNewsListPreviewByNewsTreeId($news_tree_id, $newsViewType, $user_id = 0, $nShowRows=4, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false){
+    public function ShowNewsListPreviewByNewsTreeId($news_tree_id, $newsViewType, $user_id = 0, $nShowRows=4, $page_settings, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false){
         $newsModel = new NewsModel();
         
-        $aNews = $newsModel -> getNewsByNewsTreeId($news_tree_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, true, true, true);
+        $aNews = $newsModel -> getNewsByNewsTreeId($news_tree_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, $page_settings, true, true, true);
         return $this -> ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows);
     }
     
@@ -291,6 +333,13 @@ class NewsView extends BaseSiteView{
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
 	   $this -> setTemplate(null, 'add_feed.tpl.php');
+	}
+	
+	function AddNewsTreePage(){
+	    $this->_js_files[] = 'jquery.js';
+	    $this->_js_files[] = 'news_tree.js';
+	    $this->_css_files[] = 'news_tree.css';
+	   $this -> setTemplate(null, 'add_news_tree.tpl.php');
 	}
 	
 	function MyFeedPage(){

@@ -115,11 +115,13 @@
 
 
 .minus{
+    /*margin-top:5px;*/
     display: inline-block;
     background: url('../images/chb_minus.png') 0 50% no-repeat;
 }
 
 .plus{
+    /*margin-top:5px;*/
     display: inline-block;
     background: url('../images/chb_plus.png') 0 50% no-repeat;
 }

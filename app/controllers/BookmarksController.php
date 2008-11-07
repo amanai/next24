@@ -45,7 +45,7 @@ class BookmarksController extends SiteController {
 	  $v_categoryID = $v_request->getKeyByNumber(0);
 	  $v_tagID      = $v_request->getKeyByNumber(1);
 	  $v_n_page     = $v_request->getKeyByNumber(2);
-		$this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID, true);
+	  $this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID, true);
 	  $this->_get_catalogs($data, $v_categoryID);
 	  $this->_getSelectedCategory($data, $v_categoryID);
 	  $this->_getSelectedTag($data, $v_tagID);
@@ -429,6 +429,14 @@ class BookmarksController extends SiteController {
       $v_tags_model = new BookmarksTagModel();
       $data['bookmarks_tags_list'] = $v_tags_model->loadTagsWhere($v_categoryID, $v_userID, null, (boolean)$p_show_only_public);
     }
+    /*
+    // Номер выводимой страницы, определяется адресом bookmarks_list/0/1/2/ ...bookmarks_list/0/0/2/
+    // где bookmarks_list/{id_категории}/{id_тега}/{номер страницы}/
+    $v_categoryID = $v_request->getKeyByNumber(0);
+    $v_tagID      = $v_request->getKeyByNumber(1);
+    $v_n_page     = $v_request->getKeyByNumber(2);
+    $this->_getData($data, 'BookmarksList', $v_categoryID, $v_n_page, 0, $v_tagID, true);
+    */
   }
   
   // -- Используется для отрытия в HTML-форме category_panel.tpl.php Раздела категорий

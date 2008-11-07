@@ -1,5 +1,6 @@
 <?php
 define('SEC_TO_DELETE_NEWS_FROM_FEEDS', 259200); // 259200 = 3 days
+define('NEWS_PER_PAGE', 15); 
 
 class NewsController extends SiteController{
 	
@@ -14,6 +15,7 @@ class NewsController extends SiteController{
 	    $newsModel = new NewsModel();
 	    $request = Project::getRequest();
 	    $user = Project::getUser()->getDbUser();
+	    if (!$user->id) $user->id = 0;
 	    $isAdmin = ($user->user_type_id == 1)?true:false;
 	    $isPartner = ($user->user_type_id == 4)?true:false;
 	    
@@ -50,14 +52,29 @@ class NewsController extends SiteController{
 	    switch ($_SESSION['newsViewFilter']){ // View filter
 	        case 'news_all': // no filter, all news
 	           $newsViewFilter = array('viewCheckedClass', '', '');
+	           $isOnlyFavoriteNews = false;
+	           $isOnlySubscribeNewsTree = false;
 	           break;
 	        case 'news_subscribe': // filter, only subscribe news
-	           $newsViewFilter = array('', 'viewCheckedClass', '');;
+	           $newsViewFilter = array('', 'viewCheckedClass', '');
+	           $isOnlyFavoriteNews = false;
+	           $isOnlySubscribeNewsTree = true;
 	           break;
 	        case 'news_stared': // filter, only news star
-	           $newsViewFilter = array('', '', 'viewCheckedClass');;
+	           $newsViewFilter = array('', '', 'viewCheckedClass');
+	           $isOnlyFavoriteNews = true;
+	           $isOnlySubscribeNewsTree = false;
 	           break;
 	    }
+	    
+	    if (!$user->id){ // if NOT REGISTRED USER
+	        $this-> _view -> assign('newsViewFilter', 'news_all');
+	        $isOnlyFavoriteNews = false;
+	        $isOnlySubscribeNewsTree = false;
+	    }else {
+	        $this-> _view -> assign('newsViewFilter', $_SESSION['newsViewFilter']);
+	    }
+	    
 	    if ($request -> shownow == 'allnews'){ // if click on "(все новости [15])"
 	        $this-> _view -> assign('newsViewType', 'full');
 	        $this-> _view -> assign('nShowRows', 0); // Show all news records
@@ -67,7 +84,6 @@ class NewsController extends SiteController{
 	    }
 	    $this-> _view -> assign('shownow', $request->shownow);
 	    
-	    $this-> _view -> assign('newsViewFilter', $_SESSION['newsViewFilter']);
 	    $this-> _view -> assign('viewCheckedClass', $viewCheckedClass);
 	    $this-> _view -> assign('viewFilterCheckedClass', $newsViewFilter);
 	    // END view type and filters
@@ -90,17 +106,38 @@ class NewsController extends SiteController{
 		    if (!$news) Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'News'));
 		    $this-> _view -> assign('news', $news); 
 		    $tabsNews = array("title"=>$newsModel -> getNWordsFromText($news['news_title'], 6)."...", "id"=>$request->news_id);
-		    $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, false, false, true, $tabsNews)); // Show tabs
+		    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, false, false, false, false, true, $tabsNews)); // Show tabs
 		    $this-> _view -> assign('isShowOneNews', true); 
+		    $newsModel -> setNews_Views($request->news_id, 1);
 		}else{
-		    $this-> _view -> assign('tab_list', TabController::getNewsTabs(true)); // Show tabs
+		    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, true)); // Show tabs
 		    $this-> _view -> assign('isShowOneNews', false); 
 		}
-				
-		$aListNews = $newsModel->getAllNews();
-		$this-> _view -> assign('news_list', $aListNews); // all News tree
+		
+		$aNewsTreeList = $newsModel->getAllNews();
+		$this-> _view -> assign('news_tree_list', $aNewsTreeList); // all News tree
 		$this-> _view -> assign('filterNewsTree', $request->filterNewsTree); // filter by News tree ID
 		$this-> _view -> assign('filterNewsTreeFeeds', $request->filterNewsTreeFeeds); // filter by News tree feeds ID
+		
+		// PAGER
+		$pager_view = new SitePagerView();
+		if ($request->filterNewsTreeFeeds){ // pager for All news , filterNewsTreeFeeds
+		    $news_count = $newsModel->getNewsCountByNewsTreeFeedsId($request->filterNewsTreeFeeds, $user->id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
+		    $pages_number = $pager_view->getPagesNumber($news_count, NEWS_PER_PAGE);
+		    $current_page_number=$request->getKeyByNumber(2);
+		    $news_pager = $pager_view->show3('News', 'News', array("shownow"=>"allnews", "filterNewsTreeFeeds"=>$request->filterNewsTreeFeeds), $pages_number, $current_page_number);
+		    $this-> _view -> assign('news_tree_pager', $news_pager); 
+		    $this-> _view -> assign('page_settings', array("record_per_page"=>NEWS_PER_PAGE, "current_page_number"=>$current_page_number+1)); 
+		}elseif ($request->filterNewsTree){ // pager for All news , filterNewsTree
+		    $news_count = $newsModel->getNewsCountByNewsTreeId($request->filterNewsTree, $user->id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
+		    $pages_number = $pager_view->getPagesNumber($news_count, NEWS_PER_PAGE);
+		    $current_page_number=$request->getKeyByNumber(2);
+		    $news_pager = $pager_view->show3('News', 'News', array("shownow"=>"allnews", "filterNewsTree"=>$request->filterNewsTree), $pages_number, $current_page_number);
+		    $this-> _view -> assign('news_tree_pager', $news_pager); 
+		    $this-> _view -> assign('page_settings', array("record_per_page"=>NEWS_PER_PAGE, "current_page_number"=>$current_page_number+1)); 
+		}
+		// END PAGER
+		
 		
 		$aNewsSubscribe = $newsModel -> getNewsSubscribeByUserId($user->id);
 		$this-> _view -> assign('aNewsSubscribe', $aNewsSubscribe); // all NewsSubscribe
@@ -110,24 +147,118 @@ class NewsController extends SiteController{
 	}	
 	
 	
-	public function AddFeedAction(){
+	
+	
+	public function AddNewsTreeAction(){
 	    $newsModel = new NewsModel();
 	    $request = Project::getRequest();
+	    $user = Project::getUser()->getDbUser();
 	    
 	    if ($request->frmAction == 'add'){
-	        $user = Project::getUser()->getDbUser();
+	        
 	        $category_tag = trim($request->category_tag);
 	        $type = ($category_tag)?1:0; // 0 - 1 Rss => 1 NewsTreeCastegory; 1 - 1 Rss => N NewsTreeCategory
 	        $creation_date = date("Y-m-d H:i:s");
+	        if ($user->user_type_id == 1 || $user->user_type_id == 4){ // partner or Admin
+    	            $is_partner=1;
+    	            $state = 0;
+    	            $text_parse_type = 0;
+    	        } else { // registred user
+    	            $is_partner=0;
+    	            $state = 1;
+    	            $text_parse_type = 2;
+    	        }
 	        
-	        $feed_id = $newsModel -> addFeeds($user->id, $request->feed_name, $request->feed_url, $type, 0, $creation_date);
-	        $news_banner_id = $newsModel -> addNewsBanner($user->id, $request->code, 0);
+	        $news_tree_id = $newsModel -> addNewsTree($request->news_tree_id, $user->id, $request->news_tree_name, 0);
+	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'ChangeNewsTree')."/tree_id:".$news_tree_id);
+	    }
+	    
+	    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, false, false, false, true)); // Show tabs
+	    $this-> _view -> assign('frmAction', 'add'); 
+	    $this-> _view -> assign('submitValue', 'Добавить'); 
+	    $this-> _view -> assign('news_tree_name', ''); 
+		
+		$aListNews = $newsModel->getAllNews();
+		$this-> _view -> assign('news_list', $aListNews); // all News tree
+		
+		$this -> _view -> AddNewsTreePage();
+		$this -> _view -> parse();
+	    
+	}
+	
+	
+	public function ChangeNewsTreeAction(){
+	    $newsModel = new NewsModel();
+	    $request = Project::getRequest();
+	    $news_tree_id = $request->tree_id;
+	    $newsTree = $newsModel->getNewsTree($news_tree_id);
+	    $user = Project::getUser()->getDbUser();
+	    $isAdmin = ($user->user_type_id == 1)?true:false;
+	    
+	    if ( $news_tree_id && $newsTree && is_array($newsTree)){
+	        if ($request->deleteNesTree){
+	            
+	            if ($user->id == $newsTree['user_id'] || $isAdmin){
+    	        // if OWNER or ADMIN
+    	            $newsModel -> deleteNewsTreeCascade($news_tree_id);
+	            }
+	            Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'News'));
+	        }elseif ($request->frmAction == 'change'){
+    	        
+    	        if ($user->id == $newsTree['feeds_user_id'] || $isAdmin){
+    	        // if OWNER or ADMIN
+        	        $newsModel -> changeNewsTree($news_tree_id, $request->news_tree_id, $user->id, $request->news_tree_name, 0);
+    	        }
+    	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'ChangeNewsTree')."/tree_id:".$news_tree_id."/");
+    	    }
+	        $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, false, false, true)); // Show tabs
+	        $this-> _view -> assign('frmAction', 'change'); 
+	        $this-> _view -> assign('submitValue', 'Изменить'); 
+	        $this-> _view -> assign('news_tree_id', $news_tree_id); 
+	        $this-> _view -> assign('news_tree_parent_id', $newsTree['parent_id']); 
+	        $this-> _view -> assign('news_tree_name', $newsTree['name']); 
+	        $this-> _view -> assign('isChange', true); 
+	        $this-> _view -> assign('isAdmin', $isAdmin); 
+		
+    		$aListNews = $newsModel->getAllNews();
+    		$this-> _view -> assign('news_list', $aListNews); // all News tree
+    		
+    		$this -> _view -> AddNewsTreePage();
+    		$this -> _view -> parse();
+	    }else{
+	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'News'));
+	    }
+	}
+	
+	
+	public function AddFeedAction(){
+	    $newsModel = new NewsModel();
+	    $request = Project::getRequest();
+	    $user = Project::getUser()->getDbUser();
+	    
+	    if ($request->frmAction == 'add'){
+	        
+	        $category_tag = trim($request->category_tag);
+	        $type = ($category_tag)?1:0; // 0 - 1 Rss => 1 NewsTreeCastegory; 1 - 1 Rss => N NewsTreeCategory
+	        $creation_date = date("Y-m-d H:i:s");
+	        if ($user->user_type_id == 1 || $user->user_type_id == 4){ // partner or Admin
+    	            $is_partner=1;
+    	            $state = 0;
+    	            $text_parse_type = 0;
+    	        } else { // registred user
+    	            $is_partner=0;
+    	            $state = 1;
+    	            $text_parse_type = 2;
+    	        }
+	        
+	        $feed_id = $newsModel -> addFeeds($user->id, $request->feed_name, $request->feed_url, $type, $state, $creation_date, $text_parse_type, $is_partner);
+	        $news_banner_id = $newsModel -> addNewsBanner($user->id, $request->code, $state);
 	        $news_tree_feeds_id = $newsModel -> addNewsTreeFeeds($request->news_tree_id, $feed_id, $news_banner_id, $category_tag);
 	        
 	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'MyFeeds'));
 	    }
 	    
-	    $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, true)); // Show tabs
+	    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, false, true)); // Show tabs
 	    $this-> _view -> assign('frmAction', 'add'); 
 	    $this-> _view -> assign('submitValue', 'Добавить'); 
 	    $this-> _view -> assign('feed_name', ''); 
@@ -154,32 +285,44 @@ class NewsController extends SiteController{
 	    if ( $news_tree_feeds_id && $newsTreeFeed && is_array($newsTreeFeed)){
 	        if ($request->deleteRss){
 	            
-	            $newsModel -> deleteFeeds($newsTreeFeed['feed_id']);
-	            $newsModel -> deleteNewsBanner($newsTreeFeed['news_banner_id']);
-	            $newsModel -> deleteNewsTreeFeeds($news_tree_feeds_id);
-	            $newsModel -> deleteNewsByNewsTreeFeedsId($news_tree_feeds_id);
+	            if ($user->id == $newsTreeFeed['feeds_user_id'] || $isAdmin){
+    	        // if OWNER or ADMIN
+    	            $newsModel -> deleteFeeds($newsTreeFeed['feed_id']);
+    	            $newsModel -> deleteNewsBanner($newsTreeFeed['news_banner_id']);
+    	            $newsModel -> deleteNewsTreeFeeds($news_tree_feeds_id);
+    	            $newsModel -> deleteNewsByNewsTreeFeedsId($news_tree_feeds_id);
+	            }
 	            Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'MyFeeds'));
 	        }elseif ($request->frmAction == 'change'){
     	        
     	        $category_tag = trim($request->category_tag);
     	        $type = ($category_tag)?1:0; // 0 - 1 Rss => 1 NewsTreeCastegory; 1 - 1 Rss => N NewsTreeCategory
     	        $creation_date = date("Y-m-d H:i:s");
+    	        if ($user->user_type_id == 1 || $user->user_type_id == 4){ // partner or Admin
+    	            $is_partner=1;
+    	            $state = 0;
+    	            $text_parse_type = 0;
+    	        } else {  // registred user
+    	            $is_partner=0;
+    	            $state = 1;
+    	            $text_parse_type = 2;
+    	        }
     	        
     	        if ($user->id == $newsTreeFeed['feeds_user_id'] || $isAdmin){
     	        // if OWNER or ADMIN
     	            if ($isAdmin) $text_parse_type = $request->text_parse_type; else $text_parse_type = -1;
-        	        $newsModel -> changeFeeds($newsTreeFeed['feed_id'], $request->feed_name, $request->feed_url, $type, 0, $text_parse_type);
+        	        $newsModel -> changeFeeds($newsTreeFeed['feed_id'], $request->feed_name, $request->feed_url, $type, $state, $text_parse_type, $is_partner);
         	        $newsModel -> changeNewsTreeFeeds($news_tree_feeds_id, $request->news_tree_id, $newsTreeFeed['feed_id'], $newsTreeFeed['news_banner_id'], $category_tag);
         	        if ($newsTreeFeed['news_banner_id']){
-        	           $newsModel -> changeNewsBanner($newsTreeFeed['news_banner_id'], $request->code, 0);
+        	           $newsModel -> changeNewsBanner($newsTreeFeed['news_banner_id'], $request->code, $state);
         	        }else {
-        	           $news_banner_id = $newsModel -> addNewsBanner($user->id, $request->code, 0);
+        	           $news_banner_id = $newsModel -> addNewsBanner($user->id, $request->code, $state);
         	           $newsModel -> changeOneValue('news_tree_feeds', $news_tree_feeds_id, 'news_banner_id', $news_banner_id);
         	        }
     	        }
     	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'ChangeFeed')."/change_feed/news_tree_feeds_id:".$news_tree_feeds_id."/");
     	    }
-	        $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, false, true)); // Show tabs
+	        $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, false, false, true)); // Show tabs
 	        $this-> _view -> assign('frmAction', 'change'); 
 	        $this-> _view -> assign('submitValue', 'Изменить'); 
 	        $this-> _view -> assign('feed_name', $newsTreeFeed['feeds_name']); 
@@ -209,7 +352,7 @@ class NewsController extends SiteController{
 	    $isAdmin = ($user->user_type_id == 1)?true:false;
 	    
 	    $this-> _view -> assign('isAdmin', $isAdmin); 
-	    $this-> _view -> assign('tab_list', TabController::getNewsTabs(false, false, true)); // Show tabs
+	    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, false, false, true)); // Show tabs
 		
 		$aListNewsTreeFeeds = $newsModel->getNewsTreeFeedsByUserId($user->id, false, false, false);
 		$this-> _view -> assign('aListNewsTreeFeeds', $aListNewsTreeFeeds); //  News tree feeds for current user
@@ -320,9 +463,9 @@ class NewsController extends SiteController{
 		            if (!$newsTreeFeeds['category_tag'] || strtoupper($newsTreeFeeds['category_tag']) == strtoupper($category)){
 		            // if RSS-feeds have different categories => it should be same as in item
 		                $pub_date_in_sec = strtotime($pub_date);
-		                if (
-		                      (!$newsTreeFeeds['last_parse_date'] || $newsTreeFeeds['last_parse_date'] < $pub_date) && // check parse date
-		                      (time()-SEC_TO_DELETE_NEWS_FROM_FEEDS < $pub_date_in_sec) // check news publication date
+		                if (true
+		                      //(!$newsTreeFeeds['last_parse_date'] || $newsTreeFeeds['last_parse_date'] < $pub_date) && // check parse date
+		                      //(time()-SEC_TO_DELETE_NEWS_FROM_FEEDS < $pub_date_in_sec) // check news publication date
 		                   )
 		                { // not parsed yet
 		                    $n++;

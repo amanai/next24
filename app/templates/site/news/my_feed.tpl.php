@@ -23,6 +23,7 @@
 					   <th>Код баннера</th>
 					   <th>Раздел</th>
 					   <th>Преобразование<br />текста</th>
+					   <th>Сайт-партнер</th>
 					   <th>&nbsp;</th>
 					</tr>
                     <?php 
@@ -42,6 +43,7 @@
                         $news_tree_state = ($newsTreeFeeds['news_tree_state'])?'active':'not moderated';
                         $feeds_state = ($newsTreeFeeds['feeds_state'])?'active':'not moderated';
                         $news_banners_state = ($newsTreeFeeds['news_banners_state'])?'active':'not moderated';
+                        $is_partner = ($newsTreeFeeds['is_partner'])?'да':'нет';
                         echo '
                         <tr>
     					   <td>'.$newsTreeFeeds['feeds_name'].'<div class="list_status" id="feeds'.$newsTreeFeeds['feed_id'].'">'.$feeds_state.'</div>';
@@ -76,6 +78,7 @@
     				    echo '
     					   </td>
     					   <td>'.$text_parse_type.'</td>
+    					   <td>'.$is_partner.'</td>
     					   <td><a href="'.$this->createUrl('News', 'ChangeFeed', null, false).'/news_tree_feeds_id:'.$newsTreeFeeds['news_tree_feeds_id'].'/">Change</a></td>
     					</tr>					
                         ';

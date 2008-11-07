@@ -10,16 +10,18 @@
 			<!-- левый блок -->
 
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-					<div class="block_title"><h2>Отображать каналы RSS</h2></div>
+					<div class="block_title"><h2>Каналы RSS</h2></div>
 					
 					<form action="<?php echo $this->createUrl('News', 'SubscribeNews', null, false); ?>" method="POST">
 					<ul class="checkbox_tree">
                         <?php 
-                        $aLeafs = $this->getAllLeafs($this->news_list);
-                        $this->BuildTree($aLeafs, $this->news_list, 0, $this->aNewsSubscribe); echo $this->_htmlTree; 
+                        $aLeafs = $this->getAllLeafs($this->news_tree_list);
+                        $this->BuildTree($aLeafs, $this->news_tree_list, 0, $this->aNewsSubscribe, $this->user_id); echo $this->_htmlTree; 
                         ?>
                     </ul>
+                    <?php if ($this->user_id){ ?>
                     <input type="submit" name="subscribe" value="Сохранить подписку" />
+                    <?php } ?>
                     </form>
 					
 
@@ -31,18 +33,21 @@
 					<div class="rss_cat">
 						 <a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:full/" class="<?php echo $this -> viewCheckedClass[0]; ?>" >Полный список новостей</a><br />
 						 <a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:report/" class="<?php echo $this -> viewCheckedClass[1]; ?>">Сводка новостей</a><br />
+						 <?php if ($this->user_id){ ?>
 						 <br />
 						 <a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_all/" class="<?php echo $this -> viewFilterCheckedClass[0]; ?>">Все новости</a><br />
 						 <a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_subscribe/" class="<?php echo $this -> viewFilterCheckedClass[1]; ?>">Только подписка</a><br />
 						 <a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_stared/" class="<?php echo $this -> viewFilterCheckedClass[2]; ?>">Только избранное</a>
+						 <?php } ?>
 					</div>
 				</div></div></div></div>
 				
-				<?php if ($this->isPartner || $this->isAdmin){ ?>
+				<?php if ($this->user_id){ ?>
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<div class="block_title"><h2>Управление</h2></div>
 					<div class="rss_cat">
-						 <a href="<?php echo $this->createUrl('News', 'AddFeed', null, false); ?>" >Добавить RSS-ленту</a>
+						 <a href="<?php echo $this->createUrl('News', 'AddFeed', null, false); ?>" >Добавить RSS-ленту</a><br />
+						 <a href="<?php echo $this->createUrl('News', 'AddNewsTree', null, false); ?>" >Добавить новую ветвь в дерево</a>
 					</div>
 				</div></div></div></div>
 				<?php } ?>
@@ -84,7 +89,7 @@
 		               echo '<div class="news_banner">'.$this->news['code'].'</div>';
 		           }
 			       ?>
-			       <div class="block_title_left">
+			       <div class="block_subtitle_left">
 			         <b>Категория: </b><?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($this->news['news_tree_id'], false); ?>&nbsp;&nbsp;&nbsp;
 			         <b>Дата публикации: </b><?php echo $this->news['pub_date']; ?>&nbsp;&nbsp;&nbsp;&nbsp;
 			         <b>Лента: </b><?php echo $this->news['feeds_name']; ?>
@@ -134,7 +139,10 @@
     				
     				<div id="rss_cat_n<?php echo $this->filterNewsTreeFeeds;?>">
     				   <?php 
-    		           echo $this->ShowNewsListPreviewByNewsTreeFeedsId($this->filterNewsTreeFeeds, $this->newsViewType, $this->user_id, $this->nShowRows, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
+    		           echo $this->ShowNewsListPreviewByNewsTreeFeedsId($this->filterNewsTreeFeeds, $this->newsViewType, $this->user_id, $this->nShowRows, $this->page_settings, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
+    		           if ($this->shownow == "allnews"){
+    			         echo $this->news_tree_pager; 
+    			       }
     			       ?>
     					<div class="rmb14"></div>
     
@@ -169,7 +177,10 @@
     				
     				<div id="rss_cat_n<?php echo $newsTree['id'];?>">
     				   <?php 
-    		           echo $this->ShowNewsListPreviewByNewsTreeId($newsTree['id'], $this->newsViewType, $this->user_id, $this->nShowRows, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
+    		           echo $this->ShowNewsListPreviewByNewsTreeId($newsTree['id'], $this->newsViewType, $this->user_id, $this->nShowRows, $this->page_settings, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
+    		           if ($this->shownow == "allnews"){
+    			         echo $this->news_tree_pager; 
+    			       }
     			       ?>
     					<div class="rmb14"></div>
     

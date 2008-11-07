@@ -22,5 +22,23 @@ class SitePagerView extends BaseSiteView{
 			$this -> assign('current_page_number', $pager -> getPageNumber());
 			return $this -> parse();
 		}
+		
+		function show3($controller = null, $action = null, $params = array(), $pages_number, $current_page_number, $user = null){
+			$this -> setTemplate(null, 'pager2.tpl.php');
+			$this -> assign('current_controller', $controller);
+			$this -> assign('current_action', $action);
+			$this -> assign('current_user', $user);
+			$this -> assign('pager_params', $params);
+			$this -> assign('pages_number', $pages_number);
+			$this -> assign('current_page_number', $current_page_number);
+			return $this -> parse();
+		}
+		
+		function getPagesNumber($record_count, $record_on_page){
+		    $div=$record_count/$record_on_page;
+		    if (($div-intval($div))==0) $one=0; else $one=1;
+    	    $pages_number=intval($div)+$one; // количество страниц
+    	    return $pages_number;
+		}
 }
 ?>

@@ -119,29 +119,42 @@ class TabController{
 			return $tabs;
 		}
 		
-		static public function getNewsTabs($selected1 = false, $selected2 = false, $selected3 = false, $one_news = false, $aNews = array()) {
+		static public function getNewsTabs($user_id, $selected_news = false, $selected_addfeed = false, $selected_myrss = false, $selected_addnewstree = false, $one_news = false, $aNews = array()) {
 			$request = Project::getRequest();
 			$tabs = array(
 							0 => array(
 									'name' => 'Новости',
 									'title' => 'Новости ввиде дерева',
-									'selected' => $selected1,
+									'selected' => $selected_news,
 								 	'url' => $request -> createUrl('News', 'News', null, false)
-									),
-							1 => array(
-									'name' => 'Мои RSS ленты',
-									'title' => 'Мои RSS ленты',
-									'selected' => $selected3,
-								 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
-									)		
+									)
+										
 							);
 
-			if ($selected2){
+			if ($user_id){
+				$tabs[]= array(
+								'name' => 'Мои RSS ленты',
+								'title' => 'Мои RSS ленты',
+								'selected' => $selected_myrss,
+							 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
+								);
+			}
+			
+			if ($selected_addfeed){
 				$tabs[]= array(
 								'name' => 'Добавить RSS ленту',
 								'title' => 'Добавить RSS ленту',
 								'selected' => true,
 							 	'url' => $request -> createUrl('News', 'AddFeed', null, false)
+								);
+			}
+			
+			if ($selected_addnewstree){
+				$tabs[]= array(
+								'name' => 'Добавить новую ветвь в дерево',
+								'title' => 'Добавить новую ветвь в дерево',
+								'selected' => true,
+							 	'url' => $request -> createUrl('News', 'AddNewsTree', null, false)
 								);
 			}
 			

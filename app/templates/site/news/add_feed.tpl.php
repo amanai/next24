@@ -46,7 +46,7 @@
 			    <ul class="checkbox_tree">
                     <?php 
                     $aLeafs = $this->getAllLeafs($this->news_list);
-                    $this->BuildTree_radio($aLeafs, $this->news_list, 0, $this->news_tree_id); echo $this->_htmlTree; 
+                    $this->BuildTree_radio($aLeafs, $this->news_list, 0, $this->news_tree_id, false); echo $this->_htmlTree; 
                     ?>
                 </ul>
 			</td>

@@ -34,3 +34,11 @@ function validateAddRss(frm){
     }
     return true;
 }
+
+function validateAddNewsTree(frm){
+    if (!frm.news_tree_name.value){
+        alert ("Введите название категории");
+        return false;
+    }
+    return true;
+}
