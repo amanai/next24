@@ -72,10 +72,12 @@ class NewsView extends BaseSiteView{
               $htmlInputRadio = '<input type="radio" name="news_tree_id" value="'.$news['id'].'" '.$bChecked.' />';
           }else $htmlInputRadio = "";
           
+          if ($news['state']) {$s1=""; $s2="";} else {$s1="<s>"; $s2="</s>";}
+          
           $this->_htmlTree .= '
           <li >
             '.$htmlImg.'
-            <label style="white-space: nowrap; ">'.$htmlInputRadio.' '.$news['name'].'</label>
+            <label style="white-space: nowrap; ">'.$htmlInputRadio.' '.$s1.$news['name'].$s2.'</label>
             <ul class="checkbox_tree">';
           
           $this->BuildTree_radio($aLeafs, $aNews, $news['id'], $checkId, $showAllRadioButtons);
@@ -86,28 +88,38 @@ class NewsView extends BaseSiteView{
        }
     }
     
-    /* build News Tree with Radio buttons for all branches */
-	public function BuildTree_radio2($aLeafs, $aNews, $parentId = 0, $checkId = 0){
+    /* build News Tree  for Admin moderation . Can EDIT and DELETE branches */
+	public function BuildTree_moderate($aLeafs, $aNews, $parentId = 0){
+	    $newsModel = new NewsModel();
         if (!$checkId && is_array($aLeafs) && count($aLeafs)>0) $checkId = $aLeafs[0];
 	    $imgUrl = $this -> image_url;
         foreach( $aNews as $id=>$news){
           if($parentId!=$news['parent_id']) continue;
-          $newsUrl = Project::getRequest()->createUrl('News', 'News');
+          $ChangeNewsTreeUrl = Project::getRequest()->createUrl('News', 'ChangeNewsTree');
           if (in_array($news['id'], $aLeafs)){
+            $isLeaf = true;
             $htmlImg = '';
           }else {
+            $isLeaf = false;
             $htmlImg = '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" /> ';
           }
-          $bChecked = ($news['id'] == $checkId)?'checked="yes"':'';
-          $htmlInputRadio = '<input type="radio" name="news_tree_id" value="'.$news['id'].'" '.$bChecked.' />';
+          if ($news['state']) {$isStrikeClass="not_strike";} else {$isStrikeClass="strike";}
+          $user = $newsModel -> getUserById($news['user_id']);
           
           $this->_htmlTree .= '
           <li >
             '.$htmlImg.'
-            <label>'.$htmlInputRadio.' '.$news['name'].'</label>
+            <label style="white-space: nowrap; "><span id="news_tree'.$news['id'].'" class="'.$isStrikeClass.'">'.$news['name'].'</span>
+            [<a href="#">'.$user['login'].'</a>]';
+          $this->_htmlTree .= '
+		    <a onclick=\'
+	        ajax('.AjaxRequest::getJsonParam("News", "ChangeState", array("id"=>$news['id'], "element"=>"news_tree", "attr"=>"strike", "text1"=>"strike", "text2"=>"not_strike" ), "POST").', true);
+	        \' href="javascript: void(0);">Change state</a> <a href="'.$ChangeNewsTreeUrl.'/tree_id:'.$news['id'].'/deleteNewsTree:1/">Delete</a>';
+          $this->_htmlTree .= '   
+            </label>
             <ul class="checkbox_tree">';
           
-          $this->BuildTree_radio($aLeafs, $aNews, $news['id'], $checkId);
+          $this->BuildTree_moderate($aLeafs, $aNews, $news['id']);
           $this->_htmlTree .= '
             </ul>
           </li>';
@@ -179,18 +191,18 @@ class NewsView extends BaseSiteView{
         $newsModel = new NewsModel();
         
         $aNews = $newsModel -> getNewsByNewsTreeFeedsId($news_tree_feeds_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, $page_settings, true, true, true);
-        return $this -> ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows);
+        return $this -> ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows, $user_id);
     }
     
     public function ShowNewsListPreviewByNewsTreeId($news_tree_id, $newsViewType, $user_id = 0, $nShowRows=4, $page_settings, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false){
         $newsModel = new NewsModel();
         
         $aNews = $newsModel -> getNewsByNewsTreeId($news_tree_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, $page_settings, true, true, true);
-        return $this -> ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows);
+        return $this -> ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows, $user_id);
     }
     
     
-    public function ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows=4){
+    public function ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows=4, $user_id){
         $newsUrl = Project::getRequest()->createUrl('News', 'News');
         $imgUrl = $this -> image_url;
         $countNews = count($aNews);
@@ -204,10 +216,14 @@ class NewsView extends BaseSiteView{
                     <tr>';
                 $htmlNewsListPreview .= '
                         <td class="arh_x1">
-    						<h3><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">'.$news['news_title'].'</a><span style="font-weight: normal;"> 
+    						<h3><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">'.$news['news_title'].'</a><span style="font-weight: normal;"> ';
+                if ($user_id){
+                    $htmlNewsListPreview .= '
     						    <a onclick=\'
         				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$news['news_id'], "imgUrl"=>$imgUrl), "POST").', true);
-        				        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$news['news_id'].'"></a>
+        				        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$news['news_id'].'"></a>';
+                }
+                $htmlNewsListPreview .= '
         				        &nbsp; ('.$news['pub_date'].')</span></h3><br />
     						'.$news['news_short_text'].'
     					</td>';
@@ -220,10 +236,14 @@ class NewsView extends BaseSiteView{
             for($i=0; $i<$nRows; $i++){
                 if ($aNews[$i]['favorite_news_id']) $starGif = "star_on.gif"; else $starGif = "star_off.gif"; 
                 $htmlNewsListPreview .= '                    
-    							<li><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a> 
+    							<li><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a> ';
+                if ($user_id){
+                    $htmlNewsListPreview .= ' 
     							<a onclick=\'
         				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$aNews[$i]['news_id'], "imgUrl"=>$imgUrl), "POST").', true);
-        				        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$aNews[$i]['news_id'].'"></a> 
+        				        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$aNews[$i]['news_id'].'"></a> ';
+                }
+                $htmlNewsListPreview .= ' 
     							('.$aNews[$i]['pub_date'].')</li>
                 ';
             }
@@ -239,10 +259,14 @@ class NewsView extends BaseSiteView{
                 $htmlNewsListPreview .= '
                     <tr>
                         <td class="arh_x1">
-    						<h3><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a><span style="font-weight: normal;"> 
+    						<h3><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a><span style="font-weight: normal;"> ';
+                if ($user_id){
+                    $htmlNewsListPreview .= '
     						<a onclick=\'
     				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$aNews[$i]['news_id'], "imgUrl"=>$imgUrl), "POST").', true);
-    				        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$aNews[$i]['news_id'].'"></a>
+    				        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$aNews[$i]['news_id'].'"></a>';
+                }
+                $htmlNewsListPreview .= '
     						 &nbsp; ('.$aNews[$i]['pub_date'].')</span></h3><br />
     						'.$aNews[$i]['news_short_text'].'
     					</td>
@@ -322,10 +346,10 @@ class NewsView extends BaseSiteView{
     function NewsPage(){
 	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
-	   $this->_js_files[]='ajax.js';
+	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
-	   $this -> setTemplate(null, 'news.tpl.php');
+	    $this -> setTemplate(null, 'news.tpl.php');
 	}
     
     function AddFeedPage(){
@@ -333,6 +357,24 @@ class NewsView extends BaseSiteView{
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
 	   $this -> setTemplate(null, 'add_feed.tpl.php');
+	}
+	
+	function ModerateNewsTreePage(){
+	    $this->_js_files[] = 'jquery.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'news_tree.js';
+	    $this->_css_files[] = 'news_tree.css';
+	    $this -> setTemplate(null, 'moderate_news_tree.tpl.php');
+	}
+	
+	function ModerateFeedsPage(){
+	    $this->_js_files[] = 'jquery.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'news_tree.js';
+	    $this->_css_files[] = 'news_tree.css';
+	    $this -> setTemplate(null, 'moderate_feeds.tpl.php');
 	}
 	
 	function AddNewsTreePage(){
@@ -359,9 +401,15 @@ class NewsView extends BaseSiteView{
      *
      */
 	
-	function ActivateBanner($message){
+	function ChangeState($message){
 		$response = Project::getAjaxResponse();
-		$response -> block($message[1].$message[0], true, $message[2]);
+		$response -> block($message['table'].$message['id'], true, $message['text']);
+		//print_r($response -> getResponse());
+	}
+	
+	function ChangeState2($message){
+		$response = Project::getAjaxResponse();
+		$response -> attribute($message['table'].$message['id'], "class", $message['text']);
 		//print_r($response -> getResponse());
 	}
 	

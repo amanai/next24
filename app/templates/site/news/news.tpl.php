@@ -6,9 +6,12 @@
 	<div class="tab-page tab-page-selected">
 	<table width="100%" height="100%" cellpadding="0">
 	<tr>
+	    <?php 
+	       if (!$this -> isShowOneNews){ // не одна новость
+	    ?> 
 		<td class="next24u_left">
-			<!-- левый блок -->
-
+			 <!-- левый блок -->
+             <?php if ($this->shownow != "allnews"){?>
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<div class="block_title"><h2>Каналы RSS</h2></div>
 					
@@ -23,9 +26,9 @@
                     <input type="submit" name="subscribe" value="Сохранить подписку" />
                     <?php } ?>
                     </form>
-					
 
 				</div></div></div></div>
+		     <?php } ?>
 
 
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
@@ -55,6 +58,9 @@
 			<!-- /левый блок -->
 
 		</td>
+		<?php 
+	       }  // не одна новость
+	    ?> 
 		<td class="next24u_right">
 
 
@@ -68,10 +74,13 @@
 					   <h2>
 					       <?php 
 					       if ($this->news['favorite_news_id']) $starGif = "star_on.gif"; else $starGif = "star_off.gif"; 
-				           echo $this->news['news_title'].' 
-				           <a onclick=\'
-    				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$this->news['news_id'], "imgUrl"=>$this -> image_url), "POST").', true);
-    				        \' href="javascript: void(0);"><img src="'.$this -> image_url.$starGif.'" id="imgstar'.$this->news['news_id'].'"></a>';
+					       echo $this->news['news_title'];
+					       if ($this->user_id){
+    				           echo ' 
+    				           <a onclick=\'
+        				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$this->news['news_id'], "imgUrl"=>$this -> image_url), "POST").', true);
+        				        \' href="javascript: void(0);"><img src="'.$this -> image_url.$starGif.'" id="imgstar'.$this->news['news_id'].'"></a>';
+					       }
 					       ?>
 					        
 					   </h2>
@@ -90,7 +99,7 @@
 		           }
 			       ?>
 			       <div class="block_subtitle_left">
-			         <b>Категория: </b><?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($this->news['news_tree_id'], false); ?>&nbsp;&nbsp;&nbsp;
+			         <b>Категория: </b><?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($this->news['news_tree_id'], true); ?>&nbsp;&nbsp;&nbsp;
 			         <b>Дата публикации: </b><?php echo $this->news['pub_date']; ?>&nbsp;&nbsp;&nbsp;&nbsp;
 			         <b>Лента: </b><?php echo $this->news['feeds_name']; ?>
 			       </div>
@@ -131,7 +140,7 @@
     				<div class="block_title">
     					<div class="block_title_left">
     					   <h2>
-    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, false); if (!$this->shownow){?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTreeFeeds:".$this->filterNewsTreeFeeds; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?>
+    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, false); if ($this->shownow != "allnews"){?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTreeFeeds:".$this->filterNewsTreeFeeds; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?>
     					   </h2>
     					</div>
     					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n<?php echo $this->filterNewsTreeFeeds;?>')" style="cursor: pointer;" /></div>
@@ -169,7 +178,7 @@
     				<div class="block_title">
     					<div class="block_title_left">
     					   <h2>
-    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false);  if (!$this->shownow){ ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?>
+    					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false);  if ($this->shownow  != "allnews"){ ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?>
     					   </h2>
     					</div>
     					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n<?php echo $newsTree['id'];?>')" style="cursor: pointer;" /></div>

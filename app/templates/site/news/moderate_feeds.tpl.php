@@ -13,9 +13,22 @@
 			<!-- левый блок -->
 
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-					<div class="block_title"><h2>Список подключенных RSS-лент</h2></div>
+				    <?=$this -> flash_messages; ?>
+					<div class="block_title"><h2>Список всех RSS-лент</h2></div>
 					
-					
+					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+                      <form action="" method="post" name="frm_find">
+                        <input type="hidden" value="find" name="1"/>
+                        Не модерированные баннеры: <input type="checkbox" value="1" name="banner_state" <?php if ($this->banner_state) echo "checked"; ?> /> 
+                        Не модерированные RSS-ленты: <input type="checkbox" value="1" name="feeds_state" <?php if ($this->feeds_state) echo "checked"; ?> /><br /> 
+                        <input type="radio" name="feed_is_partner" value="2" <?php if ($this->feed_is_partner==2) echo "checked"; ?>  /> Партнер
+                        <input type="radio" name="feed_is_partner" value="1" <?php if ($this->feed_is_partner==1) echo "checked"; ?>  /> Пользователь
+                        <input type="radio" name="feed_is_partner" value="0" <?php if ($this->feed_is_partner==0) echo "checked"; ?>  /> Все<br />
+                        <input type="text" name="user_login" value="<?php echo $this->user_login; ?>" /> Пользователь
+                        
+                        <input type="submit" value="искать" name="btn_find"/>
+                      </form>
+                    </div></div></div></div>
                     
                     <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
                         <table class="questions">
@@ -29,7 +42,7 @@
                           <td><b>Добавил</b></td>
                          </tr>
                          <?php 
-                    
+                        $i=1;
                         foreach ($this->aListNewsTreeFeeds as $newsTreeFeeds){
                             switch ($newsTreeFeeds['text_parse_type']){
                                 case 1:
@@ -45,9 +58,10 @@
                             $news_tree_state = ($newsTreeFeeds['news_tree_state'])?'active':'not moderated';
                             $feeds_state = ($newsTreeFeeds['feeds_state'])?'active':'not moderated';
                             $news_banners_state = ($newsTreeFeeds['news_banners_state'])?'active':'not moderated';
-                            $is_partner = ($newsTreeFeeds['is_partner'])?'да':'нет';
+                            $is_partner = ($newsTreeFeeds['is_partner'])?'партнер':'пользователь';
+                            if ($i/2 == 1){$i=1; $tr_id="cmod_tab1";}else {$i++; $tr_id="cmod_tab2";}
                             echo '
-                            <tr id="cmod_tab2">
+                            <tr id="'.$tr_id.'">
         					   <td>'.$newsTreeFeeds['feeds_name'].'<div class="list_status" id="feeds'.$newsTreeFeeds['feed_id'].'">'.$feeds_state.'</div>';
         					if ($this -> isAdmin){
         				        echo '<a onclick=\'
@@ -63,7 +77,7 @@
         					   </td>
         					   <td>'.$newsTreeFeeds['url'].'</td>
         					   <td>'.$newsTreeFeeds['category_tag'].'</td>
-        					   <td>'.htmlspecialchars($newsTreeFeeds['code']).'<div class="list_status" id="news_banners'.$newsTreeFeeds['news_banner_id'].'">'.$news_banners_state.'</div>';
+        					   <td><a href="javascript:void(0);" class="show_banner">Show</a><div class="banner_code"><pre>'.htmlspecialchars($newsTreeFeeds['code']).'</pre></div><div class="list_status" id="news_banners'.$newsTreeFeeds['news_banner_id'].'">'.$news_banners_state.'</div>';
         				    if ($this -> isAdmin){
         				        echo '<a onclick=\'
             				        document.getElementById("news_banners'.$newsTreeFeeds['news_banner_id'].'").innerHTML="<img src='.$this -> image_url.'loader2.gif >";
@@ -80,7 +94,7 @@
         				    echo '
         					   </td>
         					   <td>'.$text_parse_type.'</td>
-        					   <td>'.$is_partner.'</td>
+        					   <td>'.$newsTreeFeeds['user_login'].' ['.$is_partner.']</td>
         					   <td><a href="'.$this->createUrl('News', 'ChangeFeed', null, false).'/news_tree_feeds_id:'.$newsTreeFeeds['news_tree_feeds_id'].'/">Change</a></td>
         					</tr>					
                             ';
@@ -89,6 +103,8 @@
                          </tbody></table>
 
                     </div></div></div></div>
+					
+					
 
 				</div></div></div></div>
 				           

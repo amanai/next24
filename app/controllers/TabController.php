@@ -119,7 +119,11 @@ class TabController{
 			return $tabs;
 		}
 		
-		static public function getNewsTabs($user_id, $selected_news = false, $selected_addfeed = false, $selected_myrss = false, $selected_addnewstree = false, $one_news = false, $aNews = array()) {
+		static public function getNewsTabs(
+		          $user_id, $isAdmin = false, $selected_news = false, $selected_addfeed = false, $selected_myrss = false, 
+		          $selected_addnewstree = false, $one_news = false, $aNews = array(),  $all_news=false,  $all_news_title="",
+		          $isModerateFeeds = false, $isModerateNewsTree = false
+		          ) {
 			$request = Project::getRequest();
 			$tabs = array(
 							0 => array(
@@ -133,8 +137,8 @@ class TabController{
 
 			if ($user_id){
 				$tabs[]= array(
-								'name' => 'Мои RSS ленты',
-								'title' => 'Мои RSS ленты',
+								'name' => 'Мои RSS-ленты',
+								'title' => 'Мои RSS-ленты',
 								'selected' => $selected_myrss,
 							 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
 								);
@@ -142,8 +146,8 @@ class TabController{
 			
 			if ($selected_addfeed){
 				$tabs[]= array(
-								'name' => 'Добавить RSS ленту',
-								'title' => 'Добавить RSS ленту',
+								'name' => 'Добавить RSS-ленту',
+								'title' => 'Добавить RSS-ленту',
 								'selected' => true,
 							 	'url' => $request -> createUrl('News', 'AddFeed', null, false)
 								);
@@ -166,6 +170,31 @@ class TabController{
 								'url' => $request -> createUrl('News', 'News', null, false)."/news_id:".$aNews['id']
 								);
 			}
+			
+			if ($all_news){
+				$tabs[]= array(
+								'name' => $all_news_title,
+								'title' => $all_news_title,
+								'selected' => true,
+							 	'url' => $request -> createUrl('News', 'News', null, false)
+								);
+			}
+			
+			if ($isAdmin){
+			    $tabs[]= array(
+								'name' => "Управление RSS-лентами",
+								'title' => "Управление RSS-лентами",
+								'selected' => $isModerateFeeds,
+							 	'url' => $request -> createUrl('News', 'ModerateFeeds', null, false)
+								);
+			    $tabs[]= array(
+								'name' => "Управление деревом каталогов",
+								'title' => "Управление деревом каталогов",
+								'selected' => $isModerateNewsTree,
+							 	'url' => $request -> createUrl('News', 'ModerateNewsTree', null, false)
+								);
+			}
+			
 			return $tabs;
 		}
 		

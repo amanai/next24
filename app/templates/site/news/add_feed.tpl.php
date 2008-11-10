@@ -5,14 +5,17 @@
 	
 	<div class="tab-page tab-page-selected">
 	
-	<form name="frmFeeds" action="" method="POST" onsubmit="return validateAddRss(this);">
+	<form name="frmFeeds" action="" method="POST" >
 	<input type="hidden" name="frmAction" value="<?php echo $this -> frmAction; ?>">
 	
 	<!-- Загрузка изображений -->
 	<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-
-		<h1><?php echo $this -> submitValue; ?> RSS-ленту</h1>
-		<br /><br />
+	    <?=$this -> flash_messages; ?>
+        
+	    <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+        <div class="block_title"><h2><?php echo $this -> submitValue; ?> RSS-ленту</h2></div>
+        </div></div></div></div>
+		
 		<table width="10%" cellpadding="5">
 		<tr>
 			<td nowrap>Название RSS-ленты <span class="red">*</span>:</td>

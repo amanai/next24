@@ -14,6 +14,17 @@ $(document).ready(function(){
         }
         
     });
+    
+    $(".show_banner").click(function(){
+        if($(this).text() == "Show"){
+            $(this).next().show();
+            $(this).text("Hide");
+        }else{
+            $(this).next().hide();
+            $(this).text("Show");
+        }
+        
+    });
     /*
     $(".bCheckTree").click(function(){
         var isChecked = $(this).attr('checked');

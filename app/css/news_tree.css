@@ -125,3 +125,20 @@
     display: inline-block;
     background: url('../images/chb_plus.png') 0 50% no-repeat;
 }
+
+.strike{
+   text-decoration: line-through;
+}
+
+.overflow{
+    width: 50px;
+    overflow: hidden;
+}
+
+.banner_code{
+    border: 1px solid #075074;
+    display: none;
+    text-align: left;
+}
+
+
