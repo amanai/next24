@@ -110,11 +110,11 @@ class NewsView extends BaseSiteView{
           <li >
             '.$htmlImg.'
             <label style="white-space: nowrap; "><span id="news_tree'.$news['id'].'" class="'.$isStrikeClass.'">'.$news['name'].'</span>
-            [<a href="#">'.$user['login'].'</a>]';
+            [<a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $user['login']).'">'.$user['login'].'</a>]';
           $this->_htmlTree .= '
 		    <a onclick=\'
 	        ajax('.AjaxRequest::getJsonParam("News", "ChangeState", array("id"=>$news['id'], "element"=>"news_tree", "attr"=>"strike", "text1"=>"strike", "text2"=>"not_strike" ), "POST").', true);
-	        \' href="javascript: void(0);">Change state</a> <a href="'.$ChangeNewsTreeUrl.'/tree_id:'.$news['id'].'/deleteNewsTree:1/">Delete</a>';
+	        \' href="javascript: void(0);">Изменить статус</a> <a href="'.$ChangeNewsTreeUrl.'/tree_id:'.$news['id'].'/deleteNewsTree:1/">Удалить</a>';
           $this->_htmlTree .= '   
             </label>
             <ul class="checkbox_tree">';
@@ -388,6 +388,8 @@ class NewsView extends BaseSiteView{
 	   $this->_js_files[] = 'jquery.js';
 	   $this->_js_files[]='blockUI.js';
 	   $this->_js_files[]='ajax.js';
+	   $this->_js_files[] = 'news_tree.js';
+	   $this->_css_files[] = 'news_tree.css';
 	   $this -> setTemplate(null, 'my_feed.tpl.php');
 	}
 	

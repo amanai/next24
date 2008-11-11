@@ -25,7 +25,7 @@
                           <td><b>Тег<br />категории</b></td>
                           <td><b>Код баннера</b></td>
                           <td><b>Раздел</b></td>
-                          <td><b>Преобразование<br />текста</b></td>
+                         
                           <td><b>Добавил</b></td>
                          </tr>
                          <?php 
@@ -42,10 +42,10 @@
                                     $text_parse_type = 'strip_tags';
                                     break;
                             }
-                            $news_tree_state = ($newsTreeFeeds['news_tree_state'])?'active':'not moderated';
-                            $feeds_state = ($newsTreeFeeds['feeds_state'])?'active':'not moderated';
-                            $news_banners_state = ($newsTreeFeeds['news_banners_state'])?'active':'not moderated';
-                            $is_partner = ($newsTreeFeeds['is_partner'])?'да':'нет';
+                            $news_tree_state = ($newsTreeFeeds['news_tree_state'])?'активный':'не провереннный';
+                            $feeds_state = ($newsTreeFeeds['feeds_state'])?'активный':'не провереннный';
+                            $news_banners_state = ($newsTreeFeeds['news_banners_state'])?'активный':'не провереннный';
+                            $is_partner = ($newsTreeFeeds['is_partner'])?'партнер':'пользователь';
                             echo '
                             <tr id="cmod_tab2">
         					   <td>'.$newsTreeFeeds['feeds_name'].'<div class="list_status" id="feeds'.$newsTreeFeeds['feed_id'].'">'.$feeds_state.'</div>';
@@ -63,8 +63,11 @@
         					   </td>
         					   <td>'.$newsTreeFeeds['url'].'</td>
         					   <td>'.$newsTreeFeeds['category_tag'].'</td>
-        					   <td>'.htmlspecialchars($newsTreeFeeds['code']).'<div class="list_status" id="news_banners'.$newsTreeFeeds['news_banner_id'].'">'.$news_banners_state.'</div>';
-        				    if ($this -> isAdmin){
+        					   <td>';
+        				    if ($newsTreeFeeds['news_banner_id']){ // we have a banner
+        				        echo '
+        					       <a href="javascript:void(0);" class="show_banner">Показать код баннера</a><div class="banner_code"><pre>'.htmlspecialchars($newsTreeFeeds['code']).'</pre></div><div class="list_status" id="news_banners'.$newsTreeFeeds['news_banner_id'].'">'.$news_banners_state.'</div>';
+        				        if ($this -> isAdmin){
         				        echo '<a onclick=\'
             				        document.getElementById("news_banners'.$newsTreeFeeds['news_banner_id'].'").innerHTML="<img src='.$this -> image_url.'loader2.gif >";
             				        ajax
@@ -73,14 +76,17 @@
             				        );
             				        \' href="javascript: void(0);">
                                     Изменить статус</a>';
-        				    }    				    
+        				        }
+        				    }else{ // no banners in this RSS
+        				        echo 'нет кода баннера';
+        				    }
         				    echo '
         					   </td>
         					   <td>'.$this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTreeFeeds['news_tree_id']).'<div class="list_status" id="news_tree'.$newsTreeFeeds['news_tree_id'].'">'.$news_tree_state.'</div>';
         				    echo '
         					   </td>
-        					   <td>'.$text_parse_type.'</td>
-        					   <td>'.$is_partner.'</td>
+        					   
+        					   <td><a href="'.$this->createUrl('User', 'Profile', null, $newsTreeFeeds['user_login']).'">'.$newsTreeFeeds['user_login'].'</a> ['.$is_partner.']</td>
         					   <td><a href="'.$this->createUrl('News', 'ChangeFeed', null, false).'/news_tree_feeds_id:'.$newsTreeFeeds['news_tree_feeds_id'].'/">Change</a></td>
         					</tr>					
                             ';

@@ -18,15 +18,30 @@
 					
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
                       <form action="" method="post" name="frm_find">
-                        <input type="hidden" value="find" name="1"/>
-                        Не модерированные баннеры: <input type="checkbox" value="1" name="banner_state" <?php if ($this->banner_state) echo "checked"; ?> /> 
-                        Не модерированные RSS-ленты: <input type="checkbox" value="1" name="feeds_state" <?php if ($this->feeds_state) echo "checked"; ?> /><br /> 
-                        <input type="radio" name="feed_is_partner" value="2" <?php if ($this->feed_is_partner==2) echo "checked"; ?>  /> Партнер
-                        <input type="radio" name="feed_is_partner" value="1" <?php if ($this->feed_is_partner==1) echo "checked"; ?>  /> Пользователь
-                        <input type="radio" name="feed_is_partner" value="0" <?php if ($this->feed_is_partner==0) echo "checked"; ?>  /> Все<br />
-                        <input type="text" name="user_login" value="<?php echo $this->user_login; ?>" /> Пользователь
-                        
-                        <input type="submit" value="искать" name="btn_find"/>
+                      <input type="hidden" value="find" name="1"/>
+                      <table>
+                      <tr>
+                        <td valign="top"><b>Модерация</b>:</td>
+                        <td valign="top">
+                            <input type="checkbox" value="1" name="banner_state" <?php if ($this->banner_state) echo "checked"; ?> /> Не проверенные баннеры;<br />
+                            <input type="checkbox" value="1" name="feeds_state" <?php if ($this->feeds_state) echo "checked"; ?> /> Не проверенные RSS-ленты
+                        </td>
+                      </tr><tr>  
+                        <td valign="top"><b>Источник</b>:</td>
+                        <td valign="top">
+                            <input type="radio" name="feed_is_partner" value="2" <?php if ($this->feed_is_partner==2) echo "checked"; ?>  /> Партнер<br />
+                            <input type="radio" name="feed_is_partner" value="1" <?php if ($this->feed_is_partner==1) echo "checked"; ?>  /> Пользователь<br />
+                            <input type="radio" name="feed_is_partner" value="0" <?php if ($this->feed_is_partner==0) echo "checked"; ?>  /> Все
+                        </td>
+                      </tr><tr>  
+                        <td valign="top"><b>Логин автора</b>:</td>
+                        <td valign="top">
+                            <input type="text" name="user_login" value="<?php echo $this->user_login; ?>" />
+                        </td>
+                      </tr><tr>  
+                        <td valign="middle" align="center" colspan="2"><input type="submit" value="искать" name="btn_find"/></td>
+                      </tr>
+                      </table>  
                       </form>
                     </div></div></div></div>
                     
@@ -55,9 +70,9 @@
                                     $text_parse_type = 'strip_tags';
                                     break;
                             }
-                            $news_tree_state = ($newsTreeFeeds['news_tree_state'])?'active':'not moderated';
-                            $feeds_state = ($newsTreeFeeds['feeds_state'])?'active':'not moderated';
-                            $news_banners_state = ($newsTreeFeeds['news_banners_state'])?'active':'not moderated';
+                            $news_tree_state = ($newsTreeFeeds['news_tree_state'])?'активный':'не провереннный';
+                            $feeds_state = ($newsTreeFeeds['feeds_state'])?'активный':'не провереннный';
+                            $news_banners_state = ($newsTreeFeeds['news_banners_state'])?'активный':'не провереннный';
                             $is_partner = ($newsTreeFeeds['is_partner'])?'партнер':'пользователь';
                             if ($i/2 == 1){$i=1; $tr_id="cmod_tab1";}else {$i++; $tr_id="cmod_tab2";}
                             echo '
@@ -77,8 +92,11 @@
         					   </td>
         					   <td>'.$newsTreeFeeds['url'].'</td>
         					   <td>'.$newsTreeFeeds['category_tag'].'</td>
-        					   <td><a href="javascript:void(0);" class="show_banner">Show</a><div class="banner_code"><pre>'.htmlspecialchars($newsTreeFeeds['code']).'</pre></div><div class="list_status" id="news_banners'.$newsTreeFeeds['news_banner_id'].'">'.$news_banners_state.'</div>';
-        				    if ($this -> isAdmin){
+        					   <td>';
+        				    if ($newsTreeFeeds['news_banner_id']){ // we have a banner
+        				        echo '
+        					       <a href="javascript:void(0);" class="show_banner">Показать код баннера</a><div class="banner_code"><pre>'.htmlspecialchars($newsTreeFeeds['code']).'</pre></div><div class="list_status" id="news_banners'.$newsTreeFeeds['news_banner_id'].'">'.$news_banners_state.'</div>';
+        				        if ($this -> isAdmin){
         				        echo '<a onclick=\'
             				        document.getElementById("news_banners'.$newsTreeFeeds['news_banner_id'].'").innerHTML="<img src='.$this -> image_url.'loader2.gif >";
             				        ajax
@@ -87,14 +105,17 @@
             				        );
             				        \' href="javascript: void(0);">
                                     Изменить статус</a>';
-        				    }    				    
+        				        }
+        				    }else{ // no banners in this RSS
+        				        echo 'нет кода баннера';
+        				    }
         				    echo '
         					   </td>
         					   <td>'.$this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTreeFeeds['news_tree_id']).'<div class="list_status" id="news_tree'.$newsTreeFeeds['news_tree_id'].'">'.$news_tree_state.'</div>';
         				    echo '
         					   </td>
         					   <td>'.$text_parse_type.'</td>
-        					   <td>'.$newsTreeFeeds['user_login'].' ['.$is_partner.']</td>
+        					   <td><a href="'.$this->createUrl('User', 'Profile', null, $newsTreeFeeds['user_login']).'">'.$newsTreeFeeds['user_login'].'</a> ['.$is_partner.']</td>
         					   <td><a href="'.$this->createUrl('News', 'ChangeFeed', null, false).'/news_tree_feeds_id:'.$newsTreeFeeds['news_tree_feeds_id'].'/">Change</a></td>
         					</tr>					
                             ';

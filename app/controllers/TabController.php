@@ -122,7 +122,7 @@ class TabController{
 		static public function getNewsTabs(
 		          $user_id, $isAdmin = false, $selected_news = false, $selected_addfeed = false, $selected_myrss = false, 
 		          $selected_addnewstree = false, $one_news = false, $aNews = array(),  $all_news=false,  $all_news_title="",
-		          $isModerateFeeds = false, $isModerateNewsTree = false
+		          $isModerateFeeds = false, $isModerateNewsTree = false, $change_feed = false
 		          ) {
 			$request = Project::getRequest();
 			$tabs = array(
@@ -150,6 +150,15 @@ class TabController{
 								'title' => 'Добавить RSS-ленту',
 								'selected' => true,
 							 	'url' => $request -> createUrl('News', 'AddFeed', null, false)
+								);
+			}
+			
+			if ($change_feed){
+				$tabs[]= array(
+								'name' => 'Изменение RSS-ленты',
+								'title' => 'Изменение RSS-ленты',
+								'selected' => true,
+							 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
 								);
 			}
 			

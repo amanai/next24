@@ -16,12 +16,12 @@ $(document).ready(function(){
     });
     
     $(".show_banner").click(function(){
-        if($(this).text() == "Show"){
+        if($(this).text() == "Показать код баннера"){
             $(this).next().show();
-            $(this).text("Hide");
+            $(this).text("Скрыть");
         }else{
             $(this).next().hide();
-            $(this).text("Show");
+            $(this).text("Показать код баннера");
         }
         
     });

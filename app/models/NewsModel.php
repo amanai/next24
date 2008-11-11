@@ -49,7 +49,7 @@ class NewsModel extends BaseModel{
         $sql = "
             SELECT  ntf.*,  ntf.id as news_tree_feeds_id,
                     feeds.user_id as feeds_user_id, feeds.name as feeds_name, feeds.url, feeds.type, feeds.state as feeds_state, 
-                    feeds.creation_date, feeds.last_parse_date, feeds.text_parse_type, 
+                    feeds.creation_date, feeds.last_parse_date, feeds.text_parse_type,  feeds.is_partner, 
                     news_tree.parent_id, news_tree.user_id as news_tree_user_id, news_tree.name as news_tree_name, news_tree.state as news_tree_state, 
                     news_banners.user_id as news_banners_user_id, news_banners.code, news_banners.state as news_banners_state, 
                     users.login as user_login 
@@ -108,9 +108,10 @@ class NewsModel extends BaseModel{
         $sql = "
             SELECT  ntf.*,  ntf.id as news_tree_feeds_id,
                     feeds.user_id as feeds_user_id, feeds.name as feeds_name, feeds.url, feeds.type, feeds.state as feeds_state, 
-                    feeds.creation_date, feeds.last_parse_date, feeds.text_parse_type, 
+                    feeds.creation_date, feeds.last_parse_date, feeds.text_parse_type,  feeds.is_partner, 
                     news_tree.parent_id, news_tree.user_id as news_tree_user_id, news_tree.name as news_tree_name, news_tree.state as news_tree_state, 
-                    news_banners.user_id as news_banners_user_id, news_banners.code, news_banners.state as news_banners_state 
+                    news_banners.user_id as news_banners_user_id, news_banners.code, news_banners.state as news_banners_state,
+                    users.login as user_login  
             FROM news_tree_feeds as ntf
             INNER JOIN feeds 
                 ON ntf.feed_id = feeds.id AND feeds.user_id = ".$user_id;
@@ -123,6 +124,9 @@ class NewsModel extends BaseModel{
             LEFT JOIN news_banners 
                 ON ntf.news_banner_id = news_banners.id ";
         if ($isNewsBannersActive) $sql .= " AND news_banners.state=1 ";
+        $sql .= "
+            LEFT JOIN users 
+                ON feeds.user_id = users.id ";
         $sql .= " ORDER BY feeds.creation_date ";
 
         $result = $DE -> select($sql);

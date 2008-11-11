@@ -426,7 +426,7 @@ class NewsController extends SiteController{
         	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'ChangeFeed')."/change_feed/news_tree_feeds_id:".$news_tree_feeds_id."/");
     	        }
     	    }
-	        $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, true)); // Show tabs
+	        $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false,  false,  false, array(), false, false, false, false, true)); // Show tabs
 	        $this-> _view -> assign('frmAction', 'change'); 
 	        $this-> _view -> assign('submitValue', 'Изменить'); 
 	        $this-> _view -> assign('feed_name', $newsTreeFeed['feeds_name']); 
@@ -478,10 +478,10 @@ class NewsController extends SiteController{
         if ($oldSet){
             if ($oldSet['state']){
                 $newsModel -> changeOneValue($table, $request->id, 'state', 0);
-                $message['text'] = ($request->text1)?$request->text1:"not moderated";
+                $message['text'] = ($request->text1)?$request->text1:"не проверенный";
             }else{
                 $newsModel -> changeOneValue($table, $request->id, 'state', 1);
-                $message['text'] = ($request->text2)?$request->text2:"active";
+                $message['text'] = ($request->text2)?$request->text2:"активный";
             }
         }
         if ($request->attr == "strike"){
