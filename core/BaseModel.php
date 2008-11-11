@@ -137,6 +137,7 @@ abstract class BaseModel{
 				}
 			}
 			$DE = Project::getDatabase();
+			
 			if ((int)$this -> id > 0){
 				$DE -> query('UPDATE '.$this -> _table.' SET ?a WHERE id = ?d', $this -> _data, $this -> id);
 			} else {

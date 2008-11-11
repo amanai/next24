@@ -1,5 +1,6 @@
 <form action="<?=$this->edit?$this -> createUrl('User', 'Saveprofile'):$this -> createUrl('User', 'Registration'); ?>" method="post" id="register_form">
 <?=$this -> flash_messages; ?>
+
 <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 <div class="block_title">
 		<div class="block_title_left"><h1>Обязательные данные</h1></div>

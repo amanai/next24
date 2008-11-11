@@ -107,9 +107,9 @@ class UserView extends BaseSiteView{
 			$this -> helper -> month = $date[1];
 			$this -> helper -> year = $date[0];
 			
-			$this -> helper -> surname = $this->helper->first_name;
-			$this -> helper -> name = $this->helper->middle_name;
-			$this -> helper -> father_name = $this->helper->last_name;
+			$this -> helper -> surname = $this->helper->last_name;
+			$this -> helper -> name = $this->helper->first_name;
+			$this -> helper -> father_name = $this->helper->middle_name;
 			
 			$this -> helper -> country = $this->helper->country_id;
 			$this -> helper -> city = $this->helper->city_id;

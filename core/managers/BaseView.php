@@ -51,16 +51,18 @@ class BaseView{
 		}
 	
 		function parse(){
+			$messages='';
 			foreach ($this -> _fm_priority as $category => $priority){
 				if (isset($this -> _flesh_messages[$category]) && count($this -> _flesh_messages[$category])){
 					$view = new FlashMessageView();
 					$view->setTemplate($this -> _base_dir);
 					// TODO:: write only hight priority messages
-					$this -> assign('flash_messages', $view -> show($this -> _flesh_messages[$category], $category));
-					break;
+					$messages.=$view -> show($this -> _flesh_messages[$category], $category);
+					//$this -> assign('flash_messages', $view -> show($this -> _flesh_messages[$category], $category));
+					//break;
 				}
 			}
-			
+			$this -> assign('flash_messages', $messages);
 			
 			$template_root = Project::getTemplateManager() -> getTemplateDir();
 			if ($this -> _base_dir !== null){

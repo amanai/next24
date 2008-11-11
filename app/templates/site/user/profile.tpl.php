@@ -48,7 +48,8 @@
 								<td><b>Пол</b></td>
 								<td><?=$this->user_profile['gender']?'мужской':'женский';?></td>
 							</tr>
-							<? if ($this->user_profile['user_location']) { ?>
+							
+							<? if ($this->user_location) { ?>
 							<tr>
 								<td><b>Расположение</b></td>
 								<td><?=$this->user_location;?></td>

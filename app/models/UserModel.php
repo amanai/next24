@@ -18,13 +18,22 @@ class UserModel extends BaseModel{
 			}
 		}
 		
+		function updateInterests() {
+
+		}
+		
 		function afterLoad() {
 			$ui_model = new UserInterestsModel;
 			$this->interest = implode(", ", $ui_model -> getInterests($this -> id));
-		}
-		
-		function afterSave() {
-			
+			$country_model = new CountryModel;
+			$country_model -> load($this->country_id);
+			$this->country=$country_model ->name;
+			$state_model = new StateModel;
+			$state_model -> load($this->state_id);
+			$this->state=$state_model ->name;
+			$city_model = new CityModel;
+			$city_model -> load($this->city_id);
+			$this->city=$city_model ->name;
 		}
 		
 		function load($id) {
@@ -34,8 +43,10 @@ class UserModel extends BaseModel{
 		}
 		
 		function save() {
+			// Убираем текстовые поля
+			unset($this->_data['interest'], $this->_data['country'], $this->_data['state'], $this->_data['city']);
+			// ----------------------
 			$result=parent::save();
-			$this->afterSave();
 			return $result;
 		}
 		

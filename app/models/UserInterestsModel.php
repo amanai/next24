@@ -17,6 +17,10 @@ class UserInterestsModel extends BaseModel{
 			}
 		}
 		
+		function clearUserInterests($user_id) {
+			
+		}
+		
 		function getInterests($user_id) {
 			$sql="SELECT I.`name` FROM ".$this -> _table." as IC LEFT JOIN `interests` as I ON IC.`interest_id`=I.`id` WHERE IC.`user_id`=?";			
 			return Project::getDatabase() -> selectCol($sql, (int)$user_id);
