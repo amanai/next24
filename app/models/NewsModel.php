@@ -13,7 +13,7 @@ class NewsModel extends BaseModel{
             UPDATE ".$table_name." SET ".$field." = ? 
             WHERE id = ?
         ";
-        $result = $DE -> select($sql, $value, $id);
+        $result = $DE -> query($sql, $value, $id);
     }
     
     function getOneRecord($table_name, $id){

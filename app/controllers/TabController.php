@@ -207,6 +207,34 @@ class TabController{
 			return $tabs;
 		}
 		
+		
+		static public function getDebateTabs($debate = false, $debate_history = false, $vinners = false) {
+			$request = Project::getRequest();
+			$tabs = array(
+							0 => array(
+									'name' => 'Дебаты',
+									'title' => 'Дебаты',
+									'selected' => $debate,
+								 	'url' => $request -> createUrl('Debate', 'Debate', null, false)
+									),
+							1 => array(
+									'name' => 'Завершенные дебаты',
+									'title' => 'Завершенные дебаты',
+									'selected' => $debate_history,
+								 	'url' => $request -> createUrl('Debate', 'Debate', null, false)
+									),
+							2 => array(
+									'name' => 'Победители дебатов',
+									'title' => 'Победители дебатов',
+									'selected' => $vinners,
+								 	'url' => $request -> createUrl('Debate', 'Debate', null, false)
+									)
+							);
+
+			return $tabs;
+		}
+		
+		
 		static public function getMainArticleTabs($selected_cat = false, $selected_last_wins = false,/* $selected_top = false,*/ $selectded_competition = false, $selected_add_subject = false, $selected_view_article = false, /*$selected_managed_article = false,*/ $view_article_name = ""/*, $managed_article_name = "Новая статья"*/ ) {
 			$request = Project::getRequest();
 			$tabs = array(

@@ -1,6 +1,6 @@
 <?php
-define('SEC_TO_DELETE_NEWS_FROM_FEEDS', 259200); // 259200 = 3 days
-define('NEWS_PER_PAGE', 15); 
+//define('SEC_TO_DELETE_NEWS_FROM_FEEDS', 259200); // 259200 = 3 days
+//define('NEWS_PER_PAGE', 15); 
 
 class NewsController extends SiteController{
 	
@@ -131,21 +131,22 @@ class NewsController extends SiteController{
 		$this-> _view -> assign('filterNewsTreeFeeds', $request->filterNewsTreeFeeds); // filter by News tree feeds ID
 		
 		// PAGER
+		$news_per_page = $this -> getParam("NEWS_PER_PAGE");
 		$pager_view = new SitePagerView();
 		if ($request->filterNewsTreeFeeds){ // pager for All news , filterNewsTreeFeeds
 		    $news_count = $newsModel->getNewsCountByNewsTreeFeedsId($request->filterNewsTreeFeeds, $user->id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
-		    $pages_number = $pager_view->getPagesNumber($news_count, NEWS_PER_PAGE);
+		    $pages_number = $pager_view->getPagesNumber($news_count, $news_per_page);
 		    $current_page_number=$request->getKeyByNumber(2);
 		    $news_pager = $pager_view->show3('News', 'News', array("shownow"=>"allnews", "filterNewsTreeFeeds"=>$request->filterNewsTreeFeeds), $pages_number, $current_page_number);
 		    $this-> _view -> assign('news_tree_pager', $news_pager); 
-		    $this-> _view -> assign('page_settings', array("record_per_page"=>NEWS_PER_PAGE, "current_page_number"=>$current_page_number+1)); 
+		    $this-> _view -> assign('page_settings', array("record_per_page"=>$news_per_page, "current_page_number"=>$current_page_number+1)); 
 		}elseif ($request->filterNewsTree){ // pager for All news , filterNewsTree
 		    $news_count = $newsModel->getNewsCountByNewsTreeId($request->filterNewsTree, $user->id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
-		    $pages_number = $pager_view->getPagesNumber($news_count, NEWS_PER_PAGE);
+		    $pages_number = $pager_view->getPagesNumber($news_count, $news_per_page);
 		    $current_page_number=$request->getKeyByNumber(2);
 		    $news_pager = $pager_view->show3('News', 'News', array("shownow"=>"allnews", "filterNewsTree"=>$request->filterNewsTree), $pages_number, $current_page_number);
 		    $this-> _view -> assign('news_tree_pager', $news_pager); 
-		    $this-> _view -> assign('page_settings', array("record_per_page"=>NEWS_PER_PAGE, "current_page_number"=>$current_page_number+1)); 
+		    $this-> _view -> assign('page_settings', array("record_per_page"=>$news_per_page, "current_page_number"=>$current_page_number+1)); 
 		}
 		// END PAGER
 		
@@ -529,7 +530,9 @@ class NewsController extends SiteController{
 	    ini_set('max_execution_time', 0);
 	    $newsModel = new NewsModel();
 
-	    $newsModel -> deleteOldNews(date("Y-m-d H:i:s", time()-SEC_TO_DELETE_NEWS_FROM_FEEDS));	  
+	    $sec_to_delete_news_from_feeds = $this->getParam("SEC_TO_DELETE_NEWS_FROM_FEEDS");
+
+	    $newsModel -> deleteOldNews(date("Y-m-d H:i:s", time()-$sec_to_delete_news_from_feeds));	  
 	    
 	    $lastRSS = new lastRSS();
 	    $lastRSS->cache_dir = './rss_cache';
@@ -570,7 +573,7 @@ class NewsController extends SiteController{
 		                $pub_date_in_sec = strtotime($pub_date);
 		                if (
 		                      (!$newsTreeFeeds['last_parse_date'] || $newsTreeFeeds['last_parse_date'] < $pub_date) && // check parse date
-		                      (time()-SEC_TO_DELETE_NEWS_FROM_FEEDS < $pub_date_in_sec) // check news publication date
+		                      (time()-$sec_to_delete_news_from_feeds < $pub_date_in_sec) // check news publication date
 		                   )
 		                { // not parsed yet
 		                    $n++;

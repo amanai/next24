@@ -1,0 +1,10 @@
+
+/* Дебаты */
+.debati_time
+{
+	float: right;
+	font-weight: bold;
+	margin-left: 30px;
+	white-space: nowrap;
+	/*width: 1px;*/
+}
