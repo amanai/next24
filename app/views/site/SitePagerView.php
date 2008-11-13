@@ -23,7 +23,7 @@ class SitePagerView extends BaseSiteView{
 			return $this -> parse();
 		}
 		
-		function show3($controller = null, $action = null, $params = array(), $pages_number, $current_page_number, $user = null){
+		function show3($controller = null, $action = null, $params = array(), $pages_number, $current_page_number){
 			$this -> setTemplate(null, 'pager2.tpl.php');
 			$this -> assign('current_controller', $controller);
 			$this -> assign('current_action', $action);

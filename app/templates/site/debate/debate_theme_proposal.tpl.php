@@ -19,47 +19,32 @@
 
 <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 
-	<div style="margin: 0px -10px;">
+	<div style="text-align: center; margin: 0px -10px;">
+	<div style="width: 40%;">
 		<table class="questions">
 		<tr>
-			<td style="width: 100%; text-align: left;"><img src="<?php echo $this -> image_url; ?>open.png" width="21" height="24" align="absmiddle" /> <a href="#"><b>Тема</b></a></td>
-			<td><img src="<?php echo $this -> image_url; ?>open.png" width="21" height="24" align="absmiddle" /> <a href="#"><b>Предложил</b></a></td>
+			<td style="text-align: left;"> <b>Тема</b></td>
+			<td> <b>Предложил</b></td>
 		</tr>
-
-		<tr id="cmod_tab2">
-			<td style="text-align: left;"><a href="#">Есть ли жизнь на Марсе ???</a></td>
-			<td><a href="#">Hunter</a></td>
-		</tr>
-
-		<tr>
-			<td style="text-align: left;"><a href="#">Есть ли жизнь на Марсе ???</a></td>
-			<td><a href="#">Hunter</a></td>
-		</tr>
-
-		<tr id="cmod_tab2">
-			<td style="text-align: left;"><a href="#">Есть ли жизнь на Марсе ???</a></td>
-			<td><a href="#">Hunter</a></td>
-		</tr>
-
-		<tr>
-			<td style="text-align: left;"><a href="#">Есть ли жизнь на Марсе ???</a></td>
-			<td><a href="#">Hunter</a></td>
-		</tr>
+        <?php 
+        $i=1;
+        foreach ($this->aThemes as $theme){
+            if ($i/2 == 1){$tr_id = ""; $i=1;} else {$tr_id = "cmod_tab2"; $i++;}
+            if ($this->isAdmin || $this->user_id == $theme['user_id']) {$delTheme = '<a href="'.$this->createUrl('Debate', 'DebateDelTheme').'/theme_id:'.$theme['debate_theme_id'].'" class="red">Удалить</a> ';} else $delTheme='';
+            echo '
+        		<tr id="'.$tr_id.'">
+        			<td style="text-align: left;">'.$delTheme.$theme['debate_theme_theme'].'</td>
+        			<td><a href="'.$this->createUrl('User', 'Profile', null, $theme['login']).'">'.$theme['login'].'</a></td>
+        		</tr>
+		      ';
+        }
+        ?>		
 		</table>
 	</div>
-
-	<!-- листинг -->
-	<div class="listing_div_r">
-		<li class="listing">
-			<a href="#" title="Предыдущая страница">«</a>
-			<a class="active">1</a>
-			<a href="#">2</a>
-			<a href="#">3</a>
-			<a href="#">4</a>
-			<a href="#" title="Следующая страница">»</a>
-		</li>
 	</div>
-	<!-- /листинг -->
+
+	<?php echo $this->debate_pager;  ?>
+	
 </div></div></div></div>
 
 
@@ -67,11 +52,11 @@
 	<div class="block_title"><h2>Новая тема</h2></div>
 	<!-- Новая тема -->
 	<div>
-		<form action="">
+		<form action="" name="frmAddTheme">
 			<table width="100%">
 			<tr>
-				<td width="100%"><input type="text" style="width: 100%;" /></td>
-				<td><input type="submit" value="Предложить" /></td>
+				<td width="100%"><input type="text" name="theme" style="width: 100%;" /></td>
+				<td><input type="submit" name="addTheme" value="Предложить" /></td>
 			</tr>
 			</table>
 		</form>

@@ -41,6 +41,18 @@ class DebateModel extends BaseModel{
         return $result;
     }
     
+    function doStakeSecondUser($user_id, $stake_amount, $debateNow=array()){
+        $DE = Project::getDatabase();
+        if (!$debateNow) $debateNow = $this->getDebateNow();
+        if ($stake_amount <= $debateNow['stake_amount']) return false;
+        $sql ="
+            UPDATE debate_now SET stake_amount = ?, user_id_2 = ?
+            WHERE id = ?
+        ";
+        $DE -> query($sql, $stake_amount, $user_id, $debateNow['id']);
+        return true;
+    }
+    
     /**
      * END Debate_now
      * 
@@ -199,5 +211,141 @@ class DebateModel extends BaseModel{
      * END Debate_etaps
      * 
     */ 
+    
+    
+    /**
+     * Debate_theme
+     * 
+    */ 
+    
+    function getAllThemes($page_settings=array(), $order="debate_theme.votes DESC"){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sqlLimit = $this->getSqlLimit($page_settings);
+        $sql ="
+            SELECT users.login, 
+                   debate_theme.id as debate_theme_id, debate_theme.user_id, debate_theme.theme as debate_theme_theme, 
+                   debate_theme.votes as debate_theme_votes
+            FROM debate_theme
+            INNER JOIN users
+                ON debate_theme.user_id = users.id
+            ORDER BY ".$order."
+        ".$sqlLimit;
+        $result = $DE -> select($sql);
+        return $result;
+    }
+    
+    function getThemeById($theme_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT users.login, 
+                   debate_theme.id as debate_theme_id, debate_theme.user_id, debate_theme.theme as debate_theme_theme, 
+                   debate_theme.votes as debate_theme_votes
+            FROM debate_theme
+            INNER JOIN users
+                ON debate_theme.user_id = users.id
+            WHERE  debate_theme.id = ?               
+        ";
+        $result = $DE -> selectRow($sql, $theme_id);
+        return $result;
+    }
+    
+    function getThemesCount(){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT count(*) as c
+            FROM debate_theme
+        ";
+        $result = $DE -> selectRow($sql);
+        return $result['c'];
+    }
+    
+    function clearAllThemes(){
+        $DE = Project::getDatabase();
+        $sql = "
+            TRUNCATE TABLE `debate_theme`
+        ";
+        $result = $DE -> query($sql, $id);
+    }
+    
+    function addTheme($user_id, $theme, $votes=0){
+        $DE = Project::getDatabase();
+        $sql = "
+            INSERT INTO `debate_theme` ( `user_id` , `theme` , `votes` )
+            VALUES (
+            ?, ?, ?
+            )
+        ";
+        $DE -> query($sql, $user_id, strip_tags($theme), $votes);
+        return mysql_insert_id();
+    }
+    
+    function deleteTheme($theme_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            DELETE FROM `debate_theme`
+            WHERE id = ?
+        ";
+        return $DE -> query($sql, $theme_id);
+    }
+    
+    
+    function getThemeVoteByUserId($user_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT *
+            FROM debate_theme_vote
+            WHERE user_id = ?
+        ";
+        $result = $DE -> select($sql, $user_id);
+        return $result;
+    }
+    
+    function addThemeVote($user_id, $theme_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            INSERT INTO `debate_theme_vote` ( `user_id` , `debate_theme_id` )
+            VALUES (
+            ?, ?
+            )
+        ";
+        $DE -> query($sql, $user_id, $theme_id);
+        $sql = "
+            SELECT count(*) as c
+            FROM debate_theme_vote 
+            WHERE debate_theme_id = ?
+        ";
+        echo $sql.$theme_id."<hr>";
+        $result = $DE->selectRow($sql, $theme_id);
+        $themeCount = $result['c'];
+        $sql = "
+            UPDATE debate_theme
+            SET votes = ?
+            WHERE id = ?
+        ";
+        echo $sql.$themeCount.$theme_id."<hr>";
+        $DE -> query($sql, $themeCount, $theme_id);
+    }
+    
+    
+    /**
+     * END Debate_theme
+     * 
+    */ 
+    
+    // формиирует LIMIT для SQL запроса, для PAGER
+    function getSqlLimit($page_settings=array()){
+        if (is_array($page_settings) && count($page_settings)>0){
+            $record_per_page = $page_settings['record_per_page'];
+            $current_page_number = $page_settings['current_page_number'];
+            $sqlLimit = " LIMIT ".(($current_page_number-1)*$record_per_page).", ".$record_per_page." ";;
+        }else $sqlLimit ="";
+        
+        return $sqlLimit;
+    }
+    
 }
 ?>

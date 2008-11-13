@@ -147,5 +147,57 @@ class UserModel extends BaseModel{
       return $result;
       
     }
+    
+    
+    public function getUserById($user_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT *
+            FROM users
+            WHERE id = ?
+        ";
+        $result = $DE -> selectRow($sql, $user_id);
+        return $result;
+    }
+    
+    
+    /**
+     *  MONEY_TRANSACTION    
+    */
+    
+    public function getMoneyTransactionSumByUser($user_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT sum(amount) as money
+            FROM money_transaction
+            WHERE user_id = ?
+        ";
+        $result = $DE -> selectRow($sql, $user_id);
+        return $result['money'];
+    }
+    
+    public function changeUserMoney($user_id, $partner_id, $deal_amount, $description = ""){
+        $DE = Project::getDatabase();
+        $result = array();
+        $dateNow = date("Y-m-d H:i:s");
+        $sql ="
+            INSERT INTO money_transaction (user_id, partner_id, amount, transaction_date, description)
+            VALUES (?, ?, ?, ?, ?)
+        ";
+        $DE -> query($sql, $user_id, $partner_id, $deal_amount, $dateNow, strip_tags($description));
+        
+        $userMoney = $this->getMoneyTransactionSumByUser($user_id);
+        $sql ="
+            UPDATE users SET nextmoney = ?
+            WHERE id = ?
+        ";
+        $DE -> query($sql, $userMoney, $user_id);
+    }
+    
+    /**
+     *  END ***  MONEY_TRANSACTION    
+    */
 }
 ?>
