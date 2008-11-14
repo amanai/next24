@@ -8,3 +8,15 @@
 	white-space: nowrap;
 	/*width: 1px;*/
 }
+
+.helpers_list{
+  border: 1px solid;
+}
+.helpers_list td{
+  border: 1px solid;
+  padding: 5px;
+}
+.helpers_list th{
+  border: 2px solid;
+  padding: 5px;
+}

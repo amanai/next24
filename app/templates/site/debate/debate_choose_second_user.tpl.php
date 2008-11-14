@@ -26,18 +26,25 @@
 	    <form name="frmStake" action="" method="POST">
 		<table class="questions">
 		<tr>
-			<td align="left"> <b>Тема дебатов: </b></td><td colspan="2"><b><?php echo $this->debateTheme; ?></b></td>
+			<td align="left"> <b>Тема дебатов: </b></td><td colspan="2"><b><?php echo $this->debateNow['theme']; ?></b></td>
             </tr>
 		<tr>
 			<td align="left"> Текущая ставка: </td>
 			<td>
 			     <?php 
-			     echo (int)$this->debateStakeAmount." nm"; 
+			     echo (int)$this->debateNow['stake_amount']." nm"; 
 			     ?>
 			</td>
 			<td>
 			     <?php 
-			     if($this->debateUser2){ $user2 = $this->debateUser2; echo '(поставил '.'<a href="'.$this->createUrl('User', 'Profile', null, $user2['login']).'">'.$user2['login'].'</a>)'; } 
+			     if($this->debateUser2){ 
+			         $user2 = $this->debateUser2;
+			         if ($user2['id'] == $this->user_id) {
+			             echo '(это Ваша ставка)';
+			         }else{
+			             echo '(поставил '.'<a href="'.$this->createUrl('User', 'Profile', null, $user2['login']).'">'.$user2['login'].'</a>)'; 
+			         }
+			     } 
 			     ?>
 			</td>
 		</tr>
@@ -52,7 +59,7 @@
 			<td>&nbsp;</td>
 		</tr>
 		<?php 
-		if ($this->debateUser1['id'] != $this->user_id){
+		if ($this->debateUser1['id'] != $this->user_id && $this->debateUser2['id'] != $this->user_id){
 		    echo '
 		<tr>
 			<td align="left"> &nbsp;</td>
@@ -70,8 +77,7 @@
 		
 	</div></div>
 
-	<?php echo $this->debate_pager;  ?>
-	
+		
 </div></div></div></div>
 
 

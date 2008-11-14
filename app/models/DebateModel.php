@@ -336,6 +336,112 @@ class DebateModel extends BaseModel{
      * 
     */ 
     
+    
+    /**
+     * Debate_helper_check
+     * 
+    */ 
+    
+    function getHelpersByDebateUserId($debate_user_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT *
+            FROM debate_helper_check
+            INNER JOIN users
+                ON users.id = debate_helper_check.helper_id
+            WHERE debate_user_id = ?
+        ";
+        return $DE -> select($sql, $debate_user_id);
+    }
+    
+    function addHelperCheck($helper_id, $debate_user_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            INSERT INTO `debate_helper_check` ( `helper_id` , `debate_user_id` )
+            VALUES (
+            ?, ?
+            )
+        ";
+        $DE -> query($sql, $helper_id, $debate_user_id);
+    }
+    
+    function isInHelperTable($helper_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT *
+            FROM debate_helper_check
+            INNER JOIN users
+                ON users.id = debate_helper_check.debate_user_id
+            WHERE helper_id = ?
+        ";
+        return $DE -> selectRow($sql, $helper_id);
+    }
+    
+    /**
+     * END Debate_helper_check
+     * 
+    */ 
+    
+    
+    
+    /**
+     *  Debate_stakes
+     * 
+    */ 
+    
+    function getDebateStakesByUserId($user_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT *
+            FROM debate_stakes
+            WHERE user_id = ? 
+        ";
+        $result = $DE -> select($sql, $user_id);
+        return $result;
+    }
+    
+    function getDebateStakesCount($debate_user_id = 0, $debate_history_id = 0){
+        $DE = Project::getDatabase();
+        if ($debate_user_id) $sqlWhere = " AND debate_user_id = ".$debate_user_id; else $sqlWhere = "";
+        $sql = "
+            SELECT count(*) as stakesCount
+            FROM debate_stakes
+            WHERE debate_history_id = ? ".$sqlWhere."
+        ";
+        $result = $DE -> selectRow($sql, $debate_history_id);
+        return $result['stakesCount'];
+    }
+    
+    function getDebateStakesSum($debate_user_id = 0, $debate_history_id = 0){
+        $DE = Project::getDatabase();
+        if ($debate_user_id) $sqlWhere = " AND debate_user_id = ".$debate_user_id; else $sqlWhere = "";
+        $sql = "
+            SELECT sum(stake_amount) as stakesSum
+            FROM debate_stakes
+            WHERE debate_history_id = ? ".$sqlWhere."
+        ";
+        $result = $DE -> selectRow($sql, $debate_history_id);
+        return $result['stakesSum'];
+    }
+    
+    function doStake($user_id, $debate_user_id, $stake_amount, $debate_history_id = 0){
+        $DE = Project::getDatabase();
+        $sql = "
+            INSERT INTO debate_stakes (user_id, debate_user_id, stake_amount, debate_history_id)
+            VALUES (?, ?, ?, ?)
+        ";
+        $DE -> query($sql, $user_id, $debate_user_id, $stake_amount, $debate_history_id);
+        return true;
+    }
+    
+    
+    /**
+     * END Debate_stakes
+     * 
+    */ 
+    
+    
+    
     // формиирует LIMIT для SQL запроса, для PAGER
     function getSqlLimit($page_settings=array()){
         if (is_array($page_settings) && count($page_settings)>0){
