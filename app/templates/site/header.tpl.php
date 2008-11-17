@@ -16,6 +16,8 @@
 	
 	<link href="<?=$this->getBothCJ($this -> _css_files,'css');?>" type="text/css" rel="StyleSheet"/>
 	<script type="text/javascript" src="<?=$this->getBothCJ($this -> _js_files,'js');?>"></script>
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> 
+	<link id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
 </head>
 <body>
 <table width="100%" height="100%" cellpadding="0">
