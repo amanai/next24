@@ -51,6 +51,16 @@ class DebateView extends BaseSiteView{
 	    $this -> setTemplate(null, 'debate_get_stakes.tpl.php');
 	}
 	
+	// etap 6
+	function DebatePage(){
+	    $this->_js_files[] = 'jquery.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'debate.js';
+	    $this->_css_files[]='debate.css';
+	    $this -> setTemplate(null, 'debate_chat.tpl.php');
+	}
+	
 	/**
      * END Pages VIEW
      *
@@ -61,9 +71,19 @@ class DebateView extends BaseSiteView{
      *
      */
 	
+	function returnChat($message){
+		$response = Project::getAjaxResponse();
+		$response -> append('chat_messages', $message['htmlChatText']);
+		$response -> append('chat_messages_helpers', $message['htmlChatHelpersText']);
+		$response -> append('chat_messages_users', $message['htmlChatUsersText']);
+		
+		//$response -> attribute('lastUpdate', "value", $message['newUpdate']);
+	}
+	
 	function test($message){
 		$response = Project::getAjaxResponse();
 		$response -> block($message['table'].$message['id'], true, $message['text']);
+		$response -> attribute($message['table'].$message['id'], "class", $message['text']);
 	}
 
 	/**

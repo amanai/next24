@@ -89,7 +89,7 @@ if ($this->userNumber && $this->isReady){
                 $sum = 0;
                 foreach ($this->aUserStakes as $userStake){
                     $sum += $userStake['stake_amount'];
-                    echo $userStake['stake_amount'].' nm на ';
+                    echo '<b>'.$userStake['stake_amount'].'</b> nm на ';
                     if ($userStake['debate_user_id'] == $this->debateUser1['id']) echo $this->debateUser1['login'];
                     else echo $this->debateUser2['login'];
                     echo '<br/>';

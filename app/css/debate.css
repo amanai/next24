@@ -20,3 +20,64 @@
   border: 2px solid;
   padding: 5px;
 }
+
+
+
+/* CHAT */
+
+.ChatMessages {
+    width:100%;
+}
+
+.ChatMessagesB, .ChatMessagesB_helpers {
+  width:400px;
+  overflow:auto;
+  border:1px solid #ABBFD1;
+  font-size:11px;
+  color:#000;
+  background: #FFFFFF;
+}
+.ChatMessagesB{
+  height:180px;
+}
+.ChatMessagesB_helpers {
+  height:100px;
+}
+
+
+.ChatForm {
+padding-top:10px;
+}
+
+.ChatSendTitle {
+vertical-align:bottom;
+}
+
+.ChatLine {
+    text-align: left;
+    width:96%;
+    padding:0 2%;
+}
+
+.ChatLineNick {
+width:60px;
+padding-right:5px;
+}
+
+.ChatLineNick img {
+display:inline;
+}
+
+a.Nick {
+color:#0E859F;
+}
+
+.ModerComments .TextRow .text,.ModerComments .TextRowBig .text {
+width:280px;
+height:100px;
+font-family:Arial, Tahoma, Sans-Serif, Verdana;
+font-size:11px;
+}
+
+
+/* END  CHAT */

@@ -441,6 +441,51 @@ class DebateModel extends BaseModel{
     */ 
     
     
+    /**
+     *  CHAT !!!
+     * 
+    */ 
+    
+    function addChatLine($dbTable, $user_id, $message, $message_time, $debate_user_id = 0){
+        $DE = Project::getDatabase();
+        $sql = "
+            INSERT INTO $dbTable (user_id, message, message_time, debate_user_id)
+            VALUES ($user_id, '".htmlspecialchars($message)."', '$message_time', $debate_user_id)
+        ";
+        
+        $DE -> query($sql);
+        return true;
+    }
+    
+    function getChatLines($dbTable, $debateChatId){
+        $DE = Project::getDatabase();
+        if ($debateChatId){
+            $sql = "
+                SELECT * FROM $dbTable WHERE id > '$debateChatId'
+                ORDER BY id
+            ";
+            $result = $DE -> select($sql);
+        }else{
+            $sql = "
+                SELECT * FROM $dbTable 
+                ORDER BY id DESC
+                LIMIT 0, 5
+            ";
+            $result2 = $DE -> select($sql); 
+            $result = array();
+            for ($i = count($result2)-1; $i>=0; $i--){
+                $result[]=$result2[$i];
+            }
+        }
+        return $result;
+    }
+    
+    /**
+     * END CHAT !!!
+     * 
+    */ 
+    
+    
     
     // формиирует LIMIT для SQL запроса, для PAGER
     function getSqlLimit($page_settings=array()){
@@ -453,5 +498,32 @@ class DebateModel extends BaseModel{
         return $sqlLimit;
     }
     
+    function getUserByHelper($debateNow, $helper_id){
+        $user_id = 0;
+        if ($debateNow['helper_id_1_1'] == $helper_id || $debateNow['helper_id_1_2'] == $helper_id) $user_id = $debateNow['user_id_1'];
+        elseif ($debateNow['helper_id_2_1'] == $helper_id || $debateNow['helper_id_2_2'] == $helper_id) $user_id = $debateNow['user_id_2'];
+        
+        return $user_id;
+    }
+    
+    function getHtmlChatText($aChatLines){
+        $userModel = new UserModel();
+        $htmlChatText = '';
+        foreach ($aChatLines as $chatLine){
+            $userSay = $userModel->getUserById($chatLine['user_id']);
+            $htmlChatText .= '
+            <div class="ChatLine">
+                <span class="ChatLineNick"><a style="font-weight: bold;" href="'.Project::getRequest()->createUrl('User', 'Profile', null, $userSay['login']).'" class="Nick" target="_blank">'.$userSay['login'].'</a></span>: 
+				<span class="TextRow">'.$chatLine['message'].'</span>
+            </div>';
+        }
+        return $htmlChatText;
+    }
+    
+    function getLastIdFromArray($arr){
+        $lastId = 0;
+        if (count($arr)>0) $lastId = $arr[count($arr)-1]['id'];
+        return $lastId;
+    }
 }
 ?>

@@ -20,8 +20,8 @@ class DebateController extends SiteController{
         
 	    $this-> _view -> assign('tab_list', TabController::getDebateTabs(true, false, false)); // Show tabs
 		
-	    //$debateModel->stopEtap(4);
-	    //$debateModel->startEtap(5);
+	    //$debateModel->stopEtap(5);
+	    //$debateModel->startEtap(6);
 	    
 		$activeEtap = $debateModel->getActiveEtap();
 		if (!$activeEtap){
@@ -29,6 +29,7 @@ class DebateController extends SiteController{
 		    $debateModel->startEtap($activeEtap['id']); // set ACTIVE to first etap
 		}
 		$debateNow = $debateModel->getDebateNow();
+		$this-> _view -> assign('debateNow', $debateNow);
 		
 		if ($debateNow['user_id_1'] == $user->id) $userNumber = 1;
 		elseif ($debateNow['user_id_2'] == $user->id) $userNumber = 2;
@@ -97,8 +98,6 @@ class DebateController extends SiteController{
     		   Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
     		}
 
-    		$this-> _view -> assign('debateNow', $debateNow);
-    		
     		$currentUser = $userModel->getUserById($user->id);
     		$this-> _view -> assign('currentUser', $currentUser);
     		$user1 = $userModel->getUserById($debateNow['user_id_1']);
@@ -136,8 +135,6 @@ class DebateController extends SiteController{
     		    }
     		    Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
     		}
-    		
-    		$this-> _view -> assign('debateNow', $debateNow);
     		
     		$currentUser = $userModel->getUserById($user->id);
     		$this-> _view -> assign('currentUser', $currentUser);
@@ -198,8 +195,6 @@ class DebateController extends SiteController{
     		    $this-> _view -> assign('stakesSum', $debateModel->getDebateStakesSum(0, 0));
     		}
     		
-    		$this-> _view -> assign('debateNow', $debateNow);
-    		
     		$currentUser = $userModel->getUserById($user->id);
     		$this-> _view -> assign('currentUser', $currentUser);
     		$user1 = $userModel->getUserById($debateNow['user_id_1']);
@@ -210,10 +205,6 @@ class DebateController extends SiteController{
     		$aUserStakes = $debateModel->getDebateStakesByUserId($user->id);
     		$this-> _view -> assign('aUserStakes', $aUserStakes);
     		
-    		
-    		
-    		
-            
     		$this -> _view -> DebateGetStakesPage();
     		
     		// END ETAP 5. Stakes from users on Debate Users
@@ -221,6 +212,19 @@ class DebateController extends SiteController{
     		
 		}elseif($activeEtap['name']=='Debates'){
 		    // ETAP 6. DEBATE'S Chats 
+		    $userModel = new UserModel();
+		    
+		    $currentUser = $userModel->getUserById($user->id);
+    		$this-> _view -> assign('currentUser', $currentUser);
+    		$user1 = $userModel->getUserById($debateNow['user_id_1']);
+    		$this-> _view -> assign('debateUser1', $user1);
+    		$user2 = $userModel->getUserById($debateNow['user_id_2']);
+    		$this-> _view -> assign('debateUser2', $user2);
+    		
+    		//$this-> _view -> assign('lastUpdate', date("Y-m-d H:i:s")); // время последней отдачи инфы с чата
+		    
+		    $this -> _view -> DebatePage();
+
 		    // END ETAP 6. DEBATE'S Chats 
 		    
 		    
@@ -262,6 +266,84 @@ class DebateController extends SiteController{
 	    }
 	    
 	    Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+	}
+	
+	public function DebateChatAction(){
+	    $debateModel = new DebateModel();
+	    $userModel = new UserModel();
+	    $request = Project::getRequest();
+	    $user = Project::getUser()->getDbUser();
+	    $message = array();
+	    $debateNow = $debateModel->getDebateNow();
+	    
+	    switch ($request->areaId){
+	        case 'chat_messages':
+	            $dbTable = "debate_chat";
+	            $debate_user_id = 0;
+	            break;
+	        case 'chat_messages_helpers':
+	            $dbTable = "debate_helpers_chat";
+	            $debate_user_id = $debateModel->getUserByHelper($debateNow, $user->id);
+	            break;
+	        case 'chat_messages_users':
+	            $dbTable = "debate_users_chat";
+	            $debate_user_id = 0;
+	            break;
+	        default:
+	            echo $request->areaId;
+	            return false;
+	            break;
+	    }
+        
+	    $message_time = date("Y-m-d H:i:s");
+        $debateModel -> addChatLine($dbTable, $user->id, $request->textValue, $message_time, $debate_user_id);
+        
+        // refresh All Chat's
+        $this->DebateRefreshChat($request);
+        
+	}
+	
+	public function DebateRefreshChatAction(){
+	    // refresh All Chat's
+        //$this->DebateRefreshChat($request, $message_time);
+	}
+	
+	// refresh All Chat's
+	function DebateRefreshChat($request){
+	    $debateModel = new DebateModel();
+	    $sessiovVars = Project::getSession();
+		$debateChatId = $sessiovVars->getKey('debateChatId');
+		$debateChatHelpersId = $sessiovVars->getKey('debateChatHelpersId');
+		$debateChatUsersId = $sessiovVars->getKey('debateChatUsersId');
+	    
+	    $aChatLines = $debateModel->getChatLines('debate_chat', $debateChatId);
+        $htmlChatText = $debateModel->getHtmlChatText($aChatLines);
+        $lastId = $debateModel->getLastIdFromArray($aChatLines);
+        if ($lastId)  $sessiovVars->add('debateChatId', $lastId);
+        
+        $aChatHelpersLines = $debateModel->getChatLines('debate_helpers_chat', $debateChatHelpersId);
+        $htmlChatHelpersText = $debateModel->getHtmlChatText($aChatHelpersLines);
+        $lastId = $debateModel->getLastIdFromArray($aChatHelpersLines);
+        if ($lastId) $sessiovVars->add('debateChatHelpersId', $lastId);
+        
+        $aChatUsersLines = $debateModel->getChatLines('debate_users_chat', $debateChatUsersId);
+        $htmlChatUsersText = $debateModel->getHtmlChatText($aChatUsersLines);
+        $lastId = $debateModel->getLastIdFromArray($aChatUsersLines);
+        if ($lastId) $sessiovVars->add('debateChatUsersId', $debateModel->getLastIdFromArray($aChatUsersLines));
+        
+        //$message['lastUpdate'] = $request->lastUpdate;
+        //$message['newUpdate'] = $message_time;
+        $message['htmlChatText'] = $htmlChatText;
+        $message['htmlChatHelpersText'] = $htmlChatHelpersText;
+        $message['htmlChatUsersText'] = $htmlChatUsersText;
+
+        $this -> _view -> returnChat($message);
+
+		$this -> _view -> ajax();
+	}
+	
+	function addDebateIdKey(){
+	    
 	}
 
 }

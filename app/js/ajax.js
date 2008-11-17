@@ -98,6 +98,15 @@ function handleResponse(msg){
 						$("#"+item.id).attr(attr_name, attr_value);
 			          });
 			}
+			
+			if (p.append){
+				$.each(p.append, function(i, item){
+				        if(document.getElementById(item.id)){
+						  $("#"+item.id).append(item.html);
+				        }
+			          });
+			}
+			
 		    if (p.new_blocks){
 		    	$.each(p.new_blocks, function(i, item){
 		    		//if ($("div#" + item.id).length == 0){

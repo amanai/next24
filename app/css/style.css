@@ -1050,3 +1050,10 @@ font-weight:bold;
     font-weight: bold;
     background: #FFFF99;
 }
+
+/* */
+.center{
+	text-align: center;
+    width: 100%;
+}
+

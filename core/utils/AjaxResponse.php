@@ -48,6 +48,12 @@ class AjaxResponse{
 			$this -> _response['attr'][] = $param;
 		}
 		
+		public function append($id, $html){
+			$param = array('id'=>$id);
+			$param['html'] = $html;
+			$this -> _response['append'][] = $param;
+		}
+		
 		public function error($id, $show = true, $msg = null){
 			$param = array('id'=>$id, 'show'=>(bool)$show);
 			if ($show === true){
