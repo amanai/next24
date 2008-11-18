@@ -107,6 +107,35 @@ function handleResponse(msg){
 			          });
 			}
 			
+			if (p.disable){
+				$.each(p.disable, function(i, item){
+				        if(document.getElementById(item)){
+						  $("#"+item).block();
+				        }
+					});
+			}
+			if (p.enable){
+				$.each(p.enable, function(i, item){
+				        if(document.getElementById(item)){
+						  $("#"+item).unblock();
+				        }
+					});
+			}
+			if (p.hide){
+				$.each(p.hide, function(i, item){
+				        if(document.getElementById(item)){
+						  $("#"+item).hide();
+				        }
+					});
+			}
+			if (p.show){
+				$.each(p.show, function(i, item){
+				        if(document.getElementById(item)){
+						  $("#"+item).show();
+				        }
+					});
+			}
+			
 		    if (p.new_blocks){
 		    	$.each(p.new_blocks, function(i, item){
 		    		//if ($("div#" + item.id).length == 0){

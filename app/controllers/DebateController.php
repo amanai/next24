@@ -17,11 +17,17 @@ class DebateController extends SiteController{
 	    $isAdmin = ($user->user_type_id == 1)?true:false;
 	    $this-> _view -> assign('isAdmin', $isAdmin);
 	    $this-> _view -> assign('user_id', $user->id);
+	    
+	    $sessiovVars = Project::getSession();
+		$sessiovVars->add('debateChatId', 0);
+		$sessiovVars->add('debateChatHelpersId', 0);
+		$sessiovVars->add('debateChatUsersId', 0);
         
 	    $this-> _view -> assign('tab_list', TabController::getDebateTabs(true, false, false)); // Show tabs
 		
 	    //$debateModel->stopEtap(5);
 	    //$debateModel->startEtap(6);
+	    //$debateModel->pauseOffEtap(6);
 	    
 		$activeEtap = $debateModel->getActiveEtap();
 		if (!$activeEtap){
@@ -30,6 +36,7 @@ class DebateController extends SiteController{
 		}
 		$debateNow = $debateModel->getDebateNow();
 		$this-> _view -> assign('debateNow', $debateNow);
+		$this-> _view -> assign('activeEtap', $activeEtap);
 		
 		if ($debateNow['user_id_1'] == $user->id) $userNumber = 1;
 		elseif ($debateNow['user_id_2'] == $user->id) $userNumber = 2;
@@ -221,7 +228,25 @@ class DebateController extends SiteController{
     		$user2 = $userModel->getUserById($debateNow['user_id_2']);
     		$this-> _view -> assign('debateUser2', $user2);
     		
-    		//$this-> _view -> assign('lastUpdate', date("Y-m-d H:i:s")); // время последней отдачи инфы с чата
+    		$user1_avatar = $userModel->getUserAvatar($debateNow['user_id_1']);
+    		$this-> _view -> assign('user1_avatar', $user1_avatar);
+    		$user2_avatar = $userModel->getUserAvatar($debateNow['user_id_2']);
+    		$this-> _view -> assign('user2_avatar', $user2_avatar);
+    		
+    		$helper1_1 = $userModel->getUserById($debateNow['helper_id_1_1']);
+    		$this-> _view -> assign('helper1_1', $helper1_1);
+    		$helper1_2 = $userModel->getUserById($debateNow['helper_id_1_2']);
+    		$this-> _view -> assign('helper1_2', $helper1_2);
+    		$helper2_1 = $userModel->getUserById($debateNow['helper_id_2_1']);
+    		$this-> _view -> assign('helper2_1', $helper2_1);
+    		$helper2_2 = $userModel->getUserById($debateNow['helper_id_2_2']);
+    		$this-> _view -> assign('helper2_2', $helper2_2);
+    		
+    		$userIdFromHelper = $debateModel->getUserByHelper($debateNow, $user->id);
+    		$this-> _view -> assign('userIdFromHelper', $userIdFromHelper);
+    		
+    		$aHelperCanSay = $debateModel->getHelperCanSay2();
+    		$this-> _view -> assign('aHelperCanSay', $aHelperCanSay);
 		    
 		    $this -> _view -> DebatePage();
 
@@ -256,6 +281,7 @@ class DebateController extends SiteController{
 	    $request = Project::getRequest();
 	    $user = Project::getUser()->getDbUser();
 	    $isAdmin = ($user->user_type_id == 1)?true:false;
+	    $debateNow = $debateModel->getDebateNow();
 	    
 	    if ($request->subject == 'theme'){ // vote for theme. Etap 2
 	        $theme = $debateModel->getThemeById($request->theme_id);
@@ -263,9 +289,22 @@ class DebateController extends SiteController{
 	        if ($theme && !$isVoted){
 	            $debateModel->addThemeVote($user->id, $request->theme_id);
 	        }
+	    }elseif ($request->subject == 'debateUser'){
+	        $debate_user_id = $request->debate_user_id;
+	        $isVoted = $debateModel->isUserDebateVoted($user->id);
+	        if ($debate_user_id && !$isVoted && 
+	             ($debateNow['user_id_1'] == $debate_user_id || $debateNow['user_id_2'] == $debate_user_id )
+	           ){
+	            $debateModel->addDebateVote($user->id, $debate_user_id);
+	        }
 	    }
 	    
-	    Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+	    if ($request->isAjax){
+	        // refresh All Chat's
+            $this->DebateRefreshChat();
+	    }else{
+	       Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+	    }
 	}
 	
 	public function DebateChatAction(){
@@ -275,11 +314,17 @@ class DebateController extends SiteController{
 	    $user = Project::getUser()->getDbUser();
 	    $message = array();
 	    $debateNow = $debateModel->getDebateNow();
+	    $activeEtap = $debateModel->getActiveEtap();
 	    
 	    switch ($request->areaId){
 	        case 'chat_messages':
 	            $dbTable = "debate_chat";
 	            $debate_user_id = 0;
+	            
+	            // after helper say , he can't say also
+	            if (!$activeEtap['is_pause'] && $debateModel->getUserByHelper($debateNow, $user->id)){ // user is a Helper
+	                $debateModel->delHelperCanSay($user->id);
+	            }
 	            break;
 	        case 'chat_messages_helpers':
 	            $dbTable = "debate_helpers_chat";
@@ -299,22 +344,26 @@ class DebateController extends SiteController{
         $debateModel -> addChatLine($dbTable, $user->id, $request->textValue, $message_time, $debate_user_id);
         
         // refresh All Chat's
-        $this->DebateRefreshChat($request);
+        $this->DebateRefreshChat();
         
 	}
 	
 	public function DebateRefreshChatAction(){
 	    // refresh All Chat's
-        //$this->DebateRefreshChat($request, $message_time);
+        $this->DebateRefreshChat();
 	}
 	
 	// refresh All Chat's
-	function DebateRefreshChat($request){
+	function DebateRefreshChat(){
 	    $debateModel = new DebateModel();
+	    $user = Project::getUser()->getDbUser();
 	    $sessiovVars = Project::getSession();
 		$debateChatId = $sessiovVars->getKey('debateChatId');
 		$debateChatHelpersId = $sessiovVars->getKey('debateChatHelpersId');
 		$debateChatUsersId = $sessiovVars->getKey('debateChatUsersId');
+		$message = array();
+		
+		$message['user_id'] = $user->id;
 	    
 	    $aChatLines = $debateModel->getChatLines('debate_chat', $debateChatId);
         $htmlChatText = $debateModel->getHtmlChatText($aChatLines);
@@ -331,20 +380,77 @@ class DebateController extends SiteController{
         $lastId = $debateModel->getLastIdFromArray($aChatUsersLines);
         if ($lastId) $sessiovVars->add('debateChatUsersId', $debateModel->getLastIdFromArray($aChatUsersLines));
         
-        //$message['lastUpdate'] = $request->lastUpdate;
-        //$message['newUpdate'] = $message_time;
         $message['htmlChatText'] = $htmlChatText;
         $message['htmlChatHelpersText'] = $htmlChatHelpersText;
         $message['htmlChatUsersText'] = $htmlChatUsersText;
-
+        
+        // show or hide Changeable elements
+        $debateNow = $debateModel->getDebateNow();
+        //$message['debateNow'] = $debateNow;
+        
+		if ($debateNow['user_id_1'] == $user->id) $userNumber = 1;
+		elseif ($debateNow['user_id_2'] == $user->id) $userNumber = 2;
+		else $userNumber = 0; 
+		$message['userNumber'] = $userNumber;
+		
+		// hide/show message box for Debate Users
+        $isHelperCanSay = $debateModel->isHelperCanSay($user->id);
+        $message['isHelperCanSay'] = $isHelperCanSay;
+        
+        if ($userNumber){ // hide/show button "helper can say"
+            if ($debateModel->isHelperCanSay($debateNow['helper_id_'.$userNumber.'_1'])) $message['helperSay1'] = 'hide';
+            else $message['helperSay1'] = 'show';
+            
+            if ($debateModel->isHelperCanSay($debateNow['helper_id_'.$userNumber.'_2'])) $message['helperSay2'] = 'hide';
+            else $message['helperSay2'] = 'show';
+            
+            // hide button PAUSE , if already pressed
+            if (!$debateNow['is_ready_'.$userNumber]) $message['hide_pause'] = $userNumber;
+        }
+        
+        //  hide/show button vote_for_user in debate
+        if ($debateModel->isUserDebateVoted($user->id)) $message['isUserVoted'] = 1;
+        else $message['isUserVoted'] = 0;
+        
         $this -> _view -> returnChat($message);
+    	$this -> _view -> ajax();
 
-		$this -> _view -> ajax();
 	}
 	
-	function addDebateIdKey(){
+	// allow to say helper
+	function DebateHelperCansayAction(){
+	    $debateModel = new DebateModel();
+	    $userModel = new UserModel();
+	    $request = Project::getRequest();
+	    $user = Project::getUser()->getDbUser();
+	    $message = array();
 	    
+	    if ($request->helper_id && !$debateModel->isHelperCanSay($request->helper_id)){
+	        $debateModel->addHelperCanSay($request->helper_id);
+	        
+	    }
+	    $message['elementId'] = $request->elementId;
+	    $this -> _view -> helperCansay($message);
+        $this -> _view -> ajax();
 	}
-
+	
+	
+	function DebatePausePressAction(){
+	    $debateModel = new DebateModel();
+	    $userModel = new UserModel();
+	    $request = Project::getRequest();
+	    $user = Project::getUser()->getDbUser();
+	    
+	    $debateNow = $debateModel->getDebateNow();
+		if ($debateNow['user_id_1'] == $user->id) $userNumber = 1;
+		elseif ($debateNow['user_id_2'] == $user->id) $userNumber = 2;
+		else $userNumber = 0;
+	    
+	    if ($request->userNumber && $userNumber == $request->userNumber){
+	        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'is_ready_'.$userNumber, 0);
+	    }
+	}
+	
+	
 }
 ?>

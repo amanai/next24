@@ -1,6 +1,105 @@
 <?php
 class DebateView extends BaseSiteView{
 	protected $_dir = 'debate';
+	
+	public function showUserAvator($userAvator, $imgUrl){
+	    echo '<div class="debate_avator">';
+	    if ($userAvator){
+	       $src = ($userAvator['path'])?$userAvator['path']:$imgUrl.'avator/'.$userAvator['sys_name'];
+	       echo '<img src="'.$src.'" />';
+	   }else{
+	       echo '<img src="'.$imgUrl.'avator/no.png" />';
+	   }
+	   echo '
+	   </div>
+	   <div class="block_d_ld_icons">
+			<a href="#"><img height="16" width="16" src="'.$this -> image_url.'d_ld_ico1.png"/></a>
+			<a href="#"><img height="16" width="16" src="'.$this -> image_url.'d_ld_ico2.png"/></a>
+			<a href="#"><img height="16" width="16" src="'.$this -> image_url.'d_ld_ico3.png"/></a>
+	   </div>
+	   <br /><br />	 
+	   ';
+	}
+	
+	public function showMessageboxForDebateUsers($userNumber = 0, $isHide = 0){
+	    echo '
+	    <tr id="debate_MessageboxForDebateUsers">
+		    <td colspan="2"> 
+		       <textarea id="chat_text" name="chat_text" cols="58" rows="3"></textarea>
+			</td>
+			<td>
+			   <p class="padding3"><input type="button" onclick="javascript:send_message(\'chat_text\', \'chat_messages\', '.$isHide.');" value="Сказать" /></p>';
+	    if ($userNumber){
+	       echo '
+			   <p class="padding3"><input id="pause'.$userNumber.'" type="button" value="Перерыв" onclick="javascript:pauseSet(\'pause'.$userNumber.'\', '.$userNumber.');" /></p>';
+	    }
+	    echo '			   
+			</td>
+		</tr>
+	    ';
+	}
+	
+	public function showAllowSayHelpers($helper1, $helper2){
+	    echo '
+	    <tr>
+		    <td colspan="3"> 
+		       <div class="center">
+		       ';
+	    if ($helper1){
+	        echo '<input type="button" value="Разрешить сказать '.$helper1['login'].'" id="helperSay1" onclick="helperSay(\'helperSay1\', '.$helper1['id'].');" />&nbsp;&nbsp;';
+	    }if ($helper2){
+	        echo '<input type="button" value="Разрешить сказать '.$helper2['login'].'" id="helperSay2" onclick="helperSay(\'helperSay2\', '.$helper2['id'].');" /></div>';
+	    }
+	    echo '
+			</td>
+		</tr>
+	    ';
+	}
+	
+	public function showHelpersChat(){
+	    echo '
+	    <tr>
+			<td colspan="3"><div class="center"><b>Чат помощников</b></div></td>
+        </tr>
+        <tr>
+			<td align="left" colspan="3"> <div class="ChatMessagesB_helpers" id="chat_messages_helpers"></div> </td>
+	    </tr>
+	    <tr>
+		    <td colspan="2"> 
+		       <textarea id="chat_text_helpers" name="chat_text_helpers" cols="58" rows="1"></textarea>
+			</td>
+			<td>
+			   <input type="button" onclick="javascript:send_message(\'chat_text_helpers\', \'chat_messages_helpers\');" value="Сказать" />
+			</td>
+		</tr>
+	    ';
+	}
+	
+	public function showUsersChat(){
+	    echo '
+	    <tr>
+			<td colspan="3"><div class="center"><b>Чат пользователей</b></div></td>
+        </tr>
+        <tr>
+			<td align="left" colspan="3"> <div class="ChatMessagesB_helpers" id="chat_messages_users"></div> </td>
+	    </tr>
+	    ';
+	}
+	
+	public function showUsersChatMessageBox(){
+	    echo '
+	    <tr>
+		    <td colspan="2"> 
+		       <textarea id="chat_text_users" name="chat_text_users" cols="58" rows="1"></textarea>
+			</td>
+			<td>
+			   <input type="button" onclick="javascript:send_message(\'chat_text_users\', \'chat_messages_users\');" value="Сказать" />
+			</td>
+		</tr>
+	    ';
+	}
+	
+	
 
     /**
      * Pages VIEW
@@ -77,7 +176,36 @@ class DebateView extends BaseSiteView{
 		$response -> append('chat_messages_helpers', $message['htmlChatHelpersText']);
 		$response -> append('chat_messages_users', $message['htmlChatUsersText']);
 		
-		//$response -> attribute('lastUpdate', "value", $message['newUpdate']);
+		 // hide/show message box for Debate Users
+		if ($message['isHelperCanSay'] || $message['userNumber']) $response -> show('debate_MessageboxForDebateUsers');
+		else $response -> hide('debate_MessageboxForDebateUsers');
+		
+		if ($message['userNumber']){  // hide/show button "helper can say"
+		    if ($message['helperSay1'] == 'show') $response -> show('helperSay1');
+		    elseif ($message['helperSay1'] == 'hide') $response -> hide('helperSay1');
+		    
+		    if ($message['helperSay2'] == 'show') $response -> show('helperSay2');
+		    elseif ($message['helperSay2'] == 'hide') $response -> hide('helperSay2');
+		    
+		    // hide button PAUSE , if already pressed
+		    if (isset($message['hide_pause']) && $message['hide_pause']) $response -> hide('pause'.$message['userNumber']);
+		}
+		
+		//  hide/show button vote_for_user in debate
+        if (!$message['isUserVoted'] && $message['user_id']){
+            $response -> show('vote_for_user_1');
+            $response -> show('vote_for_user_2');
+        }
+        else {
+            $response -> hide('vote_for_user_1');
+            $response -> hide('vote_for_user_2');
+        }
+		
+	}
+	
+	function helperCansay($message){
+	    $response = Project::getAjaxResponse();
+	    $response->hide($message['elementId']);
 	}
 	
 	function test($message){

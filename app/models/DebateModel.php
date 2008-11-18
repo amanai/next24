@@ -11,6 +11,7 @@ class DebateModel extends BaseModel{
             UPDATE ".$table_name." SET ".$field." = ? 
             WHERE id = ?
         ";
+        echo $sql;
         $result = $DE -> query($sql, $value, $id);
     }
     
@@ -52,6 +53,63 @@ class DebateModel extends BaseModel{
         $DE -> query($sql, $stake_amount, $user_id, $debateNow['id']);
         return true;
     }
+    
+    
+    //  helper can say
+    function getHelperCanSay(){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT * 
+            FROM debate_helper_cansay
+        ";
+        $result = $DE -> select($sql);
+        return $result;
+    }
+    
+    // return array, where key -> helper_id, value -> 1
+    function getHelperCanSay2(){
+        $aHelperCanSay = $this->getHelperCanSay();
+        $result = array();
+        foreach ($aHelperCanSay as $helperCanSay){
+            $result[$helperCanSay['helper_id']] = 1;
+        }
+        
+        return $result;
+    }
+    
+    function isHelperCanSay($helper_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT * 
+            FROM debate_helper_cansay
+            WHERE helper_id = ?
+        ";
+        $result = $DE -> selectRow($sql, $helper_id);
+        return $result;
+    }
+    
+    function addHelperCanSay($helper_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            INSERT INTO debate_helper_cansay (helper_id)
+            VALUES (?)
+        ";
+        $DE -> query($sql, $helper_id);
+    }
+    
+    function delHelperCanSay($helper_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            DELETE FROM debate_helper_cansay 
+            WHERE helper_id = ?
+        ";
+        $DE -> query($sql, $helper_id);
+    }
+    // END helper can say
     
     /**
      * END Debate_now
@@ -469,7 +527,6 @@ class DebateModel extends BaseModel{
             $sql = "
                 SELECT * FROM $dbTable 
                 ORDER BY id DESC
-                LIMIT 0, 5
             ";
             $result2 = $DE -> select($sql); 
             $result = array();
@@ -486,6 +543,35 @@ class DebateModel extends BaseModel{
     */ 
     
     
+    /**
+     * debate user Vote
+     */
+    
+    function addDebateVote($user_id, $debate_user_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            INSERT INTO `debate_user_vote` ( `user_id` , `debate_user_id` )
+            VALUES (
+            ?, ?
+            )
+        ";
+        $DE -> query($sql, $user_id, $debate_user_id);
+    }
+    
+    function isUserDebateVoted($user_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT * FROM debate_user_vote
+            WHERE user_id = ?
+        ";
+        return $DE -> select($sql, $user_id);
+    }
+    
+    /**
+     * END debate user Vote
+     */
+    
+    
     
     // формиирует LIMIT для SQL запроса, для PAGER
     function getSqlLimit($page_settings=array()){
@@ -500,8 +586,10 @@ class DebateModel extends BaseModel{
     
     function getUserByHelper($debateNow, $helper_id){
         $user_id = 0;
-        if ($debateNow['helper_id_1_1'] == $helper_id || $debateNow['helper_id_1_2'] == $helper_id) $user_id = $debateNow['user_id_1'];
-        elseif ($debateNow['helper_id_2_1'] == $helper_id || $debateNow['helper_id_2_2'] == $helper_id) $user_id = $debateNow['user_id_2'];
+        if ($helper_id){
+            if ($debateNow['helper_id_1_1'] == $helper_id || $debateNow['helper_id_1_2'] == $helper_id) $user_id = $debateNow['user_id_1'];
+            elseif ($debateNow['helper_id_2_1'] == $helper_id || $debateNow['helper_id_2_2'] == $helper_id) $user_id = $debateNow['user_id_2'];
+        }
         
         return $user_id;
     }

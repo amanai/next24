@@ -161,6 +161,20 @@ class UserModel extends BaseModel{
         return $result;
     }
     
+    public function getUserAvatar($user_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT avatars.*, sys_av.name as sys_name
+            FROM avatars
+            LEFT JOIN sys_av
+                ON avatars.sys_av_id = sys_av.id
+            WHERE avatars.user_id = ? AND avatars.def=1
+        ";
+        $result = $DE -> selectRow($sql, $user_id);
+        return $result;
+    }
+    
     
     /**
      *  MONEY_TRANSACTION    

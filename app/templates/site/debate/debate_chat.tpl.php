@@ -1,20 +1,4 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-
-<script type="text/javascript">
-function send_message(fromId, toId){
-    var fromElement = document.getElementById(fromId);
-    ajax(
-        {"url":"\/debate_chat","type":"POST","async":true,"data":{"areaId":toId,"textValue":fromElement.value},"dataType":"json"}, 
-        true);
-    <?php
-    //echo 'ajax('.AjaxRequest::getJsonParam("Debate", "DebateChat", array("areaId"=>areaId , "textValue"=>areaElement.value, "lastUpdate"=>lastUpdate), "POST").', true);';
-    ?>
-    fromElement.value = "";
-    return true;
-}
-
-</script>
-
 <!-- Главный блок, с вкладками (Контент) -->
 <div class="tab-page" id="modules-cpanel">
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
@@ -22,31 +6,34 @@ function send_message(fromId, toId){
 	
 
 
-<!-- Этап 5 из 7. Подтверждение готовности, прием ставок. -->
+<!-- Этап 6 из 7. Дебаты. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 	Осталось 30 минут
 </div></div></div></div>
 
 
-<h2>Этап 5 из 7. Подтверждение готовности, прием ставок.</h2>
+<h2>Этап 6 из 7. Дебаты. <?php if ($this->activeEtap['is_pause']) echo "Перерыв." ?> </h2>
 <?php 
 if ($this->userNumber && $this->isReady){ 
     echo 'Подождите пока будут сделаны ставки и участники подтвердят свою готовность к дебатам.';
 }
 ?>
-Вы можете общаться в чате с другими пользователями. ВНИМАНИЕ – мат в чате запрещен.
-Кроме того, вы можете проголосовать за одного из участников дебатов.
-<hr />
-Вы можете общаться с другим участником дебатов, так также сделать запрос на перерыв на 10 минут. Перерыв будет объявлен только при
-подтверждении его другим участником дебатов.
-<hr />
-Вы можете подсказывать своему участнику дебатов как лучше вести линию разговора. По окончании дебатов, участник выставит вам оценку,
-поэтому постарайтесь подсказывать по существу.
-<hr />
-Дебаты прерваны на перерыв. Во время перерыва в окне дебатов могут оставлять свои сообщения помощники.
-<hr />
-Дебаты прерваны на перерыв. Во время перерыва в окне дебатов могут оставлять свои сообщения помощники.
-<hr />
+<?php
+if ($this->activeEtap['is_pause']){
+    echo 'Дебаты прерваны на перерыв. Во время перерыва в окне дебатов могут оставлять свои сообщения помощники.';
+}elseif ($this->userNumber){ // Debate User
+	echo 'Вы можете общаться с другим участником дебатов, так также сделать запрос на перерыв на 10 минут. Перерыв будет объявлен только при
+подтверждении его другим участником дебатов.';
+}elseif($this->userIdFromHelper){ // Helper
+    echo 'Вы можете подсказывать своему участнику дебатов как лучше вести линию разговора. По окончании дебатов, участник выставит вам оценку,
+поэтому постарайтесь подсказывать по существу.';
+}elseif($this->user_id){ // registred User
+    echo 'Вы можете общаться в чате с другими пользователями. ВНИМАНИЕ – мат в чате запрещен.
+Кроме того, вы можете проголосовать за одного из участников дебатов.';
+}else{ // Guest (not registred user)
+    echo 'Вы можете только следить за ходом дебатов. Что бы оставлять сообщения нужно зарегистрироваться.';
+}
+?>
 
 <br /><div id="brok"></div>
 
@@ -54,9 +41,31 @@ if ($this->userNumber && $this->isReady){
 
     <div style="text-align: center; margin: 0px -10px;">
 	<div style="width: 10%;">
-	первый в дебатах: <b><?php echo '<a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser1['login']).'">'.$this->debateUser1['login'].'</a>'; ?></b><br>
-	второй в дебатах: <b><?php echo '<a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser2['login']).'">'.$this->debateUser2['login'].'</a>'; ?></b>
 	
+	<table class="debate_user">
+	<tr>
+	   <td valign="top">
+	   <div class="block_d_ld2">
+	   <h2><?php echo '<a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser1['login']).'">'.$this->debateUser1['login'].'</a>'; ?></h2>
+	   <?php 
+	   $this->showUserAvator($this->user1_avatar, $this -> image_url);
+	   ?>
+	   <h2>Помощники</h2>
+	   <?php 
+	   if ($this->helper1_1){
+	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_1['login']).'">'.$this->helper1_1['login'].'</a></p>'; 
+	   }else echo '<p>&nbsp;</p>';
+	   if ($this->helper1_2){
+	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_2['login']).'">'.$this->helper1_2['login'].'</a></p>'; 
+	   }else echo '<p>&nbsp;</p>';
+	   ?>
+	   <br /><br />
+	   <p><input type="button" name="vote_for_user_1" id="vote_for_user_1" onclick="voteForDebateUser(<?php echo $this->debateUser1['id'] ?>);" value="Голосовать за <?php echo $this->debateUser1['login']; ?>" /></p>
+	   </div>
+	   </td>
+	   <td valign="top"> 
+	   
+         <!-- chat part  -->	   
 		<table class="questions">
 		<tr>
 			<td colspan="3"><div class="center"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
@@ -64,40 +73,73 @@ if ($this->userNumber && $this->isReady){
 		<tr>
 			<td align="left" colspan="3"> <div class="ChatMessagesB" id="chat_messages"></div> </td>
 	    </tr>
-		<tr>
-		    <td colspan="2"> 
-		       <textarea id="chat_text" name="chat_text" cols="58" rows="3"></textarea>
-			</td>
-			<td>
-			   <input type="button" onclick="javascript:send_message('chat_text', 'chat_messages');" value="Сказать" /><br/>
-			   <input type="button" value="Перерыв" />
-			</td>
-		</tr>
+	    <?php
+	    if ($this->activeEtap['is_pause']){ // PAUSE
+	        if ($this->userNumber){ // Debate User
+	            $this->showHelpersChat();
+	            
+	        }elseif($this->userIdFromHelper){ // Helper
+	            $this->showMessageboxForDebateUsers(0, 0);
+	            $this->showHelpersChat();
+	            
+	        }elseif($this->user_id){ // registred User
+    		    $this->showUsersChat();
+    		    $this->showUsersChatMessageBox();
+    		    
+    		}else{ // Guest (not registred user)
+    		    $this->showUsersChat();
+    		    
+    		}
+	        // STOP PAUSE
+	        
+	    }elseif ($this->userNumber){ // Debate User
+    		$this->showMessageboxForDebateUsers($this->userNumber, 0);
+    		if ($this->user_id == $this->debateUser1['id']){
+    		  $this->showAllowSayHelpers($this->helper1_1, $this->helper1_2);
+    		}else{
+    		  $this->showAllowSayHelpers($this->helper2_1, $this->helper2_2);
+    		}
+    		$this->showHelpersChat();
+    		
+		}elseif($this->userIdFromHelper){ // Helper
+		    $this->showMessageboxForDebateUsers($this->userNumber, 1);
+		    $this->showHelpersChat();
+		    
+		}elseif($this->user_id){ // registred User
+		    $this->showUsersChat();
+		    $this->showUsersChatMessageBox();
+		    
+		}else{ // Guest (not registred user)
+		    $this->showUsersChat();
+		    
+		}
+		?>
 		
-		
-		<tr>
-		    <td colspan="3"> 
-		       <div class="center"><input type="button" value="Разрешить говорить первому " />&nbsp;&nbsp;<input type="button" value="Разрешить говорить второму " /></div>
-			</td>
-		</tr>
-		
-		
-		<tr>
-			<td colspan="3"><div class="center"><b>Чат помощников</b></div></td>
-        </tr>
-        <tr>
-			<td align="left" colspan="3"> <div class="ChatMessagesB_helpers" id="chat_messages_helpers"></div> </td>
-	    </tr>
-	    <tr>
-		    <td colspan="2"> 
-		       <textarea id="chat_text_helpers" name="chat_text_helpers" cols="58" rows="1"></textarea>
-			</td>
-			<td>
-			   <input type="button" onclick="javascript:send_message('chat_text_helpers', 'chat_messages_helpers');" value="Сказать" />
-			</td>
-		</tr>
 		</table>
+		<!-- / chat part  -->
 		
+	   </td>
+	   <td valign="top">
+	   <div class="block_d_ld2">
+	   <h2><?php echo '<a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser2['login']).'">'.$this->debateUser2['login'].'</a>'; ?></h2>
+	   <?php 
+	   $this->showUserAvator($this->user2_avatar, $this -> image_url);
+	   ?>
+	   <h2>Помощники</h2>
+	   <?php 
+	   if ($this->helper2_1){
+	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_1['login']).'">'.$this->helper2_1['login'].'</a></p>'; 
+	   }else echo '<p>&nbsp;</p>';
+	   if ($this->helper2_2){
+	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_2['login']).'">'.$this->helper2_2['login'].'</a></p>'; 
+	   }else echo '<p>&nbsp;</p>';
+	   ?>
+	   <br /><br />
+	   <p><input type="button" name="vote_for_user_2" id="vote_for_user_2" onclick="voteForDebateUser(<?php echo $this->debateUser2['id'] ?>);" value="Голосовать за <?php echo $this->debateUser2['login']; ?>" /></p>
+	   </div>
+	   </td>
+	</tr>
+	</table>
 	</div></div>
 
 		
@@ -105,7 +147,7 @@ if ($this->userNumber && $this->isReady){
 
 
 
-<!-- /Этап 5 из 7. Подтверждение готовности, прием ставок. -->
+<!-- /Этап 6 из 7. Дебаты. -->
 
 
 

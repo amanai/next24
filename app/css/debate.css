@@ -81,3 +81,25 @@ font-size:11px;
 
 
 /* END  CHAT */
+
+.debate_user td{
+    background: #E9F1F7;
+
+}
+.debate_avator{
+    display: block;
+    width: 200px;
+    height: 200px;
+}
+.padding3{
+    padding: 3px;
+}
+
+#debate_MessageboxForDebateUsers, #vote_for_user_1, #vote_for_user_2{
+    display: none;
+}
+
+
+
+
+
