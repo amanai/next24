@@ -25,17 +25,24 @@ class DebateController extends SiteController{
         
 	    $this-> _view -> assign('tab_list', TabController::getDebateTabs(true, false, false)); // Show tabs
 		
-	    $debateModel->stopEtap(7);
-	    $debateModel->startEtap(6);
+	    //$debateModel->stopEtap(7);
+	    //$debateModel->startEtap(6);
 	    //$debateModel->pauseOnEtap(6);
 	    //$debateModel->pauseOffEtap(6);
+	    $this->DebateEtapsCheckerAction(false);
 	    
 		$activeEtap = $debateModel->getActiveEtap();
 		if (!$activeEtap){
 		    $activeEtap = $debateModel->getFirstEtap();
 		    $debateModel->startEtap($activeEtap['id']); // set ACTIVE to first etap
+		    $debateModel->truncateTable('debate_now');
+    		$debateModel->addDebateNow();
 		}
 		$debateNow = $debateModel->getDebateNow();
+		if (!$debateNow) {
+		    $debateModel->addDebateNow();
+		    $debateNow = $debateModel->getDebateNow();
+		}
 		$this-> _view -> assign('debateNow', $debateNow);
 		$this-> _view -> assign('activeEtap', $activeEtap);
 		
@@ -208,7 +215,7 @@ class DebateController extends SiteController{
     		$user2 = $userModel->getUserById($debateNow['user_id_2']);
     		$this-> _view -> assign('debateUser2', $user2);
     		
-    		$aUserStakes = $debateModel->getDebateStakesByUserId($user->id);
+    		$aUserStakes = $debateModel->getDebateStakesByUserId($user->id, 0);
     		$this-> _view -> assign('aUserStakes', $aUserStakes);
     		
     		$this -> _view -> DebateGetStakesPage();
@@ -275,13 +282,7 @@ class DebateController extends SiteController{
     		$debateResult = $debateModel->getDebateResults();
     		$this-> _view -> assign('debateResult', $debateResult);
     		
-    		if ($debateResult[$debateNow['user_id_1']] > $debateResult[$debateNow['user_id_2']]){
-    		    $winnerUserId = $debateNow['user_id_1'];
-    		}elseif ($debateResult[$debateNow['user_id_1']] < $debateResult[$debateNow['user_id_2']]){
-    		    $winnerUserId = $debateNow['user_id_2'];
-    		}else{ // nobody win
-    		    $winnerUserId = 0;
-    		}
+    		$winnerUserId = $debateModel->getWinnerId($debateResult, $debateNow);
     		$winnerUserNumber = $debateModel->getUserNumber($debateNow, $winnerUserId);
     		$winnerUser = $userModel->getUserById($winnerUserId);
     		$this-> _view -> assign('winnerUser', $winnerUser);
@@ -312,6 +313,179 @@ class DebateController extends SiteController{
 		$this -> _view -> parse();
 	}
 	
+	// дебаты, Ajax переключение по этапам
+	public function DebateEtapsCheckerAction($isAjax = true){
+	    $debateModel = new DebateModel();
+	    $request = Project::getRequest();
+	    $message = array();
+	    $sessiovVars = Project::getSession();
+	    
+	    $activeEtap = $debateModel->getActiveEtap();
+	    if (!$activeEtap){
+		    $activeEtap = $debateModel->getFirstEtap();
+		    $debateModel->startEtap($activeEtap['id']); // set ACTIVE to first etap
+		}
+		
+		$debateNow = $debateModel->getDebateNow();
+		if (!$debateNow) {
+		    $debateModel->addDebateNow();
+		    $debateNow = $debateModel->getDebateNow();
+		}
+		
+		$debateModel->setPassedEtap($activeEtap['id']);
+		$etapTimeLeft = $debateModel->checkEtapDuration($activeEtap['id']);
+		if ($etapTimeLeft <= 0){ // START new Etap
+		    $this->switchEtap($activeEtap, $debateNow);
+		    $message['refreshNow'] = 1;
+		}else $message['refreshNow'] = 0;
+		if ($sessiovVars->getKey('currEtap') != $activeEtap['name']){
+		    $sessiovVars->add('currEtap', $activeEtap['name']);
+		    $message['refreshNow'] = 1;
+		}
+		
+		$etapTimeLeftMin = intval($etapTimeLeft/60) + 1;
+		
+		$message['etapTimeLeftMin'] = $etapTimeLeftMin;
+	    
+	    if ($isAjax){
+    	    $this -> _view -> etapsChecker($message);
+        	$this -> _view -> ajax();
+	    }
+	    //Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+	}
+	
+	function switchEtap($activeEtap, $debateNow){ // SWITCH Etap to next 
+	    $debateModel = new DebateModel();
+	    $userModel = new UserModel();
+	    $nextEtap = $debateModel->getNextEtap($activeEtap['id']);
+	    if (!$nextEtap) $nextEtap = $debateModel->getFirstEtap();
+
+	    if ($activeEtap['name']=='GetTheme'){
+    		// ETAP 1. Get Theme from Users.
+    		if (!$debateModel->getThemesCount()){
+    		    $nextEtap = $debateModel->getFirstEtap();
+    		    $debateModel->truncateTable('debate_now');
+    		    $debateModel->addDebateNow();
+    		}
+    		// END ETAP 1.
+    		
+		}elseif($activeEtap['name']=='VoteTheme'){
+		    // ETAP 2. Vote for Theme
+    		$winnerTheme = $debateModel->getVoteWinnerTheme();
+    		if ($winnerTheme){
+    		    $debateModel->changeOneValue('debate_now', $debateNow['id'], 'debate_theme_id', $winnerTheme['debate_theme_id']);
+    		    $debateModel->changeOneValue('debate_now', $debateNow['id'], 'theme', $winnerTheme['theme']);
+    		    $theme = $debateModel->getThemeById($winnerTheme['debate_theme_id']);
+    		    $debateModel->changeOneValue('debate_now', $debateNow['id'], 'user_id_1', $theme['user_id']);
+    		}else{
+    		    $debateModel->truncateTable('debate_theme');
+    		    $debateModel->truncateTable('debate_now');
+    		    $nextEtap = $debateModel->getFirstEtap();
+    		    $debateModel->truncateTable('debate_now');
+    		    $debateModel->addDebateNow();
+    		}
+    		// END ETAP 2.
+    		
+		}elseif($activeEtap['name']=='ChooseSecondUser'){
+		    // ETAP 3. Election for Secont USER , by auction, who pay more - get part in debate
+		    if (!$debateNow['stake_amount'] || !$debateNow['user_id_2']){
+		        $debateModel->truncateTable('debate_theme');
+		        $debateModel->truncateTable('debate_theme_vote');
+		        $debateModel->truncateTable('debate_now');
+		        $debateModel->addDebateNow();
+    		    $nextEtap = $debateModel->getFirstEtap();
+		    }
+    		// END ETAP 3. Election for Secont USER , by auction
+    		
+    		
+		}elseif($activeEtap['name']=='ChooseHelpers'){
+		    // ETAP 4. Election for Helpers
+		    if (!$debateNow['helper_id_1_1']){
+		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_1'], $debateNow['helper_id_1_2']);
+		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_1_1', $helper_id);
+		    }if (!$debateNow['helper_id_1_2']){
+		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_1'], $debateNow['helper_id_1_1']);
+		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_1_2', $helper_id);
+		    }if (!$debateNow['helper_id_2_1']){
+		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_2'], $debateNow['helper_id_2_2']);
+		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_2_1', $helper_id);
+		    }if (!$debateNow['helper_id_2_2']){
+		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_2'], $debateNow['helper_id_2_1']);
+		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_2_2', $helper_id);
+		    }
+    		// END ETAP 4. Election for Helpers
+    		
+		}elseif($activeEtap['name']=='GetStakes'){
+		    // ETAP 5. Stakes from users on Debate Users
+		 	$debateModel->changeOneValue('debate_now', $debateNow['id'], 'is_ready_1', 1);
+		 	$debateModel->changeOneValue('debate_now', $debateNow['id'], 'is_ready_2', 1);
+    		// END ETAP 5. Stakes from users on Debate Users
+    		
+    		
+		}elseif($activeEtap['name']=='Debates'){
+		    // ETAP 6. DEBATE'S Chats 
+		    
+		    // END ETAP 6. DEBATE'S Chats 
+		    
+		}elseif($activeEtap['name']=='Results'){
+		    // ETAP 7. Last Etap. Results
+		    $debateResult = $debateModel->getDebateResults();
+		    $debate_protocol = $debateModel->getChatInText('debate_chat', 0);
+		    $debate_history_id = $debateModel -> addDebateHistory($debateNow['start_time'], $debateNow['theme'], 
+		                      $debateNow['stake_amount'], $debateNow['user_id_1'], $debateNow['user_id_2'], 
+		                      $debateNow['helper_id_1_1'], $debateNow['helper_id_1_2'], $debateNow['helper_id_2_1'], $debateNow['helper_id_2_2'], 
+		                      $debateResult[$debateNow['user_id_1']], $debateResult[$debateNow['user_id_2']], $debate_protocol);
+                              
+            $userModel -> changeUserRate($debateNow['helper_id_1_1'], $debateNow['helper_1_1_rate']);
+            $userModel -> changeUserRate($debateNow['helper_id_1_2'], $debateNow['helper_1_2_rate']);
+            $userModel -> changeUserRate($debateNow['helper_id_2_1'], $debateNow['helper_2_1_rate']);
+            $userModel -> changeUserRate($debateNow['helper_id_2_2'], $debateNow['helper_2_2_rate']);
+            
+            // pay stake Winners = stake*1,5
+    		$winnerUserId = $debateModel->getWinnerId($debateResult, $debateNow);
+    		if ($winnerUserId){
+                $aWinStakes = $debateModel->getDebateStakesByDebateUserId($winnerUserId, 0);
+                // pay to WinnerUser 2
+                if ($winnerUserId == $debateNow['user_id_2']){
+                    $userModel->changeUserMoney($winnerUserId, 0, $debateNow['stake_amount']*1.5, "Ваша ставка ".$debateNow['stake_amount']." nm выиграла в дебатах id=".$debate_history_id);
+                }
+    		}else{
+    		    $aWinStakes = $debateModel->getDebateStakes(0);
+    		    $mess = "В дебатах (id ".$debate_history_id.") была ничья. Ваша ставка возвращается";
+    		    // return money to user 2
+    		    $userModel->changeUserMoney($debateNow['user_id_2'], 0, $debateNow['stake_amount'], $mess);
+    		}
+            foreach ($aWinStakes as $winStake){
+                if ($winnerUserId){
+                     $message = "Ваша ставка ".$winStake['stake_amount']." nm выиграла в дебатах id=".$debate_history_id;
+                     $stake_amount = $winStake['stake_amount']*1.5;
+                }else{
+                    $message = $mess;
+                    $stake_amount = $winStake['stake_amount'];
+                }
+                $userModel->changeUserMoney($winStake['user_id'], 0, $stake_amount, $message);
+            }
+            
+            $debateModel->setStakeHistoryId(0, $debate_history_id);
+            
+            // empty all tables
+            $debateModel->truncateTable('debate_now');
+            $debateModel->truncateTable('debate_theme');
+            $debateModel->truncateTable('debate_theme_vote');
+            $debateModel->truncateTable('debate_helper_check');
+            $debateModel->truncateTable('debate_helper_cansay');
+            $debateModel->truncateTable('debate_user_vote');
+            $debateModel->truncateTable('debate_chat');
+            $debateModel->truncateTable('debate_helpers_chat');
+            $debateModel->truncateTable('debate_users_chat');
+            
+            
+		    // END ETAP 7. Last Etap. Results 
+		}
+		$debateModel->stopEtap($activeEtap['id']);
+		$debateModel->startEtap($nextEtap['id']);
+		$this->DebateEtapsCheckerAction();
+	}
 	
 	public function DebateDelThemeAction(){
 	    $debateModel = new DebateModel();
@@ -388,7 +562,7 @@ class DebateController extends SiteController{
 	            $debate_user_id = 0;
 	            break;
 	        default:
-	            echo $request->areaId;
+	            //echo $request->areaId;
 	            return false;
 	            break;
 	    }

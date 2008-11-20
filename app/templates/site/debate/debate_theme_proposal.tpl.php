@@ -5,10 +5,11 @@
 	<div class="tab-page tab-page-selected">
 	
 
-
+<input type="hidden" name="currEtap" id="currEtap" value="GetTheme" />
+<input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 1 из 7. Идет прием тем для дебатов. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось 30 минут
+	Осталось минут - <span id="timeLeft"></span> 
 </div></div></div></div>
 
 
@@ -55,7 +56,7 @@
 		<form action="" name="frmAddTheme">
 			<table width="100%">
 			<tr>
-				<td width="100%"><input type="text" name="theme" style="width: 100%;" /></td>
+				<td width="100%"><input type="text" name="theme" id="theme" style="width: 100%;" /></td>
 				<td><input type="submit" name="addTheme" value="Предложить" /></td>
 			</tr>
 			</table>

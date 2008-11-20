@@ -11,7 +11,7 @@ class DebateModel extends BaseModel{
             UPDATE ".$table_name." SET ".$field." = ? 
             WHERE id = ?
         ";
-        echo $sql;
+        //echo $sql;
         $result = $DE -> query($sql, $value, $id);
     }
     
@@ -25,11 +25,32 @@ class DebateModel extends BaseModel{
         return $result;
     }
     
+    function truncateTable($table_name){
+        $DE = Project::getDatabase();
+        $sql = "
+            TRUNCATE TABLE `$table_name`
+        ";
+        $result = $DE -> query($sql);
+        return $result;
+    }
     
     /**
      * Debate_now
      * 
     */ 
+    
+    function addDebateNow(){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            INSERT INTO `debate_now` ( `start_time` , `debate_theme_id` , `theme` , `stake_amount` , `user_id_1` , `user_id_2` , `helper_id_1_1` , `helper_id_1_2` , `helper_id_2_1` , `helper_id_2_2` , `is_ready_1` , `is_ready_2` , `helper_1_1_rate` , `helper_1_2_rate` , `helper_2_1_rate` , `helper_2_2_rate` )
+            VALUES (
+            '".date("Y-m-d H:i:s")."', NULL , NULL , '0', NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , '0', '0', '0', '0'
+            )
+        ";
+        $result = $DE -> selectRow($sql);
+        return $result;
+    }
     
     function getDebateNow(){
         $DE = Project::getDatabase();
@@ -52,6 +73,21 @@ class DebateModel extends BaseModel{
         ";
         $DE -> query($sql, $stake_amount, $user_id, $debateNow['id']);
         return true;
+    }
+    
+    function addDebateHistory($start_time, $theme, $stake_amount, $user_id_1, $user_id_2, $helper_id_1_1, $helper_id_1_2,
+                              $helper_id_2_1, $helper_id_2_2, $user1_vote, $user2_vote, $debate_protocol){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            INSERT INTO `debate_history` ( `start_time` , `theme` , `stake_amount` , `user_id_1` , `user_id_2` , 
+                `helper_id_1_1` , `helper_id_1_2` , `helper_id_2_1` , `helper_id_2_2` , 
+                `user1_vote` , `user2_vote` , `debate_protocol` )
+            VALUES ('?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?')
+        ";
+        $result = $DE -> query($sql, $start_time, $theme, $stake_amount, $user_id_1, $user_id_2, $helper_id_1_1, $helper_id_1_2,
+                              $helper_id_2_1, $helper_id_2_2, $user1_vote, $user2_vote, $debate_protocol);
+        return mysql_insert_id();
     }
     
     
@@ -155,7 +191,7 @@ class DebateModel extends BaseModel{
             $sql ="
                 SELECT * 
                 FROM debate_etaps
-                WHERE ord > ?
+                WHERE id > ?
                 ORDER BY ord
                 LIMIT 0, 1
             ";
@@ -175,6 +211,7 @@ class DebateModel extends BaseModel{
             SELECT * 
             FROM debate_etaps
             WHERE is_active = 1 
+            ORDER BY ord
         ";
         $result = $DE -> selectRow($sql);
         return $result;
@@ -192,6 +229,18 @@ class DebateModel extends BaseModel{
         return $result;
     }
     
+    function getEtapByName($name){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT * 
+            FROM debate_etaps
+            WHERE name = '?' 
+        ";
+        $result = $DE -> selectRow($sql, $name);
+        return $result;
+    }
+    
     /**
      * CHECK is duration > passed time. 
      * return (duration - passed)
@@ -205,7 +254,7 @@ class DebateModel extends BaseModel{
             WHERE id = ? 
         ";
         $result = $DE -> selectRow($sql, $id);
-        return $result;
+        return $result['duration_passed'];
     }
     
     function startEtap($id){
@@ -320,14 +369,6 @@ class DebateModel extends BaseModel{
         return $result['c'];
     }
     
-    function clearAllThemes(){
-        $DE = Project::getDatabase();
-        $sql = "
-            TRUNCATE TABLE `debate_theme`
-        ";
-        $result = $DE -> query($sql, $id);
-    }
-    
     function addTheme($user_id, $theme, $votes=0){
         $DE = Project::getDatabase();
         $sql = "
@@ -376,7 +417,7 @@ class DebateModel extends BaseModel{
             FROM debate_theme_vote 
             WHERE debate_theme_id = ?
         ";
-        echo $sql.$theme_id."<hr>";
+        //echo $sql.$theme_id."<hr>";
         $result = $DE->selectRow($sql, $theme_id);
         $themeCount = $result['c'];
         $sql = "
@@ -384,8 +425,26 @@ class DebateModel extends BaseModel{
             SET votes = ?
             WHERE id = ?
         ";
-        echo $sql.$themeCount.$theme_id."<hr>";
+        //echo $sql.$themeCount.$theme_id."<hr>";
         $DE -> query($sql, $themeCount, $theme_id);
+    }
+    
+    function getVoteWinnerTheme(){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT debate_theme_vote.debate_theme_id, debate_theme.theme, count(*) as c
+            FROM debate_theme_vote
+            INNER JOIN debate_theme
+                ON debate_theme.id = debate_theme_vote.debate_theme_id
+            GROUP BY debate_theme_vote.debate_theme_id, debate_theme.theme
+            ORDER BY c DESC
+            LIMIT 0, 1
+        ";
+        $result = $DE -> select($sql, $user_id);
+        if ($result && count($result)>0) $winnerTheme = $result[0];
+        else $winnerTheme = array();
+        return $winnerTheme;
     }
     
     
@@ -407,9 +466,24 @@ class DebateModel extends BaseModel{
             FROM debate_helper_check
             INNER JOIN users
                 ON users.id = debate_helper_check.helper_id
-            WHERE debate_user_id = ?
+            WHERE debate_user_id = ? 
         ";
         return $DE -> select($sql, $debate_user_id);
+    }
+    
+    // возвращает helper_id кроме $exeptUserId. Для того, когда пользователь не выбрал помощников, ему назначают любых
+    function getHelperByDebateUserId_exept($debate_user_id, $exeptUserId){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT *
+            FROM debate_helper_check
+            WHERE debate_user_id = ? AND helper_id <> ?
+            LIMIT 0, 1
+        ";
+        $result = $DE -> select($sql, $debate_user_id, $exeptUserId);
+        if ($result && count($result)>0) $helper_id = $result['helper_id'];
+        else $helper_id = 0;
+        return $helper_id;
     }
     
     function addHelperCheck($helper_id, $debate_user_id){
@@ -447,14 +521,36 @@ class DebateModel extends BaseModel{
      * 
     */ 
     
-    function getDebateStakesByUserId($user_id){
+    function getDebateStakes($debate_history_id){
         $DE = Project::getDatabase();
         $sql = "
             SELECT *
             FROM debate_stakes
-            WHERE user_id = ? 
+            WHERE debate_history_id = ?
         ";
-        $result = $DE -> select($sql, $user_id);
+        $result = $DE -> select($sql, $debate_history_id);
+        return $result;
+    }
+    
+    function getDebateStakesByUserId($user_id, $debate_history_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT *
+            FROM debate_stakes
+            WHERE user_id = ? AND debate_history_id = ?
+        ";
+        $result = $DE -> select($sql, $user_id, $debate_history_id);
+        return $result;
+    }
+    
+    function getDebateStakesByDebateUserId($debate_user_id, $debate_history_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT *
+            FROM debate_stakes
+            WHERE debate_user_id = ? AND debate_history_id = ?
+        ";
+        $result = $DE -> select($sql, $debate_user_id, $debate_history_id);
         return $result;
     }
     
@@ -492,6 +588,15 @@ class DebateModel extends BaseModel{
         return true;
     }
     
+    function setStakeHistoryId($old_history_id, $debate_history_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            UPDATE debate_stakes SET debate_history_id = ? 
+            WHERE debate_history_id = ?
+        ";
+        $DE -> query($sql, $debate_history_id, $old_history_id);
+        return true;
+    }
     
     /**
      * END Debate_stakes
@@ -517,7 +622,7 @@ class DebateModel extends BaseModel{
     
     function getChatLines($dbTable, $debateChatId, $debate_user_id = 0){
         $DE = Project::getDatabase();
-        if ($debateChatId){
+        //if ($debateChatId){
             $sql = "
                 SELECT $dbTable.*, users.login FROM $dbTable 
                 INNER JOIN users 
@@ -526,6 +631,7 @@ class DebateModel extends BaseModel{
                 ORDER BY $dbTable.id
             ";
             $result = $DE -> select($sql);
+        /*
         }else{
             $sql = "
                 SELECT $dbTable.*, users.login FROM $dbTable 
@@ -540,6 +646,7 @@ class DebateModel extends BaseModel{
                 $result[]=$result2[$i];
             }
         }
+        */
         return $result;
     }
     
@@ -651,6 +758,18 @@ class DebateModel extends BaseModel{
         $lastId = 0;
         if (count($arr)>0) $lastId = $arr[count($arr)-1]['id'];
         return $lastId;
+    }
+    
+    function getWinnerId($debateResult, $debateNow){
+        if ($debateResult[$debateNow['user_id_1']] > $debateResult[$debateNow['user_id_2']]){
+		    $winnerUserId = $debateNow['user_id_1'];
+		}elseif ($debateResult[$debateNow['user_id_1']] < $debateResult[$debateNow['user_id_2']]){
+		    $winnerUserId = $debateNow['user_id_2'];
+		}else{ // nobody win
+		    $winnerUserId = 0;
+		}
+		
+		return $winnerUserId;
     }
 }
 ?>

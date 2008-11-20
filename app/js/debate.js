@@ -45,10 +45,29 @@ function pauseSet(pauseId, userNumber){
     }
 }
 
-function RefreshDebateChat(){
+function RefreshDebate(){
+    var currEtap = document.getElementById("currEtap");
+    var refreshNow = document.getElementById("refreshNow");
+    if (refreshNow && refreshNow.value == 1){
+        window.location.reload(true);
+    }
+    if (currEtap && currEtap.value == 'GetTheme'){
+        var themeElement = document.getElementById("theme");
+        if (themeElement && !themeElement.value){
+            t=setTimeout(window.location.reload(true),5000);
+        }
+    }
+    if (currEtap && currEtap.value == 'VoteTheme' || currEtap && currEtap.value == 'ChooseHelpers'){
+        t=setTimeout(window.location.reload(true),10000);
+    }
+    if (currEtap && currEtap.value == 'Debates'){
+        ajax(
+            {"url":"\/debate_refresh_chat","type":"POST","async":true,"data":{},"dataType":"json"}, 
+            true);
+    }
     ajax(
-        {"url":"\/debate_refresh_chat","type":"POST","async":true,"data":{},"dataType":"json"}, 
+        {"url":"\/debate_etaps_checker","type":"POST","async":true,"data":{},"dataType":"json"}, 
         true);
-    t=setTimeout("RefreshDebateChat()",10000);
+    t=setTimeout("RefreshDebate()",10000);
 }
-RefreshDebateChat();
+RefreshDebate();

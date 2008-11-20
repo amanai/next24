@@ -43,11 +43,11 @@ class DebateView extends BaseSiteView{
 	        echo '
 	        <tr id="pauseText1" style="display: none;">
 	           <td colspan="3">
-	           1-й участник просит паузу
+	           <div class="center">1-й участник просит паузу</div>
 	           </td>
 	        <tr><tr id="pauseText2" style="display: none;">
 	           <td colspan="3">
-	           2-й участник просит паузу
+	           <div class="center">2-й участник просит паузу</div>
 	           </td>
 	        <tr>
 	        ';
@@ -144,6 +144,7 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'debate.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_theme_proposal.tpl.php');
 	}
@@ -153,6 +154,7 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'debate.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_vote_theme.tpl.php');
 	}
@@ -162,6 +164,7 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'debate.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_choose_second_user.tpl.php');
 	}
@@ -171,6 +174,7 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'debate.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_choose_helpers.tpl.php');
 	}
@@ -180,6 +184,7 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'debate.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_get_stakes.tpl.php');
 	}
@@ -213,6 +218,12 @@ class DebateView extends BaseSiteView{
      * AJAX Functions
      *
      */
+	
+	function etapsChecker($message){
+	    $response = Project::getAjaxResponse();
+	    $response -> block("timeLeft",  true, $message['etapTimeLeftMin']);
+	    if ($message['refreshNow']) $response -> attribute("refreshNow", "value", 1);
+	}
 	
 	function returnChat($message){
 		$response = Project::getAjaxResponse();
@@ -272,12 +283,13 @@ class DebateView extends BaseSiteView{
 	    $response = Project::getAjaxResponse();
 	    $response->hide($message['elementId']);
 	}
-	
+	/*
 	function test($message){
 		$response = Project::getAjaxResponse();
 		$response -> block($message['table'].$message['id'], true, $message['text']);
 		$response -> attribute($message['table'].$message['id'], "class", $message['text']);
 	}
+	*/
 
 	/**
      * END AJAX Functions

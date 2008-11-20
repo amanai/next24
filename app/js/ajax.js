@@ -83,12 +83,14 @@ function handleResponse(msg){
 			}
 			if (p.blocks){
 				$.each(p.blocks, function(i, item){
+				    if(document.getElementById(item.id)){
+				        $("#"+item.id).html(item.html);
 						if (item.show == true){
-							$("div#"+item.id).html(item.html);
-							$("div#"+item.id).show();
+							$("#"+item.id).show();
 						} else {
-							$("div#"+item.id).hide();
+							$("#"+item.id).hide();
 						}
+				    }
 			          });
 			}
 			if (p.attr){

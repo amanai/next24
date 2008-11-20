@@ -5,10 +5,11 @@
 	<div class="tab-page tab-page-selected">
 	
 
-
+<input type="hidden" name="currEtap" id="currEtap" value="GetStakes" />
+<input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 5 из 7. Подтверждение готовности, прием ставок. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось 30 минут
+	Осталось минут - <span id="timeLeft"></span>
 </div></div></div></div>
 
 

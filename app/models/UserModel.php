@@ -175,6 +175,14 @@ class UserModel extends BaseModel{
         return $result;
     }
     
+    public function changeUserRate($user_id, $delta_rate){
+        $DE = Project::getDatabase();
+        $sql ="
+            UPDATE users SET rate = (rate + ?)
+            WHERE id = ?
+        ";
+        $DE -> query($sql, $delta_rate, $user_id);
+    }
     
     /**
      *  MONEY_TRANSACTION    
