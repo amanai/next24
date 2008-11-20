@@ -31,12 +31,27 @@ class DebateView extends BaseSiteView{
 			   <p class="padding3"><input type="button" onclick="javascript:send_message(\'chat_text\', \'chat_messages\', '.$isHide.');" value="Сказать" /></p>';
 	    if ($userNumber){
 	       echo '
-			   <p class="padding3"><input id="pause'.$userNumber.'" type="button" value="Перерыв" onclick="javascript:pauseSet(\'pause'.$userNumber.'\', '.$userNumber.');" /></p>';
+			   <p class="padding3">
+			     <input id="pause'.$userNumber.'" type="button" value="Перерыв" onclick="javascript:pauseSet(\'pause'.$userNumber.'\', '.$userNumber.');" />
+			   </p>';
 	    }
 	    echo '			   
 			</td>
 		</tr>
 	    ';
+	    if ($userNumber){
+	        echo '
+	        <tr id="pauseText1" style="display: none;">
+	           <td colspan="3">
+	           1-й участник просит паузу
+	           </td>
+	        <tr><tr id="pauseText2" style="display: none;">
+	           <td colspan="3">
+	           2-й участник просит паузу
+	           </td>
+	        <tr>
+	        ';
+	    }
 	}
 	
 	public function showAllowSayHelpers($helper1, $helper2){
@@ -99,6 +114,25 @@ class DebateView extends BaseSiteView{
 	    ';
 	}
 	
+	public function showWinnerHelpersName($winnerHelper1, $winnerHelper2, $user_id){
+	    $helpersName = '';
+	    if ($winnerHelper1['id']){
+	        $helpersName .= '<a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $winnerHelper1['login']).'">';
+    	    if ($winnerHelper1['id'] == $user_id) $helpersName .= 'Вы';
+    	    else $helpersName .= $winnerHelper1['login'];
+    	    $helpersName .= '</a>';
+	    }
+	    if ($winnerHelper1['id'] && $winnerHelper2['id']) $helpersName .= ' и ';
+	    if ($winnerHelper2['id']){
+	        $helpersName .= '<a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $winnerHelper2['login']).'">';
+    	    if ($winnerHelper2['id'] == $user_id) $helpersName .= 'Вы';
+    	    else $helpersName .= $winnerHelper2['login'];
+    	    $helpersName .= '</a>';
+	    }
+	    
+	    return $helpersName;
+	}
+	
 	
 
     /**
@@ -108,8 +142,8 @@ class DebateView extends BaseSiteView{
     // etap 1
     function DebateThemeProposalPage(){
 	    $this->_js_files[] = 'jquery.js';
-	    //$this->_js_files[]='blockUI.js';
-	    //$this->_js_files[]='ajax.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_theme_proposal.tpl.php');
 	}
@@ -117,8 +151,8 @@ class DebateView extends BaseSiteView{
 	// etap 2
 	function DebateVoteThemePage(){
 	    $this->_js_files[] = 'jquery.js';
-	    //$this->_js_files[]='blockUI.js';
-	    //$this->_js_files[]='ajax.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_vote_theme.tpl.php');
 	}
@@ -126,8 +160,8 @@ class DebateView extends BaseSiteView{
 	// etap 3
 	function DebateChooseSecondUserPage(){
 	    $this->_js_files[] = 'jquery.js';
-	    //$this->_js_files[]='blockUI.js';
-	    //$this->_js_files[]='ajax.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_choose_second_user.tpl.php');
 	}
@@ -135,8 +169,8 @@ class DebateView extends BaseSiteView{
 	// etap 4
 	function DebateChooseHelpersPage(){
 	    $this->_js_files[] = 'jquery.js';
-	    //$this->_js_files[]='blockUI.js';
-	    //$this->_js_files[]='ajax.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_choose_helpers.tpl.php');
 	}
@@ -144,8 +178,8 @@ class DebateView extends BaseSiteView{
 	// etap 5
 	function DebateGetStakesPage(){
 	    $this->_js_files[] = 'jquery.js';
-	    //$this->_js_files[]='blockUI.js';
-	    //$this->_js_files[]='ajax.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_get_stakes.tpl.php');
 	}
@@ -158,6 +192,16 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[] = 'debate.js';
 	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_chat.tpl.php');
+	}
+	
+	// etap 7
+	function ResultsPage(){
+	    $this->_js_files[] = 'jquery.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'debate.js';
+	    $this->_css_files[]='debate.css';
+	    $this -> setTemplate(null, 'debate_result.tpl.php');
 	}
 	
 	/**
@@ -180,6 +224,9 @@ class DebateView extends BaseSiteView{
 		if ($message['isHelperCanSay'] || $message['userNumber']) $response -> show('debate_MessageboxForDebateUsers');
 		else $response -> hide('debate_MessageboxForDebateUsers');
 		
+		 // show message box for HELPER when Pause
+		 if ($message['isPause'] && !$message['userNumber']) $response -> show('debate_MessageboxForDebateUsers');
+		
 		if ($message['userNumber']){  // hide/show button "helper can say"
 		    if ($message['helperSay1'] == 'show') $response -> show('helperSay1');
 		    elseif ($message['helperSay1'] == 'hide') $response -> hide('helperSay1');
@@ -188,7 +235,25 @@ class DebateView extends BaseSiteView{
 		    elseif ($message['helperSay2'] == 'hide') $response -> hide('helperSay2');
 		    
 		    // hide button PAUSE , if already pressed
-		    if (isset($message['hide_pause']) && $message['hide_pause']) $response -> hide('pause'.$message['userNumber']);
+		    /*
+		    if (isset($message['hide_pause']) && $message['hide_pause']){
+		        $response -> hide('pause'.$message['userNumber']);
+		        $response -> show('pauseText'.$message['userNumber']);
+		    }else{
+		        $response -> show('pause'.$message['userNumber']);
+		        $response -> hide('pauseText'.$message['userNumber']);
+		    }
+		    */
+		    if ($message['hide_pause1']){
+		        $response -> hide('pause1'); $response -> show('pauseText1');
+		    }else{
+		        $response -> show('pause1'); $response -> hide('pauseText1');
+		    }
+		    if ($message['hide_pause2']){
+		        $response -> hide('pause2'); $response -> show('pauseText2');
+		    }else{
+		        $response -> show('pause2'); $response -> hide('pauseText2');
+		    }
 		}
 		
 		//  hide/show button vote_for_user in debate

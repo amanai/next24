@@ -82,6 +82,14 @@ font-size:11px;
 
 /* END  CHAT */
 
+.center{
+    text-align: center;
+}
+.left{
+    text-align: left;
+}
+
+
 .debate_user td{
     background: #E9F1F7;
 

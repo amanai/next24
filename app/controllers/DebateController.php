@@ -25,8 +25,9 @@ class DebateController extends SiteController{
         
 	    $this-> _view -> assign('tab_list', TabController::getDebateTabs(true, false, false)); // Show tabs
 		
-	    //$debateModel->stopEtap(5);
-	    //$debateModel->startEtap(6);
+	    $debateModel->stopEtap(7);
+	    $debateModel->startEtap(6);
+	    //$debateModel->pauseOnEtap(6);
 	    //$debateModel->pauseOffEtap(6);
 	    
 		$activeEtap = $debateModel->getActiveEtap();
@@ -38,9 +39,7 @@ class DebateController extends SiteController{
 		$this-> _view -> assign('debateNow', $debateNow);
 		$this-> _view -> assign('activeEtap', $activeEtap);
 		
-		if ($debateNow['user_id_1'] == $user->id) $userNumber = 1;
-		elseif ($debateNow['user_id_2'] == $user->id) $userNumber = 2;
-		else $userNumber = 0;
+		$userNumber = $debateModel->getUserNumber($debateNow, $user->id);
 		$this-> _view -> assign('userNumber', $userNumber);
 		
 		if ($activeEtap['name']=='GetTheme'){
@@ -254,7 +253,59 @@ class DebateController extends SiteController{
 		    
 		    
 		}elseif($activeEtap['name']=='Results'){
-		    // ETAP 7. Last Etap. Results 
+		    // ETAP 7. Last Etap. Results
+		    $userModel = new UserModel();
+		    
+		    if ($request->estimateHelper){
+		        if ($request->helper1){
+		            $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_'.$userNumber.'_1_rate', $request->helper1);
+		        }
+		        if ($request->helper2){
+		            $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_'.$userNumber.'_2_rate', $request->helper2);
+		        }
+		        Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+		    }
+		    
+		    $currentUser = $userModel->getUserById($user->id);
+    		$this-> _view -> assign('currentUser', $currentUser);
+    		
+    		$userIdFromHelper = $debateModel->getUserByHelper($debateNow, $user->id);
+    		$this-> _view -> assign('userIdFromHelper', $userIdFromHelper);
+    		
+    		$debateResult = $debateModel->getDebateResults();
+    		$this-> _view -> assign('debateResult', $debateResult);
+    		
+    		if ($debateResult[$debateNow['user_id_1']] > $debateResult[$debateNow['user_id_2']]){
+    		    $winnerUserId = $debateNow['user_id_1'];
+    		}elseif ($debateResult[$debateNow['user_id_1']] < $debateResult[$debateNow['user_id_2']]){
+    		    $winnerUserId = $debateNow['user_id_2'];
+    		}else{ // nobody win
+    		    $winnerUserId = 0;
+    		}
+    		$winnerUserNumber = $debateModel->getUserNumber($debateNow, $winnerUserId);
+    		$winnerUser = $userModel->getUserById($winnerUserId);
+    		$this-> _view -> assign('winnerUser', $winnerUser);
+    		$this-> _view -> assign('winnerUserNumber', $winnerUserNumber);
+    		
+    		$winnerHelper1 = $userModel->getUserById($debateNow['helper_id_'.$winnerUserNumber.'_1']);
+    		$this-> _view -> assign('winnerHelper1', $winnerHelper1);
+    		$winnerHelper2 = $userModel->getUserById($debateNow['helper_id_'.$winnerUserNumber.'_2']);
+    		$this-> _view -> assign('winnerHelper2', $winnerHelper2);
+    		
+    		$currentUser = $userModel->getUserById($user->id);
+    		$this-> _view -> assign('currentUser', $currentUser);
+    		$currentHelper1 = $userModel->getUserById($debateNow['helper_id_'.$userNumber.'_1']);
+    		$this-> _view -> assign('currentHelper1', $currentHelper1);
+    		$currentHelper2 = $userModel->getUserById($debateNow['helper_id_'.$userNumber.'_2']);
+    		$this-> _view -> assign('currentHelper2', $currentHelper2);
+    		
+    		if ($userNumber && !$debateNow['helper_'.$userNumber.'_1_rate'] && !$debateNow['helper_'.$userNumber.'_2_rate']){
+    		    // not estimated
+    		    $this-> _view -> assign('isEstimated', false);
+    		}else $this-> _view -> assign('isEstimated', true);
+    		
+		    $this -> _view -> ResultsPage();
+
 		    // END ETAP 7. Last Etap. Results 
 		}
 		
@@ -315,6 +366,7 @@ class DebateController extends SiteController{
 	    $message = array();
 	    $debateNow = $debateModel->getDebateNow();
 	    $activeEtap = $debateModel->getActiveEtap();
+		$userNumber = $debateModel->getUserNumber($debateNow, $user->id);
 	    
 	    switch ($request->areaId){
 	        case 'chat_messages':
@@ -329,6 +381,7 @@ class DebateController extends SiteController{
 	        case 'chat_messages_helpers':
 	            $dbTable = "debate_helpers_chat";
 	            $debate_user_id = $debateModel->getUserByHelper($debateNow, $user->id);
+	            if (!$debate_user_id && $userNumber) $debate_user_id=$user->id;
 	            break;
 	        case 'chat_messages_users':
 	            $dbTable = "debate_users_chat";
@@ -362,7 +415,10 @@ class DebateController extends SiteController{
 		$debateChatHelpersId = $sessiovVars->getKey('debateChatHelpersId');
 		$debateChatUsersId = $sessiovVars->getKey('debateChatUsersId');
 		$message = array();
-		
+		$debateNow = $debateModel->getDebateNow();
+        $activeEtap = $debateModel->getActiveEtap();
+        $userNumber = $debateModel->getUserNumber($debateNow, $user->id);
+        
 		$message['user_id'] = $user->id;
 	    
 	    $aChatLines = $debateModel->getChatLines('debate_chat', $debateChatId);
@@ -370,7 +426,9 @@ class DebateController extends SiteController{
         $lastId = $debateModel->getLastIdFromArray($aChatLines);
         if ($lastId)  $sessiovVars->add('debateChatId', $lastId);
         
-        $aChatHelpersLines = $debateModel->getChatLines('debate_helpers_chat', $debateChatHelpersId);
+        $debate_user_id = $debateModel->getUserByHelper($debateNow, $user->id);
+	    if (!$debate_user_id && $userNumber) $debate_user_id=$user->id;
+        $aChatHelpersLines = $debateModel->getChatLines('debate_helpers_chat', $debateChatHelpersId, $debate_user_id);
         $htmlChatHelpersText = $debateModel->getHtmlChatText($aChatHelpersLines);
         $lastId = $debateModel->getLastIdFromArray($aChatHelpersLines);
         if ($lastId) $sessiovVars->add('debateChatHelpersId', $lastId);
@@ -385,8 +443,8 @@ class DebateController extends SiteController{
         $message['htmlChatUsersText'] = $htmlChatUsersText;
         
         // show or hide Changeable elements
-        $debateNow = $debateModel->getDebateNow();
-        //$message['debateNow'] = $debateNow;
+        
+        $message['isPause'] = $activeEtap['is_pause'];
         
 		if ($debateNow['user_id_1'] == $user->id) $userNumber = 1;
 		elseif ($debateNow['user_id_2'] == $user->id) $userNumber = 2;
@@ -405,7 +463,9 @@ class DebateController extends SiteController{
             else $message['helperSay2'] = 'show';
             
             // hide button PAUSE , if already pressed
-            if (!$debateNow['is_ready_'.$userNumber]) $message['hide_pause'] = $userNumber;
+            //if (!$debateNow['is_ready_'.$userNumber]) $message['hide_pause'] = $userNumber;
+            if (!$debateNow['is_ready_1']) $message['hide_pause1'] = 1; else $message['hide_pause1'] = 0;
+            if (!$debateNow['is_ready_2']) $message['hide_pause2'] = 1; else $message['hide_pause2'] = 0;
         }
         
         //  hide/show button vote_for_user in debate
@@ -442,9 +502,7 @@ class DebateController extends SiteController{
 	    $user = Project::getUser()->getDbUser();
 	    
 	    $debateNow = $debateModel->getDebateNow();
-		if ($debateNow['user_id_1'] == $user->id) $userNumber = 1;
-		elseif ($debateNow['user_id_2'] == $user->id) $userNumber = 2;
-		else $userNumber = 0;
+	    $userNumber = $debateModel->getUserNumber($debateNow, $user->id);
 	    
 	    if ($request->userNumber && $userNumber == $request->userNumber){
 	        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'is_ready_'.$userNumber, 0);

@@ -515,18 +515,24 @@ class DebateModel extends BaseModel{
         return true;
     }
     
-    function getChatLines($dbTable, $debateChatId){
+    function getChatLines($dbTable, $debateChatId, $debate_user_id = 0){
         $DE = Project::getDatabase();
         if ($debateChatId){
             $sql = "
-                SELECT * FROM $dbTable WHERE id > '$debateChatId'
-                ORDER BY id
+                SELECT $dbTable.*, users.login FROM $dbTable 
+                INNER JOIN users 
+                    ON $dbTable.user_id = users.id
+                WHERE $dbTable.id > '$debateChatId' AND debate_user_id = $debate_user_id
+                ORDER BY $dbTable.id
             ";
             $result = $DE -> select($sql);
         }else{
             $sql = "
-                SELECT * FROM $dbTable 
-                ORDER BY id DESC
+                SELECT $dbTable.*, users.login FROM $dbTable 
+                INNER JOIN users 
+                    ON $dbTable.user_id = users.id
+                WHERE debate_user_id = $debate_user_id
+                ORDER BY $dbTable.id DESC
             ";
             $result2 = $DE -> select($sql); 
             $result = array();
@@ -535,6 +541,16 @@ class DebateModel extends BaseModel{
             }
         }
         return $result;
+    }
+    
+    function getChatInText($dbTable, $debateChatId){
+        $aChatLines = $this->getChatLines($dbTable, $debateChatId);
+        $text = '';
+        foreach ($aChatLines as $chatLine){
+            $text .= $chatLine['login'].'['.$chatLine['message_time'].']'.$chatLine['message'].'\n';
+        }
+        
+        return $text;
     }
     
     /**
@@ -567,6 +583,21 @@ class DebateModel extends BaseModel{
         return $DE -> select($sql, $user_id);
     }
     
+    function getDebateResults(){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT debate_user_id, count(*) as c 
+            FROM `debate_user_vote`
+            GROUP BY debate_user_id
+        ";
+        $debateResult = $DE -> select($sql, $user_id);
+        $result = array();
+        foreach ($debateResult as $debate){
+            $result[$debate['debate_user_id']] = $debate['c'];
+        }
+        return $result;
+    }
+    
     /**
      * END debate user Vote
      */
@@ -594,14 +625,22 @@ class DebateModel extends BaseModel{
         return $user_id;
     }
     
+    function getUserNumber($debateNow, $user_id){
+        $userNumber = 0;
+        if ($user_id){
+            if ($debateNow['user_id_1'] == $user_id) $userNumber = 1;
+    		elseif ($debateNow['user_id_2'] == $user_id) $userNumber = 2;
+        }
+		return $userNumber;
+    }
+    
     function getHtmlChatText($aChatLines){
-        $userModel = new UserModel();
         $htmlChatText = '';
         foreach ($aChatLines as $chatLine){
-            $userSay = $userModel->getUserById($chatLine['user_id']);
+            $userSayLogin = $chatLine['login'];
             $htmlChatText .= '
             <div class="ChatLine">
-                <span class="ChatLineNick"><a style="font-weight: bold;" href="'.Project::getRequest()->createUrl('User', 'Profile', null, $userSay['login']).'" class="Nick" target="_blank">'.$userSay['login'].'</a></span>: 
+                <span class="ChatLineNick"><a style="font-weight: bold;" href="'.Project::getRequest()->createUrl('User', 'Profile', null, $userSayLogin).'" class="Nick" target="_blank">'.$userSayLogin.'</a></span>: 
 				<span class="TextRow">'.$chatLine['message'].'</span>
             </div>';
         }
