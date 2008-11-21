@@ -21,6 +21,15 @@ class DebateView extends BaseSiteView{
 	   ';
 	}
 	
+	public function showQuestionAvator(){
+	   echo '
+	   <div class="debate_avator">
+	   <img src="'.$this -> image_url.'avator/question.png" />
+	   </div>
+	   <br /><br />	 
+	   ';
+	}
+	
 	public function showMessageboxForDebateUsers($userNumber = 0, $isHide = 0){
 	    echo '
 	    <tr id="debate_MessageboxForDebateUsers">
@@ -48,6 +57,10 @@ class DebateView extends BaseSiteView{
 	        <tr><tr id="pauseText2" style="display: none;">
 	           <td colspan="3">
 	           <div class="center">2-й участник просит паузу</div>
+	           </td>
+	        <tr><tr id="pauseText3" style="display: none;">
+	           <td colspan="3">
+	           <div class="center">Перерыв</div>
 	           </td>
 	        <tr>
 	        ';
@@ -115,8 +128,9 @@ class DebateView extends BaseSiteView{
 	}
 	
 	public function showWinnerHelpersName($winnerHelper1, $winnerHelper2, $user_id){
-	    $helpersName = '';
+	    $helpersName = ''; $helpersCount = 0;
 	    if ($winnerHelper1['id']){
+	        $helpersCount ++;
 	        $helpersName .= '<a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $winnerHelper1['login']).'">';
     	    if ($winnerHelper1['id'] == $user_id) $helpersName .= 'Вы';
     	    else $helpersName .= $winnerHelper1['login'];
@@ -124,12 +138,15 @@ class DebateView extends BaseSiteView{
 	    }
 	    if ($winnerHelper1['id'] && $winnerHelper2['id']) $helpersName .= ' и ';
 	    if ($winnerHelper2['id']){
+	        $helpersCount ++;
 	        $helpersName .= '<a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $winnerHelper2['login']).'">';
     	    if ($winnerHelper2['id'] == $user_id) $helpersName .= 'Вы';
     	    else $helpersName .= $winnerHelper2['login'];
     	    $helpersName .= '</a>';
 	    }
-	    
+	    if ($helpersCount == 2) $helpersName = " и его помощники ".$helpersName;
+	    elseif ($helpersCount == 1) $helpersName = " и его помощник ".$helpersName;
+        
 	    return $helpersName;
 	}
 	
@@ -232,40 +249,65 @@ class DebateView extends BaseSiteView{
 		$response -> append('chat_messages_users', $message['htmlChatUsersText']);
 		
 		 // hide/show message box for Debate Users
-		if ($message['isHelperCanSay'] || $message['userNumber']) $response -> show('debate_MessageboxForDebateUsers');
-		else $response -> hide('debate_MessageboxForDebateUsers');
+		if ($message['isHelperCanSay'] || $message['userNumber']) $showMessageboxForDebateUsers = true;
+		else $showMessageboxForDebateUsers = false;
 		
 		 // show message box for HELPER when Pause
-		 if ($message['isPause'] && !$message['userNumber']) $response -> show('debate_MessageboxForDebateUsers');
+		 if ($message['isPause'] && !$message['userNumber']){
+		     $showMessageboxForDebateUsers = true;
+		 }elseif($message['isPause'] && $message['userNumber']){
+		     $showMessageboxForDebateUsers = false;
+		 }
+		 
 		
 		if ($message['userNumber']){  // hide/show button "helper can say"
-		    if ($message['helperSay1'] == 'show') $response -> show('helperSay1');
-		    elseif ($message['helperSay1'] == 'hide') $response -> hide('helperSay1');
+		    if ($message['helperSay1'] == 'show') $showHelperSay1 = true;
+		    elseif ($message['helperSay1'] == 'hide') $showHelperSay1 = false;
 		    
-		    if ($message['helperSay2'] == 'show') $response -> show('helperSay2');
-		    elseif ($message['helperSay2'] == 'hide') $response -> hide('helperSay2');
+		    if ($message['helperSay2'] == 'show') $showHelperSay2 = true;
+		    elseif ($message['helperSay2'] == 'hide') $showHelperSay2 = false;
 		    
 		    // hide button PAUSE , if already pressed
-		    /*
-		    if (isset($message['hide_pause']) && $message['hide_pause']){
-		        $response -> hide('pause'.$message['userNumber']);
-		        $response -> show('pauseText'.$message['userNumber']);
-		    }else{
-		        $response -> show('pause'.$message['userNumber']);
-		        $response -> hide('pauseText'.$message['userNumber']);
-		    }
-		    */
 		    if ($message['hide_pause1']){
-		        $response -> hide('pause1'); $response -> show('pauseText1');
+		        $response -> hide('pause1'); $showPauseText1=true;
 		    }else{
-		        $response -> show('pause1'); $response -> hide('pauseText1');
+		        $response -> show('pause1'); $showPauseText1=false;
 		    }
 		    if ($message['hide_pause2']){
-		        $response -> hide('pause2'); $response -> show('pauseText2');
+		        $response -> hide('pause2'); $showPauseText2=true;
 		    }else{
-		        $response -> show('pause2'); $response -> hide('pauseText2');
+		        $response -> show('pause2'); $showPauseText2=false;
 		    }
+		    if ($message['isPause']){
+		        $showPauseText1=false;
+		        $showPauseText2=false;
+		        $showHelperSay1 = false;
+		        $showHelperSay2 = false;
+		        $response -> show('pauseText3');
+		    }else{
+		        $response -> hide('pauseText3');
+		    }
+		    
+		    if ($showHelperSay1) $response -> show('helperSay1');
+    		else $response -> hide('helperSay1');
+    		if ($showHelperSay2) $response -> show('helperSay2');
+    		else $response -> hide('helperSay2');
+		    
+		    if ($showPauseText1) $response -> show('pauseText1');
+    		else $response -> hide('pauseText1');
+    		if ($showPauseText2) $response -> show('pauseText2');
+    		else $response -> hide('pauseText2');
 		}
+		
+		if ($message['isPause']){ // PAUSE
+	        $response -> show('pauseTitle');
+	        $response -> show('pauseDescription');
+	        $response -> hide('pauseOffDescription');
+	    }else{
+	        $response -> hide('pauseTitle');
+	        $response -> hide('pauseDescription');
+	        $response -> show('pauseOffDescription');
+	    }
 		
 		//  hide/show button vote_for_user in debate
         if (!$message['isUserVoted'] && $message['user_id']){
@@ -276,6 +318,11 @@ class DebateView extends BaseSiteView{
             $response -> hide('vote_for_user_1');
             $response -> hide('vote_for_user_2');
         }
+        
+        
+        if ($showMessageboxForDebateUsers) $response -> show('debate_MessageboxForDebateUsers');
+		else $response -> hide('debate_MessageboxForDebateUsers');
+		
 		
 	}
 	

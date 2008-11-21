@@ -80,7 +80,13 @@ class NewsController extends SiteController{
 	        $this-> _view -> assign('newsViewType', 'full');
 	        $this-> _view -> assign('nShowRows', 0); // Show all news records
 	        if (!$isTabsSnow){
-    	        $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false, false, false, array(), true, "Все новости")); // Show tabs
+	            $newsViewModel = new NewsView();
+	            if ($request->filterNewsTreeFeeds){
+	                $breadCrumb = $newsViewModel->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($request->filterNewsTreeFeeds, false);
+	            }else{
+	                $breadCrumb = $newsViewModel->ShowNewsTreeBreadCrumbByNewsTreeId($request->filterNewsTree, false);
+	            }
+    	        $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false, false, false, array(), true, $breadCrumb)); // Show tabs
     	        $isTabsSnow = true;
 	        }
 	    }else {
@@ -343,7 +349,9 @@ class NewsController extends SiteController{
 	        }
 	        
 	        if ($noErrors){
-    	        $feed_id = $newsModel -> addFeeds($user->id, $request->feed_name, $request->feed_url, $type, $state, $creation_date, $text_parse_type, $is_partner);
+	            if (strtolower(substr($request->feed_url, 0, 7)) == 'feed://') $feed_url = 'http://'.substr($request->feed_url, 7);
+	            else $feed_url = $request->feed_url;
+    	        $feed_id = $newsModel -> addFeeds($user->id, $request->feed_name, $feed_url, $type, $state, $creation_date, $text_parse_type, $is_partner);
     	        $news_banner_id = $newsModel -> addNewsBanner($user->id, $request->code, $state);
     	        $news_tree_feeds_id = $newsModel -> addNewsTreeFeeds($request->news_tree_id, $feed_id, $news_banner_id, $category_tag);
     	        
@@ -414,8 +422,10 @@ class NewsController extends SiteController{
     	        if ($noErrors){
         	        if ($user->id == $newsTreeFeed['feeds_user_id'] || $isAdmin){
         	        // if OWNER or ADMIN
+        	            if (strtolower(substr($request->feed_url, 0, 7)) == 'feed://') $feed_url = 'http://'.substr($request->feed_url, 7);
+	                    else $feed_url = $request->feed_url;
         	            if ($isAdmin) $text_parse_type = $request->text_parse_type; else $text_parse_type = -1;
-            	        $newsModel -> changeFeeds($newsTreeFeed['feed_id'], $request->feed_name, $request->feed_url, $type, $state, $text_parse_type, $is_partner);
+            	        $newsModel -> changeFeeds($newsTreeFeed['feed_id'], $request->feed_name, $feed_url, $type, $state, $text_parse_type, $is_partner);
             	        $newsModel -> changeNewsTreeFeeds($news_tree_feeds_id, $request->news_tree_id, $newsTreeFeed['feed_id'], $newsTreeFeed['news_banner_id'], $category_tag);
             	        if ($newsTreeFeed['news_banner_id']){
             	           $newsModel -> changeNewsBanner($newsTreeFeed['news_banner_id'], $request->code, $state);

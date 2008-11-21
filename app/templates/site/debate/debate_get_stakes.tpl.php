@@ -9,7 +9,7 @@
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 5 из 7. Подтверждение готовности, прием ставок. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось минут - <span id="timeLeft"></span>
+	Осталось <span id="timeLeft"></span> мин.
 </div></div></div></div>
 
 
@@ -29,10 +29,32 @@ if ($this->userNumber && $this->isReady){
 <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 
     <div style="text-align: center; margin: 0px -10px;">
-	<div style="width: 10%;">
-	первый в дебатах: <b><?php echo '<a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser1['login']).'">'.$this->debateUser1['login'].'</a>'; ?></b>
-	второй в дебатах: <b><?php echo '<a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser2['login']).'">'.$this->debateUser2['login'].'</a>'; ?></b>
+	<div style="text-align: center;">
 	
+	<table class="debate_user" align="center">
+	<tr>
+	   <td valign="top">
+	   <div class="block_d_ld2">
+	   <h2><?php echo '<a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser1['login']).'">'.$this->debateUser1['login'].'</a>'; ?></h2>
+	   <?php 
+	   $this->showUserAvator($this->user1_avatar, $this -> image_url);
+	   ?>
+	   <h2>Помощники</h2>
+	   <?php 
+	   if ($this->helper1_1){
+	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_1['login']).'">'.$this->helper1_1['login'].'</a></p>'; 
+	   }else echo '<p>&nbsp;</p>';
+	   if ($this->helper1_2){
+	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_2['login']).'">'.$this->helper1_2['login'].'</a></p>'; 
+	   }else echo '<p>&nbsp;</p>';
+	   ?>
+	   <br /><br />
+	   <p><input type="button" name="vote_for_user_1" id="vote_for_user_1" onclick="voteForDebateUser(<?php echo $this->debateUser1['id'] ?>);" value="Голосовать за <?php echo $this->debateUser1['login']; ?>" /></p>
+	   </div>
+	   </td>
+	   <td valign="top"> 
+	   
+         <!-- center part  -->	   
 	    <form name="frmStake" action="" method="POST">
 		<table class="questions">
 		<tr>
@@ -110,6 +132,30 @@ if ($this->userNumber && $this->isReady){
 
 		</table>
 		</form>
+		<!-- / center part  -->
+		
+	   </td>
+	   <td valign="top">
+	   <div class="block_d_ld2">
+	   <h2><?php echo '<a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser2['login']).'">'.$this->debateUser2['login'].'</a>'; ?></h2>
+	   <?php 
+	   $this->showUserAvator($this->user2_avatar, $this -> image_url);
+	   ?>
+	   <h2>Помощники</h2>
+	   <?php 
+	   if ($this->helper2_1){
+	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_1['login']).'">'.$this->helper2_1['login'].'</a></p>'; 
+	   }else echo '<p>&nbsp;</p>';
+	   if ($this->helper2_2){
+	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_2['login']).'">'.$this->helper2_2['login'].'</a></p>'; 
+	   }else echo '<p>&nbsp;</p>';
+	   ?>
+	   <br /><br />
+	   <p><input type="button" name="vote_for_user_2" id="vote_for_user_2" onclick="voteForDebateUser(<?php echo $this->debateUser2['id'] ?>);" value="Голосовать за <?php echo $this->debateUser2['login']; ?>" /></p>
+	   </div>
+	   </td>
+	</tr>
+	</table>
 		
 	</div></div>
 

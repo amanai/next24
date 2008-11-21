@@ -25,7 +25,7 @@ class DebateController extends SiteController{
         
 	    $this-> _view -> assign('tab_list', TabController::getDebateTabs(true, false, false)); // Show tabs
 		
-	    //$debateModel->stopEtap(7);
+	    //$debateModel->stopEtap(5);
 	    //$debateModel->startEtap(6);
 	    //$debateModel->pauseOnEtap(6);
 	    //$debateModel->pauseOffEtap(6);
@@ -37,6 +37,7 @@ class DebateController extends SiteController{
 		    $debateModel->startEtap($activeEtap['id']); // set ACTIVE to first etap
 		    $debateModel->truncateTable('debate_now');
     		$debateModel->addDebateNow();
+    		$sessiovVars->add('idNow', 0);
 		}
 		$debateNow = $debateModel->getDebateNow();
 		if (!$debateNow) {
@@ -300,6 +301,11 @@ class DebateController extends SiteController{
     		$currentHelper2 = $userModel->getUserById($debateNow['helper_id_'.$userNumber.'_2']);
     		$this-> _view -> assign('currentHelper2', $currentHelper2);
     		
+    		$user1 = $userModel->getUserById($debateNow['user_id_1']);
+    		$this-> _view -> assign('debateUser1', $user1);
+    		$user2 = $userModel->getUserById($debateNow['user_id_2']);
+    		$this-> _view -> assign('debateUser2', $user2);
+    		
     		if ($userNumber && !$debateNow['helper_'.$userNumber.'_1_rate'] && !$debateNow['helper_'.$userNumber.'_2_rate']){
     		    // not estimated
     		    $this-> _view -> assign('isEstimated', false);
@@ -324,6 +330,7 @@ class DebateController extends SiteController{
 	    if (!$activeEtap){
 		    $activeEtap = $debateModel->getFirstEtap();
 		    $debateModel->startEtap($activeEtap['id']); // set ACTIVE to first etap
+		    $sessiovVars->add('idNow', 0);
 		}
 		
 		$debateNow = $debateModel->getDebateNow();
@@ -333,14 +340,35 @@ class DebateController extends SiteController{
 		}
 		
 		$debateModel->setPassedEtap($activeEtap['id']);
-		$etapTimeLeft = $debateModel->checkEtapDuration($activeEtap['id']);
-		if ($etapTimeLeft <= 0){ // START new Etap
-		    $this->switchEtap($activeEtap, $debateNow);
-		    $message['refreshNow'] = 1;
-		}else $message['refreshNow'] = 0;
-		if ($sessiovVars->getKey('currEtap') != $activeEtap['name']){
-		    $sessiovVars->add('currEtap', $activeEtap['name']);
-		    $message['refreshNow'] = 1;
+		if (!$debateNow['is_ready_1'] && !$debateNow['is_ready_1']){ // ПАУЗА
+		    if (!$activeEtap['is_pause']) $debateModel->pauseOnEtap($activeEtap['id']);
+		    $debateModel->setPausePassedEtap($activeEtap['id']);
+		    $etapTimeLeft = $this->getParam('PAUSE_DURATION_SEC') - $debateModel->checkPauseDuration($activeEtap['id']);
+		    if ($etapTimeLeft <= 0){ // STOP Pause
+		        $debateModel->pauseOffEtap($activeEtap['id']);
+		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'is_ready_1', 1);
+		 	    $debateModel->changeOneValue('debate_now', $debateNow['id'], 'is_ready_2', 1);
+		 	    //$message['refreshNow'] = 1;
+		    }else{
+		        $message['isPause'] = 1;
+		    }
+		    $activeEtap = $debateModel->getActiveEtap();
+		}
+		
+		if (!$activeEtap['is_pause']){ // not Pause
+    		$etapTimeLeft = $debateModel->checkEtapDuration($activeEtap['id']);
+    		if ($etapTimeLeft <= 0){ // START new Etap
+    		    $this->switchEtap($activeEtap, $debateNow);
+    		    $message['refreshNow'] = 1;
+    		    $sessiovVars->add('idNow', 0);
+    		}else $message['refreshNow'] = 0;
+    		// new Etap, need reload
+    		if ($sessiovVars->getKey('currEtap') != $activeEtap['name']){
+    		    $sessiovVars->add('currEtap', $activeEtap['name']);
+    		    $message['refreshNow'] = 1;
+    		}
+    		// change DB, need reload
+    		if (!$message['refreshNow'] && $this->isNeedReload($activeEtap)) $message['refreshNow'] = 1;
 		}
 		
 		$etapTimeLeftMin = intval($etapTimeLeft/60) + 1;
@@ -354,11 +382,15 @@ class DebateController extends SiteController{
 	    //Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
 	}
 	
-	function switchEtap($activeEtap, $debateNow){ // SWITCH Etap to next 
+	function switchEtap($activeEtap, $debateNow){ // SWITCH Etap to next
 	    $debateModel = new DebateModel();
 	    $userModel = new UserModel();
 	    $nextEtap = $debateModel->getNextEtap($activeEtap['id']);
-	    if (!$nextEtap) $nextEtap = $debateModel->getFirstEtap();
+	    $sessiovVars = Project::getSession();
+	    if (!$nextEtap) {
+	        $nextEtap = $debateModel->getFirstEtap();
+	        $sessiovVars->add('idNow', 0);
+	    }
 
 	    if ($activeEtap['name']=='GetTheme'){
     		// ETAP 1. Get Theme from Users.
@@ -366,6 +398,7 @@ class DebateController extends SiteController{
     		    $nextEtap = $debateModel->getFirstEtap();
     		    $debateModel->truncateTable('debate_now');
     		    $debateModel->addDebateNow();
+    		    $sessiovVars->add('idNow', 0);
     		}
     		// END ETAP 1.
     		
@@ -383,6 +416,7 @@ class DebateController extends SiteController{
     		    $nextEtap = $debateModel->getFirstEtap();
     		    $debateModel->truncateTable('debate_now');
     		    $debateModel->addDebateNow();
+    		    $sessiovVars->add('idNow', 0);
     		}
     		// END ETAP 2.
     		
@@ -394,6 +428,7 @@ class DebateController extends SiteController{
 		        $debateModel->truncateTable('debate_now');
 		        $debateModel->addDebateNow();
     		    $nextEtap = $debateModel->getFirstEtap();
+    		    $sessiovVars->add('idNow', 0);
 		    }
     		// END ETAP 3. Election for Secont USER , by auction
     		
@@ -485,6 +520,57 @@ class DebateController extends SiteController{
 		$debateModel->stopEtap($activeEtap['id']);
 		$debateModel->startEtap($nextEtap['id']);
 		$this->DebateEtapsCheckerAction();
+	}
+	
+	function isNeedReload($activeEtap){ // change DB, need reload
+	    $debateModel = new DebateModel();
+	    $isNeedReload = false;
+	    $sessiovVars = Project::getSession();
+	    $idNow = $sessiovVars->getKey('idNow');
+        $lastId = false;
+
+        if ($activeEtap['name']=='GetTheme'){
+    		// ETAP 1. Get Theme from Users.
+    		$lastId = $debateModel->getLastId('debate_theme');
+    		
+    		// END ETAP 1.
+    		
+		}elseif($activeEtap['name']=='VoteTheme'){
+		    // ETAP 2. Vote for Theme
+            $lastId = $debateModel->getLastId('debate_theme_vote');
+    		// END ETAP 2.
+    		
+		}elseif($activeEtap['name']=='ChooseSecondUser'){
+		    // ETAP 3. Election for Secont USER , by auction, who pay more - get part in debate
+            $lastId = $debateModel->getLastId('debate_theme');
+    		// END ETAP 3. Election for Secont USER , by auction
+    		
+		}elseif($activeEtap['name']=='ChooseHelpers'){
+		    // ETAP 4. Election for Helpers
+            $lastId = $debateModel->getLastId('debate_helper_check');
+    		// END ETAP 4. Election for Helpers
+    		
+		}elseif($activeEtap['name']=='GetStakes'){
+		    // ETAP 5. Stakes from users on Debate Users
+            $lastId = $debateModel->getLastId('money_transaction');
+    		// END ETAP 5. Stakes from users on Debate Users
+    		
+		}elseif($activeEtap['name']=='Debates'){
+		    // ETAP 6. DEBATE'S Chats 
+		    
+		    // END ETAP 6. DEBATE'S Chats 
+		    
+		}elseif($activeEtap['name']=='Results'){
+		    // ETAP 7. Last Etap. Results
+
+		    // END ETAP 7. Last Etap. Results 
+		}
+		//echo $activeEtap['name']." - ".$idNow." = ".$lastId;
+		if ($lastId && $idNow < $lastId){
+		    $isNeedReload = true;
+		    $sessiovVars->add('idNow', $lastId);
+		}
+        return $isNeedReload;
 	}
 	
 	public function DebateDelThemeAction(){

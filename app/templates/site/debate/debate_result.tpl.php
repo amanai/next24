@@ -9,7 +9,7 @@
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 7 из 7. Окончание. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось минут - <span id="timeLeft"></span>
+	Осталось <span id="timeLeft"></span> мин.
 </div></div></div></div>
 
 
@@ -31,19 +31,23 @@ if ($this->userNumber){ // Debate User
 <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 
 	<div style="text-align: center; margin: 0px -10px;">
-	<div style="width: 40%;">
-		<table class="questions">
+	<div style="text-align: center;">
+		<table class="questions" align="center">
 		<tr>
 			<td>
 			<div class="center">
 			<?php
             if ($this->userNumber){ // Debate User
-                if ($this->user_id == $this->winnerUser['id']){
-            	   echo '<b>Вы победили в дебатах на тему «'.$this->debateNow['theme'].'».<br />
-                    Поздравляем!</b>';
-                }else{
-                    echo '<b>В дебатах на тему «'.$this->debateNow['theme'].'» победил <a href="'.$this->createUrl('User', 'Profile', null, $this->winnerUser['login']).'">'.$this->winnerUser['login'].'</a> и его помощники '.$this->showWinnerHelpersName($this->winnerHelper1, $this->winnerHelper2, $this->user_id).'.<br />
-                    </b>';
+                if ($this->winnerUser){
+                    if ($this->user_id == $this->winnerUser['id']){
+                	   echo '<b>Вы победили в дебатах на тему «'.$this->debateNow['theme'].'».<br />
+                        Поздравляем!</b>';
+                    }else{
+                        echo '<b>В дебатах на тему «'.$this->debateNow['theme'].'» победил <a href="'.$this->createUrl('User', 'Profile', null, $this->winnerUser['login']).'">'.$this->winnerUser['login'].'</a> '.$this->showWinnerHelpersName($this->winnerHelper1, $this->winnerHelper2, $this->user_id).'.<br />
+                        </b>';
+                    }
+                }else{ // ничья
+                    echo '<b>В дебатах никто не победил.</b>';
                 }
                 if (!$this->isEstimated){ // not estimated
                     echo '
@@ -95,19 +99,34 @@ if ($this->userNumber){ // Debate User
                     ';
                 }
             }elseif($this->userIdFromHelper){ // Helper
-                echo '<b>В дебатах на тему «'.$this->debateNow['theme'].'» победил <a href="'.$this->createUrl('User', 'Profile', null, $this->winnerUser['login']).'">'.$this->winnerUser['login'].'</a> и его помощники '.$this->showWinnerHelpersName($this->winnerHelper1, $this->winnerHelper2, $this->user_id).'.<br />
-                    Поздравляем!</b>';
+                if ($this->winnerUser){
+                    echo '<b>В дебатах на тему «'.$this->debateNow['theme'].'» победил <a href="'.$this->createUrl('User', 'Profile', null, $this->winnerUser['login']).'">'.$this->winnerUser['login'].'</a> '.$this->showWinnerHelpersName($this->winnerHelper1, $this->winnerHelper2, $this->user_id).'.<br />
+                        Поздравляем!</b>';
+                }else{
+                    echo '<b>В дебатах никто не победил.</b>';
+                }
             }elseif($this->user_id){ // registred User
-                echo '<b>В дебатах на тему «'.$this->debateNow['theme'].'» победил <a href="'.$this->createUrl('User', 'Profile', null, $this->winnerUser['login']).'">'.$this->winnerUser['login'].'</a> и его помощники '.$this->showWinnerHelpersName($this->winnerHelper1, $this->winnerHelper2, $this->user_id).'.<br />
-                    Поздравляем победителя!<br /><br />';
-                echo '
-                    Вы сделали правильную ставку и выиграли 12nm</b>';
+                if ($this->winnerUser){
+                    echo '<b>В дебатах на тему «'.$this->debateNow['theme'].'» победил <a href="'.$this->createUrl('User', 'Profile', null, $this->winnerUser['login']).'">'.$this->winnerUser['login'].'</a> '.$this->showWinnerHelpersName($this->winnerHelper1, $this->winnerHelper2, $this->user_id).'.<br />
+                        Поздравляем победителя!<br /><br />';
+                    echo '
+                        Вы сделали правильную ставку и выиграли 12nm</b>';
+                }else{
+                    echo '<b>В дебатах никто не победил.</b>';
+                }
             }else{
-                echo '<b>В дебатах на тему «'.$this->debateNow['theme'].'» победил <a href="'.$this->createUrl('User', 'Profile', null, $this->winnerUser['login']).'">'.$this->winnerUser['login'].'</a> и его помощники '.$this->showWinnerHelpersName($this->winnerHelper1, $this->winnerHelper2, $this->user_id).'.<br />
-                    Поздравляем победителя!<br /><br /></b>';
+                if ($this->winnerUser){
+                    echo '<b>В дебатах на тему «'.$this->debateNow['theme'].'» победил <a href="'.$this->createUrl('User', 'Profile', null, $this->winnerUser['login']).'">'.$this->winnerUser['login'].'</a> '.$this->showWinnerHelpersName($this->winnerHelper1, $this->winnerHelper2, $this->user_id).'.<br />
+                        Поздравляем победителя!<br /><br /></b>';
+                }else{
+                    echo '<b>В дебатах никто не победил.</b>';
+                }
             }
+            echo '<br/><br/><b>Результаты голосования:</b><br/> '.
+                 '<b><a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser1['login']).'">'.$this->debateUser1['login'].'</a></b> - '.$this->debateResult[$this->debateUser1['id']].'<br/> '.
+                 '<b><a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser2['login']).'">'.$this->debateUser2['login'].'</a></b> - '.$this->debateResult[$this->debateUser2['id']]   ;
             ?>
-
+            
 			
 			</div>
 			</td>

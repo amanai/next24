@@ -34,6 +34,18 @@ class DebateModel extends BaseModel{
         return $result;
     }
     
+    function getLastId($table_name){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT id FROM ".$table_name." 
+            ORDER BY id DESC
+            LIMIT 0, 1
+        ";
+        //echo $sql;
+        $result = $DE -> selectRow($sql, $id);
+        if ($result) return $result['id'];
+        else return $result;
+    }
     /**
      * Debate_now
      * 
@@ -83,10 +95,10 @@ class DebateModel extends BaseModel{
             INSERT INTO `debate_history` ( `start_time` , `theme` , `stake_amount` , `user_id_1` , `user_id_2` , 
                 `helper_id_1_1` , `helper_id_1_2` , `helper_id_2_1` , `helper_id_2_2` , 
                 `user1_vote` , `user2_vote` , `debate_protocol` )
-            VALUES ('?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?', '?')
+            VALUES ('$start_time', '$theme', '$stake_amount', '$user_id_1', '$user_id_2', '$helper_id_1_1', '$helper_id_1_2', 
+                    '$helper_id_2_1', '$helper_id_2_2', '$user1_vote', '$user2_vote', '$debate_protocol')
         ";
-        $result = $DE -> query($sql, $start_time, $theme, $stake_amount, $user_id_1, $user_id_2, $helper_id_1_1, $helper_id_1_2,
-                              $helper_id_2_1, $helper_id_2_2, $user1_vote, $user2_vote, $debate_protocol);
+        $result = $DE -> query($sql);
         return mysql_insert_id();
     }
     
@@ -235,9 +247,9 @@ class DebateModel extends BaseModel{
         $sql ="
             SELECT * 
             FROM debate_etaps
-            WHERE name = '?' 
+            WHERE name = '$name' 
         ";
-        $result = $DE -> selectRow($sql, $name);
+        $result = $DE -> selectRow($sql);
         return $result;
     }
     
@@ -254,7 +266,21 @@ class DebateModel extends BaseModel{
             WHERE id = ? 
         ";
         $result = $DE -> selectRow($sql, $id);
-        return $result['duration_passed'];
+        if ($result) return $result['duration_passed'];
+        else return 0;
+    }
+    
+    function checkPauseDuration($id){ 
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT pause_passed
+            FROM debate_etaps
+            WHERE id = ? 
+        ";
+        $result = $DE -> selectRow($sql, $id);
+        if ($result)  return $result['pause_passed'];
+        else return 0;
     }
     
     function startEtap($id){
@@ -281,10 +307,10 @@ class DebateModel extends BaseModel{
         $DE = Project::getDatabase();
         $currTime = date("Y-m-d H:i:s");
         $sql = "
-            UPDATE debate_etaps SET is_pause = 1, pause_start = ? , pause_passed = 0
+            UPDATE debate_etaps SET is_pause = 1, pause_start = '$currTime' , pause_passed = 0
             WHERE id = ?
         ";
-        $result = $DE -> query($sql, $currTime, $id);
+        $result = $DE -> query($sql, $id);
     }
     
     function pauseOffEtap($id){

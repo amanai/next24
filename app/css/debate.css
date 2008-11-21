@@ -92,18 +92,19 @@ font-size:11px;
 
 .debate_user td{
     background: #E9F1F7;
-
 }
 .debate_avator{
     display: block;
-    width: 200px;
-    height: 200px;
+    width: 110px;
+    height: 110px;
 }
 .padding3{
     padding: 3px;
 }
 
-#debate_MessageboxForDebateUsers, #vote_for_user_1, #vote_for_user_2{
+#debate_MessageboxForDebateUsers, #vote_for_user_1, #vote_for_user_2, #pauseTitle,
+#pauseDescription
+{
     display: none;
 }
 

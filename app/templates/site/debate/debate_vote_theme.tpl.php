@@ -9,7 +9,7 @@
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 2 из 7. Идет выбор темы для дебатов. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось минут - <span id="timeLeft"></span> 
+	Осталось <span id="timeLeft"></span> мин.
 </div></div></div></div>
 
 
@@ -20,7 +20,21 @@
 <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 
 	<div style="text-align: center; margin: 0px -10px;">
-	<div style="width: 40%;">
+	<div style="text-align: center;">
+	
+	<table class="debate_user" align="center">
+	<tr>
+	   <td valign="top">
+	   <div class="block_d_ld2">
+	   <?php 
+	   $this->showQuestionAvator();
+	   ?>
+	   </div>
+	   </td>
+	   <td valign="top" width="50%"> 
+	   
+	   
+	   <!-- center part -->
 		<table class="questions">
 		<tr>
 			<td style="text-align: left;"> <b>Тема</b></td>
@@ -31,7 +45,8 @@
         <?php 
         $i=1;
         foreach ($this->aThemes as $theme){
-            if ($i/2 == 1){$tr_id = ""; $i=1;} else {$tr_id = "cmod_tab2"; $i++;}
+            //if ($i/2 == 1){$tr_id = ""; $i=1;} else {$tr_id = "cmod_tab2"; $i++;}
+            $tr_id = "cmod_tab2";
             if (!$this->isVoted && $this->user_id != $theme['user_id']) {$vote = '<a href="'.$this->createUrl('Debate', 'DebateVote').'/subject:theme/theme_id:'.$theme['debate_theme_id'].'">голосовать</a>';} else $vote='-';
             echo '
         		<tr id="'.$tr_id.'">
@@ -44,6 +59,19 @@
         }
         ?>		
 		</table>
+	   <!-- / center part -->
+	   
+	   </td>
+	   <td valign="top">
+	   <div class="block_d_ld2">
+	   <?php 
+	   $this->showQuestionAvator();
+	   ?>
+	   </div>
+	   </td>
+	</tr>
+	</table>
+	   
 	</div>
 	</div>
 

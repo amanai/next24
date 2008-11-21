@@ -34,10 +34,12 @@
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<div class="block_title"><h2>Вид отображения</h2></div>
 					<div class="rss_cat">
+					<?php if ($this->shownow != "allnews"){ ?>
 						 <a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:full/" class="<?php echo $this -> viewCheckedClass[0]; ?>" >Полный список новостей</a><br />
 						 <a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:report/" class="<?php echo $this -> viewCheckedClass[1]; ?>">Сводка новостей</a><br />
-						 <?php if ($this->user_id){ ?>
 						 <br />
+					<?php } ?>
+					     <?php if ($this->user_id){ ?>
 						 <a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_all/" class="<?php echo $this -> viewFilterCheckedClass[0]; ?>">Все новости</a><br />
 						 <a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_subscribe/" class="<?php echo $this -> viewFilterCheckedClass[1]; ?>">Только подписка</a><br />
 						 <a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_stared/" class="<?php echo $this -> viewFilterCheckedClass[2]; ?>">Только избранное</a>
@@ -99,9 +101,9 @@
 		           }
 			       ?>
 			       <div class="block_subtitle_left">
-			         <b>Категория: </b><?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($this->news['news_tree_id'], true); ?>&nbsp;&nbsp;&nbsp;
-			         <b>Дата публикации: </b><?php echo $this->news['pub_date']; ?>&nbsp;&nbsp;&nbsp;&nbsp;
-			         <b>Лента: </b><?php echo $this->news['feeds_name']; ?>
+			         <img src="<?php echo $this->image_url; ?>cat2.gif" /> <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($this->news['news_tree_id'], true); ?>&nbsp;&nbsp;&nbsp;
+			         <img src="<?php echo $this->image_url; ?>time.png" /> <span class="marginImg3"><?php echo $this->news['pub_date']; ?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+			         <img src="<?php echo $this->image_url; ?>ni3.png" /> <span class="marginImg3"><?php echo $this->news['feeds_name']; ?></span>
 			       </div>
 
 				</div>

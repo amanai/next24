@@ -9,7 +9,7 @@
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 3 из 7. Идет выбор второго участника дебатов. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось минут - <span id="timeLeft"></span>
+	Осталось <span id="timeLeft"></span> мин.
 </div></div></div></div>
 
 
@@ -21,8 +21,21 @@
 <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 
     <div style="text-align: center; margin: 0px -10px;">
-	<div style="width: 10%;">
-	первый в дебатах: <b><?php echo '<a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser1['login']).'">'.$this->debateUser1['login'].'</a>'; ?></b>
+	<div style="text-align: center;">
+	<table class="debate_user" align="center">
+	<tr>
+	   <td valign="top">
+	   <div class="block_d_ld2">
+	   <h2><?php echo '<a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser1['login']).'">'.$this->debateUser1['login'].'</a>'; ?></h2>
+	   <?php 
+	   $this->showUserAvator($this->user1_avatar, $this -> image_url);
+	   ?>
+	   </div>
+	   </td>
+	   <td valign="top" width="50%"> 
+	   
+	   
+	   <!-- center part -->
 	
 	    <form name="frmStake" action="" method="POST">
 		<table class="questions">
@@ -75,6 +88,19 @@
         
 		</table>
 		</form>
+	   <!-- / center part -->
+	   
+	   </td>
+	   <td valign="top">
+	   <div class="block_d_ld2">
+	   <?php 
+	   $this->showQuestionAvator();
+	   ?>
+	   </div>
+	   </td>
+	</tr>
+	</table>
+	   
 		
 	</div></div>
 

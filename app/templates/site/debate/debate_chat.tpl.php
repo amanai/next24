@@ -9,19 +9,21 @@
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 6 из 7. Дебаты. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось минут - <span id="timeLeft"></span>
+	Осталось <span id="timeLeft"></span> мин.
 </div></div></div></div>
 
 
-<h2>Этап 6 из 7. Дебаты. <?php if ($this->activeEtap['is_pause']) echo "Перерыв." ?> </h2>
+<h2>Этап 6 из 7. Дебаты. <span id="pauseTitle">Перерыв.</span> </h2>
 <?php 
 if ($this->userNumber && $this->isReady){ 
     echo 'Подождите пока будут сделаны ставки и участники подтвердят свою готовность к дебатам.';
 }
 ?>
+<span id="pauseDescription">Дебаты прерваны на перерыв. Во время перерыва в окне дебатов могут оставлять свои сообщения помощники.</span>
+<span id="pauseOffDescription">
 <?php
 if ($this->activeEtap['is_pause']){
-    echo 'Дебаты прерваны на перерыв. Во время перерыва в окне дебатов могут оставлять свои сообщения помощники.';
+    echo '';
 }elseif ($this->userNumber){ // Debate User
 	echo 'Вы можете общаться с другим участником дебатов, так также сделать запрос на перерыв на 10 минут. Перерыв будет объявлен только при
 подтверждении его другим участником дебатов.';
@@ -35,15 +37,16 @@ if ($this->activeEtap['is_pause']){
     echo 'Вы можете только следить за ходом дебатов. Что бы оставлять сообщения нужно зарегистрироваться.';
 }
 ?>
+</span>
 
 <br /><div id="brok"></div>
 
 <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 
     <div style="text-align: center; margin: 0px -10px;">
-	<div style="width: 10%;">
+	<div style="text-align: center;">
 	
-	<table class="debate_user">
+	<table class="debate_user" align="center">
 	<tr>
 	   <td valign="top">
 	   <div class="block_d_ld2">
