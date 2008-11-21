@@ -58,7 +58,7 @@ if ($this->userNumber && $this->isReady){
 	    <form name="frmStake" action="" method="POST">
 		<table class="questions">
 		<tr>
-			<td> <b>Тема дебатов: </b></td><td colspan="2"><b><?php echo $this->debateNow['theme']; ?></b></td>
+			<td colspan="3"><div class="center"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
         </tr>
 		<tr>
 			<td align="left"> <?php if($this->userNumber){ echo 'Ставок на Вас:'; } else{ echo 'Всего ставок:';} ?> </td>

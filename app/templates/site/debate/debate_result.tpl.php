@@ -122,9 +122,11 @@ if ($this->userNumber){ // Debate User
                     echo '<b>В дебатах никто не победил.</b>';
                 }
             }
+            $res1 = ($this->debateResult[$this->debateUser1['id']])?$this->debateResult[$this->debateUser1['id']]:0;
+            $res2 = ($this->debateResult[$this->debateUser2['id']])?$this->debateResult[$this->debateUser2['id']]:0;
             echo '<br/><br/><b>Результаты голосования:</b><br/> '.
-                 '<b><a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser1['login']).'">'.$this->debateUser1['login'].'</a></b> - '.$this->debateResult[$this->debateUser1['id']].'<br/> '.
-                 '<b><a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser2['login']).'">'.$this->debateUser2['login'].'</a></b> - '.$this->debateResult[$this->debateUser2['id']]   ;
+                 '<b><a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser1['login']).'">'.$this->debateUser1['login'].'</a></b> - '.$res1.'<br/> '.
+                 '<b><a href="'.$this->createUrl('User', 'Profile', null, $this->debateUser2['login']).'">'.$this->debateUser2['login'].'</a></b> - '.$res2;
             ?>
             
 			

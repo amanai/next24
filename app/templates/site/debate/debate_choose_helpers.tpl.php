@@ -58,8 +58,9 @@ if ($this->isDebateUser){
 	    <form name="frmCheckHelper" action="" method="POST">
 		<table class="questions">
 		<tr>
-			<td align="left"> <b>Тема дебатов: </b></td><td><b><?php echo $this->debateNow['theme']; ?></b></td>
+			<td align="left"><div class="center"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
         </tr>
+            <td>
 		<?php 
 		if ($this->isDebateUser){
 		    echo '
@@ -92,9 +93,9 @@ if ($this->isDebateUser){
 		}elseif (!$this->helperTable){
 		    echo '
     		<tr>
-    			<td colspan="2"> <input type="submit" size=250 name="helper1" value="Я хочу быть помощником участника '.$this->debateUser1['login'].'" /> </td>
+    			<td colspan="2"><div class="center"><input type="submit" size=250 name="helper1" value="Я хочу быть помощником участника '.$this->debateUser1['login'].'" /></div></td>
     		</tr><tr>
-    			<td colspan="2"> <input type="submit" size=250 name="helper2" value="Я хочу быть помощником участника '.$this->debateUser2['login'].'" /> </td>
+    			<td colspan="2"><div class="center"><input type="submit" size=250 name="helper2" value="Я хочу быть помощником участника '.$this->debateUser2['login'].'" /></div></td>
     		</tr>
 		    ';
 		}elseif ($this->helperTable){
@@ -105,7 +106,8 @@ if ($this->isDebateUser){
 		    ';
 		}
 		?>
-        
+		  </td>
+        </tr>
 		</table>
 		</form>
 	   <!-- / chat part  -->

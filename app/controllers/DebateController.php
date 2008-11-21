@@ -368,7 +368,7 @@ class DebateController extends SiteController{
     		    $message['refreshNow'] = 1;
     		}
     		// change DB, need reload
-    		if (!$message['refreshNow'] && $this->isNeedReload($activeEtap)) $message['refreshNow'] = 1;
+    		if (!$message['refreshNow'] && $this->isNeedReload($activeEtap, $debateNow)) $message['refreshNow'] = 1;
 		}
 		
 		$etapTimeLeftMin = intval($etapTimeLeft/60) + 1;
@@ -387,10 +387,10 @@ class DebateController extends SiteController{
 	    $userModel = new UserModel();
 	    $nextEtap = $debateModel->getNextEtap($activeEtap['id']);
 	    $sessiovVars = Project::getSession();
-	    if (!$nextEtap) {
+	    if (!$nextEtap){
 	        $nextEtap = $debateModel->getFirstEtap();
-	        $sessiovVars->add('idNow', 0);
 	    }
+	    $sessiovVars->add('idNow', 0);
 
 	    if ($activeEtap['name']=='GetTheme'){
     		// ETAP 1. Get Theme from Users.
@@ -436,16 +436,20 @@ class DebateController extends SiteController{
 		}elseif($activeEtap['name']=='ChooseHelpers'){
 		    // ETAP 4. Election for Helpers
 		    if (!$debateNow['helper_id_1_1']){
-		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_1'], $debateNow['helper_id_1_2']);
+		        $other = ($debateNow['helper_id_1_2'])?$debateNow['helper_id_1_2']:0;
+		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_1'], $other);
 		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_1_1', $helper_id);
 		    }if (!$debateNow['helper_id_1_2']){
-		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_1'], $debateNow['helper_id_1_1']);
+		        $other = ($debateNow['helper_id_1_2'])?$debateNow['helper_id_1_1']:0;
+		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_1'], $other);
 		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_1_2', $helper_id);
 		    }if (!$debateNow['helper_id_2_1']){
-		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_2'], $debateNow['helper_id_2_2']);
+		        $other = ($debateNow['helper_id_1_2'])?$debateNow['helper_id_2_2']:0;
+		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_2'], $other);
 		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_2_1', $helper_id);
 		    }if (!$debateNow['helper_id_2_2']){
-		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_2'], $debateNow['helper_id_2_1']);
+		        $other = ($debateNow['helper_id_1_2'])?$debateNow['helper_id_2_1']:0;
+		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_2'], $other);
 		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_2_2', $helper_id);
 		    }
     		// END ETAP 4. Election for Helpers
@@ -522,7 +526,7 @@ class DebateController extends SiteController{
 		$this->DebateEtapsCheckerAction();
 	}
 	
-	function isNeedReload($activeEtap){ // change DB, need reload
+	function isNeedReload($activeEtap, $debateNow){ // change DB, need reload
 	    $debateModel = new DebateModel();
 	    $isNeedReload = false;
 	    $sessiovVars = Project::getSession();
@@ -542,7 +546,7 @@ class DebateController extends SiteController{
     		
 		}elseif($activeEtap['name']=='ChooseSecondUser'){
 		    // ETAP 3. Election for Secont USER , by auction, who pay more - get part in debate
-            $lastId = $debateModel->getLastId('debate_theme');
+            $lastId = $debateNow['stake_amount'];
     		// END ETAP 3. Election for Secont USER , by auction
     		
 		}elseif($activeEtap['name']=='ChooseHelpers'){

@@ -206,16 +206,16 @@ class UserModel extends BaseModel{
         $dateNow = date("Y-m-d H:i:s");
         $sql ="
             INSERT INTO money_transaction (user_id, partner_id, amount, transaction_date, description)
-            VALUES (?, ?, ?, ?, ?)
+            VALUES ($user_id, $partner_id, '$deal_amount', '$dateNow', '".strip_tags($description)."')
         ";
-        $DE -> query($sql, $user_id, $partner_id, $deal_amount, $dateNow, strip_tags($description));
+        $DE -> query($sql);
         
         $userMoney = $this->getMoneyTransactionSumByUser($user_id);
         $sql ="
-            UPDATE users SET nextmoney = ?
-            WHERE id = ?
+            UPDATE users SET nextmoney = '$userMoney'
+            WHERE id = $user_id
         ";
-        $DE -> query($sql, $userMoney, $user_id);
+        $DE -> query($sql);
     }
     
     /**

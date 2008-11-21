@@ -403,7 +403,7 @@ class DebateModel extends BaseModel{
             ?, ?, ?
             )
         ";
-        $DE -> query($sql, $user_id, strip_tags($theme), $votes);
+        $DE -> query($sql, $user_id, htmlspecialchars($theme), $votes);
         return mysql_insert_id();
     }
     

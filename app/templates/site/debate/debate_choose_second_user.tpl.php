@@ -40,7 +40,7 @@
 	    <form name="frmStake" action="" method="POST">
 		<table class="questions">
 		<tr>
-			<td align="left"> <b>Тема дебатов: </b></td><td colspan="2"><b><?php echo $this->debateNow['theme']; ?></b></td>
+			<td align="left" colspan="3"> <div class="center"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
             </tr>
 		<tr>
 			<td align="left"> Текущая ставка: </td>
