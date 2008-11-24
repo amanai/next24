@@ -9,7 +9,7 @@
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 5 из 7. Подтверждение готовности, прием ставок. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось <span id="timeLeft"></span> мин.
+	Осталось <span id="timeLeft" class=""></span> мин. <span id="timeLeftSec" class=""></span> сек.
 </div></div></div></div>
 
 
@@ -83,7 +83,7 @@ if ($this->userNumber && $this->isReady){
 		    <td colspan="3"><input type="submit" name="user_ready" size="300" value="Я готов к дебатам" /></td>
 		</tr>   
             ';            
-        }else{
+        }elseif ($this->user_id){
             $currentUser = $this->currentUser;
             echo '
         <tr>

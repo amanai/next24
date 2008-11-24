@@ -9,7 +9,7 @@
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 2 из 7. Идет выбор темы для дебатов. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось <span id="timeLeft"></span> мин.
+	Осталось <span id="timeLeft" class=""></span> мин. <span id="timeLeftSec" class=""></span> сек.
 </div></div></div></div>
 
 
@@ -47,7 +47,7 @@
         foreach ($this->aThemes as $theme){
             //if ($i/2 == 1){$tr_id = ""; $i=1;} else {$tr_id = "cmod_tab2"; $i++;}
             $tr_id = "cmod_tab2";
-            if (!$this->isVoted && $this->user_id != $theme['user_id']) {$vote = '<a href="'.$this->createUrl('Debate', 'DebateVote').'/subject:theme/theme_id:'.$theme['debate_theme_id'].'">голосовать</a>';} else $vote='-';
+            if ($this->user_id && !$this->isVoted && $this->user_id != $theme['user_id']) {$vote = '<a href="'.$this->createUrl('Debate', 'DebateVote').'/subject:theme/theme_id:'.$theme['debate_theme_id'].'">голосовать</a>';} else $vote='-';
             echo '
         		<tr id="'.$tr_id.'">
         			<td style="text-align: left;">'.$theme['debate_theme_theme'].'</td>

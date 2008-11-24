@@ -9,7 +9,7 @@
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 4 из 7. Идет выбор помощников. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось <span id="timeLeft"></span> мин.
+	Осталось <span id="timeLeft" class=""></span> мин. <span id="timeLeftSec" class=""></span> сек.
 </div></div></div></div>
 
 
@@ -91,7 +91,7 @@ if ($this->isDebateUser){
 		          ';
 		    }
 		    echo '</table>';
-		}elseif (!$this->helperTable){
+		}elseif ($this->user_id && !$this->helperTable){
 		    echo '
     		<tr>
     			<td colspan="2"><div class="center"><input type="submit" size=250 name="helper1" value="Я хочу быть помощником участника '.$this->debateUser1['login'].'" /></div></td>
@@ -103,6 +103,12 @@ if ($this->isDebateUser){
 		    echo '
 		    <tr>
     			<td colspan="2"> Вы выбрали быть помощником у '.$this->helperTable['login'].'</td>
+    		</tr>
+		    ';
+		}elseif(!$this->user_id){
+		    echo '
+		    <tr>
+    			<td colspan="2"> Что бы принять участие в дебатах, необходимо зарегистрироваться</td>
     		</tr>
 		    ';
 		}

@@ -9,7 +9,7 @@
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 7 из 7. Окончание. -->
 <div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось <span id="timeLeft"></span> мин.
+	Осталось <span id="timeLeft" class=""></span> мин. <span id="timeLeftSec" class=""></span> сек.
 </div></div></div></div>
 
 

@@ -435,8 +435,10 @@ class DebateController extends SiteController{
 		}
 		
 		$etapTimeLeftMin = intval($etapTimeLeft/60) + 1;
-		
+		$etapTimeLeftSec = intval($etapTimeLeft - ($etapTimeLeftMin-1)*60);
+		$etapTimeLeftSec = ($etapTimeLeftSec)?$etapTimeLeftSec:0;
 		$message['etapTimeLeftMin'] = $etapTimeLeftMin;
+		$message['etapTimeLeftSec'] = $etapTimeLeftSec;
 	    
 	    if ($isAjax){
     	    $this -> _view -> etapsChecker($message);
@@ -754,19 +756,19 @@ class DebateController extends SiteController{
 		$message['user_id'] = $user->id;
 	    
 	    $aChatLines = $debateModel->getChatLines('debate_chat', $debateChatId);
-        $htmlChatText = $debateModel->getHtmlChatText($aChatLines);
+        $htmlChatText = $debateModel->getHtmlChatText($aChatLines, $debateNow);
         $lastId = $debateModel->getLastIdFromArray($aChatLines);
         if ($lastId)  $sessiovVars->add('debateChatId', $lastId);
         
         $debate_user_id = $debateModel->getUserByHelper($debateNow, $user->id);
 	    if (!$debate_user_id && $userNumber) $debate_user_id=$user->id;
         $aChatHelpersLines = $debateModel->getChatLines('debate_helpers_chat', $debateChatHelpersId, $debate_user_id);
-        $htmlChatHelpersText = $debateModel->getHtmlChatText($aChatHelpersLines);
+        $htmlChatHelpersText = $debateModel->getHtmlChatText($aChatHelpersLines, $debateNow);
         $lastId = $debateModel->getLastIdFromArray($aChatHelpersLines);
         if ($lastId) $sessiovVars->add('debateChatHelpersId', $lastId);
         
         $aChatUsersLines = $debateModel->getChatLines('debate_users_chat', $debateChatUsersId);
-        $htmlChatUsersText = $debateModel->getHtmlChatText($aChatUsersLines);
+        $htmlChatUsersText = $debateModel->getHtmlChatText($aChatUsersLines, $debateNow);
         $lastId = $debateModel->getLastIdFromArray($aChatUsersLines);
         if ($lastId) $sessiovVars->add('debateChatUsersId', $debateModel->getLastIdFromArray($aChatUsersLines));
         

@@ -1,4 +1,3 @@
-// JavaScript Document
 
 
 function blockUnblockUI(){
@@ -16,7 +15,7 @@ function block(){
         opacity: '.5', 
         color: '#fff' 
     });
-	//document.write('Unblocked');
+
 }
 
 function changeList(params, list) {
@@ -33,6 +32,7 @@ function sendParams(params, addition, nblockui, start, end) {
 }
 
 function ajax(params, nblockui, start, end){
+    
 	if (params){
 		p = eval(params);
 		if (p.answer){
@@ -54,15 +54,14 @@ function ajax(params, nblockui, start, end){
 		} else {
 			$().ajaxStop($.unblockUI);
 		}
-		
-		//cancel(p);
+				
 		p.success = handleResponse;
-		
 		$.ajax(p);
 	}
 }
 
 function handleResponse(msg){
+    //alert (1111);
 	if (msg){
 		p = eval(msg);
 		if (p){
@@ -95,9 +94,11 @@ function handleResponse(msg){
 			}
 			if (p.attr){
 				$.each(p.attr, function(i, item){
-						var attr_name = item.attr_name;
-						var attr_value = ''+item.attr_value;
-						$("#"+item.id).attr(attr_name, attr_value);
+				        if(document.getElementById(item.id)){
+    						var attr_name = item.attr_name;
+    						var attr_value = ''+item.attr_value;
+    						$("#"+item.id).attr(attr_name, attr_value);
+				        }
 			          });
 			}
 			

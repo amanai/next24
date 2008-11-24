@@ -252,6 +252,11 @@ class DebateView extends BaseSiteView{
 	function etapsChecker($message){
 	    $response = Project::getAjaxResponse();
 	    $response -> block("timeLeft",  true, $message['etapTimeLeftMin']);
+	    $response -> block("timeLeftSec",  true, $message['etapTimeLeftSec']);
+	    if ($message['etapTimeLeftMin'] < 3){
+	        $response -> attribute("timeLeft", "class", "red");
+	        $response -> attribute("timeLeftSec", "class", "red");
+	    }
 	    if ($message['refreshNow']) $response -> attribute("refreshNow", "value", 1);
 	}
 	

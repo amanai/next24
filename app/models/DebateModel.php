@@ -669,7 +669,7 @@ class DebateModel extends BaseModel{
         $DE = Project::getDatabase();
         $sql = "
             INSERT INTO $dbTable (user_id, message, message_time, debate_user_id)
-            VALUES ($user_id, '".htmlspecialchars($message)."', '$message_time', $debate_user_id)
+            VALUES ($user_id, '".addslashes(htmlspecialchars($message))."', '$message_time', $debate_user_id)
         ";
         
         $DE -> query($sql);
@@ -797,13 +797,17 @@ class DebateModel extends BaseModel{
 		return $userNumber;
     }
     
-    function getHtmlChatText($aChatLines){
+    function getHtmlChatText($aChatLines, $debateNow){
         $htmlChatText = '';
         foreach ($aChatLines as $chatLine){
+            $helperUserId = $this->getUserByHelper($debateNow, $chatLine['user_id']);
+            $helperUserNumber = $this->getUserNumber($debateNow, $helperUserId);
+            
+            if ($helperUserNumber) $addMsg = '<span class="gray" >Помощник '.$helperUserNumber.'-го участника '; else $addMsg = "";
             $userSayLogin = $chatLine['login'];
             $htmlChatText .= '
             <div class="ChatLine">
-                <span class="ChatLineNick"><a style="font-weight: bold;" href="'.Project::getRequest()->createUrl('User', 'Profile', null, $userSayLogin).'" class="Nick" target="_blank">'.$userSayLogin.'</a></span>: 
+                <span class="ChatLineNick">'.$addMsg.'<a style="font-weight: bold;" href="'.Project::getRequest()->createUrl('User', 'Profile', null, $userSayLogin).'" class="Nick" target="_blank">'.$userSayLogin.'</a></span>: 
 				<span class="TextRow">'.$chatLine['message'].'</span>
             </div>';
         }
@@ -826,6 +830,7 @@ class DebateModel extends BaseModel{
 		}
 		
 		return $winnerUserId;
-    }
+    }    
+   
 }
 ?>
