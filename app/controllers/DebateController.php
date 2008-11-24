@@ -23,10 +23,10 @@ class DebateController extends SiteController{
 		$sessiovVars->add('debateChatHelpersId', 0);
 		$sessiovVars->add('debateChatUsersId', 0);
         
-	    $this-> _view -> assign('tab_list', TabController::getDebateTabs(true, false, false)); // Show tabs
+	    $this-> _view -> assign('tab_list', TabController::getDebateTabs($isAdmin, true, false, false)); // Show tabs
 		
-	    //$debateModel->stopEtap(5);
-	    //$debateModel->startEtap(6);
+	    //$debateModel->stopEtap(6);
+	    //$debateModel->startEtap(4);
 	    //$debateModel->pauseOnEtap(6);
 	    //$debateModel->pauseOffEtap(6);
 	    $this->DebateEtapsCheckerAction(false);
@@ -157,6 +157,15 @@ class DebateController extends SiteController{
     		$user2 = $userModel->getUserById($debateNow['user_id_2']);
     		$this-> _view -> assign('debateUser2', $user2);
     		
+    		$helper1_1 = $userModel->getUserById($debateNow['helper_id_1_1']);
+    		$this-> _view -> assign('helper1_1', $helper1_1);
+    		$helper1_2 = $userModel->getUserById($debateNow['helper_id_1_2']);
+    		$this-> _view -> assign('helper1_2', $helper1_2);
+    		$helper2_1 = $userModel->getUserById($debateNow['helper_id_2_1']);
+    		$this-> _view -> assign('helper2_1', $helper2_1);
+    		$helper2_2 = $userModel->getUserById($debateNow['helper_id_2_2']);
+    		$this-> _view -> assign('helper2_2', $helper2_2);
+    		
     		$helperTable = $debateModel->isInHelperTable($user->id);
     		$this-> _view -> assign('helperTable', $helperTable);
     		
@@ -215,6 +224,15 @@ class DebateController extends SiteController{
     		$this-> _view -> assign('debateUser1', $user1);
     		$user2 = $userModel->getUserById($debateNow['user_id_2']);
     		$this-> _view -> assign('debateUser2', $user2);
+    		
+    		$helper1_1 = $userModel->getUserById($debateNow['helper_id_1_1']);
+    		$this-> _view -> assign('helper1_1', $helper1_1);
+    		$helper1_2 = $userModel->getUserById($debateNow['helper_id_1_2']);
+    		$this-> _view -> assign('helper1_2', $helper1_2);
+    		$helper2_1 = $userModel->getUserById($debateNow['helper_id_2_1']);
+    		$this-> _view -> assign('helper2_1', $helper2_1);
+    		$helper2_2 = $userModel->getUserById($debateNow['helper_id_2_2']);
+    		$this-> _view -> assign('helper2_2', $helper2_2);
     		
     		$aUserStakes = $debateModel->getDebateStakesByUserId($user->id, 0);
     		$this-> _view -> assign('aUserStakes', $aUserStakes);
@@ -319,6 +337,50 @@ class DebateController extends SiteController{
 		$this -> _view -> parse();
 	}
 	
+	
+	public function DebateRulesAction(){
+	    //$debateModel = new DebateModel();
+	    //$request = Project::getRequest();
+	    $user = Project::getUser()->getDbUser();
+	    if (!$user->id) $user->id = 0;
+	    $isAdmin = ($user->user_type_id == 1)?true:false;
+	    $this-> _view -> assign('isAdmin', $isAdmin);
+	    
+	    $this-> _view -> assign('tab_list', TabController::getDebateTabs($isAdmin, false, true, false)); // Show tabs
+	    
+	    $this -> _view -> RulesPage();
+	    $this -> _view -> parse();
+	}
+	
+	
+	public function DebateHistoryAction(){
+	    $debateModel = new DebateModel();
+	    $request = Project::getRequest();
+	    $user = Project::getUser()->getDbUser();
+	    if (!$user->id) $user->id = 0;
+	    $isAdmin = ($user->user_type_id == 1)?true:false;
+	    $this-> _view -> assign('isAdmin', $isAdmin);
+	    
+        // PAGER
+		$record_per_page = $this -> getParam("HISTORY_PER_PAGE");
+		$pager_view = new SitePagerView();
+	    $record_count = $debateModel->getDebateHistoryCount();
+	    $pages_number = $pager_view->getPagesNumber($record_count, $record_per_page);
+	    $current_page_number=$request->getKeyByNumber(0);
+	    $debate_pager = $pager_view->show3('Debate', 'DebateHistory', array(), $pages_number, $current_page_number);
+	    $this-> _view -> assign('debate_pager', $debate_pager);
+	    $page_settings = array("record_per_page"=>$record_per_page, "current_page_number"=>$current_page_number+1);
+		// END PAGER
+	    $aDebateHistory = $debateModel->getDebateHistory($page_settings, "start_time DESC");
+   	    $this-> _view -> assign('aDebateHistory', $aDebateHistory); 
+
+   	    $this-> _view -> assign('tab_list', TabController::getDebateTabs($isAdmin, false, false, true)); // Show tabs
+	    
+	    $this -> _view -> HistoryPage();
+	    $this -> _view -> parse();
+	}
+	
+	
 	// дебаты, Ajax переключение по этапам
 	public function DebateEtapsCheckerAction($isAjax = true){
 	    $debateModel = new DebateModel();
@@ -340,7 +402,7 @@ class DebateController extends SiteController{
 		}
 		
 		$debateModel->setPassedEtap($activeEtap['id']);
-		if (!$debateNow['is_ready_1'] && !$debateNow['is_ready_1']){ // ПАУЗА
+		if (!$debateNow['is_ready_1'] && !$debateNow['is_ready_1'] && $activeEtap['name']=='Debates'){ // ПАУЗА
 		    if (!$activeEtap['is_pause']) $debateModel->pauseOnEtap($activeEtap['id']);
 		    $debateModel->setPausePassedEtap($activeEtap['id']);
 		    $etapTimeLeft = $this->getParam('PAUSE_DURATION_SEC') - $debateModel->checkPauseDuration($activeEtap['id']);
@@ -366,6 +428,7 @@ class DebateController extends SiteController{
     		if ($sessiovVars->getKey('currEtap') != $activeEtap['name']){
     		    $sessiovVars->add('currEtap', $activeEtap['name']);
     		    $message['refreshNow'] = 1;
+    		    $sessiovVars->add('idNow', 0);
     		}
     		// change DB, need reload
     		if (!$message['refreshNow'] && $this->isNeedReload($activeEtap, $debateNow)) $message['refreshNow'] = 1;
@@ -390,7 +453,6 @@ class DebateController extends SiteController{
 	    if (!$nextEtap){
 	        $nextEtap = $debateModel->getFirstEtap();
 	    }
-	    $sessiovVars->add('idNow', 0);
 
 	    if ($activeEtap['name']=='GetTheme'){
     		// ETAP 1. Get Theme from Users.
@@ -439,18 +501,22 @@ class DebateController extends SiteController{
 		        $other = ($debateNow['helper_id_1_2'])?$debateNow['helper_id_1_2']:0;
 		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_1'], $other);
 		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_1_1', $helper_id);
+		        $debateNow = $debateModel->getDebateNow();
 		    }if (!$debateNow['helper_id_1_2']){
-		        $other = ($debateNow['helper_id_1_2'])?$debateNow['helper_id_1_1']:0;
+		        $other = ($debateNow['helper_id_1_1'])?$debateNow['helper_id_1_1']:0;
 		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_1'], $other);
 		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_1_2', $helper_id);
+		        $debateNow = $debateModel->getDebateNow();
 		    }if (!$debateNow['helper_id_2_1']){
-		        $other = ($debateNow['helper_id_1_2'])?$debateNow['helper_id_2_2']:0;
+		        $other = ($debateNow['helper_id_2_2'])?$debateNow['helper_id_2_2']:0;
 		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_2'], $other);
 		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_2_1', $helper_id);
+		        $debateNow = $debateModel->getDebateNow();
 		    }if (!$debateNow['helper_id_2_2']){
-		        $other = ($debateNow['helper_id_1_2'])?$debateNow['helper_id_2_1']:0;
+		        $other = ($debateNow['helper_id_2_1'])?$debateNow['helper_id_2_1']:0;
 		        $helper_id = $debateModel->getHelperByDebateUserId_exept($debateNow['user_id_2'], $other);
 		        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'helper_id_2_2', $helper_id);
+		        $debateNow = $debateModel->getDebateNow();
 		    }
     		// END ETAP 4. Election for Helpers
     		
@@ -475,10 +541,10 @@ class DebateController extends SiteController{
 		                      $debateNow['helper_id_1_1'], $debateNow['helper_id_1_2'], $debateNow['helper_id_2_1'], $debateNow['helper_id_2_2'], 
 		                      $debateResult[$debateNow['user_id_1']], $debateResult[$debateNow['user_id_2']], $debate_protocol);
                               
-            $userModel -> changeUserRate($debateNow['helper_id_1_1'], $debateNow['helper_1_1_rate']);
-            $userModel -> changeUserRate($debateNow['helper_id_1_2'], $debateNow['helper_1_2_rate']);
-            $userModel -> changeUserRate($debateNow['helper_id_2_1'], $debateNow['helper_2_1_rate']);
-            $userModel -> changeUserRate($debateNow['helper_id_2_2'], $debateNow['helper_2_2_rate']);
+            if ($debateNow['helper_id_1_1'] && $debateNow['helper_1_1_rate']) $userModel -> changeUserRate($debateNow['helper_id_1_1'], $debateNow['helper_1_1_rate']);
+            if ($debateNow['helper_id_1_2'] && $debateNow['helper_1_2_rate']) $userModel -> changeUserRate($debateNow['helper_id_1_2'], $debateNow['helper_1_2_rate']);
+            if ($debateNow['helper_id_2_1'] && $debateNow['helper_2_1_rate']) $userModel -> changeUserRate($debateNow['helper_id_2_1'], $debateNow['helper_2_1_rate']);
+            if ($debateNow['helper_id_2_2'] && $debateNow['helper_2_2_rate']) $userModel -> changeUserRate($debateNow['helper_id_2_2'], $debateNow['helper_2_2_rate']);
             
             // pay stake Winners = stake*1,5
     		$winnerUserId = $debateModel->getWinnerId($debateResult, $debateNow);
@@ -521,8 +587,10 @@ class DebateController extends SiteController{
             
 		    // END ETAP 7. Last Etap. Results 
 		}
+		
 		$debateModel->stopEtap($activeEtap['id']);
 		$debateModel->startEtap($nextEtap['id']);
+		$sessiovVars->add('idNow', 0);
 		$this->DebateEtapsCheckerAction();
 	}
 	
@@ -772,6 +840,9 @@ class DebateController extends SiteController{
 	        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'is_ready_'.$userNumber, 0);
 	    }
 	}
+	
+	
+	
 	
 	
 }

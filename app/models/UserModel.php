@@ -178,10 +178,10 @@ class UserModel extends BaseModel{
     public function changeUserRate($user_id, $delta_rate){
         $DE = Project::getDatabase();
         $sql ="
-            UPDATE users SET rate = (rate + ?)
-            WHERE id = ?
+            UPDATE users SET rate = (rate + $delta_rate)
+            WHERE id = $user_id
         ";
-        $DE -> query($sql, $delta_rate, $user_id);
+        $DE -> query($sql);
     }
     
     /**
@@ -208,6 +208,7 @@ class UserModel extends BaseModel{
             INSERT INTO money_transaction (user_id, partner_id, amount, transaction_date, description)
             VALUES ($user_id, $partner_id, '$deal_amount', '$dateNow', '".strip_tags($description)."')
         ";
+        //echo $sql; exit;
         $DE -> query($sql);
         
         $userMoney = $this->getMoneyTransactionSumByUser($user_id);

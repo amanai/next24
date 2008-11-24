@@ -226,6 +226,19 @@ class DebateView extends BaseSiteView{
 	    $this -> setTemplate(null, 'debate_result.tpl.php');
 	}
 	
+	
+	function RulesPage(){
+	    //$this->_js_files[] = 'debate.js';
+	    $this->_css_files[]='debate.css';
+	    $this -> setTemplate(null, 'debate_rules.tpl.php');
+	}
+	
+	function HistoryPage(){
+	    //$this->_js_files[] = 'debate.js';
+	    $this->_css_files[]='debate.css';
+	    $this -> setTemplate(null, 'debate_history.tpl.php');
+	}
+	
 	/**
      * END Pages VIEW
      *

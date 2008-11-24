@@ -64,16 +64,17 @@ if ($this->isDebateUser){
 		<?php 
 		if ($this->isDebateUser){
 		    echo '
-		    <table class="helpers_list">
+		    <table  class="questions">
 		      <tr>
-		          <th>Помощник</th>
-		          <th>Рейтинг</th>
-		          <th>Действия</th>
+		          <td><b>Помощник</b></td>
+		          <td><b>Рейтинг</b></td>
+		          <td><b>Действия</b></td>
 		      </tr>
 		    ';
 		    foreach ($this->aDebateUserHelpers as $debateUserHelpers){
+		        $tr_id = "cmod_tab2";
 		        echo '
-		      <tr>
+		      <tr id="'.$tr_id.'">
 		          <td><a href="'.$this->createUrl('User', 'Profile', null, $debateUserHelpers['login']).'">'.$debateUserHelpers['login'].'</a></td>
 		          <td>'.(int)$debateUserHelpers['rate'].'</td>
 		          <td>';

@@ -208,7 +208,7 @@ class TabController{
 		}
 		
 		
-		static public function getDebateTabs($debate = false, $debate_history = false, $vinners = false) {
+		static public function getDebateTabs($isAdmin = false, $debate = false, $debate_rules = false, $debate_history = false ){
 			$request = Project::getRequest();
 			$tabs = array(
 							0 => array(
@@ -218,18 +218,21 @@ class TabController{
 								 	'url' => $request -> createUrl('Debate', 'Debate', null, false)
 									),
 							1 => array(
+									'name' => 'Правила дебатов',
+									'title' => 'Правила дебатов',
+									'selected' => $debate_rules,
+								 	'url' => $request -> createUrl('Debate', 'DebateRules', null, false)
+									),
+							2 => array(
 									'name' => 'Завершенные дебаты',
 									'title' => 'Завершенные дебаты',
 									'selected' => $debate_history,
-								 	'url' => $request -> createUrl('Debate', 'Debate', null, false)
-									),
-							2 => array(
-									'name' => 'Победители дебатов',
-									'title' => 'Победители дебатов',
-									'selected' => $vinners,
-								 	'url' => $request -> createUrl('Debate', 'Debate', null, false)
+								 	'url' => $request -> createUrl('Debate', 'DebateHistory', null, false)
 									)
 							);
+			if ($isAdmin){
+			    
+			}
 
 			return $tabs;
 		}

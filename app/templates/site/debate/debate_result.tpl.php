@@ -53,7 +53,7 @@ if ($this->userNumber){ // Debate User
                     echo '
                         <div class="center">
                         <form action="">
-                        <table>
+                        <table align="center">
                         <tr>';
                     $tdNum = 0;
                     if ($this->currentHelper1){
@@ -109,8 +109,7 @@ if ($this->userNumber){ // Debate User
                 if ($this->winnerUser){
                     echo '<b>В дебатах на тему «'.$this->debateNow['theme'].'» победил <a href="'.$this->createUrl('User', 'Profile', null, $this->winnerUser['login']).'">'.$this->winnerUser['login'].'</a> '.$this->showWinnerHelpersName($this->winnerHelper1, $this->winnerHelper2, $this->user_id).'.<br />
                         Поздравляем победителя!<br /><br />';
-                    echo '
-                        Вы сделали правильную ставку и выиграли 12nm</b>';
+                    //echo 'Вы сделали правильную ставку и выиграли 12nm</b>';
                 }else{
                     echo '<b>В дебатах никто не победил.</b>';
                 }

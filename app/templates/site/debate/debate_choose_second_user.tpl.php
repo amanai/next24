@@ -46,7 +46,7 @@
 			<td align="left"> Текущая ставка: </td>
 			<td>
 			     <?php 
-			     echo (int)$this->debateNow['stake_amount']." nm"; 
+			     echo $this->debateNow['stake_amount']." nm"; 
 			     ?>
 			</td>
 			<td>

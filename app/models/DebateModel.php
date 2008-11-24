@@ -8,11 +8,11 @@ class DebateModel extends BaseModel{
     function changeOneValue($table_name, $id, $field, $value){
         $DE = Project::getDatabase();
         $sql = "
-            UPDATE ".$table_name." SET ".$field." = ? 
-            WHERE id = ?
+            UPDATE `$table_name` SET $field = '$value' 
+            WHERE id = $id
         ";
-        //echo $sql;
-        $result = $DE -> query($sql, $value, $id);
+        //echo $sql; exit;
+        $result = $DE -> query($sql);
     }
     
     function getOneRecord($table_name, $id){
@@ -80,11 +80,37 @@ class DebateModel extends BaseModel{
         if (!$debateNow) $debateNow = $this->getDebateNow();
         if ($stake_amount <= $debateNow['stake_amount']) return false;
         $sql ="
-            UPDATE debate_now SET stake_amount = ?, user_id_2 = ?
-            WHERE id = ?
+            UPDATE debate_now SET stake_amount = '$stake_amount', user_id_2 = $user_id
+            WHERE id = ".$debateNow['id']."
         ";
-        $DE -> query($sql, $stake_amount, $user_id, $debateNow['id']);
+        //echo $stake_amount; exit;
+        $DE -> query($sql);
         return true;
+    }
+    
+    function getDebateHistory($page_settings, $order){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sqlLimit = $this->getSqlLimit($page_settings);
+        $sql ="
+            SELECT *
+            FROM debate_history
+            ORDER BY ".$order."
+        ".$sqlLimit;
+        $result = $DE -> select($sql);
+        return $result;
+    }
+    
+    function getDebateHistoryCount(){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT count(*) as c
+            FROM debate_history
+        ";
+        $result = $DE -> selectRow($sql);
+        if ($result)  return $result['c'];
+        return 0;
     }
     
     function addDebateHistory($start_time, $theme, $stake_amount, $user_id_1, $user_id_2, $helper_id_1_1, $helper_id_1_2,
@@ -101,6 +127,8 @@ class DebateModel extends BaseModel{
         $result = $DE -> query($sql);
         return mysql_insert_id();
     }
+    
+    
     
     
     //  helper can say
@@ -392,7 +420,8 @@ class DebateModel extends BaseModel{
             FROM debate_theme
         ";
         $result = $DE -> selectRow($sql);
-        return $result['c'];
+        if ($result)  return $result['c'];
+        return 0;
     }
     
     function addTheme($user_id, $theme, $votes=0){
@@ -503,10 +532,10 @@ class DebateModel extends BaseModel{
         $sql = "
             SELECT *
             FROM debate_helper_check
-            WHERE debate_user_id = ? AND helper_id <> ?
+            WHERE debate_user_id = $debate_user_id AND helper_id <> $exeptUserId
             LIMIT 0, 1
         ";
-        $result = $DE -> select($sql, $debate_user_id, $exeptUserId);
+        $result = $DE -> selectRow($sql);
         if ($result && count($result)>0) $helper_id = $result['helper_id'];
         else $helper_id = 0;
         return $helper_id;
@@ -607,10 +636,11 @@ class DebateModel extends BaseModel{
     function doStake($user_id, $debate_user_id, $stake_amount, $debate_history_id = 0){
         $DE = Project::getDatabase();
         $sql = "
-            INSERT INTO debate_stakes (user_id, debate_user_id, stake_amount, debate_history_id)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO `debate_stakes` (`user_id` , `debate_user_id` , `stake_amount` , `debate_history_id` )
+            VALUES ('$user_id', '$debate_user_id', '$stake_amount', '$debate_history_id')
         ";
-        $DE -> query($sql, $user_id, $debate_user_id, $stake_amount, $debate_history_id);
+        //echo $sql; exit;
+        $DE -> query($sql);
         return true;
     }
     
