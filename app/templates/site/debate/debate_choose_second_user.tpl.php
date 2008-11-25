@@ -8,9 +8,7 @@
 <input type="hidden" name="currEtap" id="currEtap" value="ChooseSecondUser" />
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 3 из 7. Идет выбор второго участника дебатов. -->
-<div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось <span id="timeLeft" class=""></span> мин. <span id="timeLeftSec" class=""></span> сек.
-</div></div></div></div>
+<?php $this->showTimer(); ?>
 
 
 <h2>Этап 3 из 7. Идет выбор второго участника дебатов.</h2>
@@ -32,7 +30,7 @@
 	   ?>
 	   </div>
 	   </td>
-	   <td valign="top" width="50%"> 
+	   <td valign="top"> 
 	   
 	   
 	   <!-- center part -->
@@ -40,7 +38,7 @@
 	    <form name="frmStake" action="" method="POST">
 		<table class="questions">
 		<tr>
-			<td align="left" colspan="3"> <div class="center"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
+			<td align="left" colspan="3"> <div class="center width_400"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
             </tr>
 		<tr>
 			<td align="left"> Текущая ставка: </td>

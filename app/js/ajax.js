@@ -54,14 +54,25 @@ function ajax(params, nblockui, start, end){
 		} else {
 			$().ajaxStop($.unblockUI);
 		}
-				
+
 		p.success = handleResponse;
+		
 		$.ajax(p);
+		
+	}
+}
+
+function handleResponse2(data) {
+	if (data.status) {
+		hideForm('register');
+		alert("Заявка успешно отправлена!");
+	} else {
+		alert("Заполните все обязательные поля!");
 	}
 }
 
 function handleResponse(msg){
-    //alert (1111);
+    
 	if (msg){
 		p = eval(msg);
 		if (p){
@@ -141,23 +152,13 @@ function handleResponse(msg){
 			
 		    if (p.new_blocks){
 		    	$.each(p.new_blocks, function(i, item){
-		    		//if ($("div#" + item.id).length == 0){
 						if (item.parent_id){
 							parent = "#" + item.parent_id;
 						} else {
 							parent = "body";
 						}
-						/*
-						alert(item);
-						alert(item.class);
-						if (item.class){
-							class = "class='" + item.class + "'";
-						} else {
-							class = "";
-						}*/
+						
 						$(parent).append("<div id='" + item.id + "' >" + item.html + "</div>");
-						//alert(parent);
-					//}
 		          });
 		    }
 		    if (p.effects){

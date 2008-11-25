@@ -8,9 +8,7 @@
 <input type="hidden" name="currEtap" id="currEtap" value="Debates" />
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 6 из 7. Дебаты. -->
-<div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось <span id="timeLeft" class=""></span> мин. <span id="timeLeftSec" class=""></span> сек.
-</div></div></div></div>
+<?php $this->showTimer(); ?>
 
 
 <h2>Этап 6 из 7. Дебаты. <span id="pauseTitle">Перерыв.</span> </h2>
@@ -72,10 +70,10 @@ if ($this->activeEtap['is_pause']){
          <!-- chat part  -->	   
 		<table class="questions">
 		<tr>
-			<td colspan="3"><div class="center"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
+			<td colspan="3"><div class="center width_400"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
         </tr>
 		<tr>
-			<td align="left" colspan="3"> <div class="ChatMessagesB" id="chat_messages"></div> </td>
+			<td align="left" colspan="3"><div class="center"><div class="ChatMessagesB" id="chat_messages"></div></div></td>
 	    </tr>
 	    <?php
 	    if ($this->activeEtap['is_pause']){ // PAUSE

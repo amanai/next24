@@ -8,9 +8,6 @@
 <input type="hidden" name="currEtap" id="currEtap" value="Results" />
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Правила дебатов. -->
-<div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-
-</div></div></div></div>
 
 
 <h2>История завершенных дебатов.</h2>

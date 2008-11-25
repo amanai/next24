@@ -90,14 +90,14 @@ class DebateView extends BaseSiteView{
 			<td colspan="3"><div class="center"><b>Чат помощников</b></div></td>
         </tr>
         <tr>
-			<td align="left" colspan="3"> <div class="ChatMessagesB_helpers" id="chat_messages_helpers"></div> </td>
+			<td align="left" colspan="3"><div class="center"><div class="ChatMessagesB_helpers" id="chat_messages_helpers"></div></div></td>
 	    </tr>
 	    <tr>
-		    <td colspan="2"> 
-		       <textarea id="chat_text_helpers" name="chat_text_helpers" cols="58" rows="1"></textarea>
+		    <td colspan="2">
+		      <div class="center"><textarea id="chat_text_helpers" name="chat_text_helpers" cols="58" rows="1"></textarea></div>
 			</td>
 			<td>
-			   <input type="button" onclick="javascript:send_message(\'chat_text_helpers\', \'chat_messages_helpers\');" value="Сказать" />
+			   <div class="center"><input type="button" onclick="javascript:send_message(\'chat_text_helpers\', \'chat_messages_helpers\');" value="Сказать" /></div>
 			</td>
 		</tr>
 	    ';
@@ -109,7 +109,7 @@ class DebateView extends BaseSiteView{
 			<td colspan="3"><div class="center"><b>Чат пользователей</b></div></td>
         </tr>
         <tr>
-			<td align="left" colspan="3"> <div class="ChatMessagesB_helpers" id="chat_messages_users"></div> </td>
+			<td align="left" colspan="3"><div class="center"><div class="ChatMessagesB_helpers" id="chat_messages_users"></div></div></td>
 	    </tr>
 	    ';
 	}
@@ -118,10 +118,10 @@ class DebateView extends BaseSiteView{
 	    echo '
 	    <tr>
 		    <td colspan="2"> 
-		       <textarea id="chat_text_users" name="chat_text_users" cols="58" rows="1"></textarea>
+		       <div class="center"><textarea id="chat_text_users" name="chat_text_users" cols="58" rows="1"></textarea></div>
 			</td>
 			<td>
-			   <input type="button" onclick="javascript:send_message(\'chat_text_users\', \'chat_messages_users\');" value="Сказать" />
+			   <div class="center"><input type="button" onclick="javascript:send_message(\'chat_text_users\', \'chat_messages_users\');" value="Сказать" /></div>
 			</td>
 		</tr>
 	    ';
@@ -150,6 +150,12 @@ class DebateView extends BaseSiteView{
 	    return $helpersName;
 	}
 	
+	public function showTimer(){
+	    echo '
+	    <div class="debati_time">
+	       Осталось <span id="timeLeft" class=""></span>
+        </div>';
+	}
 	
 
     /**
@@ -251,11 +257,14 @@ class DebateView extends BaseSiteView{
 	
 	function etapsChecker($message){
 	    $response = Project::getAjaxResponse();
-	    $response -> block("timeLeft",  true, $message['etapTimeLeftMin']);
-	    $response -> block("timeLeftSec",  true, $message['etapTimeLeftSec']);
+	    $timeLeft = "";
+	    if ($message['etapTimeLeftMin']) $timeLeft .= $message['etapTimeLeftMin']." мин. ";
+	    $timeLeft .= $message['etapTimeLeftSec']." сек.";
+	    $response -> block("timeLeft",  true, $timeLeft);
 	    if ($message['etapTimeLeftMin'] < 3){
 	        $response -> attribute("timeLeft", "class", "red");
-	        $response -> attribute("timeLeftSec", "class", "red");
+	    }else{
+	        $response -> attribute("timeLeft", "class", "");
 	    }
 	    if ($message['refreshNow']) $response -> attribute("refreshNow", "value", 1);
 	}

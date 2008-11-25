@@ -434,8 +434,8 @@ class DebateController extends SiteController{
     		if (!$message['refreshNow'] && $this->isNeedReload($activeEtap, $debateNow)) $message['refreshNow'] = 1;
 		}
 		
-		$etapTimeLeftMin = intval($etapTimeLeft/60) + 1;
-		$etapTimeLeftSec = intval($etapTimeLeft - ($etapTimeLeftMin-1)*60);
+		$etapTimeLeftMin = intval($etapTimeLeft/60);
+		$etapTimeLeftSec = intval($etapTimeLeft - ($etapTimeLeftMin)*60);
 		$etapTimeLeftSec = ($etapTimeLeftSec)?$etapTimeLeftSec:0;
 		$message['etapTimeLeftMin'] = $etapTimeLeftMin;
 		$message['etapTimeLeftSec'] = $etapTimeLeftSec;

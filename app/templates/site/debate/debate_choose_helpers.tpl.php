@@ -8,9 +8,7 @@
 <input type="hidden" name="currEtap" id="currEtap" value="ChooseHelpers" />
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 4 из 7. Идет выбор помощников. -->
-<div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось <span id="timeLeft" class=""></span> мин. <span id="timeLeftSec" class=""></span> сек.
-</div></div></div></div>
+<?php $this->showTimer(); ?>
 
 
 <h2>Этап 4 из 7. Идет выбор помощников.</h2>
@@ -58,7 +56,7 @@ if ($this->isDebateUser){
 	    <form name="frmCheckHelper" action="" method="POST">
 		<table class="questions">
 		<tr>
-			<td align="left"><div class="center"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
+			<td align="left"><div class="center width_400"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
         </tr>
             <td>
 		<?php 
@@ -102,13 +100,13 @@ if ($this->isDebateUser){
 		}elseif ($this->helperTable){
 		    echo '
 		    <tr>
-    			<td colspan="2"> Вы выбрали быть помощником у '.$this->helperTable['login'].'</td>
+    			<td colspan="2"><div class="center">Вы выбрали быть помощником у '.$this->helperTable['login'].'</div></td>
     		</tr>
 		    ';
 		}elseif(!$this->user_id){
 		    echo '
 		    <tr>
-    			<td colspan="2"> Что бы принять участие в дебатах, необходимо зарегистрироваться</td>
+    			<td colspan="2"><div class="center">Что бы принять участие в дебатах, необходимо зарегистрироваться</div></td>
     		</tr>
 		    ';
 		}

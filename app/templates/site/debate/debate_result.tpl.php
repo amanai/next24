@@ -8,9 +8,7 @@
 <input type="hidden" name="currEtap" id="currEtap" value="Results" />
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 7 из 7. Окончание. -->
-<div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось <span id="timeLeft" class=""></span> мин. <span id="timeLeftSec" class=""></span> сек.
-</div></div></div></div>
+<?php $this->showTimer(); ?>
 
 
 <h2>Этап 7 из 7. Окончание.</h2>

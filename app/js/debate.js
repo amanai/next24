@@ -58,11 +58,6 @@ function RefreshDebate(){
             window.location.reload(true);
         }
     }
-    /*
-    if (currEtap && currEtap.value == 'VoteTheme' || currEtap && currEtap.value == 'ChooseHelpers'){
-        t=setTimeout(window.location.reload(true),10000);
-    }
-    */
     if (currEtap && currEtap.value == 'Debates'){
         ajax(
             {"url":"\/debate_refresh_chat","type":"POST","async":true,"data":{},"dataType":"json"}, 

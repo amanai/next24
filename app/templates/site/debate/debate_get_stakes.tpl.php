@@ -1,4 +1,5 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
+
 <!-- Главный блок, с вкладками (Контент) -->
 <div class="tab-page" id="modules-cpanel">
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
@@ -8,9 +9,7 @@
 <input type="hidden" name="currEtap" id="currEtap" value="GetStakes" />
 <input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 <!-- Этап 5 из 7. Подтверждение готовности, прием ставок. -->
-<div class="block_ee1 debati_time"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	Осталось <span id="timeLeft" class=""></span> мин. <span id="timeLeftSec" class=""></span> сек.
-</div></div></div></div>
+<?php $this->showTimer(); ?>
 
 
 <h2>Этап 5 из 7. Подтверждение готовности, прием ставок.</h2>
@@ -57,8 +56,8 @@ if ($this->userNumber && $this->isReady){
          <!-- center part  -->	   
 	    <form name="frmStake" action="" method="POST">
 		<table class="questions">
-		<tr>
-			<td colspan="3"><div class="center"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
+		<tr> 
+			<td colspan="3"><div class="center width_400"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
         </tr>
 		<tr>
 			<td align="left"> <?php if($this->userNumber){ echo 'Ставок на Вас:'; } else{ echo 'Всего ставок:';} ?> </td>
@@ -80,7 +79,7 @@ if ($this->userNumber && $this->isReady){
         }elseif ($this->userNumber){
             echo '
         <tr>
-		    <td colspan="3"><input type="submit" name="user_ready" size="300" value="Я готов к дебатам" /></td>
+		    <td colspan="3"><div class="center><input type="submit" name="user_ready" size="300" value="Я готов к дебатам" /></div></td>
 		</tr>   
             ';            
         }elseif ($this->user_id){
