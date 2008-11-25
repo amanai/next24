@@ -25,8 +25,8 @@ class DebateController extends SiteController{
         
 	    $this-> _view -> assign('tab_list', TabController::getDebateTabs($isAdmin, true, false, false)); // Show tabs
 		
-	    //$debateModel->stopEtap(6);
-	    //$debateModel->startEtap(4);
+	    //$debateModel->stopEtap(1);
+	    //$debateModel->startEtap(6);
 	    //$debateModel->pauseOnEtap(6);
 	    //$debateModel->pauseOffEtap(6);
 	    $this->DebateEtapsCheckerAction(false);
