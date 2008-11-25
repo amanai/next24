@@ -60,7 +60,7 @@ if ($this->userNumber && $this->isReady){
 			<td colspan="3"><div class="center width_400"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
         </tr>
 		<tr>
-			<td align="left"> <?php if($this->userNumber){ echo 'Ставок на Вас:'; } else{ echo 'Всего ставок:';} ?> </td>
+			<td> <?php if($this->userNumber){ echo 'Ставок на Вас:'; } else{ echo 'Всего ставок:';} ?> </td>
 			<td>
 			     <?php echo (int)$this->stakesCount; ?>
 			</td>

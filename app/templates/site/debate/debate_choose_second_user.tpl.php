@@ -63,15 +63,15 @@
 		<tr>
 			<td align="left"> У Вас на счету: </td>
 			<td>
-			     <?php 
+			     <?php
 			     $currentUser = $this->currentUser;
-			     echo (int)$currentUser['nextmoney']." nm"; 
+			     echo (int)$currentUser['nextmoney']." nm";
 			     ?>
 			</td>
 			<td>&nbsp;</td>
 		</tr>
-		<?php 
-		if ($this->debateUser1['id'] != $this->user_id && $this->debateUser2['id'] != $this->user_id){
+		<?php
+		if ($this->user_id && $this->debateUser1['id'] != $this->user_id && $this->debateUser2['id'] != $this->user_id){
 		    echo '
 		<tr>
 			<td align="left"> &nbsp;</td>
@@ -81,7 +81,7 @@
 			<td><input type="submit" name="doStake" value="Сделать ставку" /></td>
 		</tr>
 		      ';
-		}    
+		}
 		?>
         
 		</table>

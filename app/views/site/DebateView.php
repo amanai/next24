@@ -93,11 +93,11 @@ class DebateView extends BaseSiteView{
 			<td align="left" colspan="3"><div class="center"><div class="ChatMessagesB_helpers" id="chat_messages_helpers"></div></div></td>
 	    </tr>
 	    <tr>
-		    <td colspan="2">
-		      <div class="center"><textarea id="chat_text_helpers" name="chat_text_helpers" cols="58" rows="1"></textarea></div>
-			</td>
-			<td>
-			   <div class="center"><input type="button" onclick="javascript:send_message(\'chat_text_helpers\', \'chat_messages_helpers\');" value="Сказать" /></div>
+		    <td colspan="3">
+		      <table align="center">
+		       <tr><td><div class="center"><textarea id="chat_text_helpers" name="chat_text_helpers" cols="58" rows="1"></textarea></div></td></tr>
+    		   <tr><td><div class="center"><input type="button" onclick="javascript:send_message(\'chat_text_helpers\', \'chat_messages_helpers\');" value="Сказать" /></div></td></tr>
+    		  </table>
 			</td>
 		</tr>
 	    ';
@@ -117,11 +117,11 @@ class DebateView extends BaseSiteView{
 	public function showUsersChatMessageBox(){
 	    echo '
 	    <tr>
-		    <td colspan="2"> 
-		       <div class="center"><textarea id="chat_text_users" name="chat_text_users" cols="58" rows="1"></textarea></div>
-			</td>
-			<td>
-			   <div class="center"><input type="button" onclick="javascript:send_message(\'chat_text_users\', \'chat_messages_users\');" value="Сказать" /></div>
+	        <td colspan="3">
+		      <table align="center">
+		       <tr><td><div class="center"><textarea id="chat_text_users" name="chat_text_users" cols="58" rows="1"></textarea></div></td></tr>
+    		   <tr><td><div class="center"><input type="button" onclick="javascript:send_message(\'chat_text_users\', \'chat_messages_users\');" value="Сказать" /></div></td></tr>
+    		  </table>
 			</td>
 		</tr>
 	    ';
