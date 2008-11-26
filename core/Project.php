@@ -85,7 +85,7 @@ class Project{
 	    	$instance = Project::instance();
 	        $instance -> _stack[0][$key] = &$item;
 	    }
-	    function &get($key) {
+	    function &get($key){
 	    	$instance = Project::instance();
 	    	if (isset($instance -> _stack[0][$key])){
 	    		$ret = $instance -> _stack[0][$key];

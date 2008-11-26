@@ -149,6 +149,7 @@
 
 					</div></div></div></div>
 					
+					<!--
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 						<div class="block_title">
 								<div class="block_title_left"><h2>Последние данные</h2></div>
@@ -169,6 +170,8 @@
 						</div>
 
 					</div></div></div></div>
+					-->
+					
 				<!-- /правый блок -->
 			</td>
 		</tr>

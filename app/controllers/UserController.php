@@ -155,7 +155,7 @@
 						}
 					}
 				}
-			} 
+			}
 			
 			return $valid;
 		}
@@ -189,65 +189,47 @@
 		function RegistrationAction(){
 			//if (true || $this -> ValidateRegistrationAction()){
 			if ($this -> ValidateRegistrationAction()){
-			    $rate = 0; $rate2 = 0; $nm = 0;
 				$request = Project::getRequest();
 				$user_model = new UserModel;
 				$user_model -> login = $request -> login;
 				$user_model -> salt = AppCrypt::generateSalt();
 				$user_model -> pass = AppCrypt::getHash($request -> pwd, $user_model -> salt);
 				$user_model -> email = $request -> email;
-				if ($request->name) $rate += 1;
 				$user_model -> first_name = $request -> name;
-				if ($request->surname) $rate += 1;
 				$user_model -> last_name = $request -> surname;
-				if ($request->father_name) $rate += 1;
 				$user_model -> middle_name = $request -> father_name;
-				if ($request->year > 1908) $rate += 1;
 				$user_model -> birth_date = $request -> year . "-" . $request -> month . "-" . $request -> day;
-				if ($request->gender) $rate += 1;
 				$user_model -> gender = (int)$request -> gender;
-				if ($request->marital_status) $rate += 1;
 				$user_model -> marital_status = $request -> marital_status;
-				if ($request->icq) $rate += 1;
 				$user_model -> icq = $request -> icq;
-				if ($request->website) $rate += 1;
 				$user_model -> website = $request -> website;
-				if ($request->phone) $rate += 1;
 				$user_model -> phone = $request -> phone;
-				if ($request->mobile_phone) $rate += 1;
 				$user_model -> mobile_phone = $request -> mobile_phone;
 				$user_model -> about = $request -> about;
 				
-				if ($request->books) $rate2 += 1;
 				$user_model -> books = $request -> books;
-				if ($request->films) $rate2 += 1;
 				$user_model -> films = $request -> films;
-				if ($request->musicians) $rate2 += 1;
 				$user_model -> musicians = $request -> musicians;
-				if ($request->interest) $rate2 += 1;
-				
-				$nm += $rate*1.5/15;
-				$nm += $rate2*1.5/4;
-				$user_model -> rate = $rate + $rate2;
 				
 				$referer=new UserModel;
 				$referer->loadByLogin($request->referer);
 				$user_model -> referal = $referer->id?$referer->id:0;
 				
-				if ($request->country) $rate += 3;
 				$user_model -> country_id = (int)$request -> country;
-				if ($request->state) $rate += 1;
 				$user_model -> state_id = (int)$request -> state;
-				if ($request->city) $rate += 2;
 				$user_model -> city_id = (int)$request -> city;
 				$user_model -> user_type_id = UserTypeModel::REGISTRED;
 				$user_model -> reputation = 0;
-				$user_model -> nextmoney = $nm;
+				
+				$user_model -> rate = 0;
+				$user_model -> nextmoney = 0;
 				$user_model -> registration_date = date("Y-m-d H:i:s");
 				$user_model -> banned = 0;
 				$user_id = (int)$user_model -> save();
 				
-				$user_model -> changeUserMoney($user_id, 0, $nm, 'За регистрацию');
+				$rate_nm = $user_model->getUserRateNMByRegistrationData($user_id);
+				if ($rate_nm['nm']) $user_model -> changeUserMoney($user_id, 0, $rate_nm['nm'], 'За регистрацию');
+				if ($rate_nm['rate']) $user_model -> changeUserRate($user_id, 0, $rate_nm['rate']);
 				
 				$separator = ",";
 				if ($user_id <= 0){
@@ -299,9 +281,9 @@
 				$mailer->From =  $info['support_email'];
 				$mailer->FromName = "Next24.ru";
 				$mailer->Subject = "Регистрация на сайте Next24.ru";
-				$mailer->Subject = "Next24.ru";
+				//$mailer->Subject = "Next24.ru";
 				//$mailer->Body = $view -> parse();
-				$mailer->Body = "Вы успешно зарегистрировались на сайте Next24.ru ";
+				$mailer->Body = "Вы успешно зарегистрировались на сайте Next24.ru <br/> Login - ".$info['login_name']."<br/><hr/> e-mail поддержки: ".$info['support_email'];
 				
 				$mailer->IsHTML(true);
 				$mailer->AddAddress($user_model -> email, $user_model -> last_name . " " . $user_model -> first_name . " " . $user_model -> middle_name);
@@ -375,15 +357,60 @@
 		}
 		
 		public function SaveprofileAction(){
-			if ($this -> ValidateSaveAction()) {
-				$request = Project::getRequest();
+		    $request = Project::getRequest();
+			if ($this -> ValidateSaveAction() && $request->register){
 				$user_model = Project::getUser() -> getShowedUser();
+				
+				$old_rate_nm = $user_model->getUserRateNMByRegistrationData($user_model->id);
+				
+				if ($request -> pwd){
+    				$user_model -> salt = AppCrypt::generateSalt();
+    				$user_model -> pass = AppCrypt::getHash($request -> pwd, $user_model -> salt);
+				}
 				$user_model -> first_name = $request -> name;
 				$user_model -> last_name = $request -> surname;
 				$user_model -> middle_name = $request -> father_name;
+				
+				$user_model -> birth_date = $request -> year . "-" . $request -> month . "-" . $request -> day;
+				$user_model -> gender = (int)$request -> gender;
+				$user_model -> marital_status = $request -> marital_status;
+				$user_model -> icq = $request -> icq;
+				$user_model -> website = $request -> website;
+				$user_model -> phone = $request -> phone;
+				$user_model -> mobile_phone = $request -> mobile_phone;
+				$user_model -> about = $request -> about;
+				
+				$user_model -> interest = $request -> interest;
+				$user_model -> books = $request -> books;
+				$user_model -> films = $request -> films;
+				$user_model -> musicians = $request -> musicians;
+				
+				$user_model -> country_id = (int)$request -> country;
+				$user_model -> state_id = (int)$request -> state;
+				$user_model -> city_id = (int)$request -> city;
+				
 				// Setting params
 				$user_model->save();
 				//print_r($user);
+				
+				$separator = ",";
+				if (strlen($request -> interest)){
+				    
+					$interest_list = explode($separator, $request -> interest);
+					foreach($interest_list as $interest){
+						$interest=trim($interest);
+						if (strlen($interest)){
+							$interest_model = new InterestsModel;
+							$interest_id = $interest_model -> set($interest);
+							$user_interest_model = new UserInterestsModel;
+							$user_interest_model -> set($user_id, $interest_id);
+						}
+					}
+				}
+				
+				$new_rate_nm = $user_model->getUserRateNMByRegistrationData($user_model->id);
+				if ($new_rate_nm['nm']-$old_rate_nm['nm'] != 0) $user_model -> changeUserMoney($user_model->id, 0, $new_rate_nm['nm']-$old_rate_nm['nm'], 'Изменение регистрационных данных');
+				$user_model -> changeUserRate($user_model->id, $new_rate_nm['rate']-$old_rate_nm['rate']);				
 			}
 			$this -> ProfileEditAction();
 			/*
@@ -461,11 +488,29 @@
 			$this -> FillEditParams();
 			
 			$this -> _view -> assign('user', $user);
+			$this -> _view -> assign('user_profile', $user -> data());
 			$this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
 			$this -> _view -> ProfileEdit();
 			
 			$this -> _view -> parse();
 			
+		}
+		
+		function AvatarEditAction(){
+		    $user = Project::getUser() -> getShowedUser();
+			$request = Project::getRequest();
+			
+			$request->country = $user->country_id?$user->country_id:0;
+			$request->city = $user->city_id?$user->city_id:0;
+			$request->state = $user->state_id?$user->state_id:0;
+			
+			$this -> FillEditParams();
+			
+			$this -> _view -> assign('user', $user);
+			$this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
+			$this -> _view -> AvatarEdit();
+			
+			$this -> _view -> parse();
 		}
 		
 		public function LogoutAction(){

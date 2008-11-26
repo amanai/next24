@@ -22,9 +22,9 @@ class UserModel extends BaseModel{
 
 		}
 		
-		function afterLoad() {
+		function afterLoad(){
 			$ui_model = new UserInterestsModel;
-			$this->interest = implode(", ", $ui_model -> getInterests($this -> id));
+			//$this->interest = implode(", ", $ui_model -> getInterests($this -> id));
 			$country_model = new CountryModel;
 			$country_model -> load($this->country_id);
 			$this->country=$country_model ->name;
@@ -44,7 +44,7 @@ class UserModel extends BaseModel{
 		
 		function save() {
 			// Убираем текстовые поля
-			unset($this->_data['interest'], $this->_data['country'], $this->_data['state'], $this->_data['city']);
+			unset($this->_data['country'], $this->_data['state'], $this->_data['city']);
 			// ----------------------
 			$result=parent::save();
 			return $result;
@@ -222,5 +222,42 @@ class UserModel extends BaseModel{
     /**
      *  END ***  MONEY_TRANSACTION    
     */
+    
+    // $result['rate'] - rate       $result['nm'] - next money , by registration information
+    public function getUserRateNMByRegistrationData($user_id){
+        $user = $this->getUserById($user_id);
+        $result = array();
+        if ($user){
+            $rate = 0; $rate2 = 0; $nm = 0;
+    		if ($user['first_name']) $rate += 1;
+    		if ($user['middle_name']) $rate += 1;
+    		if ($user['last_name']) $rate += 1;
+    		
+    		if ($user['birth_date']) $rate += 1;
+    		$rate += 1;
+    		if ($user['marital_status']) $rate += 1;
+    		if ($user['icq']) $rate += 1;
+    		if ($user['website']) $rate += 1;
+    		if ($user['phone']) $rate += 1;
+    		if ($user['mobile_phone']) $rate += 1;
+    		if ($user['books']) $rate2 += 1;
+    		if ($user['films']) $rate2 += 1;
+    		if ($user['musicians']) $rate2 += 1;
+    		if ($user['interest']) $rate2 += 1;
+    		
+    		if ($user['country_id']) $rate += 3;
+    		if ($user['state_id']) $rate += 1;
+    		if ($user['city_id']) $rate += 2;
+    		
+    		$nm += $rate*1.5/15;
+			$nm += $rate2*1.5/4;
+    		$result['rate'] = $rate+$rate2;
+            $result['nm'] = $nm;
+        }else{
+            $result['rate'] = 0;
+            $result['nm'] = 0;
+        }
+        return $result;
+    }
 }
 ?>

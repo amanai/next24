@@ -43,7 +43,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="label<?=($this->pass_error?' red':'')?>"><? if (!$this->edit) { ?>Пароль<? } else { ?>Новый пароль<? } ?></td>
+		<td class="label<?=($this->pass_error?' red':'')?>"><? if (!$this->edit) { ?>Пароль<? } else { ?>Новый пароль (если хотите изменить)<? } ?></td>
 		<td>
 			<input type="password" name="pwd" class="field"/><span class="necessary">*</span>
 			<div id="micro2" style="width: 350px;">Пароль может содержать латинские буквы, цифры и спецсимволы и должен быть не короче 6 символов.</div>
@@ -56,7 +56,7 @@
 			<div id="micro2" style="width: 350px;">Должен полностью совпадать с паролем.</div>
 		</td>
 	</tr>
-	<? if (!$this->edit) { ?>
+	<? if (!$this->edit){ ?>
 	<tr>
 		<td class="label<?=($this->captcha_error?' red':'')?>">Текст с картинки</td>
 		<td>
