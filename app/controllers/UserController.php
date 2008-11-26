@@ -295,7 +295,7 @@
 				$info['support_email'] = $this -> getParam('support_mail');
 				$view -> Registration($info);
 				
-				$mailer->CharSet = "windows-1251";
+				$mailer->CharSet = "utf-8";
 				$mailer->From =  $info['support_email'];
 				$mailer->FromName = "Next24.ru";
 				$mailer->Subject = "Регистрация на сайте Next24.ru";
