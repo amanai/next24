@@ -6,7 +6,7 @@
 class HttpRequestManager extends ApplicationManager implements IManager, IteratorAggregate, Countable{
 
 	private $_request;
-	private $_files;
+	public  $_files;
 	private $_current_controller = null;
 	private $_current_action = null;
 	private $_request_controller_key = null; // key of service at request when non-rewrite mode

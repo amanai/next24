@@ -462,11 +462,13 @@
 		}
 		
 		public function ProfileAction(){
+		    $userModel = new UserModel();
 			$user = Project::getUser() -> getShowedUser();
 			
 			$friend_model = new FriendModel;
 			$ui_model = new UserInterestsModel;
 			
+			$this -> _view -> assign('user_default_avatar', $userModel->getUserAvatar($user->id));
 			$this -> _view -> assign('friend_list', $friend_model -> getFriends($user -> id));
 			$this -> _view -> assign('in_friend_list', $friend_model -> getInFriends($user -> id));
 			$this -> _view -> assign('user_profile', $user -> data());
@@ -478,6 +480,7 @@
 		}
 		
 		function ProfileEditAction(){
+		    $userModel = new UserModel();
 			$user = Project::getUser() -> getShowedUser();
 			$request = Project::getRequest();
 			
@@ -488,6 +491,7 @@
 			$this -> FillEditParams();
 			
 			$this -> _view -> assign('user', $user);
+			$this -> _view -> assign('user_default_avatar', $userModel->getUserAvatar($user->id));
 			$this -> _view -> assign('user_profile', $user -> data());
 			$this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
 			$this -> _view -> ProfileEdit();
@@ -497,16 +501,98 @@
 		}
 		
 		function AvatarEditAction(){
+		    $userModel = new UserModel();
 		    $user = Project::getUser() -> getShowedUser();
+		    $isAdmin = ($user->user_type_id == 1)?true:false;
 			$request = Project::getRequest();
+			$this -> _view -> clearFlashMessages();
+			$uploaddir = "app/images/avatar/";
+			$noErrors = true;
 			
-			$request->country = $user->country_id?$user->country_id:0;
-			$request->city = $user->city_id?$user->city_id:0;
-			$request->state = $user->state_id?$user->state_id:0;
+			if ($request->avatar_action == 'create_avatar'){
+			    
+			    if ($userModel->getCountAllUserAvatars($user->id) > 9 && !$isAdmin){
+			        $this -> _view -> addFlashMessage(FM::ERROR, "У Вас максимально разрешенное количество аваторов");
+    	            $noErrors = false;
+			    }
+			    if (!$request->newava_name){
+    			    $this -> _view -> addFlashMessage(FM::ERROR, "Введите название аватары");
+    	            $noErrors = false;
+			    }
+			    if (!$request->_files['newava_file']['name']){
+    			    $this -> _view -> addFlashMessage(FM::ERROR, "Выберите файл аваторы");
+    	            $noErrors = false;
+			    }
+			    
+			    if ($noErrors){
+        	        $UploadRes = $userModel -> uploadImgFile($uploaddir, $request->_files['newava_file']);
+        	        if ($UploadRes['error']){
+                        $this -> _view -> addFlashMessage(FM::ERROR, $UploadRes['error_message']);
+                    }else{
+                        if ($isAdmin && $request->is_system){
+                            $userModel -> addSystemAvatar($UploadRes['file_name'], $request->newava_name);
+                        }else{
+                            $userModel -> addUserAvatar($user->id, $UploadRes['file_name'], $request->newava_name, 0, 0);
+                        }
+                        Project::getResponse()->redirect(Project::getRequest()->createUrl('User', 'AvatarEdit'));
+                    }
+                }
+                
+                
+			}elseif ($request->avatar_action == 'change_avatar'){
+			    $aAvatarNames = $request->avatar_names;
+			    foreach ($aAvatarNames as $avatar_id=>$avatar_name){
+			        $userModel->changeOneValue('avatars', $avatar_id, "av_name", $avatar_name);
+			    }
+			    $aAvatarsDelete = $request->avatars_delete;
+			    foreach ($aAvatarsDelete as $avatar_id=>$avatar_on){
+			        $userModel->delAvatar("avatars", $avatar_id, $uploaddir);
+			    }
+			    $avatar_default_id = $request->avatar_default;
+			    if ($avatar_default_id){
+			        $userModel->setDefaultAvatar($user->id, $avatar_default_id);
+			    }
+			    Project::getResponse()->redirect(Project::getRequest()->createUrl('User', 'AvatarEdit'));
+			    
+			    
+			}elseif ($request->avatar_action == 'sys_avatar'){
+			    $aAvatarNames = $request->avatar_names;
+			    if ($aAvatarNames && $isAdmin){
+    			    foreach ($aAvatarNames as $avatar_id=>$avatar_name){
+    			        $userModel->changeOneValue('sys_av', $avatar_id, "av_name", $avatar_name);
+    			    }
+			    }
+			    $aAvatarsDelete = $request->avatars_delete;
+			    if ($aAvatarsDelete && $isAdmin){
+    			    foreach ($aAvatarsDelete as $avatar_id=>$avatar_on){
+    			        $userModel->delAvatar("sys_av", $avatar_id, $uploaddir);
+    			    }
+			    }
+			    $avatar_check_id = $request->avatar_check;
+			    $avatar = $userModel->getAvatarById($avatar_check_id, "sys_av");
+			    if ($avatar_check_id && $avatar){
+			        if (!$request->avatar_names[$avatar_check_id]){
+        			    $this -> _view -> addFlashMessage(FM::ERROR, "Введите название выбранной системной аватары");
+        	            $noErrors = false;
+    			    }
+    			    if ($noErrors){
+    			        $userModel -> addUserAvatar($user->id, "", $request->avatar_names[$avatar_check_id], 0, $avatar_check_id);
+    			    }
+			    }
+			    if ($noErrors){
+			        Project::getResponse()->redirect(Project::getRequest()->createUrl('User', 'AvatarEdit'));
+			    }
+			}
 			
-			$this -> FillEditParams();
 			
+			$this -> _view -> assign('user_avatars', $userModel->getAllUserAvatars($user->id));
+			$this -> _view -> assign('sys_avatars', $userModel->getAllSysAvatars());
+			$this -> _view -> assign('count_user_avatars', $userModel->getCountAllUserAvatars($user->id));
+			$this -> _view -> assign('user_default_avatar', $userModel->getUserAvatar($user->id));
+			$this -> _view -> assign('newava_name', $request->newava_name);
+			$this -> _view -> assign('user_profile', $user -> data());
 			$this -> _view -> assign('user', $user);
+			$this-> _view -> assign('isAdmin', $isAdmin);
 			$this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
 			$this -> _view -> AvatarEdit();
 			

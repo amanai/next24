@@ -9,6 +9,7 @@
 										 core/phpmailer;
 										 app/controllers;
 										 app/includes;
+										 app/includes/asido;
 										 core/interfaces;
 										 core/security;
 										 app/models;

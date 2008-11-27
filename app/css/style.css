@@ -1057,3 +1057,15 @@ font-weight:bold;
     width: 100%;
 }
 
+.av_gallery{
+    display: block;
+    float: left;
+}
+.av_preview{
+  text-align: center;
+  width: 100px;
+  height: 100px;
+}
+
+
+

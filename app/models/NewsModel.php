@@ -10,10 +10,11 @@ class NewsModel extends BaseModel{
     function changeOneValue($table_name, $id, $field, $value){
         $DE = Project::getDatabase();
         $sql = "
-            UPDATE ".$table_name." SET ".$field." = ? 
-            WHERE id = ?
+            UPDATE `$table_name` SET $field = '$value' 
+            WHERE id = $id
         ";
-        $result = $DE -> query($sql, $value, $id);
+        //echo $sql; exit;
+        $result = $DE -> query($sql);
     }
     
     function getOneRecord($table_name, $id){

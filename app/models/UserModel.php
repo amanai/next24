@@ -1,5 +1,7 @@
 <?php
 class UserModel extends BaseModel{
+    private $_sTmp;
+    
 		function __construct(){
 			parent::__construct('users');
 		}
@@ -161,19 +163,7 @@ class UserModel extends BaseModel{
         return $result;
     }
     
-    public function getUserAvatar($user_id){
-        $DE = Project::getDatabase();
-        $result = array();
-        $sql ="
-            SELECT avatars.*, sys_av.name as sys_name
-            FROM avatars
-            LEFT JOIN sys_av
-                ON avatars.sys_av_id = sys_av.id
-            WHERE avatars.user_id = ? AND avatars.def=1
-        ";
-        $result = $DE -> selectRow($sql, $user_id);
-        return $result;
-    }
+    
     
     public function changeUserRate($user_id, $delta_rate){
         $DE = Project::getDatabase();
@@ -223,6 +213,178 @@ class UserModel extends BaseModel{
      *  END ***  MONEY_TRANSACTION    
     */
     
+    
+    /**
+     *  AVATAR
+    */
+    public function getUserAvatar($user_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT avatars.*, sys_av.av_name as sys_name, sys_av.path as sys_path
+            FROM avatars
+            LEFT JOIN sys_av
+                ON avatars.sys_av_id = sys_av.id
+            WHERE avatars.user_id = ? AND avatars.def=1
+        ";
+        $result = $DE -> selectRow($sql, $user_id);
+        if (!$result) {
+            $result['id'] = 0;
+            $result['user_id'] = $user_id;
+            $result['path'] = 'no.png';
+            $result['av_name'] = 'no image';
+            $result['def'] = 1;
+            $result['sys_av_id'] = 0;
+        }
+        return $result;
+    }
+    
+    public function getAllUserAvatars($user_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT avatars.*, sys_av.av_name as sys_name, sys_av.path as sys_path
+            FROM avatars
+            LEFT JOIN sys_av
+                ON avatars.sys_av_id = sys_av.id
+            WHERE avatars.user_id = ?
+        ";
+        $result = $DE -> select($sql, $user_id);
+        return $result;
+    }
+    
+    public function getAllSysAvatars(){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT *
+            FROM sys_av
+        ";
+        $result = $DE -> select($sql);
+        return $result;
+    }
+    
+    public function getCountAllUserAvatars($user_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT count(*) as c
+            FROM avatars
+            LEFT JOIN sys_av
+                ON avatars.sys_av_id = sys_av.id
+            WHERE avatars.user_id = ?
+        ";
+        $result = $DE -> selectRow($sql, $user_id);
+        return $result['c'];
+    }
+    
+    public function getAvatarById($id, $table = ""){
+        $DE = Project::getDatabase();
+        $result = array();
+        $table = ($table)?$table:"avatars";
+        $sql = "
+            SELECT *
+            FROM $table
+            WHERE id = ?
+        ";
+        $result = $DE -> selectRow($sql, $id);
+        return $result;
+    }
+    
+    public function addUserAvatar($user_id, $path, $av_name, $def, $sys_av_id = 0){
+        $DE = Project::getDatabase();
+        $sql ="
+            INSERT INTO avatars  ( `user_id` , `sys_av_id` , `path` ,  `av_name` , `def` )
+            VALUES (?, ?, '".$path."',  '".stripslashes(htmlspecialchars($av_name))."', ? )
+        ";
+        $DE -> query($sql, $user_id, $sys_av_id, $def);
+    }
+    
+    public function addSystemAvatar($path, $av_name){
+        $DE = Project::getDatabase();
+        $sql ="
+            INSERT INTO sys_av  ( `path` ,  `av_name`)
+            VALUES ('".$path."',  '".stripslashes(htmlspecialchars($av_name))."')
+        ";
+        $DE -> query($sql);
+    }
+    
+    // if OK return false, else return problem description
+    public function uploadImgFile($uploaddir, $file){
+        $UploadRes = array();
+        $UploadRes['error'] = false;
+        if ($file['type'] != 'image/jpeg' && $file['type'] != 'image/gif' && $file['type'] != 'image/png'){
+            $UploadRes['error'] = true;
+            $UploadRes['error_message'] = "Принимаются только форматы GIF, JPEG, PNG. ";
+            return $UploadRes;
+        }
+        $sName = $this -> makeNormalName($file['name']);
+        $this->getUploadFileName($uploaddir, $sName); // get a free file name, to not replace other image
+        $sName = $this->_sTmp;
+        $uploadfile = $uploaddir.$sName;
+        if (move_uploaded_file( $file['tmp_name'], $uploadfile)){
+            $asido = new Asido();
+            $asido->Driver('gd');
+            $im = $asido->Image($uploadfile, $uploadfile);
+            $asido->Fit($im, 90, 90);
+            $im->Save(ASIDO_OVERWRITE_ENABLED);
+            $UploadRes['file_name'] = $sName;
+            
+            return $UploadRes;
+        } else {
+            $UploadRes['error'] = true;
+            $UploadRes['error_message'] = "Проблема при загрузке файла на сервер. Обратитесь к администратору.";
+            return $UploadRes;
+        }
+    }
+    
+    public function makeNormalName($sName){
+        $sName=strtolower(trim($sName));
+        $sName = ereg_replace("[^a-zA-Z_0-9\.]","_",$sName);
+        return $sName;
+    }
+    
+    public function getUploadFileName($uploaddir, $sName, $addStr = ""){
+        if (is_file($uploaddir.$sName)){
+            $sName = substr($sName, strlen($addStr));
+            $newAddStr = rand(1, 999999);
+            $this->getUploadFileName($uploaddir, $newAddStr.$sName, $newAddStr);
+        }
+        else $this->_sTmp = $sName;
+    }
+    
+    public function setDefaultAvatar($user_id, $avatar_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            UPDATE `avatars` SET def = 0 
+            WHERE user_id = ?
+        ";
+        $DE -> query($sql, $user_id);
+        
+        $sql = "
+            UPDATE `avatars` SET def = 1 
+            WHERE id = ?
+        ";
+        $DE -> query($sql, $avatar_id);
+    }
+    
+    function delAvatar($table, $avatar_id, $uploaddir){
+        $DE = Project::getDatabase();
+        $avatar = $this->getAvatarById($avatar_id, $table);
+        if ($avatar){
+            if (is_file($uploaddir.$avatar['path'])) unlink($uploaddir.$avatar['path']);
+            $sql = "
+                DELETE FROM `$table`
+                WHERE id = ?
+            ";
+            $DE -> query($sql, $avatar_id);
+        }
+    }
+    
+    /**
+     *  END ***  AVATAR
+    */
+    
     // $result['rate'] - rate       $result['nm'] - next money , by registration information
     public function getUserRateNMByRegistrationData($user_id){
         $user = $this->getUserById($user_id);
@@ -257,6 +419,36 @@ class UserModel extends BaseModel{
             $result['rate'] = 0;
             $result['nm'] = 0;
         }
+        return $result;
+    }
+    
+    function changeOneValue($table_name, $id, $field, $value){
+        $DE = Project::getDatabase();
+        $sql = "
+            UPDATE `$table_name` SET $field = '$value' 
+            WHERE id = $id
+        ";
+        //echo $sql; exit;
+        $result = $DE -> query($sql);
+    }
+    
+    function getOneRecord($table_name, $id){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT * FROM ".$table_name." 
+            WHERE id = ?
+        ";
+        $result = $DE -> selectRow($sql, $id);
+        return $result;
+    }
+    
+    function delOneRecord($table_name, $id){
+        $DE = Project::getDatabase();
+        $sql = "
+            DELETE FROM ".$table_name." 
+            WHERE id = ?
+        ";
+        $result = $DE -> query($sql, $id);
         return $result;
     }
 }

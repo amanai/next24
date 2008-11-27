@@ -12,7 +12,7 @@ class BaseView{
 	protected $_file;
 	protected $css_url;
 	protected $js_url;
-	protected $image_url;
+	public    $image_url;
 	protected $cj_cache_url;
 	protected $css_path;
 	protected $js_path;
