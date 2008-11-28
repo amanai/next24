@@ -198,11 +198,12 @@ class ArticleController extends SiteController {
 			
 			if($article_model->allowcomments > 0) {
 				$controller = new BaseCommentController();
+				$model = new CommentModel('article_comment', 'article_id', 0);
 				$data['comment_list'] = $controller -> CommentList(
-																	'ArticleCommentModel', 
+																	$model, 
 																	$id,  
-																	$request -> getKeyByNumber(2), 	//TODO: page
-																	20,  							//TODO: page
+																	$request -> getKeyByNumber(1), 	// page number
+																	0,  							// number of records in the page
 																	'Article', 'ArticleView', array($id), 
 																	'Article', 'DeleteComment'
 																	);
@@ -217,12 +218,13 @@ class ArticleController extends SiteController {
 	}
 	
 	// добавление комментария
-	public function AddCommentAction() {
+	public function AddCommentAction(){
 		$request = Project::getRequest();
 		$article_model = new ArticleModel();
 		$article_model->load($request->element_id);
-		$comment_model= new ArticleCommentModel();
-		if($article_model->id > 0) {
+		//$comment_model= new ArticleCommentModel();
+		$comment_model= new CommentModel('article_comment', 'article_id', 0);
+		if($article_model->id > 0){
 			$comment_model->addComment(Project::getUser()->getDbUser()->id, 0, 0, $request->element_id, $request->comment, 0, 0);
 			$article_model->comments++;
 			$article_model->save();
@@ -238,7 +240,7 @@ class ArticleController extends SiteController {
 		$user_id = (int)Project::getUser()->getDbUser()->id;
 		$article_id = $request->getKeyByNumber(0);
 		$comment_id = $request->getKeyByNumber(1);
-		$comment_model = new ArticleCommentModel($comment_id);
+		$comment_model = new CommentModel('article_comment', 'article_id', $comment_id);
 		$article_model = new ArticleModel();
 		$article_model->load($article_id);
 		if (($comment_model->id > 0) && ($article_model->id > 0) && ($comment_model->article_id == $article_model->id)){

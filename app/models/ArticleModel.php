@@ -53,7 +53,7 @@ class ArticleModel extends BaseModel {
 		return call_user_func_array(array(Project::getDatabase(), 'select'), $params);
 	}
 	
-	public function loadWhere($userId, $sortName = null, $sortOrder = null) {
+	public function loadWhere($userId, $sortName = null, $sortOrder = null){
 		$userId = (int)$userId;
 		$sortName == null ? $sortName = 'a.creation_date' : "";
 		$sortOrder == null ? $sortOrder = 'DESC' : "";

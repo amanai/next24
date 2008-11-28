@@ -1,6 +1,6 @@
 <?php
 
-abstract class CommentModel extends BaseModel{
+class CommentModel extends BaseModel{
 	
 	/**
 	 * Имя поля, которое отличается для разных видов комментариев: photo_id, news_id etc.
@@ -50,14 +50,21 @@ abstract class CommentModel extends BaseModel{
 						" SQL_CALC_FOUND_ROWS " .
 						" `" . $this->_table . "`.*, " .
 						" users.first_name as first_name, " .
-						" users.login as login " .
+						" users.login as login, " .
+						" avatars.id as base_avatar_id, avatars.sys_av_id as sys_av_id,  avatars.path as avatar_path, avatars.av_name as avatar_name,  " .
+						" sys_av.path as sys_av_path, " .
+						" moods.name as mood_name " .
 					" FROM `" . $this->_table . "` " .
 					" LEFT JOIN users on users.id = `" . $this->_table . "`.user_id " .
+					" LEFT JOIN avatars on `" . $this->_table . "`.avatar_id = avatars.id " .
+					" LEFT JOIN sys_av on sys_av.id = avatars.sys_av_id " .
+					" LEFT JOIN moods on `" . $this->_table . "`.mood = moods.id " .
 					" WHERE " .
 					" `" . $this->_table . "`.".$this -> _object_field_name." = ?d " .
 					" GROUP BY `" . $this->_table . "`.id " .
 					" ORDER BY $sortName $sortOrder " .
 					" LIMIT ?d,?d";
+					//echo $sql;
 			$this -> checkPager();
 			$result = Project::getDatabase() -> selectPage($this -> _countRecords, $sql, $item_id, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
 			$this -> updatePagerAmount();

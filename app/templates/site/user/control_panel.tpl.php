@@ -15,6 +15,7 @@ if ($this->user_profile['id']==$this->current_user->id){
 
 	<a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">Редактировать профиль</a><br />
 	<a href="<?php echo $this -> createUrl('User', 'AvatarEdit');?>">Редактировать аватары</a>
+	<a href="<?php echo $this -> createUrl('User', 'Mood');?>">Фразы настроения</a>
 
 </div></div></div></div>
 <?php

@@ -599,6 +599,47 @@
 			$this -> _view -> parse();
 		}
 		
+		public function MoodAction(){
+		    $userModel = new UserModel();
+		    $user = Project::getUser() -> getShowedUser();
+		    $isAdmin = ($user->user_type_id == 1)?true:false;
+			$request = Project::getRequest();
+			$this -> _view -> clearFlashMessages();
+			$noErrors = true;
+			
+			if ($request->mood_action == 'ok'){
+			    if ($request->add_mood){
+			        if (!$request->mood_name){
+        			    $this -> _view -> addFlashMessage(FM::ERROR, "Выберите текст настроения");
+        	            $noErrors = false;
+    			    }
+    			    if ($noErrors){
+            	        $userModel->addMood($user->id, $request->mood_name);
+                        Project::getResponse()->redirect(Project::getRequest()->createUrl('User', 'Mood'));
+    			    }
+			    }elseif ($request->change_mood){
+		            $aMoodNames = $request->moods;
+    			    foreach ($aMoodNames as $mood_id=>$mood_name){
+    			        $userModel->changeMood($mood_id, $mood_name);
+    			    }
+    			    $aMoodDelete = $request->del_moods;
+    			    foreach ($aMoodDelete as $mood_id=>$mood_del_val){
+    			        $userModel->delMood($mood_id);
+    			    }
+			    }
+			}
+			
+			$this -> _view -> assign('user_moods', $userModel->getAllUserMoods($user->id));
+			$this -> _view -> assign('user_default_avatar', $userModel->getUserAvatar($user->id));
+			$this -> _view -> assign('user_profile', $user -> data());
+			$this -> _view -> assign('user', $user);
+		    $this -> _view -> assign('isAdmin', $isAdmin);
+		    $this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
+			$this -> _view -> MoodPage();
+			
+			$this -> _view -> parse();
+		}
+		
 		public function LogoutAction(){
 			Project::getSecurityManager() -> logout();
 			Project::getResponse() -> redirect(Project::getRequest() -> createUrl('Index', 'Index', null, false));

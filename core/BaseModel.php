@@ -228,5 +228,47 @@ abstract class BaseModel{
 		public function clear(){
 			$this -> _data = array();
 		}
+		
+		/**
+		 * Base functions
+		 */
+		
+		public function changeOneValue($table_name, $id, $field, $value){
+            $DE = Project::getDatabase();
+            $sql = "
+                UPDATE `$table_name` SET $field = '$value' 
+                WHERE id = $id
+            ";
+            $result = $DE -> query($sql);
+        }
+        
+        public function getOneRecord($table_name, $id){
+            $DE = Project::getDatabase();
+            $sql = "
+                SELECT * FROM ".$table_name." 
+                WHERE id = ?
+            ";
+            $result = $DE -> selectRow($sql, $id);
+            return $result;
+        }
+        
+        public function delOneRecord($table_name, $id){
+            $DE = Project::getDatabase();
+            $sql = "
+                DELETE FROM ".$table_name." 
+                WHERE id = ?
+            ";
+            $result = $DE -> query($sql, $id);
+            return $result;
+        }
+        
+        public function truncateTable($table_name){
+            $DE = Project::getDatabase();
+            $sql = "
+                TRUNCATE TABLE `$table_name`
+            ";
+            $result = $DE -> query($sql);
+            return $result;
+        }
 }
 ?>

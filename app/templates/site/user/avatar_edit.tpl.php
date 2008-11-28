@@ -17,7 +17,7 @@
 				<?php if ($this->count_user_avatars < 10){ ?>
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<div class="block_title">
-							<div class="block_title_left"><h2>Загрузка аватора</h2></div>
+							<div class="block_title_left"><h2>Загрузка аватара</h2></div>
 							<div class="block_title_right">
 								<img height="24" width="21" style="cursor: pointer;" onclick="ShowOrHide(this, 'user_profile_js'); return false;" src="http://admin.gek_next24.ru/app/images//close.png"/>
 							</div>
@@ -33,7 +33,7 @@
                 				<td width="100" valign="top">Название:</td>
                 				<td>
 									<input type="text" id="newava_name" style="width: 300px;" name="newava_name" value="<?php echo $this->newava_name;?>" />
-									<br/><span id="micro2">Не длиннее 25 символов</span>
+									<br/><span id="micro2">Не длиннее 50 символов</span>
                 				</td>
                 			</tr>
                 			<tr>
@@ -45,7 +45,7 @@
                 			</tr>
                 			<?php if ($this->isAdmin){ ?>
                 			<tr>
-                				<td valign="top">Ситемный аватор :</td>
+                				<td valign="top">Ситемный аватар :</td>
                 				<td>
 									<input type="checkbox" id="is_system" name="is_system" />
 									<br/><span id="micro2">Администраторская функия</span>
@@ -64,7 +64,7 @@
 				
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<div class="block_title">
-							<div class="block_title_left"><h2>Выбор системного аватора</h2></div>
+							<div class="block_title_left"><h2>Выбор системного аватара</h2></div>
 							<div class="block_title_right">
 								<img height="24" width="21" style="cursor: pointer;" onclick="ShowOrHide(this, 'user_profile_js3'); return false;" src="http://admin.gek_next24.ru/app/images/open.png"/>
 							</div>
@@ -107,7 +107,7 @@
 				
 				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<div class="block_title">
-							<div class="block_title_left"><h2>Управление аваторами</h2></div>
+							<div class="block_title_left"><h2>Управление аватарами</h2></div>
 							<div class="block_title_right">
 								<!--<img src="http://admin.gek_next24.ru/app/images//close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" />-->
 								<img height="24" width="21" style="cursor: pointer;" onclick="ShowOrHide(this, 'user_profile_js2'); return false;" src="http://admin.gek_next24.ru/app/images//close.png"/>

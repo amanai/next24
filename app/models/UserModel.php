@@ -385,6 +385,55 @@ class UserModel extends BaseModel{
      *  END ***  AVATAR
     */
     
+    public function getAllUserMoods($user_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT *
+            FROM moods
+            WHERE user_id = ?
+        ";
+        $result = $DE -> select($sql, $user_id);
+        return $result;
+    }
+    
+     public function addMood($user_id, $name){
+        $DE = Project::getDatabase();
+        $sql ="
+            INSERT INTO moods  ( `user_id`, `name`)
+            VALUES (?, '".stripslashes(htmlspecialchars($name))."')
+        ";
+        $DE -> query($sql, $user_id);
+    }
+    
+    function changeMood($id, $name){
+        $DE = Project::getDatabase();
+        $sql = "
+            UPDATE `moods` SET name = '".stripslashes(htmlspecialchars($name))."'
+            WHERE id = $id
+        ";
+        $DE -> query($sql);
+    }
+    
+    function delMood($id){
+        $DE = Project::getDatabase();
+        $sql = "
+            DELETE FROM `moods`
+            WHERE id = ?
+        ";
+        $DE -> query($sql, $id);
+    }
+    
+    /**
+     *  MOOD
+    */
+    
+    
+    
+    /**
+     *  END ***  MOOD
+    */
+    
     // $result['rate'] - rate       $result['nm'] - next money , by registration information
     public function getUserRateNMByRegistrationData($user_id){
         $user = $this->getUserById($user_id);
@@ -422,34 +471,6 @@ class UserModel extends BaseModel{
         return $result;
     }
     
-    function changeOneValue($table_name, $id, $field, $value){
-        $DE = Project::getDatabase();
-        $sql = "
-            UPDATE `$table_name` SET $field = '$value' 
-            WHERE id = $id
-        ";
-        //echo $sql; exit;
-        $result = $DE -> query($sql);
-    }
     
-    function getOneRecord($table_name, $id){
-        $DE = Project::getDatabase();
-        $sql = "
-            SELECT * FROM ".$table_name." 
-            WHERE id = ?
-        ";
-        $result = $DE -> selectRow($sql, $id);
-        return $result;
-    }
-    
-    function delOneRecord($table_name, $id){
-        $DE = Project::getDatabase();
-        $sql = "
-            DELETE FROM ".$table_name." 
-            WHERE id = ?
-        ";
-        $result = $DE -> query($sql, $id);
-        return $result;
-    }
 }
 ?>

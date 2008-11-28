@@ -45,5 +45,4 @@
 		</div>
 	</div>
 
-
 <?php include($this -> _include('../footer.tpl.php')); ?>

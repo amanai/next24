@@ -126,6 +126,13 @@ class UserView extends BaseSiteView{
 			$this -> setTemplate(null, 'avatar_edit.tpl.php');
 		}
 		
+		function MoodPage(){
+			$this->_js_files[]='jquery.js';
+			$this->_css_files[]='registration.css';
+			
+			$this -> setTemplate(null, 'mood.tpl.php');
+		}
+		
 		function ContentPage(){
 			$this -> setTemplate(null, 'content_page.tpl.php');
 		}

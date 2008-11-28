@@ -5,35 +5,6 @@ class DebateModel extends BaseModel{
         parent::__construct('news');
     }
     
-    function changeOneValue($table_name, $id, $field, $value){
-        $DE = Project::getDatabase();
-        $sql = "
-            UPDATE `$table_name` SET $field = '$value' 
-            WHERE id = $id
-        ";
-        //echo $sql; exit;
-        $result = $DE -> query($sql);
-    }
-    
-    function getOneRecord($table_name, $id){
-        $DE = Project::getDatabase();
-        $sql = "
-            SELECT * FROM ".$table_name." 
-            WHERE id = ?
-        ";
-        $result = $DE -> selectRow($sql, $id);
-        return $result;
-    }
-    
-    function truncateTable($table_name){
-        $DE = Project::getDatabase();
-        $sql = "
-            TRUNCATE TABLE `$table_name`
-        ";
-        $result = $DE -> query($sql);
-        return $result;
-    }
-    
     function getLastId($table_name){
         $DE = Project::getDatabase();
         $sql = "
