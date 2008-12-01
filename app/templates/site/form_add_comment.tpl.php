@@ -8,7 +8,7 @@
 			</tr>
 	
 			<tr>
-				<td><textarea name="comment" style="width: 100%; height: 100px;"></textarea></td>
+				<td><textarea id="addCommentArea" name="comment" style="width: 100%; height: 100px;"></textarea></td>
 			</tr>
 			<tr>
 				<td align="right" style="padding-right: 5px;"><input type="submit" name="Submit" value="Комментировать"></td>

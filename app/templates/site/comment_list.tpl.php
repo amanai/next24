@@ -8,6 +8,14 @@ foreach($this->comment_list as $key => $item){
 							<h2><a href="<?php echo UserController::getProfileUrl($item['login']);?>"><?php echo $item['login'];?></a></h2>
 						</div>
 						<div class="block_title_right">
+						    <?php 
+						    if ($this -> user_id){
+						        $sVars = $item['id'].'';
+						        if ($item['login']) $sVars .= ", '".$item['login']."'";
+						        else $sVars .= ", ''";
+						        echo '[<a href="javascript: void(0);" onclick="commentQuote('.$sVars.')">Цитировать</a>]';
+						    } 
+						    ?>
 							<?php if ($item['del_link'] !== false) { ?>
 								<span class="dellink"> (<a href="<?php echo $item['del_link'];?>" >Удалить комментарий</a>)</span>
 							<?php } ?>
@@ -25,10 +33,12 @@ foreach($this->comment_list as $key => $item){
 					?>
 					</div>
 					<div class="comment_text">
+					<div id="comment_quote<?php echo $item['id']; ?>">
 					<?php 
 					echo $this->parseCommentText($item['text']);
 					//echo nl2br($item['text']);
 					?>
+					</div>
 					
 					<?php 
 					if ($item['mood'] && $item['mood_name']){

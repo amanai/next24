@@ -38,6 +38,7 @@ class ArticleView extends BaseSiteView {
 	}
 */	
 	public function ViewArticle($data) {
+	    $this->_js_files[] = 'jquery.js';
 		$this->setTemplate(null, 'view_article.tpl.php');
 		$this->set($data);
 	}

@@ -9,7 +9,6 @@ class SiteCommentView extends BaseSiteView{
 		
 		public function parseCommentText($text){
 		    //preg_match("'(.*)(\[quote\s+name=\"(.*?)\"](.*?)\[/quote\])(.*)'si", $text, $items);
-		    
 		    preg_match("'(.*?)\[quote'si", $text, $items1); // перед первым комментарием
 		    preg_match_all("'\[quote\s+name=\"(.*?)\"](.*?)\[/quote\]'si", $text, $items2); // все комментарии
 		    preg_match_all("'\[/quote\](.*?)\[quote'si", $text, $items3); // между комментариями

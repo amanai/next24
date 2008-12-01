@@ -15,13 +15,15 @@ class BaseCommentController extends CBaseController{
 		 * 
 		 */
 		public function CommentList($model, $item_id, $page_number, $page_size, $cur_controller, $cur_action, $params, $del_controller, $del_action){
-			if ((int)$page_size <= 0){
+			$info = array();
+		    if ((int)$page_size <= 0){
 				$page_size = self::DEFAULT_COMMENT_PER_PAGE;
 			}
 			$request = Project::getRequest();
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			$info['user_id'] = $user_id;
 			$requested_user_id = (int)Project::getUser() -> getShowedUser() -> id;
-			$info = array();
+			
 			//$model = new $model_class;
 			//$model = new CommentModel('article_comment', 'article_id', 0);
 			$pager = new DbPager($page_number, $page_size);
