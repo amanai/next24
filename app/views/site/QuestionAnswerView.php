@@ -9,6 +9,7 @@ class QuestionAnswerView extends BaseSiteView {
 	}
 	
 	public function ViewQuestion($data) {
+	    $this->_js_files[] = 'jquery.js';
 		$this->setTemplate(null, 'question.tpl.php');
 		$this->set($data);
 		

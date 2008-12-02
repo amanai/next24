@@ -53,18 +53,20 @@ class CommentModel extends BaseModel{
 						" users.login as login, " .
 						" avatars.id as base_avatar_id, avatars.sys_av_id as sys_av_id,  avatars.path as avatar_path, avatars.av_name as avatar_name,  " .
 						" sys_av.path as sys_av_path, " .
-						" moods.name as mood_name " .
+						" moods.name as mood_name, " .
+						" warning.cause as warning_cause " .
 					" FROM `" . $this->_table . "` " .
 					" LEFT JOIN users on users.id = `" . $this->_table . "`.user_id " .
 					" LEFT JOIN avatars on `" . $this->_table . "`.avatar_id = avatars.id " .
 					" LEFT JOIN sys_av on sys_av.id = avatars.sys_av_id " .
 					" LEFT JOIN moods on `" . $this->_table . "`.mood = moods.id " .
+					" LEFT JOIN warning on `" . $this->_table . "`.warning_id = warning.id " .
 					" WHERE " .
 					" `" . $this->_table . "`.".$this -> _object_field_name." = ?d " .
 					" GROUP BY `" . $this->_table . "`.id " .
 					" ORDER BY $sortName $sortOrder " .
 					" LIMIT ?d,?d";
-					//echo $sql;
+					//echo $sql; exit;
 			$this -> checkPager();
 			$result = Project::getDatabase() -> selectPage($this -> _countRecords, $sql, $item_id, $this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize());
 			$this -> updatePagerAmount();
@@ -75,18 +77,57 @@ class CommentModel extends BaseModel{
 		/**
 		 * Добавление комментария
 		 */
-		public function addComment($user_id, $avatar_id, $warning_id, $field_id, $text, $mood, $adm_redacted = 0){
+		public function addComment($user_id, $avatar_id, $warning_id, $field_id, $text, $mood, $mood_text, $adm_redacted = 0){
 			if ((int)$user_id > 0){
-				$fn = $this -> _object_field_name;
+			    $fn = $this -> _object_field_name;
+			    /*
+			    $sql = "
+			    INSERT INTO `article_comment` ( `".$fn."` , `user_id` , `avatar_id` , `warning_id` , `mood` , `mod_text` , `adm_redacted` , `text` , `creation_date` )
+                VALUES (
+                '".$field_id."', '".(int)$user_id."', '".(int)$avatar_id."', '".(int)$warning_id."', '".(int)$mood."', 
+                '".stripslashes(htmlspecialchars($mood_text))."', '".(int)$adm_redacted."', '".$text."', '".date("Y-m-d H:i:s")."'
+                )
+			    ";
+			    Project::getDatabase() -> query($sql);
+			    return mysql_insert_id();
+			    */
 				$this -> user_id = (int)$user_id;
 				$this -> avatar_id = (int)$avatar_id;
 				$this -> warning_id = (int)$warning_id;
 				$this -> $fn = $field_id;
 				$this -> text = $text;
 				$this -> mood = (int)$mood;
+				$this -> mood_text = stripslashes(htmlspecialchars($mood_text));
 				$this -> creation_date = date("Y-m-d H:i:s");
 				$this -> adm_redacted = (int)$adm_redacted;
 				return $this -> save();
+
+			} else {
+				return false;
+			}
+		}
+		
+		public function editComment($user_id, $warning_id, $text, $adm_redacted = 0){
+			if ((int)$user_id > 0){
+			    //$fn = $this -> _object_field_name;
+			    /*
+			    $sql = "
+			    INSERT INTO `article_comment` ( `".$fn."` , `user_id` , `avatar_id` , `warning_id` , `mood` , `mod_text` , `adm_redacted` , `text` , `creation_date` )
+                VALUES (
+                '".$field_id."', '".(int)$user_id."', '".(int)$avatar_id."', '".(int)$warning_id."', '".(int)$mood."', 
+                '".stripslashes(htmlspecialchars($mood_text))."', '".(int)$adm_redacted."', '".$text."', '".date("Y-m-d H:i:s")."'
+                )
+			    ";
+			    Project::getDatabase() -> query($sql);
+			    return mysql_insert_id();
+			    */
+
+				$this -> warning_id = (int)$warning_id;
+				//$this -> $fn = $field_id;
+				$this -> text = $text;
+				$this -> adm_redacted = (int)$adm_redacted;
+				return $this -> save();
+
 			} else {
 				return false;
 			}
@@ -128,5 +169,11 @@ class CommentModel extends BaseModel{
 			Project::getDatabase() -> query($sql, (int)$user_id);
 		}
 		
+		public function getWarningById($warning_id){
+		    $sql = "SELECT cause FROM `warning` WHERE id = ?d ";
+			$result = Project::getDatabase() -> selectRow($sql, (int)$warning_id);
+			if ($result) return $result['cause'];
+			else return '';
+		}
 }
 ?>

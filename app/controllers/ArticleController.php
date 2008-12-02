@@ -173,12 +173,14 @@ class ArticleController extends SiteController {
 	// отображение самой статьи
 	public function ArticleViewAction() {
 		$request = Project::getRequest();
+		$article_model = new ArticleModel();
+		
 		$data = array();
 		$this->BaseSiteData();
 		$id = (int)$request->getKeyByNumber(0);
 		$pageId = (int)$request->getKeyByNumber(1);
 		if($id > 0) {
-			$article_model = new ArticleModel();
+			
 			$article_page_model = new ArticlePageModel();
 			$article_tree_model = new ArticleTreeModel();
 			$article_vote_model = new ArticleVoteModel();
@@ -196,27 +198,21 @@ class ArticleController extends SiteController {
 			$article_model->views++;
 			$article_model->save();
 			
-			if($article_model->allowcomments > 0) {
+			if($article_model->allowcomments > 0){
 				$controller = new BaseCommentController();
-				$model = new CommentModel('article_comment', 'article_id', 0);
 				$data['comment_list'] = $controller -> CommentList(
-																	$model, 
 																	$id,  
 																	$request -> getKeyByNumber(1), 	// page number
 																	0,  							// number of records in the page
-																	'Article', 'ArticleView', array($id), 
-																	'Article', 'DeleteComment'
-																	);
-				$data['add_comment_url'] = $request -> createUrl('Article', 'AddComment');
-				$data['add_comment_element_id'] = $id;
-				$data['add_comment_id'] = 0;
+																	'Article', 'ArticleView', 'article', array($id) 
+																  );
 			}
 			
 			$this->_view->ViewArticle($data);
 			$this->_view->parse();
 		}
 	}
-	
+	/*
 	// добавление комментария
 	public function AddCommentAction(){
 		$request = Project::getRequest();
@@ -232,26 +228,8 @@ class ArticleController extends SiteController {
 		}
 		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($article_model->id)));
 	}
+	*/
 	
-	// удаление комментария
-	public function DeleteCommentAction() {
-		$request = Project::getRequest();
-		$request_user_id = (int)Project::getUser()->getShowedUser()->id;
-		$user_id = (int)Project::getUser()->getDbUser()->id;
-		$article_id = $request->getKeyByNumber(0);
-		$comment_id = $request->getKeyByNumber(1);
-		$comment_model = new CommentModel('article_comment', 'article_id', $comment_id);
-		$article_model = new ArticleModel();
-		$article_model->load($article_id);
-		if (($comment_model->id > 0) && ($article_model->id > 0) && ($comment_model->article_id == $article_model->id)){
-			if (($comment_model->user_id == $user_id) || ($article_model->user_id == $user_id)){
-				$comment_model->delete($comment_model->user_id, $comment_id);
-				$article_model->comments--;
-				$article_model->save();
-			}
-		}
-		Project::getResponse()->redirect($request->createUrl('Article', 'ArticleView', array($article_model->id)));
-	}
 	
 /*	public function AjaxChangeCatAction() {
 		$request = Project::getRequest();

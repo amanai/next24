@@ -56,18 +56,15 @@ class QuestionAnswerController extends SiteController {
 			$data['question'] = $question_model->loadQuestion($id);
 			$data['question_tab'] = substr($question_model->q_text, 0, 100);
 			count($question_model->q_text) > 100 ? $data['question_tab'] .= "..." : "";
+
 			$controller = new BaseCommentController();
 			$data['comment_list'] = $controller -> CommentList(
-																'AnswerModel', 
 																$id,  
 																$request -> getKeyByNumber(1), 	//TODO: page
-																20,  							//TODO: page
-																'QuestionAnswer', 'ViewQuestion', array($id), 
-																'QuestionAnswer', 'AnswerDelete'
+																0,  							//TODO: page
+																'QuestionAnswer', 'ViewQuestion', 'questions', array($id)
 																);
-			$data['add_comment_url'] = $request -> createUrl('QuestionAnswer', 'AddAnswer');
-			$data['add_comment_element_id'] = $id;
-			$data['add_comment_id'] = 0;
+
 //			if($question_model->user_id == Project::getUser()->getDbUser()->id) $data['managed'] = true;
 			$this->_view->ViewQuestion($data);
 			$this->_view->parse();

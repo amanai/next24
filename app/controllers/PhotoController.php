@@ -78,12 +78,10 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			
 			$controller = new BaseCommentController();
 			$info['comment_list'] = $controller -> CommentList(
-																'PhotoCommentModel', // Model for getting comments 
 																$model -> id,  // Id of comment item
 																$request -> getKeyByNumber(1), // current page number
 																$this -> getParam('comment_per_page'),  // page size
-																'Photo', 'View', array($model -> id), // current view params
-																'Photo', 'CommentDelete' // parameters for delete action
+																'Photo', 'View', 'photo', array($model -> id) // current view params
 																);
 			
 			

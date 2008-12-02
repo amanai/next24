@@ -93,12 +93,10 @@ class SocialController extends SiteController {
       
       $controller = new BaseCommentController();
       $data['comment_list'] = $controller -> CommentList(
-                                'SocialCommentModel', 
                                 $v_id,  
                                 $v_request -> getKeyByNumber(1),   //TODO: page
-                                20,                //TODO: page
-                                'Social', 'SocialView', array($v_id), 
-                                'Social', 'SocialCommentDelete'
+                                0,                //TODO: page
+                                'Social', 'SocialView', 'social', array($v_id)
                                 );
       $data['add_comment_url'] = $v_request -> createUrl('Social', 'SocialCommentAdd');
       

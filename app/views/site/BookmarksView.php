@@ -12,7 +12,8 @@ class BookmarksView extends BaseSiteView {
 		$this->setTemplate(null, 'bookmarks_most_visit.tpl.php');
 		$this->set($data);
 	}
-	public function Bookmarks_View($data) {
+	public function Bookmarks_View($data){
+	    $this->_js_files[]='jquery.js';
 		$this->setTemplate(null, 'bookmarks_view.tpl.php');
 		$this->set($data);
 	}

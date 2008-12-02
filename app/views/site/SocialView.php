@@ -19,6 +19,7 @@ class SocialView extends BaseSiteView {
     $this->set($data);
   }
   public function Social_View($data) {
+      $this->_js_files[] = 'jquery.js';
     $this->setTemplate(null, 'social_view.tpl.php');
     $this->set($data);
   }

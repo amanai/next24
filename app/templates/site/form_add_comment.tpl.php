@@ -11,6 +11,16 @@
 				<td><textarea id="addCommentArea" name="comment" style="width: 100%; height: 100px;"></textarea></td>
 			</tr>
 			<tr>
+			<?php
+			print_r($this->user_moods);
+			foreach ($this->user_moods as $mood){
+			    echo '
+				    <td>'.$mood['name'].'</td>
+			    ';
+			}
+			?>
+			</tr>
+			<tr>
 				<td align="right" style="padding-right: 5px;"><input type="submit" name="Submit" value="Комментировать"></td>
 			</tr>
 			</table>

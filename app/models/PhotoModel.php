@@ -101,5 +101,32 @@ class PhotoModel extends BaseModel{
 			$comment_model = new PhotoCommentModel;
 			$comment_model -> deleteAllByItem($id);
 		}
+		/*
+		function load($id){
+			$id = (int)$id;
+			
+			if ($this -> _load_cache === true){
+				$cache = Project::getDatabaseManager() -> getCache();
+				if ($cache !== null){
+					$result = $cache -> get($this -> getCachePrefix('_' . $id));
+					if (is_array($result)){
+						$this -> bind($result);
+						return $result;
+					}
+				}
+			}
+			$DE = Project::getDatabase(); // Get DB driver
+			$result = array();
+			$result = $DE -> selectRow("SELECT * FROM ".$this -> _table." WHERE id = ?d", $id); // Load 1 row
+			$this -> bind($result); // Bind to internal variables at class
+			if ($this -> _load_cache === true){
+				$cache = Project::getDatabaseManager() -> getCache();
+				if ($cache !== null){
+					$cache -> set($this -> getCachePrefix('_' . $id), $result);
+				}
+			}
+			return $result;
+		}
+		*/
 }
 ?>

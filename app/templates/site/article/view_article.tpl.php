@@ -37,10 +37,12 @@
 			<?php if($this->article['allowcomments'] > 0){ ?>
 				<?=$this->comment_list?>
 				<?php 
+				/*
 					if ($this -> is_logged){
 						include($this -> _include('../form_add_comment.tpl.php'));
 					}
-			}				  
+			     */
+			}
 			?>
 		</div>
 	</div>

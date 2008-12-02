@@ -87,12 +87,10 @@ class BookmarksController extends SiteController {
       // ---
       $controller = new BaseCommentController();
       $data['comment_list'] = $controller -> CommentList(
-                                'BookmarksCommentModel', 
                                 $v_id,  
                                 $v_request -> getKeyByNumber(1),   //TODO: page
-                                20,                //TODO: page
-                                'Bookmarks', 'BookmarksView', array($v_id), 
-                                'Bookmarks', 'BookmarksCommentDelete'
+                                0,                //TODO: page
+                                'Bookmarks', 'BookmarksView', 'bookmarks', array($v_id)
                                 );
       $data['add_comment_url'] = $v_request -> createUrl('Bookmarks', 'BookmarksCommentAdd');
       $data['add_comment_element_id'] = $v_id;

@@ -385,6 +385,10 @@ class UserModel extends BaseModel{
      *  END ***  AVATAR
     */
     
+    /**
+     *  MOOD
+    */
+    
     public function getAllUserMoods($user_id){
         $DE = Project::getDatabase();
         $result = array();
@@ -423,11 +427,6 @@ class UserModel extends BaseModel{
         ";
         $DE -> query($sql, $id);
     }
-    
-    /**
-     *  MOOD
-    */
-    
     
     
     /**
