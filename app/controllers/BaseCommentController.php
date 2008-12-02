@@ -39,7 +39,7 @@ class BaseCommentController extends CBaseController{
 			$model -> setPager($pager);
 			$list = $model -> loadByItem($item_id);
 			foreach($list as &$item){
-				if (($user_id > 0) && (($user_id === $requested_user_id) || ((int)$item['user_id'] === $user_id))){
+				if (($user_id > 0) && (($user_id === $requested_user_id) || ((int)$item['user_id'] === $user_id) || $isAdmin)){
 					$item['del_link'] = $request -> createUrl("BaseComment", "DeleteComment", array($item_id, $item['id'], $item_name));
 				} else {
 					$item['del_link'] = false;
