@@ -46,8 +46,8 @@ class SocialModel extends BaseModel {
       ON sp.`social_tree_id` = spt_ch.`id`
     LEFT JOIN social_tree spt_pr
       ON spt_ch.`parent_id` = spt_pr.`id`
-    LEFT JOIN social_comments sp_com
-      ON sp.`id` = sp_com.`social_pos_id`
+    LEFT JOIN social_comment sp_com
+      ON sp.`id` = sp_com.`social_id`
     LEFT JOIN (
       SELECT 
         spcv.`social_pos_id`, 

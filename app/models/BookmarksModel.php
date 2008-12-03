@@ -60,8 +60,8 @@ class BookmarksModel extends BaseModel {
       ON bm.`bookmarks_tree_id` = bmt_ch.`id`
     LEFT JOIN bookmarks_tree bmt_pr
       ON bmt_ch.`parent_id` = bmt_pr.`id`
-    LEFT JOIN bookmarks_comments bm_com
-      ON bm.`id` = bm_com.`bookmark_id`".$v_sql_tag.
+    LEFT JOIN bookmarks_comment bm_com
+      ON bm.`id` = bm_com.`bookmarks_id`".$v_sql_tag.
     "WHERE ".$v_sql_where."
     GROUP BY bm.`id`
     ORDER BY bm.`creation_date` DESC

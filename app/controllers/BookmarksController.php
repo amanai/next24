@@ -49,9 +49,9 @@ class BookmarksController extends SiteController {
 	  $this->_get_catalogs($data, $v_categoryID);
 	  $this->_getSelectedCategory($data, $v_categoryID);
 	  $this->_getSelectedTag($data, $v_tagID);
-    $this->_view->assign('tab_list', TabController::getBookmarksTabs(true, false)); // Show tabs
+      $this->_view->assign('tab_list', TabController::getBookmarksTabs(true, false)); // Show tabs
 	  $this->_view->Bookmarks_MainList($data);
-		$this->_view->parse();
+	  $this->_view->parse();
   }
 
   // -- Action "Самые посещаемые" закладки. Критерий: 10 самых посещаемых
