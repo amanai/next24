@@ -35,7 +35,7 @@
 	   
 	   <!-- center part -->
 	
-	    <form name="frmStake" action="" method="POST">
+	    
 		<table class="questions">
 		<tr>
 			<td align="left" colspan="3"> <div class="center width_400"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
@@ -43,11 +43,14 @@
 		<tr>
 			<td align="left"> Текущая ставка: </td>
 			<td>
+			     <span id="stakeAmount">
 			     <?php 
 			     echo $this->debateNow['stake_amount']." nm"; 
 			     ?>
+			     </span>
 			</td>
 			<td>
+			     <span id="stakeUserInfo">
 			     <?php 
 			     if($this->debateUser2){ 
 			         $user2 = $this->debateUser2;
@@ -58,6 +61,7 @@
 			         }
 			     } 
 			     ?>
+			     </span>
 			</td>
 		</tr>
 		<tr>
@@ -71,21 +75,21 @@
 			<td>&nbsp;</td>
 		</tr>
 		<?php
-		if ($this->user_id && $this->debateUser1['id'] != $this->user_id && $this->debateUser2['id'] != $this->user_id){
+		if ($this->user_id && $this->debateUser1['id'] != $this->user_id){
 		    echo '
 		<tr>
 			<td align="left"> &nbsp;</td>
 			<td nowrap>
-			     <input type="text" size=4 name="stake_amount" />
+			     <input type="text" size=4 name="stake_amount" id="stake_amount" />
 			</td>
-			<td><input type="submit" name="doStake" value="Сделать ставку" /></td>
+			<td><input type="button" name="doStake" id="doStakeBtn" onclick="doStakeSecondUser();" value="Сделать ставку" /></td>
 		</tr>
 		      ';
 		}
 		?>
         
 		</table>
-		</form>
+
 	   <!-- / center part -->
 	   
 	   </td>

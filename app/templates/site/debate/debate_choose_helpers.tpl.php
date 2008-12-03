@@ -37,6 +37,7 @@ if ($this->isDebateUser){
 	   $this->showUserAvator($this->user1_avatar, $this -> image_url);
 	   ?>
 	   <h2>Помощники</h2>
+	   <div id="helpersList1">
 	   <?php 
 	   if ($this->helper1_1){
 	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_1['login']).'">'.$this->helper1_1['login'].'</a></p>'; 
@@ -45,8 +46,7 @@ if ($this->isDebateUser){
 	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_2['login']).'">'.$this->helper1_2['login'].'</a></p>'; 
 	   }else echo '<p>&nbsp;</p>';
 	   ?>
-	   <br /><br />
-	   <p><input type="button" name="vote_for_user_1" id="vote_for_user_1" onclick="voteForDebateUser(<?php echo $this->debateUser1['id'] ?>);" value="Голосовать за <?php echo $this->debateUser1['login']; ?>" /></p>
+	   </div>
 	   </div>
 	   </td>
 	   <td valign="top"> 
@@ -59,10 +59,11 @@ if ($this->isDebateUser){
 			<td align="left"><div class="center width_400"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
         </tr>
             <td>
+                <div id="centerTable">
+                <table  class="questions">
 		<?php 
 		if ($this->isDebateUser){
 		    echo '
-		    <table  class="questions">
 		      <tr>
 		          <td><b>Помощник</b></td>
 		          <td><b>Рейтинг</b></td>
@@ -88,19 +89,18 @@ if ($this->isDebateUser){
 		      </tr>
 		          ';
 		    }
-		    echo '</table>';
 		}elseif ($this->user_id && !$this->helperTable){
 		    echo '
-    		<tr>
-    			<td colspan="2"><div class="center"><input type="submit" size=250 name="helper1" value="Я хочу быть помощником участника '.$this->debateUser1['login'].'" /></div></td>
-    		</tr><tr>
-    			<td colspan="2"><div class="center"><input type="submit" size=250 name="helper2" value="Я хочу быть помощником участника '.$this->debateUser2['login'].'" /></div></td>
+    		<tr id="helper1tr">
+    			<td colspan="2"><div class="center"><input type="button" size=250 id="helper1btn" name="helper1" onclick="wantBeHelper(1);" value="Я хочу быть помощником участника '.$this->debateUser1['login'].'" /></div></td>
+    		</tr><tr id="helper2tr">
+    			<td colspan="2"><div class="center"><input type="button" size=250 id="helper2dtn" name="helper2" onclick="wantBeHelper(2);" value="Я хочу быть помощником участника '.$this->debateUser2['login'].'" /></div></td>
     		</tr>
 		    ';
 		}elseif ($this->helperTable){
 		    echo '
 		    <tr>
-    			<td colspan="2"><div class="center">Вы выбрали быть помощником у '.$this->helperTable['login'].'</div></td>
+    			<td colspan="2"><div class="center" id=>Вы выбрали быть помощником у '.$this->helperTable['login'].'</div></td>
     		</tr>
 		    ';
 		}elseif(!$this->user_id){
@@ -108,9 +108,12 @@ if ($this->isDebateUser){
 		    <tr>
     			<td colspan="2"><div class="center">Что бы принять участие в дебатах, необходимо зарегистрироваться</div></td>
     		</tr>
+    		
 		    ';
 		}
 		?>
+		      </table>
+		      </div>
 		  </td>
         </tr>
 		</table>
@@ -125,6 +128,7 @@ if ($this->isDebateUser){
 	   $this->showUserAvator($this->user2_avatar, $this -> image_url);
 	   ?>
 	   <h2>Помощники</h2>
+	   <div id="helpersList2">
 	   <?php 
 	   if ($this->helper2_1){
 	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_1['login']).'">'.$this->helper2_1['login'].'</a></p>'; 
@@ -133,8 +137,7 @@ if ($this->isDebateUser){
 	       echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_2['login']).'">'.$this->helper2_2['login'].'</a></p>'; 
 	   }else echo '<p>&nbsp;</p>';
 	   ?>
-	   <br /><br />
-	   <p><input type="button" name="vote_for_user_2" id="vote_for_user_2" onclick="voteForDebateUser(<?php echo $this->debateUser2['id'] ?>);" value="Голосовать за <?php echo $this->debateUser2['login']; ?>" /></p>
+	   </div>
 	   </div>
 	   </td>
 	</tr>

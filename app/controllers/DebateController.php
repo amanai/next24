@@ -113,7 +113,9 @@ class DebateController extends SiteController{
 		           $userModel->changeUserMoney($debateNow['user_id_2'], 0, $debateNow['stake_amount'], "возвращение ставки в дебатах");
 		           $userModel->changeUserMoney($user->id, 0, -$stake_amount, "ставка в дебатах, при выборе 2-го учасника");
 		       }
-    		   Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+		       $this->returnStakeSecondUser($stake_amount);
+		       return;
+    		   //Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
     		}
 
     		$currentUser = $userModel->getUserById($user->id);
@@ -122,6 +124,11 @@ class DebateController extends SiteController{
     		$this-> _view -> assign('debateUser1', $user1);
     		$user2 = $userModel->getUserById($debateNow['user_id_2']);
     		$this-> _view -> assign('debateUser2', $user2);
+    		
+    		$user1_avatar = $userModel->getUserAvatar($debateNow['user_id_1']);
+    		$this-> _view -> assign('user1_avatar', $user1_avatar);
+    		$user2_avatar = $userModel->getUserAvatar($debateNow['user_id_2']);
+    		$this-> _view -> assign('user2_avatar', $user2_avatar);
             
     		$this -> _view -> DebateChooseSecondUserPage();
     		
@@ -133,11 +140,15 @@ class DebateController extends SiteController{
 		    $userModel = new UserModel();
 		    
 		    if ($request->helper1){
-		       $debateModel->addHelperCheck($user->id, $debateNow['user_id_1']);
-    		   Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+		       $lastHelperId = $debateModel->addHelperCheck($user->id, $debateNow['user_id_1']);
+		       $this -> returnChooseHelpers($lastHelperId);
+		       return;
+    		   //Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
     		}elseif ($request->helper2){
-		       $debateModel->addHelperCheck($user->id, $debateNow['user_id_2']);
-    		   Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+		       $lastHelperId = $debateModel->addHelperCheck($user->id, $debateNow['user_id_2']);
+		       $this -> returnChooseHelpers($lastHelperId);
+		       return;
+    		   //Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
     		}elseif ($request->check_helper){
     		    $isInHelperTable = $debateModel->isInHelperTable($request->check_helper);
     		    if ($isInHelperTable && $isInHelperTable['debate_user_id'] == $user->id){
@@ -160,6 +171,11 @@ class DebateController extends SiteController{
     		$this-> _view -> assign('debateUser1', $user1);
     		$user2 = $userModel->getUserById($debateNow['user_id_2']);
     		$this-> _view -> assign('debateUser2', $user2);
+    		
+    		$user1_avatar = $userModel->getUserAvatar($debateNow['user_id_1']);
+    		$this-> _view -> assign('user1_avatar', $user1_avatar);
+    		$user2_avatar = $userModel->getUserAvatar($debateNow['user_id_2']);
+    		$this-> _view -> assign('user2_avatar', $user2_avatar);
     		
     		$helper1_1 = $userModel->getUserById($debateNow['helper_id_1_1']);
     		$this-> _view -> assign('helper1_1', $helper1_1);
@@ -201,10 +217,11 @@ class DebateController extends SiteController{
 		       $stake_amount = abs($request->stake_amount);
 		       $debate_user_id = ($request->doStake1)?$debateNow['user_id_1']:$debateNow['user_id_2'];
 		       
-		       $debateModel->doStake($user->id, $debate_user_id, $stake_amount, 0);
+		       $lastStakeId = $debateModel->doStake($user->id, $debate_user_id, $stake_amount, 0);
 	           $userModel->changeUserMoney($user->id, 0, -$stake_amount, "ставка в дебатах, на учасника ID = ".$debate_user_id);
-
-    		   Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+	           $this -> returnDoStakePage($lastStakeId);
+               return;
+    		   //Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
     		}elseif ($request->user_ready){
     		   $debateModel -> changeOneValue('debate_now', $debateNow['id'], 'is_ready_'.$userNumber, 1); 
     		   
@@ -228,6 +245,11 @@ class DebateController extends SiteController{
     		$this-> _view -> assign('debateUser1', $user1);
     		$user2 = $userModel->getUserById($debateNow['user_id_2']);
     		$this-> _view -> assign('debateUser2', $user2);
+    		
+    		$user1_avatar = $userModel->getUserAvatar($debateNow['user_id_1']);
+    		$this-> _view -> assign('user1_avatar', $user1_avatar);
+    		$user2_avatar = $userModel->getUserAvatar($debateNow['user_id_2']);
+    		$this-> _view -> assign('user2_avatar', $user2_avatar);
     		
     		$helper1_1 = $userModel->getUserById($debateNow['helper_id_1_1']);
     		$this-> _view -> assign('helper1_1', $helper1_1);
@@ -621,17 +643,20 @@ class DebateController extends SiteController{
     		
 		}elseif($activeEtap['name']=='ChooseSecondUser'){
 		    // ETAP 3. Election for Secont USER , by auction, who pay more - get part in debate
-            $lastId = $debateNow['stake_amount'];
+            $stake_amount = $debateNow['stake_amount'];
+            $this->returnStakeSecondUser($stake_amount);
     		// END ETAP 3. Election for Secont USER , by auction
     		
 		}elseif($activeEtap['name']=='ChooseHelpers'){
 		    // ETAP 4. Election for Helpers
-            $lastId = $debateModel->getLastId('debate_helper_check');
+            $lastHelperId = $debateModel->getLastId('debate_helper_check');
+            $this -> returnChooseHelpers($lastHelperId);
     		// END ETAP 4. Election for Helpers
     		
 		}elseif($activeEtap['name']=='GetStakes'){
 		    // ETAP 5. Stakes from users on Debate Users
-            $lastId = $debateModel->getLastId('money_transaction');
+            $lastStakeId = $debateModel->getLastId('debate_stakes');
+            $this->returnDoStakePage($lastStakeId);
     		// END ETAP 5. Stakes from users on Debate Users
     		
 		}elseif($activeEtap['name']=='Debates'){
@@ -696,6 +721,131 @@ class DebateController extends SiteController{
     	    $this -> _view -> returnThemesVote($message);
         	$this -> _view -> ajax();
 		}
+	}
+	
+	
+	function returnStakeSecondUser($stake_amount){
+	    $sessiovVars = Project::getSession();
+	    $idNow = $sessiovVars->getKey('idNow');
+	    if ($stake_amount && $idNow < $stake_amount){
+	        $debateModel = new DebateModel();
+	        $userModel = new UserModel();
+	        $debateNow = $debateModel->getDebateNow();
+	        
+		    $sessiovVars->add('idNow', $stake_amount);
+		    
+		    $user = Project::getUser()->getDbUser();
+    	    if (!$user->id) $user->id = 0;
+    	    $message['user_id'] = $user->id;
+    	    
+    	    $user2 = $userModel->getUserById($debateNow['user_id_2']);
+    	    $message['user2'] = $user2;
+    	    $message['stake_amount'] = $debateNow['stake_amount'];
+    	    
+    	    $this -> _view -> returnStakeSecondUser($message);
+        	$this -> _view -> ajax();
+		}
+	}
+	
+	function returnChooseHelpers($lastHelperId){
+	    $sessiovVars = Project::getSession();
+	    $idNow = $sessiovVars->getKey('idNow');
+	    if ($lastHelperId && $idNow < $lastHelperId){
+	        $sessiovVars->add('idNow', $lastHelperId);
+	        $debateModel = new DebateModel();
+	        $userModel = new UserModel();
+	        $debateNow = $debateModel->getDebateNow();
+	        $message['debateNow'] = $debateNow;
+	        
+		    $user = Project::getUser()->getDbUser();
+    	    if (!$user->id) $user->id = 0;
+    	    $message['user_id'] = $user->id;
+    	    
+    	    $userNumber = $debateModel->getUserNumber($debateNow, $user->id);
+    	    $message['userNumber'] = $userNumber; 
+    	    
+	        $helperTable = $debateModel->isInHelperTable($user->id);
+	        $message['helperTable'] = $helperTable;    	   
+	        
+	        $user1 = $userModel->getUserById($debateNow['user_id_1']);
+    		$message['debateUser1'] = $user1;
+    		$user2 = $userModel->getUserById($debateNow['user_id_2']);
+    		$message['debateUser2'] = $user2;
+    	    
+	        $user1 = $userModel->getUserById($debateNow['user_id_1']);
+    	    $message['user1'] = $user1;
+    	    $user2 = $userModel->getUserById($debateNow['user_id_2']);
+    	    $message['user2'] = $user2;
+    	    $helper1_1 = $userModel->getUserById($debateNow['helper_id_1_1']);
+    		$message['helper1_1'] = $helper1_1;
+    		$helper1_2 = $userModel->getUserById($debateNow['helper_id_1_2']);
+    		$message['helper1_2'] = $helper1_2;
+    		$helper2_1 = $userModel->getUserById($debateNow['helper_id_2_1']);
+    		$message['helper2_1'] = $helper2_1;
+    		$helper2_2 = $userModel->getUserById($debateNow['helper_id_2_2']);
+    		$message['helper2_2'] = $helper2_2;
+    		
+    		if ($userNumber){
+		        $message['isDebateUser'] = true;
+		        $aDebateUserHelpers = $debateModel->getHelpersByDebateUserId($user->id);
+		        $message['aDebateUserHelpers'] = $aDebateUserHelpers;
+		        
+		        if (!$debateNow['helper_id_'.$userNumber.'_1'] || !$debateNow['helper_id_'.$userNumber.'_2']){
+		           $message['isDebateUserCanAddHelpers'] = true;
+		        }else{
+		            $message['isDebateUserCanAddHelpers'] = false;
+		        }
+    		}else{
+    		    $message['isDebateUser'] = false;
+    		}
+    	    
+    	    $this -> _view -> returnChooseHelpers($message);
+        	$this -> _view -> ajax();
+		}
+	}
+	
+	function returnDoStakePage($lastStakeId){
+	    $sessiovVars = Project::getSession();
+	    $idNow = $sessiovVars->getKey('idNow');
+	    //echo $idNow." == ".$lastStakeId.";";
+	    if ($lastStakeId && $idNow < $lastStakeId){
+	        $sessiovVars->add('idNow', $lastStakeId);
+	        $debateModel = new DebateModel();
+	        $userModel = new UserModel();
+	        $debateNow = $debateModel->getDebateNow();
+	        $message['debateNow'] = $debateNow;
+	        
+		    $user = Project::getUser()->getDbUser();
+    	    if (!$user->id) $user->id = 0;
+    	    $message['user_id'] = $user->id;
+    	    
+    	    $userNumber = $debateModel->getUserNumber($debateNow, $user->id);
+    	    $message['userNumber'] = $userNumber;
+    	    
+    	    $currentUser = $userModel->getUserById($user->id);
+    		$message['currentUser'] = $currentUser;
+    		$user1 = $userModel->getUserById($debateNow['user_id_1']);
+    		$message['debateUser1'] = $user1;
+    		$user2 = $userModel->getUserById($debateNow['user_id_2']);
+    		$message['debateUser2'] = $user2;
+    	    
+    	    $aUserStakes = $debateModel->getDebateStakesByUserId($user->id, 0);
+    		$message['aUserStakes'] = $aUserStakes;
+    	    
+    	    if ($userNumber){
+    		    $isReady = ($debateNow['is_ready_'.$userNumber])?true:false;
+    		    $message['isReady'] = $isReady;
+    		    
+    		    $message['stakesCount'] = $debateModel->getDebateStakesCount($user->id, 0);
+    		    $message['stakesSum'] = $debateModel->getDebateStakesSum($user->id, 0);
+    		}else{
+    		    $message['stakesCount'] = $debateModel->getDebateStakesCount(0, 0);
+    		    $message['stakesSum'] = $debateModel->getDebateStakesSum(0, 0);
+    		}
+	        
+	        $this -> _view -> returnDoStakePage($message);
+        	$this -> _view -> ajax();
+	    }
 	}
 	
 	public function DebateDelThemeAction(){

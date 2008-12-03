@@ -20,6 +20,56 @@ function vote_theme(theme_id, subject){
     return true;
 }
 
+function doStakeSecondUser(){
+    var doStakeBtn = document.getElementById('doStakeBtn');
+    var stakeAmount = document.getElementById('stake_amount');
+    if (doStakeBtn && stakeAmount && stakeAmount.value){
+        ajax(
+            {"url":"\/debate","type":"POST","async":true,"data":{"stake_amount":stakeAmount.value, "doStake":1},"dataType":"json"}, 
+            true);
+        stakeAmount.value = "";
+        $("#doStakeBtn").hide();
+        $("#stake_amount").hide();
+        return true;
+    }else{
+        return false;
+    }    
+}
+
+function wantBeHelper(helperN){
+    var helper1tr = document.getElementById('helper1tr');
+    var helper2tr = document.getElementById('helper2tr');
+    if (helper1tr && helper2tr){
+        var helper = 'helper'+helperN;
+        if (helperN == 1){
+            ajax({"url":"\/debate","type":"POST","async":true,"data":{"helper1":1},"dataType":"json"}, true);
+        }else{
+            ajax({"url":"\/debate","type":"POST","async":true,"data":{"helper2":1},"dataType":"json"}, true);
+        }
+        $("#helper1tr").hide();
+        $("#helper2tr").hide();
+        return true;
+    }else{
+        return false;
+    }   
+}
+
+function doStake(userN){
+    var stake_amount = document.getElementById('stake_amount');
+    if (stake_amount && stake_amount.value){
+        var helper = 'doStake'+userN;
+        if (userN == 1){
+            ajax({"url":"\/debate","type":"POST","async":true,"data":{"doStake1":1, "stake_amount":stake_amount.value},"dataType":"json"}, true);
+        }else{
+            ajax({"url":"\/debate","type":"POST","async":true,"data":{"doStake2":1, "stake_amount":stake_amount.value},"dataType":"json"}, true);
+        }
+        stake_amount.value = "";
+        return true;
+    }else{
+        return false;
+    }   
+}
+
 function send_message(fromId, toId, isHide){
     var fromElement = document.getElementById(fromId);
     if (fromElement && fromElement.value){

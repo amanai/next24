@@ -551,10 +551,11 @@ class DebateModel extends BaseModel{
         $sql = "
             INSERT INTO `debate_helper_check` ( `helper_id` , `debate_user_id` )
             VALUES (
-            ?, ?
+            ?d, ?d
             )
         ";
         $DE -> query($sql, $helper_id, $debate_user_id);
+        return mysql_insert_id();
     }
     
     function isInHelperTable($helper_id){
@@ -644,9 +645,9 @@ class DebateModel extends BaseModel{
             INSERT INTO `debate_stakes` (`user_id` , `debate_user_id` , `stake_amount` , `debate_history_id` )
             VALUES ('$user_id', '$debate_user_id', '$stake_amount', '$debate_history_id')
         ";
-        //echo $sql; exit;
+        //echo $sql."\n"; 
         $DE -> query($sql);
-        return true;
+        return mysql_insert_id();
     }
     
     function setStakeHistoryId($old_history_id, $debate_history_id){

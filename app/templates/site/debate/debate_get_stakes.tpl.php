@@ -54,7 +54,8 @@ if ($this->userNumber && $this->isReady){
 	   <td valign="top"> 
 	   
          <!-- center part  -->	   
-	    <form name="frmStake" action="" method="POST">
+	    <div id="centerTable">
+	    <form action="" method="POST">
 		<table class="questions">
 		<tr> 
 			<td colspan="3"><div class="center width_400"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
@@ -69,7 +70,7 @@ if ($this->userNumber && $this->isReady){
 		<tr>
 		    <td> На сумму: </td>
 			<td>
-			     <?php echo (int)$this->stakesSum; ?> nm
+			     <?php echo $this->stakesSum; ?> nm
 			</td>
 			<td>&nbsp;</td>
 		</tr>
@@ -79,7 +80,7 @@ if ($this->userNumber && $this->isReady){
         }elseif ($this->userNumber){
             echo '
         <tr>
-		    <td colspan="3"><div class="center><input type="submit" name="user_ready" size="300" value="Я готов к дебатам" /></div></td>
+		    <td colspan="3"><div class="center"><input type="submit" name="user_ready" size="300" value="Я готов к дебатам" /></div></td>
 		</tr>   
             ';            
         }elseif ($this->user_id){
@@ -88,18 +89,18 @@ if ($this->userNumber && $this->isReady){
         <tr>
 		    <td> У Вас на счету: </td>
 			<td>
-			    '.(int)$currentUser['nextmoney'].' nm 
+			    '.$currentUser['nextmoney'].' nm 
 			</td>
 			<td>&nbsp;</td>
 		</tr> 
 		<tr>
 			<td align="left"> Ставка: </td>
 			<td nowrap>
-			     <input type="text" size=4 name="stake_amount" />
+			     <input type="text" size=4 name="stake_amount" id="stake_amount" />
 			</td>
 			<td>
-			   <input type="submit" name="doStake1" value="Сделать ставку на '.$this->debateUser1['login'].'" /><br/><br/>
-			   <input type="submit" name="doStake2" value="Сделать ставку на '.$this->debateUser2['login'].'" />
+			   <input type="button" name="doStake1" id="doStake1" onclick="doStake(1);" value="Сделать ставку на '.$this->debateUser1['login'].'" /><br/><br/>
+			   <input type="button" name="doStake2" id="doStake2" onclick="doStake(2);" value="Сделать ставку на '.$this->debateUser2['login'].'" />
 			</td>
 		</tr>  
             ';
@@ -131,6 +132,7 @@ if ($this->userNumber && $this->isReady){
 
 		</table>
 		</form>
+		</div>
 		<!-- / center part  -->
 		
 	   </td>
