@@ -8,7 +8,7 @@ class DebateView extends BaseSiteView{
 	       $src = ($userAvator['path'])?$userAvator['path']:$imgUrl.'avator/'.$userAvator['sys_name'];
 	       echo '<img src="'.$src.'" />';
 	   }else{
-	       echo '<img src="'.$imgUrl.'avator/no.png" />';
+	       echo '<img src="'.$imgUrl.'avatar/no.png" />';
 	   }
 	   echo '
 	   </div>
@@ -24,7 +24,7 @@ class DebateView extends BaseSiteView{
 	public function showQuestionAvator(){
 	   echo '
 	   <div class="debate_avator">
-	   <img src="'.$this -> image_url.'avator/question.png" />
+	   <img src="'.$this -> image_url.'avatar/question.png" />
 	   </div>
 	   <br /><br />	 
 	   ';
@@ -275,6 +275,57 @@ class DebateView extends BaseSiteView{
 	        $response -> attribute("timeLeft", "class", "");
 	    }
 	    if ($message['refreshNow']) $response -> attribute("refreshNow", "value", 1);
+	}
+	
+	function returnNewThemes($message){
+	    $debateModel = new DebateModel();
+	    $response = Project::getAjaxResponse();
+        $lastThemeId = $message['lastThemeId'];
+        $aNewThemes = $debateModel->getNewThemeById($lastThemeId);
+        
+        foreach ($aNewThemes as $newTheme){
+            if ($message['isAdmin'] || $message['user_id'] == $newTheme['user_id']) {$delTheme = '<a href="'.Project::getRequest()->createUrl('Debate', 'DebateDelTheme').'/theme_id:'.$newTheme['debate_theme_id'].'" class="red">Удалить</a> ';} else $delTheme='';
+            $strTr = '
+                <tr id="cmod_tab2">
+        			<td style="text-align: left;">'.$delTheme.$newTheme['debate_theme_theme'].'</td>
+        			<td><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $newTheme['login']).'">'.$newTheme['login'].'</a></td>
+        		</tr>';
+            $response -> append('themeTable', $strTr);
+        }
+	}
+	
+	function returnThemesVote($message){
+	    $debateModel = new DebateModel();
+	    $response = Project::getAjaxResponse();
+        $lastThemeId = $message['lastThemeId'];
+        $aThemes = $debateModel->getAllThemes("debate_theme.votes DESC");
+        $isVoted = $debateModel->getThemeVoteByUserId($message['user_id']);
+        
+        $strTable = '
+        <table class="questions">
+		<tr>
+			<td style="text-align: left;"> <b>Тема</b></td>
+			<td> <b>Предложил</b></td>
+			<td> <b>Голосов</b></td>
+			<td> <b>Действия</b></td>
+		</tr>
+        ';
+        foreach ($aThemes as $theme){
+            if ($message['user_id'] && !$isVoted && $message['user_id'] != $theme['user_id']){
+                $vote = '<a href="javascript: void(0);" onclick="vote_theme('.$theme['debate_theme_id'].', \'theme\');">голосовать</a>';
+            } 
+            else $vote='-';
+            $strTable .= '
+        		<tr id="cmod_tab2">
+        			<td style="text-align: left;">'.$theme['debate_theme_theme'].'</td>
+        			<td><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $theme['login']).'">'.$theme['login'].'</a></td>
+        			<td>'.(int)$theme['debate_theme_votes'].'</td>
+        			<td>'.$vote.'</td>
+        		</tr>
+		      ';
+        }
+        $strTable .= '</table>';
+        $response -> block('themeDivTable', true, $strTable);
 	}
 	
 	function returnChat($message){

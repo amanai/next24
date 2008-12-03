@@ -34,7 +34,7 @@
 	   
 	   
 	   <!-- center part -->
-		<table class="questions">
+		<table class="questions" id="themeTable">
 		<tr>
 			<td style="text-align: left;"> <b>Тема</b></td>
 			<td> <b>Предложил</b></td>
@@ -70,7 +70,7 @@
 	</div>
 	</div>
 
-	<?php echo $this->debate_pager;  ?>
+	<?php //echo $this->debate_pager;  ?>
 	
 </div></div></div></div>
 
@@ -81,14 +81,12 @@ if ($this->user_id){
 	<div class="block_title"><h2>Новая тема</h2></div>
 	<!-- Новая тема -->
 	<div>
-		<form action="" name="frmAddTheme">
 			<table width="100%">
 			<tr>
 				<td width="100%"><input type="text" name="theme" id="theme" style="width: 100%;" /></td>
-				<td><input type="submit" name="addTheme" value="Предложить" /></td>
+				<td><input type="button"  name="addTheme" onclick="javascript:add_theme('theme');" value="Предложить" /></td>
 			</tr>
 			</table>
-		</form>
 	</div>
 	<!-- /Новая тема -->
 </div></div></div></div>

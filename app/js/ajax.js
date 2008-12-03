@@ -118,7 +118,15 @@ function handleResponse(msg){
 				        if(document.getElementById(item.id)){
 						  $("#"+item.id).append(item.html);
 				        }
-			          });
+			        });
+			}
+			
+			if (p.prepend){
+				$.each(p.prepend, function(i, item){
+				        if(document.getElementById(item.id)){
+						  $("#"+item.id).prepend(item.html);
+				        }
+			        });
 			}
 			
 			if (p.disable){

@@ -33,6 +33,7 @@
 	   
 	   
 	   <!-- center part -->
+	   <div id="themeDivTable">
 		<table class="questions">
 		<tr>
 			<td style="text-align: left;"> <b>Тема</b></td>
@@ -45,7 +46,7 @@
         foreach ($this->aThemes as $theme){
             //if ($i/2 == 1){$tr_id = ""; $i=1;} else {$tr_id = "cmod_tab2"; $i++;}
             $tr_id = "cmod_tab2";
-            if ($this->user_id && !$this->isVoted && $this->user_id != $theme['user_id']) {$vote = '<a href="'.$this->createUrl('Debate', 'DebateVote').'/subject:theme/theme_id:'.$theme['debate_theme_id'].'">голосовать</a>';} else $vote='-';
+            if ($this->user_id && !$this->isVoted && $this->user_id != $theme['user_id']) {$vote = '<a href="javascript: void(0);" onclick="vote_theme('.$theme['debate_theme_id'].', \'theme\');">голосовать</a>';} else $vote='-';
             echo '
         		<tr id="'.$tr_id.'">
         			<td style="text-align: left;">'.$theme['debate_theme_theme'].'</td>
@@ -57,6 +58,7 @@
         }
         ?>		
 		</table>
+       </div>	
 	   <!-- / center part -->
 	   
 	   </td>
@@ -73,7 +75,7 @@
 	</div>
 	</div>
 
-	<?php echo $this->debate_pager;  ?>
+	<?php //echo $this->debate_pager;  ?>
 	
 </div></div></div></div>
 

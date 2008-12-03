@@ -350,7 +350,22 @@ class DebateModel extends BaseModel{
      * 
     */ 
     
-    function getAllThemes($page_settings=array(), $order="debate_theme.votes DESC"){
+    function getAllThemes($order="debate_theme.votes DESC"){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT users.login, 
+                   debate_theme.id as debate_theme_id, debate_theme.user_id, debate_theme.theme as debate_theme_theme, 
+                   debate_theme.votes as debate_theme_votes
+            FROM debate_theme
+            INNER JOIN users
+                ON debate_theme.user_id = users.id
+            ORDER BY ".$order;
+        $result = $DE -> select($sql);
+        return $result;
+    }
+    
+    function getAllThemesPager($page_settings=array(), $order="debate_theme.votes DESC"){
         $DE = Project::getDatabase();
         $result = array();
         $sqlLimit = $this->getSqlLimit($page_settings);
@@ -380,6 +395,23 @@ class DebateModel extends BaseModel{
             WHERE  debate_theme.id = ?               
         ";
         $result = $DE -> selectRow($sql, $theme_id);
+        return $result;
+    }
+    
+    function getNewThemeById($last_theme_id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT users.login, 
+                   debate_theme.id as debate_theme_id, debate_theme.user_id, debate_theme.theme as debate_theme_theme, 
+                   debate_theme.votes as debate_theme_votes
+            FROM debate_theme
+            INNER JOIN users
+                ON debate_theme.user_id = users.id
+            WHERE  debate_theme.id > ?d
+            ORDER BY debate_theme.id
+        ";
+        $result = $DE -> select($sql, $last_theme_id);
         return $result;
     }
     
@@ -438,6 +470,7 @@ class DebateModel extends BaseModel{
             )
         ";
         $DE -> query($sql, $user_id, $theme_id);
+        $lastVoteId = mysql_insert_id();
         $sql = "
             SELECT count(*) as c
             FROM debate_theme_vote 
@@ -453,6 +486,7 @@ class DebateModel extends BaseModel{
         ";
         //echo $sql.$themeCount.$theme_id."<hr>";
         $DE -> query($sql, $themeCount, $theme_id);
+        return $lastVoteId;
     }
     
     function getVoteWinnerTheme(){

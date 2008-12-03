@@ -53,10 +53,12 @@ class DebateController extends SiteController{
 		if ($activeEtap['name']=='GetTheme'){
     		// ETAP 1. Get Theme from Users.
     		if ($request->addTheme && $request->theme){
-    		   $debateModel->addTheme($user->id, $request->theme, 0);
-    		   Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+    		   $this->addTheme($debateModel, $user->id, $request->theme, 0);
+    		   return;
+    		   //Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
     		}
     		// PAGER
+    		/*
     		$record_per_page = $this -> getParam("THEMES_PER_PAGE");
     		$pager_view = new SitePagerView();
     	    $record_count = $debateModel->getThemesCount();
@@ -66,7 +68,9 @@ class DebateController extends SiteController{
     	    $this-> _view -> assign('debate_pager', $debate_pager);
     	    $page_settings = array("record_per_page"=>$record_per_page, "current_page_number"=>$current_page_number+1);
     		// END PAGER
-    		$aThemes = $debateModel->getAllThemes($page_settings, "debate_theme.id DESC");
+    		$aThemes = $debateModel->getAllThemesPager($page_settings, "debate_theme.id DESC");
+    		*/
+    		$aThemes = $debateModel->getAllThemes("debate_theme.id");
     		$this-> _view -> assign('aThemes', $aThemes);
     		$this -> _view -> DebateThemeProposalPage();
     		
@@ -74,10 +78,8 @@ class DebateController extends SiteController{
     		
 		}elseif($activeEtap['name']=='VoteTheme'){
 		    // ETAP 2. Vote for Theme
-    		if ($request->addTheme && $request->theme){
-    		   $debateModel->addTheme($user->id, $request->theme, 0);
-    		   Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
-    		}
+    		
+    		/*
     		// PAGER
     		$record_per_page = $this -> getParam("THEMES_PER_PAGE");
     		$pager_view = new SitePagerView();
@@ -88,7 +90,9 @@ class DebateController extends SiteController{
     	    $this-> _view -> assign('debate_pager', $debate_pager);
     	    $page_settings = array("record_per_page"=>$record_per_page, "current_page_number"=>$current_page_number+1);
     		// END PAGER
-    		$aThemes = $debateModel->getAllThemes($page_settings, "debate_theme.votes DESC");
+    		$aThemes = $debateModel->getAllThemesPager($page_settings, "debate_theme.votes DESC");
+    		*/
+    		$aThemes = $debateModel->getAllThemes("debate_theme.votes DESC");
     		$this-> _view -> assign('aThemes', $aThemes);
     		
     		$isVoted = $debateModel->getThemeVoteByUserId($user->id);
@@ -605,13 +609,14 @@ class DebateController extends SiteController{
 
         if ($activeEtap['name']=='GetTheme'){
     		// ETAP 1. Get Theme from Users.
-    		$lastId = $debateModel->getLastId('debate_theme');
-    		
+    		$lastThemeId = $debateModel->getLastId('debate_theme');
+    		$this->returnNewThemes($lastThemeId);
     		// END ETAP 1.
     		
 		}elseif($activeEtap['name']=='VoteTheme'){
 		    // ETAP 2. Vote for Theme
-            $lastId = $debateModel->getLastId('debate_theme_vote');
+            $lastVoteId = $debateModel->getLastId('debate_theme_vote');
+            $this->returnVoteThemes($lastVoteId);
     		// END ETAP 2.
     		
 		}elseif($activeEtap['name']=='ChooseSecondUser'){
@@ -647,6 +652,52 @@ class DebateController extends SiteController{
         return $isNeedReload;
 	}
 	
+	function addTheme($debateModel, $user_id, $theme, $votes=0){
+	    $message = array();
+	    $lastThemeId = $debateModel->addTheme($user_id, $theme, $votes);
+	    $this->returnNewThemes($lastThemeId);
+	}
+	
+	// возвращает новые темы AJAX
+	function returnNewThemes($lastThemeId){
+	    $sessiovVars = Project::getSession();
+	    $idNow = $sessiovVars->getKey('idNow');
+	    if ($lastThemeId && $idNow < $lastThemeId){
+		    $isNeedAppend = true;
+		    $sessiovVars->add('idNow', $lastThemeId);
+		    
+		    $user = Project::getUser()->getDbUser();
+    	    if (!$user->id) $user->id = 0;
+    	    $isAdmin = ($user->user_type_id == 1)?true:false;
+    	    
+    	    $message['lastThemeId'] = $idNow;
+    	    $message['isAdmin'] = $isAdmin;
+    	    $message['user_id'] = $user->id;
+    	    
+    	    $this -> _view -> returnNewThemes($message);
+        	$this -> _view -> ajax();
+		}    		
+	}
+	
+	// возвращает темы после голосования AJAX
+	function returnVoteThemes($lastVoteId){
+	    $sessiovVars = Project::getSession();
+	    $idNow = $sessiovVars->getKey('idNow');
+	    if ($lastVoteId && $idNow < $lastVoteId){
+		    $isNeedRefreshTable = true;
+		    $sessiovVars->add('idNow', $lastVoteId);
+		    
+		    $user = Project::getUser()->getDbUser();
+    	    if (!$user->id) $user->id = 0;
+    	    
+    	    $message['lastThemeId'] = $idNow;
+    	    $message['user_id'] = $user->id;
+    	    
+    	    $this -> _view -> returnThemesVote($message);
+        	$this -> _view -> ajax();
+		}
+	}
+	
 	public function DebateDelThemeAction(){
 	    $debateModel = new DebateModel();
 	    $request = Project::getRequest();
@@ -672,7 +723,8 @@ class DebateController extends SiteController{
 	        $theme = $debateModel->getThemeById($request->theme_id);
 	        $isVoted = $debateModel->getThemeVoteByUserId($user->id);
 	        if ($theme && !$isVoted){
-	            $debateModel->addThemeVote($user->id, $request->theme_id);
+	            $lastVoteId = $debateModel->addThemeVote($user->id, $request->theme_id);
+	            $this->returnVoteThemes($lastVoteId);
 	        }
 	    }elseif ($request->subject == 'debateUser'){
 	        $debate_user_id = $request->debate_user_id;
@@ -688,7 +740,7 @@ class DebateController extends SiteController{
 	        // refresh All Chat's
             $this->DebateRefreshChat();
 	    }else{
-	       Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
+	       //Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
 	    }
 	}
 	

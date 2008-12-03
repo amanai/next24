@@ -1,4 +1,25 @@
 
+
+function add_theme(fromId){
+    var fromElement = document.getElementById(fromId);
+    if (fromElement && fromElement.value){
+        ajax(
+            {"url":"\/debate","type":"POST","async":true,"data":{"theme":fromElement.value, "addTheme":1},"dataType":"json"}, 
+            true);
+        fromElement.value = "";
+        return true;
+    }else{
+        return false;
+    }    
+}
+
+function vote_theme(theme_id, subject){
+    ajax(
+        {"url":"\/debate_vote","type":"POST","async":true,"data":{"theme_id":theme_id, "subject":subject},"dataType":"json"}, 
+        true);
+    return true;
+}
+
 function send_message(fromId, toId, isHide){
     var fromElement = document.getElementById(fromId);
     if (fromElement && fromElement.value){
