@@ -28,6 +28,7 @@
 
 .ChatMessages {
     width:100%;
+    text-align: left !important;
 }
 
 .ChatMessagesB, .ChatMessagesB_helpers {
