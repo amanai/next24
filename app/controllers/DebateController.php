@@ -218,7 +218,7 @@ class DebateController extends SiteController{
 		       $debate_user_id = ($request->doStake1)?$debateNow['user_id_1']:$debateNow['user_id_2'];
 		       
 		       $lastStakeId = $debateModel->doStake($user->id, $debate_user_id, $stake_amount, 0);
-	           $userModel->changeUserMoney($user->id, 0, -$stake_amount, "ставка в дебатах, на учасника ID = ".$debate_user_id);
+	           $userModel->changeUserMoney($user->id, 0, -$stake_amount, "ставка в дебатах, на учасника [userId = ".$debate_user_id."]");
 	           $this -> returnDoStakePage($lastStakeId);
                return;
     		   //Project::getResponse()->redirect(Project::getRequest()->createUrl('Debate', 'Debate'));
@@ -422,13 +422,13 @@ class DebateController extends SiteController{
 		}
 		
 		$debateNow = $debateModel->getDebateNow();
-		if (!$debateNow) {
+		if (!$debateNow){
 		    $debateModel->addDebateNow();
 		    $debateNow = $debateModel->getDebateNow();
 		}
 		
 		$debateModel->setPassedEtap($activeEtap['id']);
-		if (!$debateNow['is_ready_1'] && !$debateNow['is_ready_1'] && $activeEtap['name']=='Debates'){ // ПАУЗА
+		if (!$debateNow['is_ready_1'] && !$debateNow['is_ready_2'] && $activeEtap['name']=='Debates'){ // ПАУЗА
 		    if (!$activeEtap['is_pause']) $debateModel->pauseOnEtap($activeEtap['id']);
 		    $debateModel->setPausePassedEtap($activeEtap['id']);
 		    $etapTimeLeft = $this->getParam('PAUSE_DURATION_SEC') - $debateModel->checkPauseDuration($activeEtap['id']);
@@ -580,7 +580,7 @@ class DebateController extends SiteController{
                 $aWinStakes = $debateModel->getDebateStakesByDebateUserId($winnerUserId, 0);
                 // pay to WinnerUser 2
                 if ($winnerUserId == $debateNow['user_id_2']){
-                    $userModel->changeUserMoney($winnerUserId, 0, $debateNow['stake_amount']*1.5, "Ваша ставка ".$debateNow['stake_amount']." nm выиграла в дебатах id=".$debate_history_id);
+                    $userModel->changeUserMoney($winnerUserId, 0, $debateNow['stake_amount']*1.5, "Ваша ставка ".$debateNow['stake_amount']." nm выиграла в дебатах [debateId=".$debate_history_id."]");
                 }
     		}else{
     		    $aWinStakes = $debateModel->getDebateStakes(0);
@@ -590,7 +590,7 @@ class DebateController extends SiteController{
     		}
             foreach ($aWinStakes as $winStake){
                 if ($winnerUserId){
-                     $message = "Ваша ставка ".$winStake['stake_amount']." nm выиграла в дебатах id=".$debate_history_id;
+                     $message = "Ваша ставка ".$winStake['stake_amount']." nm выиграла в дебатах [debateId=".$debate_history_id."]";
                      $stake_amount = $winStake['stake_amount']*1.5;
                 }else{
                     $message = $mess;
@@ -1043,11 +1043,8 @@ class DebateController extends SiteController{
 	    if ($request->userNumber && $userNumber == $request->userNumber){
 	        $debateModel->changeOneValue('debate_now', $debateNow['id'], 'is_ready_'.$userNumber, 0);
 	    }
+	    $this->DebateEtapsCheckerAction(true);
 	}
-	
-	
-	
-	
 	
 }
 ?>

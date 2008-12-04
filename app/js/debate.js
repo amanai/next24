@@ -92,6 +92,7 @@ function helperSay(elementId, helper_id){
         ajax(
             {"url":"\/debate_helper_cansay","type":"POST","async":true,"data":{"elementId":elementId,"helper_id":helper_id},"dataType":"json"}, 
             true);
+        $("#"+elementId).hide();
         return true;
     }else{
         return false;
