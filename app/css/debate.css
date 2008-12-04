@@ -28,7 +28,6 @@
 
 .ChatMessages {
     width:100%;
-    text-align: left !important;
 }
 
 .ChatMessagesB, .ChatMessagesB_helpers {
@@ -38,6 +37,7 @@
   font-size:11px;
   color:#000;
   background: #FFFFFF;
+  text-align: left !important;
 }
 .ChatMessagesB{
   height:180px;
