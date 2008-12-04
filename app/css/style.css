@@ -1064,6 +1064,7 @@ font-weight:bold;
 .comment_text{
   /*width: 800px; */
   overflow: auto;
+  margin-left: 115px;
 }
 
 
