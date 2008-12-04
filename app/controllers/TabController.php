@@ -26,7 +26,8 @@ class TabController{
 			return $tabs;
 		}
 		
-		function getOwnTabs($selected_profile = false, $selected_album = false, $selected_diary = false, $selected_arch_diary = false, $friends = false, $pm = false, $blog = false, $subscribe = false){
+		function getOwnTabs($selected_profile = false, $selected_album = false, $selected_diary = false, $selected_arch_diary = false, 
+		                    $friends = false, $pm = false, $blog = false, $subscribe = false, $messages = false){
 			$request = Project::getRequest();
 			$tabs = array();
 			$tabs[] = array(
@@ -71,6 +72,12 @@ class TabController{
 							'title' => 'Подписка',
 							'selected' => $subscribe,
 						 	'url' => $request -> createUrl('Subscribe', 'List')
+							);
+			$tabs[] = array(
+							'name' => 'Мои сообщения',
+							'title' => 'Мои сообщения',
+							'selected' => $messages,
+						 	'url' => $request -> createUrl('Messages', 'Mymessages')
 							);
 			
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
