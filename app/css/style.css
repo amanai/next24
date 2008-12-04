@@ -1051,6 +1051,7 @@ font-weight:bold;
 .av_gallery{
     display: block;
     float: left;
+    width: 115px;
 }
 .av_preview{
   text-align: center;
