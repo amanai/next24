@@ -32,7 +32,8 @@
 
 .ChatMessagesB, .ChatMessagesB_helpers {
   width:400px;
-  overflow:auto;
+  overflow: hidden; 
+/*  overflow:auto;*/
   border:1px solid #ABBFD1;
   font-size:11px;
   color:#000;
@@ -57,8 +58,6 @@ vertical-align:bottom;
 .ChatLine {
     text-align: left;
     width:96%;
-/*   padding:0 2%;*/
-background: green;
 }
 
 .ChatLineNick {
