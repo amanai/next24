@@ -812,10 +812,15 @@ class DebateModel extends BaseModel{
             if ($helperUserNumber) $addMsg = '<span class="gray" >Помощник '.$helperUserNumber.'-го участника '; else $addMsg = "";
             $userSayLogin = $chatLine['login'];
             $htmlChatText .= '
+            <div>
+                <span style="background: red">'.$addMsg.'<a style="font-weight: bold;" href="'.Project::getRequest()->createUrl('User', 'Profile', null, $userSayLogin).'" class="Nick" target="_blank">'.$userSayLogin.'</a></span>: 
+				<span>'.$chatLine['message'].'</span>
+            </div>';
+            /*$htmlChatText .= '
             <div class="ChatLine">
                 <span class="ChatLineNick">'.$addMsg.'<a style="font-weight: bold;" href="'.Project::getRequest()->createUrl('User', 'Profile', null, $userSayLogin).'" class="Nick" target="_blank">'.$userSayLogin.'</a></span>: 
 				<span class="TextRow">'.$chatLine['message'].'</span>
-            </div>';
+            </div>';*/
         }
         return $htmlChatText;
     }
