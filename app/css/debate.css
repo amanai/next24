@@ -58,6 +58,8 @@ vertical-align:bottom;
     text-align: left;
     width:96%;
     padding:0 2%;
+    background: red;
+    margin: 0 0 10px;
 }
 
 .ChatLineNick {
