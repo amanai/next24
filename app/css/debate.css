@@ -57,13 +57,13 @@ vertical-align:bottom;
 .ChatLine {
     text-align: left;
     width:96%;
-    padding:0 2%;
-    background: red;
-    margin: 0 0 10px;
+/*   padding:0 2%;*/
+background: green;
 }
 
 .ChatLineNick {
 padding-right:5px;
+background: red;
 }
 
 .ChatLineNick img {
