@@ -116,6 +116,7 @@ function handleResponse(msg){
 			if (p.append){
 				$.each(p.append, function(i, item){
 				        if(document.getElementById(item.id)){
+				          alert(item.html);
 						  $("#"+item.id).append(item.html);
 				        }
 			        });
