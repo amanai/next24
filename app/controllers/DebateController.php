@@ -39,7 +39,7 @@ class DebateController extends SiteController{
     		$debateModel->addDebateNow();
     		$sessiovVars->add('idNow', 0);
 		}
-		if(!isset($sessiovVars->getKey('idNow'))) $sessiovVars->add('idNow', 0);
+		if(!$sessiovVars->getKey('idNow')) $sessiovVars->add('idNow', 0);
 		$debateNow = $debateModel->getDebateNow();
 		if (!$debateNow) {
 		    $debateModel->addDebateNow();
