@@ -12,7 +12,7 @@ class BlogPostModel extends BaseModel{
 						" blog.user_id as user_id," .
 						" bc_tag.name as tag_name " .
 					" FROM blog_post " .
-					" LEFT JOIN blog_comment ON blog_comment.blog_post_id = blog_post.id " .
+					" LEFT JOIN blog_comment ON blog_comment.blog_id = blog_post.id " .
 					" LEFT JOIN ub_tree ubt ON ubt.id = blog_post.ub_tree_id " .
 					" INNER JOIN blog ON blog.id = ubt.blog_id AND blog.user_id = ?d " .
 					" LEFT JOIN blog_subscribe bs ON bs.user_id=?d AND bs.ub_tree_id=ubt.id " .

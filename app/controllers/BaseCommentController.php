@@ -82,6 +82,9 @@ class BaseCommentController extends CBaseController{
     		    case 'social':
     		        $item_model = new SocialModel();
     		        break;
+    		    case 'blog':
+    		        $item_model = new BlogModel();
+    		        break;
     		        
     		}
     		$item_model->load($request->element_id);
@@ -138,6 +141,12 @@ class BaseCommentController extends CBaseController{
     		        $item_action = 'SocialView';
     		        $item_name_id = $comment_model->social_id;
     		        break;
+    		    case 'blog':
+    		        $item_model = new SocialModel();
+    		        $item_controller = 'Blog';
+    		        $item_action = 'Comments';
+    		        $item_name_id = $comment_model->blog_id;
+    		        break;
     		    
     		}
 
@@ -179,6 +188,10 @@ class BaseCommentController extends CBaseController{
     		    case 'social':
     		        $item_controller = 'Social';
     		        $item_action = 'SocialView';
+    		        break;
+    		    case 'blog':
+    		        $item_controller = 'Blog';
+    		        $item_action = 'Comments';
     		        break;
     		}
     		

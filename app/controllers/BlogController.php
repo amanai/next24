@@ -272,12 +272,10 @@
 			
 			$controller = new BaseCommentController();
 			$info['comment_list'] = $controller -> CommentList(
-																'BlogCommentModel', // Model for getting comments 
 																$post_id,  // Id of comment item
 																$page_number, // current page number
 																$this -> getParam('comment_per_page'),  // page size
-																'Blog', 'Comments', array($post_id, $post_page_number), // current view params
-																'Blog', 'DeleteComment' // parameters for delete action
+																'Blog', 'Comments', 'blog', array($post_id, $post_page_number) // current view params
 																);
 			
 			

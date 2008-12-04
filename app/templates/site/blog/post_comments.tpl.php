@@ -41,11 +41,7 @@
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 						<?php echo $this -> comment_list; ?>
 					</div></div></div></div>
-					<?php 
-						if ($this -> post_allow_comments == 1){
-							include($this -> _include('../form_add_comment.tpl.php'));
-						}
-					?>
+					
 				</td>
 			</tr>
 			</table>
