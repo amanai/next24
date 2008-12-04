@@ -32,7 +32,7 @@
 
 .ChatMessagesB, .ChatMessagesB_helpers {
   width:400px;
-  overflow: hidden; 
+  overflow: visible;
 /*  overflow:auto;*/
   border:1px solid #ABBFD1;
   font-size:11px;
