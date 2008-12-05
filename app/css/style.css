@@ -436,14 +436,19 @@ table { border-collapse: collapse; }
 	text-align: right;
 	vertical-align: bottom;
 }
+.cmod_x4{
+   vertical-align: top;
+   text-align: right;
+}
+
 
 
 
 /* мод просмотра сообщении */
 .cmod_messages
 {
-	overflow: auto;
-	height: 400px;
+/*	overflow: visible;
+	height: 400px;    */
 	margin: 5px -10px;
 }
 .cmod_messages .cmod_tab1, .cmod_messages .cmod_tab2

@@ -34,6 +34,17 @@ class SitePagerView extends BaseSiteView{
 			return $this -> parse();
 		}
 		
+		function show_ajax($controller = null, $action = null, $params = array(), $pages_number, $current_page_number){
+			$this -> setTemplate(null, 'pager_ajax.tpl.php');
+			$this -> assign('current_controller', $controller);
+			$this -> assign('current_action', $action);
+			$this -> assign('current_user', $user);
+			$this -> assign('pager_params', $params);
+			$this -> assign('pages_number', $pages_number);
+			$this -> assign('current_page_number', $current_page_number);
+			return $this -> parse();
+		}
+		
 		function getPagesNumber($record_count, $record_on_page){
 		    $div=$record_count/$record_on_page;
 		    if (($div-intval($div))==0) $one=0; else $one=1;

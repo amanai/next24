@@ -15,20 +15,22 @@
 				<!-- правый блок -->
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 						<div class="block_title">
-								<div class="block_title_left"><h2>Личная почта</h2></div>
+								<div class="block_title_left"><h2>Личная почта<span id="titleGroupName"></span></h2></div>
 								<div class="block_title_right">
 									<img src="<?php echo $this -> image_url;?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js'); return false;" style="cursor: pointer;" />
 								</div>
 						</div>
 
 						<div id="user_profile_js">
-						    <pre>
-							<?php print_r($this->aMessages); ?>
-							</pre>
+							<?php //print_r($this->aMessages); ?>
+							
+        					<div class="cmod_messages" id="cmod_messages">Выберите группу для просмотра писем</div>
+							
+							
 						</div>
 
 					</div></div></div></div>
-					
+					<div id="myMessagePager"></div>
 				<!-- /правый блок -->
 			</td>
 		</tr>

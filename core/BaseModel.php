@@ -270,5 +270,16 @@ abstract class BaseModel{
             $result = $DE -> query($sql);
             return $result;
         }
+        
+        // формиирует LIMIT для SQL запроса, для PAGER
+        function getSqlLimit($page_settings=array()){
+            if (is_array($page_settings) && count($page_settings)>0){
+                $record_per_page = $page_settings['record_per_page'];
+                $current_page_number = $page_settings['current_page_number'];
+                $sqlLimit = " LIMIT ".(($current_page_number-1)*$record_per_page).", ".$record_per_page." ";;
+            }else $sqlLimit ="";
+            
+            return $sqlLimit;
+        }
 }
 ?>

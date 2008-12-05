@@ -27,5 +27,12 @@ class FriendModel extends BaseModel{
 												" f.friend_id=?d";
 			return Project::getDatabase() -> select($sql, (int)$user_id);
 		}
+		
+		function getUserFriendGroups($user_id){
+			$sql =  " SELECT * " .
+    				" FROM friend_group " .
+    				" WHERE user_id = ?d ";
+			return Project::getDatabase() -> select($sql, (int)$user_id);
+		}
 }
 ?>

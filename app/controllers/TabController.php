@@ -73,12 +73,8 @@ class TabController{
 							'selected' => $subscribe,
 						 	'url' => $request -> createUrl('Subscribe', 'List')
 							);
-			$tabs[] = array(
-							'name' => 'Мои сообщения',
-							'title' => 'Мои сообщения',
-							'selected' => $messages,
-						 	'url' => $request -> createUrl('Messages', 'Mymessages')
-							);
+							
+			
 			
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
@@ -88,6 +84,13 @@ class TabController{
 							'title' => 'Персональные сообщения',
 							'selected' => $pm,
 						 	'url' => '#'
+							);
+			}elseif($user_id && $request_user_id == $user_id){
+			    $tabs[] = array(
+							'name' => 'Мои сообщения',
+							'title' => 'Мои сообщения',
+							'selected' => $messages,
+						 	'url' => $request -> createUrl('Messages', 'Mymessages')
 							);
 			}
 			return $tabs;
