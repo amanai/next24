@@ -163,7 +163,29 @@ class UserModel extends BaseModel{
         return $result;
     }
     
+    public function getUserByLogin($user_login){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT *
+            FROM users
+            WHERE login = '".$user_login."'
+        ";
+        $result = $DE -> selectRow($sql);
+        return $result;
+    }
     
+    public function getUsersByType($user_type){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT *
+            FROM users
+            WHERE user_type_id = '".$user_type."'
+        ";
+        $result = $DE -> select($sql);
+        return $result;
+    }
     
     public function changeUserRate($user_id, $delta_rate){
         $DE = Project::getDatabase();

@@ -98,7 +98,7 @@ if ($this -> user_id){
 			</tr>
 			<tr>
 			    <td nowrap>
-			    <select name="avatar_id" onclick="commentMoodCheck();">
+			    <select name="avatar_id" >
 			    <option value="0" /> [Выберите аватор для сообщения]
 			<?php
 			foreach ($this->user_avatars as $user_avatar){

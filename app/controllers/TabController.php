@@ -27,7 +27,7 @@ class TabController{
 		}
 		
 		function getOwnTabs($selected_profile = false, $selected_album = false, $selected_diary = false, $selected_arch_diary = false, 
-		                    $friends = false, $pm = false, $blog = false, $subscribe = false, $messages = false){
+		                    $friends = false, $pm = false, $blog = false, $subscribe = false, $messages = false, $correspondent_user_id = 0){
 			$request = Project::getRequest();
 			$tabs = array();
 			$tabs[] = array(
@@ -83,7 +83,7 @@ class TabController{
 							'name' => 'Переписка с '. Project::getUser() -> getShowedUser() -> login,
 							'title' => 'Персональные сообщения',
 							'selected' => $pm,
-						 	'url' => '#'
+						 	'url' => $request -> createUrl('Messages', 'CorrespondenceWith').'/corr_user_id:'.$request_user_id
 							);
 			}elseif($user_id && $request_user_id == $user_id){
 			    $tabs[] = array(
@@ -92,6 +92,19 @@ class TabController{
 							'selected' => $messages,
 						 	'url' => $request -> createUrl('Messages', 'Mymessages')
 							);
+			}
+			
+			if ($correspondent_user_id){
+			    $userModel = new UserModel();
+			    $correspodentUser = $userModel->getUserById($correspondent_user_id);
+			    if ($correspodentUser){
+    			    $tabs[] = array(
+    							'name' => 'Переписка с '. $correspodentUser['login'],
+    							'title' => 'Персональные сообщения',
+    							'selected' => true,
+    						 	'url' => $request -> createUrl('Messages', 'CorrespondenceWith').'/corr_user_id:'.$correspondent_user_id
+    							);
+			    }
 			}
 			return $tabs;
 		}

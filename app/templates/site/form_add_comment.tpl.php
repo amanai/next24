@@ -12,7 +12,7 @@
 			</tr>
 			<tr>
 			<?php
-			print_r($this->user_moods);
+			//print_r($this->user_moods);
 			foreach ($this->user_moods as $mood){
 			    echo '
 				    <td>'.$mood['name'].'</td>

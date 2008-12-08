@@ -15,6 +15,22 @@ class MessagesView extends BaseSiteView{
 	    $this->_js_files[] = 'messages.js';
 	    $this -> setTemplate(null, 'my_messages.tpl.php');
 	}
+	
+    function SendMessagePage(){
+	    $this->_js_files[] = 'jquery.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'messages.js';
+	    $this -> setTemplate(null, 'send_message.tpl.php');
+	}
+	
+    function CorrespondenceWithPage(){
+	    $this->_js_files[] = 'jquery.js';
+	    $this->_js_files[]='blockUI.js';
+	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[] = 'messages.js';
+	    $this -> setTemplate(null, 'correspondence_with.tpl.php');
+	}
 
 	/**
      * END Pages VIEW
@@ -59,12 +75,13 @@ class MessagesView extends BaseSiteView{
 						'.$userMessage['m_text'].'
 					</td>
 					<td class="cmod_x4">
-					   <a onclick="return DelMessage('.$userMessage['messages_id'].', '.$message['pageNumber'].', '.$message['groupId'].', \''.$message['groupName'].'\');" href="javascript: void(0);">удалить</a>
+					   <a onclick="return DelMessage('.$userMessage['messages_id'].', '.(int)$message['current_page'].', '.(int)$message['groupId'].', \''.$message['groupName'].'\');" href="javascript: void(0);">удалить</a>
 					</td>
 				</tr>
 				<tr>
 				    <td class="cmod_x3">
-						<a href="#"><b>написать сообщение</b></a>  |  <a href="#"><b>читать переписку</b></a><br/>
+						<a href="'.Project::getRequest() -> createUrl('Messages', 'SendMessage').'/message_action:reply/mess_id:'.$userMessage['id'].'"><b>написать сообщение</b></a>  |  
+						<a href="'.Project::getRequest() -> createUrl('Messages', 'CorrespondenceWith').'/corr_user_id:'.$userMessage['author_id'].'"><b>читать переписку</b></a><br/>
 					</td>
 				</tr>
 				</table>
@@ -73,11 +90,13 @@ class MessagesView extends BaseSiteView{
     	    ';
 		}
 		if (!$htmlMess) $htmlMess = "В данной группе нет писем";
-		$response -> block($message['itemId'], true, $htmlMess);
+		
+		$response -> block('cmod_messages', true, $htmlMess);
 		$response -> block('titleGroupName', true, $message['groupName']);
-		$response -> block('total_mes'.$message['groupId'], true, '(<font class="red">'.$message['messageCount']['new'].'</font>/'.$message['messageCount']['read'].')');
+		$response -> block('total_mesall', true, '(<font class="red">'.$message['messageCountAll']['new'].'</font>/'.$message['messageCountAll']['read'].')');
+		$response -> block('total_mes'.$message['groupId'], true, '(<font class="red">'.$message['messageCountGroup']['new'].'</font>/'.$message['messageCountGroup']['read'].')');
 		$response -> block('myMessagePager', true, $message['myMessagePager']);
-
+		
 	}
 	
 	

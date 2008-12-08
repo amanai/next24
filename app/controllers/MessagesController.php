@@ -18,6 +18,16 @@ class MessagesController extends SiteController{
 	    
 	    $aFriendGroups = $friendModel->getUserFriendGroups($user->id);
 	    $this -> _view -> assign('aFriendGroups', $aFriendGroups);
+	    
+	    $aGroupMessagesCount = $this->getGroupMessagesCount($messagesModel, $aFriendGroups, $user);
+	    $this -> _view -> assign('isShowMessageGroups', true);
+	    $this -> _view -> assign('aGroupMessagesCount', $aGroupMessagesCount);
+	    
+        $this -> _view -> MyMessagesPage();
+		$this -> _view -> parse();
+	}
+	
+	function getGroupMessagesCount($messagesModel, $aFriendGroups, $user){
 	    $aGroupMessagesCount = array();
 	    $aGroupMessagesCount[0] = array("new"=>$messagesModel->getCountMessagesToUser($user->id, 0, 0, 0), "read"=>$messagesModel->getCountMessagesToUser($user->id, 0, 0, 1));
 	    foreach ($aFriendGroups as $frientGroup){
@@ -25,11 +35,127 @@ class MessagesController extends SiteController{
 	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, $frientGroup['id'], 0, 0),
 	                 "read"=>$messagesModel->getCountMessagesToUser($user->id, $frientGroup['id'], 0, 1));
 	    }
-	    $this -> _view -> assign('isShowMessageGroups', true);
-	    $this -> _view -> assign('aGroupMessagesCount', $aGroupMessagesCount);
+	    $aGroupMessagesCount['all']=
+	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, -1, 0, 0),
+	                 "read"=>$messagesModel->getCountMessagesToUser($user->id, -1, 0, 1));
+	    return $aGroupMessagesCount;
+	}
+	
+	// переписка с конретным пользователем
+	public function CorrespondenceWithAction(){
+	    $messagesModel = new MessagesModel();
+	    $userModel = new UserModel();
+	    $user = Project::getUser() -> getDbUser();
+	    $request = Project::getRequest();
 	    
-        $this -> _view -> MyMessagesPage();
+	    $corr_user_id = $request->corr_user_id;
+	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false, false, false, false, false, false, false, false, false, $corr_user_id));
+	    $correspondent_user = $userModel->getUserById($corr_user_id);
+	    $this -> _view -> assign('user_login', $user->login);
+	    $this -> _view -> assign('correspondent_user_login', $correspondent_user['login']);
+	    
+	    $aMessages = $messagesModel->getCorrespondenceBetweenUsers(array($user->id, $correspondent_user['id']));
+	    $this -> _view -> assign('aMessages', $aMessages);
+	    
+	    $this -> _view -> CorrespondenceWithPage();
 		$this -> _view -> parse();
+	}
+	
+	public function SendMessageAction(){
+	    $messagesModel = new MessagesModel();
+	    $friendModel = new FriendModel();
+	    $userModel = new UserModel();
+	    $user = Project::getUser() -> getDbUser();
+	    $request = Project::getRequest();
+	    $this -> _view -> clearFlashMessages();
+	    
+	    $message_to = $request->message_to;
+	    $mess_header = trim($request->mess_header);
+	    $m_text = trim($request->m_text);
+	    $recipient_name = trim($request->recipient_name);
+	    
+	    if ($request->message_action == 'new_message'){
+	        $noErrors = true;
+	        if (!$request->recipient && !$recipient_name && $message_to != "admin"){
+	            $this -> _view -> addFlashMessage(FM::ERROR, "Выберите из списка друзей или введите имя вручную");
+	            $noErrors = false;
+	        }else{
+	            if ($message_to == "admin"){
+	                $aAdmins = $userModel->getUsersByType(1);
+	            }else{
+    	            $recipient_name = ($recipient_name)?$recipient_name:$request->recipient;
+    	            $recipient = $userModel->getUserByLogin($recipient_name);
+    	            if (!$recipient){
+        	            $this -> _view -> addFlashMessage(FM::ERROR, "Такого пользователя нет");
+        	            $noErrors = false;
+    	            }
+	            }
+	        }
+	        
+	        if (!$mess_header){
+	            $this -> _view -> addFlashMessage(FM::ERROR, "Введите тему сообщения");
+	            $noErrors = false;
+	        }
+	        if (!$m_text){
+	            $this -> _view -> addFlashMessage(FM::ERROR, "Введите текст сообщения");
+	            $noErrors = false;
+	        }
+	        
+	        if ($noErrors){
+	            if ($message_to == "admin"){
+	                foreach ($aAdmins as $admin){
+	                    $this->sendMessage($mess_header, $m_text, $user->id, $admin['id'], $request->avatar_id, 0, 0);
+	                }
+	                $addUrl = '/message_to:admin';
+	            }else{
+	                $this->sendMessage($mess_header, $m_text, $user->id, $recipient['id'], $request->avatar_id, 0, 0);
+	                $addUrl = '';
+	            }
+	            
+                Project::getResponse()->redirect(Project::getRequest()->createUrl('Messages', 'SendMessage')."/message_action:sent".$addUrl);
+	        }
+	    
+	    }elseif ($request->message_action == 'reply'){ // ответить на сообщение
+	        $messagesModel->load($request->mess_id);
+	        if ($messagesModel->id == $request->mess_id && $messagesModel->recipient_id == $user->id){
+        	    $mess_header = "Re: ".$messagesModel->header;
+        	    $m_text = ">> ".$messagesModel->m_text;
+        	    $recipient_name = $messagesModel->author_id;
+	        }
+	    
+	    }elseif ($request->message_action == 'sent'){
+	        $this -> _view -> addFlashMessage(FM::INFO, "Ваше сообщение успешно отправлено. Можете отправить еще сообщение");
+	    }
+	    
+	    $this -> _view -> assign('message_to', $message_to);
+	    $this -> _view -> assign('mess_header', $mess_header);
+	    $this -> _view -> assign('m_text', $m_text);
+	    $this -> _view -> assign('recipient_name', $recipient_name);
+	    $this -> _view -> assign('user_friends', $friendModel->getFriends($user->id));
+	    
+	    $aGroupMessagesCount['all']=
+	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, -1, 0, 0),
+	                 "read"=>$messagesModel->getCountMessagesToUser($user->id, -1, 0, 1));
+	    $this -> _view -> assign('aGroupMessagesCount', $aGroupMessagesCount);
+	    $this -> _view -> assign('user_avatars', $userModel->getAllUserAvatars($user->id));
+	                 
+	                 
+	    $this -> _view -> SendMessagePage();
+		$this -> _view -> parse();
+	}
+	
+	function sendMessage($mess_header, $m_text, $user_id, $resipient_id, $avatar_id, $is_read, $is_deleted){
+	    $messagesModel = new MessagesModel();
+	    $messagesModel->header = stripslashes(htmlspecialchars($mess_header));
+        $messagesModel->m_text = stripslashes(htmlspecialchars($m_text));
+        $messagesModel->send_date = date("Y-m-d H:i:s");
+        $messagesModel->author_id = $user_id;
+        $messagesModel->recipient_id = $resipient_id;
+        $messagesModel->avatar_id = $avatar_id;
+        $messagesModel->is_read = $is_read;
+        $messagesModel->is_deleted = $is_deleted;
+        $messageId = $messagesModel->save();
+        return $messageId;
 	}
 	
 	// возвращает сообщений пользователя AJAX
@@ -43,20 +169,23 @@ class MessagesController extends SiteController{
 		$pager_view = new SitePagerView();
 	    $record_count = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 0, -1);
 	    $pages_number = $pager_view->getPagesNumber($record_count, $record_per_page);
-	    $current_page_number = $request->getKeyByNumber(0);
-	    $debate_pager = $pager_view->show3('Messages', 'Mymessages', array(), $pages_number, $current_page_number);
+	    $current_page_number = $request->current_page; // current page
+	    $current_page_number = ($current_page_number>=$pages_number)?$pages_number-1:$current_page_number;
+	    $debate_pager = $pager_view->show_ajax('Messages', 'GetFolderMessages', array("groupName"=>$request->groupName, "groupId"=>$request->groupId), $pages_number, $current_page_number);
 	    $message['myMessagePager'] = $debate_pager;
 	    $page_settings = array("record_per_page"=>$record_per_page, "current_page_number"=>$current_page_number+1);
 		// END PAGER
 	    $aMessages = $messagesModel->getAllMessagesToUser($page_settings, $user->id, $request->groupId, 0, -1);
+	    //print_r($aMessages);
 	    
 	    $message['aMessages'] = $aMessages;
-	    $message['itemId'] = $request->toElement;
-	    $message['groupId'] = $request->groupId;
+	    $message['groupId'] = (int)$request->groupId;
 	    $message['groupName'] = $request->groupName;
-	    $message['pageNumber'] = $request->pageNumber;
-	    $message['messageCount']['new'] = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 0, 0);
-	    $message['messageCount']['read'] = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 0, 1);
+	    $message['current_page'] = $request->current_page;
+	    $message['messageCountAll']['new'] = $messagesModel->getCountMessagesToUser($user->id, -1, 0, 0);
+	    $message['messageCountAll']['read'] = $messagesModel->getCountMessagesToUser($user->id, -1, 0, 1);
+	    $message['messageCountGroup']['new'] = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 0, 0);
+	    $message['messageCountGroup']['read'] = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 0, 1);
 	    foreach ($aMessages as $userMessage){
 	        $messagesModel->changeOneValue('messages', $userMessage['messages_id'], 'is_read', 1);
 	    }

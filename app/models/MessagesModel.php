@@ -14,7 +14,7 @@ class MessagesModel extends BaseModel{
         if ($groupId >= 0) $addGroupId = " AND friend.group_id = ".(int)$groupId."";
         else $addGroupId = "";
         
-        if ($folderId){
+        if ($groupId>0){
             $addSelect = ", friend_group.id as friend_group_id, friend_group.name as friend_group_name";
             $addSql = "
             INNER JOIN friend
@@ -23,7 +23,7 @@ class MessagesModel extends BaseModel{
                 ON friend_group.id = friend.group_id
             ";
             $addWhere = "";
-        }else {
+        }elseif($groupId==0){
             $addSelect = "";
             $addSql = "";
             $addWhere = " AND messages.id NOT IN 
@@ -31,7 +31,7 @@ class MessagesModel extends BaseModel{
                 SELECT messages.id
                 FROM messages
                 INNER JOIN friend
-                    ON friend.user_id = messages.recipient_id AND friend.friend_id = messages.author_id
+                    ON friend.user_id = messages.recipient_id AND friend.friend_id = messages.author_id 
                 WHERE messages.recipient_id = ".(int)$recipient_id."
             )
             ";
@@ -71,7 +71,7 @@ class MessagesModel extends BaseModel{
         if ($groupId >= 0) $addGroupId = " AND friend.group_id = ".(int)$groupId."";
         else $addGroupId = "";
         
-        if ($folderId){
+        if ($groupId>0){
             $addSql = "
             INNER JOIN friend
                 ON friend.user_id = messages.recipient_id AND friend.friend_id = messages.author_id ".$addGroupId."
@@ -79,7 +79,7 @@ class MessagesModel extends BaseModel{
                 ON friend_group.id = friend.group_id
             ";
             $addWhere = "";
-        }else {
+        }elseif($groupId==0){
             $addSql = "";
             $addWhere = " AND messages.id NOT IN 
             (
@@ -91,7 +91,6 @@ class MessagesModel extends BaseModel{
             )
             ";
         }
-        
         if ($isRead >= 0) $addIsRead = " AND messages.is_read = '".(int)$isRead."' ";
         else $addIsRead = "";
         
@@ -104,9 +103,23 @@ class MessagesModel extends BaseModel{
             WHERE messages.recipient_id = '".(int)$recipient_id."' AND messages.is_deleted = '".(int)$isDeleted."' ".$addIsRead." ".$addWhere."
             ORDER BY messages.send_date DESC
         ";
-        
+        //if ($groupId<0) echo $sql."<hr>";
         $result = $DE -> selectRow($sql);
         return $result['c'];
+    }
+    
+    function getCorrespondenceBetweenUsers($aUsersID){
+        $DE = Project::getDatabase();
+        $result = array();
+        if ($aUsersID){
+            $sUsersId = implode(",",$aUsersID);
+            $sql = "
+            SELECT * FROM messages
+            WHERE messages.author_id IN (".$sUsersId.") AND messages.recipient_id IN (".$sUsersId.")";
+            $sql .= " ORDER BY messages.send_date ";
+            $result = $DE -> select($sql);
+        }
+        return $result;
     }
 
 }

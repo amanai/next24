@@ -9,12 +9,12 @@ class FriendModel extends BaseModel{
 		}
 		
 		function getFriends($user_id){
-			$sql = "SELECT " .
-												" u.login as login " .
-											" FROM friend as f " .
-											" INNER JOIN users u ON u.id=f.friend_id " .
-											" WHERE " .
-												" f.user_id=?d";
+			$sql =  " SELECT " .
+    				" u.id as user_id, u.login as login " .
+    				" FROM friend as f " .
+    				" INNER JOIN users u ON u.id=f.friend_id " .
+    				" WHERE " .
+    				" f.user_id=?d";
 			return Project::getDatabase() -> selectCol($sql, (int)$user_id);
 		}
 		
