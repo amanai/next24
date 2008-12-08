@@ -54,7 +54,7 @@ class MessagesModel extends BaseModel{
             LEFT JOIN sys_av
                 ON sys_av.id = avatars.sys_av_id
             ".$addSql."
-            WHERE messages.recipient_id = '".(int)$recipient_id."' AND messages.is_deleted = '".(int)$isDeleted."' ".$addIsRead." ".$addWhere."
+            WHERE messages.recipient_id = '".(int)$recipient_id."' AND (messages.is_deleted = '0' OR messages.is_deleted = '".(int)$isDeleted."') ".$addIsRead." ".$addWhere."
             ORDER BY messages.send_date DESC ".$sqlLimit."
         ";
         //echo $sql;
@@ -100,7 +100,7 @@ class MessagesModel extends BaseModel{
             INNER JOIN users as u_author
                 ON u_author.id = messages.author_id
             ".$addSql."
-            WHERE messages.recipient_id = '".(int)$recipient_id."' AND messages.is_deleted = '".(int)$isDeleted."' ".$addIsRead." ".$addWhere."
+            WHERE messages.recipient_id = '".(int)$recipient_id."' AND (messages.is_deleted = '0' OR messages.is_deleted = '".(int)$isDeleted."') ".$addIsRead." ".$addWhere."
             ORDER BY messages.send_date DESC
         ";
         //if ($groupId<0) echo $sql."<hr>";
@@ -114,8 +114,12 @@ class MessagesModel extends BaseModel{
         if ($aUsersID){
             $sUsersId = implode(",",$aUsersID);
             $sql = "
-            SELECT * FROM messages
-            WHERE messages.author_id IN (".$sUsersId.") AND messages.recipient_id IN (".$sUsersId.")";
+            SELECT messages.*, messages.id as messages_id,
+               u_author.login as author_login
+            FROM messages
+            INNER JOIN users as u_author
+                ON u_author.id = messages.author_id
+            WHERE messages.author_id IN (".$sUsersId.") AND messages.recipient_id IN (".$sUsersId.") AND (messages.is_deleted = '0' OR messages.is_deleted = '1')";
             $sql .= " ORDER BY messages.send_date ";
             $result = $DE -> select($sql);
         }

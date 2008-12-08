@@ -23,21 +23,35 @@ class MessagesController extends SiteController{
 	    $this -> _view -> assign('isShowMessageGroups', true);
 	    $this -> _view -> assign('aGroupMessagesCount', $aGroupMessagesCount);
 	    
+	    // PAGER
+		$record_per_page = $this -> getParam("NUM_MESSAGES_ON_PAGE");
+		$pager_view = new SitePagerView();
+	    $record_count = $messagesModel->getCountMessagesToUser($user->id, -1, 1, -1);
+	    $pages_number = $pager_view->getPagesNumber($record_count, $record_per_page);
+	    $current_page_number = $request->current_page; // current page
+	    $current_page_number = ($current_page_number>=$pages_number)?$pages_number-1:$current_page_number;
+	    $debate_pager = $pager_view->show_ajax('Messages', 'GetFolderMessages', array("groupName"=>". Все сообщения", "groupId"=>-1), $pages_number, $current_page_number);
+	    $this -> _view -> assign('myMessagePager', $debate_pager);
+	    $page_settings = array("record_per_page"=>$record_per_page, "current_page_number"=>$current_page_number+1);
+		// END PAGER
+	    $aMessages = $messagesModel->getAllMessagesToUser($page_settings, $user->id, -1, 1, -1);
+	    $this -> _view -> assign('aMessages', $aMessages);
+	    
         $this -> _view -> MyMessagesPage();
 		$this -> _view -> parse();
 	}
 	
 	function getGroupMessagesCount($messagesModel, $aFriendGroups, $user){
 	    $aGroupMessagesCount = array();
-	    $aGroupMessagesCount[0] = array("new"=>$messagesModel->getCountMessagesToUser($user->id, 0, 0, 0), "read"=>$messagesModel->getCountMessagesToUser($user->id, 0, 0, 1));
+	    $aGroupMessagesCount[0] = array("new"=>$messagesModel->getCountMessagesToUser($user->id, 0, 1, 0), "read"=>$messagesModel->getCountMessagesToUser($user->id, 0, 1, 1));
 	    foreach ($aFriendGroups as $frientGroup){
 	        $aGroupMessagesCount[$frientGroup['id']] = 
-	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, $frientGroup['id'], 0, 0),
-	                 "read"=>$messagesModel->getCountMessagesToUser($user->id, $frientGroup['id'], 0, 1));
+	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, $frientGroup['id'], 1, 0),
+	                 "read"=>$messagesModel->getCountMessagesToUser($user->id, $frientGroup['id'], 1, 1));
 	    }
 	    $aGroupMessagesCount['all']=
-	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, -1, 0, 0),
-	                 "read"=>$messagesModel->getCountMessagesToUser($user->id, -1, 0, 1));
+	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, -1, 1, 0),
+	                 "read"=>$messagesModel->getCountMessagesToUser($user->id, -1, 1, 1));
 	    return $aGroupMessagesCount;
 	}
 	
@@ -53,13 +67,40 @@ class MessagesController extends SiteController{
 	    $correspondent_user = $userModel->getUserById($corr_user_id);
 	    $this -> _view -> assign('user_login', $user->login);
 	    $this -> _view -> assign('correspondent_user_login', $correspondent_user['login']);
+	    $this -> _view -> assign('corr_user_id', $request->corr_user_id);
+	    $this -> _view -> assign('correspondent_user', $correspondent_user);
+	    $this -> _view -> assign('correspondent_user_avatar', $userModel->getUserAvatar($request->corr_user_id));
+	    $this -> _view -> assign('user_id', $user->id);
+	    $this -> _view -> assign('curr_user', $userModel->getUserById($user->id));
+	    $this -> _view -> assign('curr_user_avatar', $userModel->getUserAvatar($user->id));
 	    
 	    $aMessages = $messagesModel->getCorrespondenceBetweenUsers(array($user->id, $correspondent_user['id']));
 	    $this -> _view -> assign('aMessages', $aMessages);
 	    
 	    $this -> _view -> CorrespondenceWithPage();
 		$this -> _view -> parse();
+		
 	}
+	
+	// переписка с конретным пользователем Ajax
+	function returnCorrespondentPage(){
+	    $messagesModel = new MessagesModel();
+	    $userModel = new UserModel();
+	    $user = Project::getUser() -> getDbUser();
+	    $request = Project::getRequest();
+	    
+	    $corr_user_id = $request->corr_user_id;
+	    $correspondent_user = $userModel->getUserById($corr_user_id);
+	    $message['corr_user_id'] = $request->corr_user_id;
+	    $this -> _view -> assign('user_id', $user->id);
+	    
+	    $aMessages = $messagesModel->getCorrespondenceBetweenUsers(array($user->id, $correspondent_user['id']));
+	    $message['aMessages'] = $aMessages;
+	    
+	    $this -> _view -> returnCorrespondentPage($message);
+        $this -> _view -> ajax();
+	}
+	
 	
 	public function SendMessageAction(){
 	    $messagesModel = new MessagesModel();
@@ -73,6 +114,8 @@ class MessagesController extends SiteController{
 	    $mess_header = trim($request->mess_header);
 	    $m_text = trim($request->m_text);
 	    $recipient_name = trim($request->recipient_name);
+	    
+	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false, false, false, false, false, false, false, false, true));
 	    
 	    if ($request->message_action == 'new_message'){
 	        $noErrors = true;
@@ -134,8 +177,8 @@ class MessagesController extends SiteController{
 	    $this -> _view -> assign('user_friends', $friendModel->getFriends($user->id));
 	    
 	    $aGroupMessagesCount['all']=
-	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, -1, 0, 0),
-	                 "read"=>$messagesModel->getCountMessagesToUser($user->id, -1, 0, 1));
+	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, -1, 1, 0),
+	                 "read"=>$messagesModel->getCountMessagesToUser($user->id, -1, 1, 1));
 	    $this -> _view -> assign('aGroupMessagesCount', $aGroupMessagesCount);
 	    $this -> _view -> assign('user_avatars', $userModel->getAllUserAvatars($user->id));
 	                 
@@ -167,7 +210,7 @@ class MessagesController extends SiteController{
         // PAGER
 		$record_per_page = $this -> getParam("NUM_MESSAGES_ON_PAGE");
 		$pager_view = new SitePagerView();
-	    $record_count = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 0, -1);
+	    $record_count = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 1, -1);
 	    $pages_number = $pager_view->getPagesNumber($record_count, $record_per_page);
 	    $current_page_number = $request->current_page; // current page
 	    $current_page_number = ($current_page_number>=$pages_number)?$pages_number-1:$current_page_number;
@@ -175,17 +218,17 @@ class MessagesController extends SiteController{
 	    $message['myMessagePager'] = $debate_pager;
 	    $page_settings = array("record_per_page"=>$record_per_page, "current_page_number"=>$current_page_number+1);
 		// END PAGER
-	    $aMessages = $messagesModel->getAllMessagesToUser($page_settings, $user->id, $request->groupId, 0, -1);
+	    $aMessages = $messagesModel->getAllMessagesToUser($page_settings, $user->id, $request->groupId, 1, -1);
 	    //print_r($aMessages);
 	    
 	    $message['aMessages'] = $aMessages;
 	    $message['groupId'] = (int)$request->groupId;
 	    $message['groupName'] = $request->groupName;
 	    $message['current_page'] = $request->current_page;
-	    $message['messageCountAll']['new'] = $messagesModel->getCountMessagesToUser($user->id, -1, 0, 0);
-	    $message['messageCountAll']['read'] = $messagesModel->getCountMessagesToUser($user->id, -1, 0, 1);
-	    $message['messageCountGroup']['new'] = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 0, 0);
-	    $message['messageCountGroup']['read'] = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 0, 1);
+	    $message['messageCountAll']['new'] = $messagesModel->getCountMessagesToUser($user->id, -1, 1, 0);
+	    $message['messageCountAll']['read'] = $messagesModel->getCountMessagesToUser($user->id, -1, 1, 1);
+	    $message['messageCountGroup']['new'] = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 1, 0);
+	    $message['messageCountGroup']['read'] = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 1, 1);
 	    foreach ($aMessages as $userMessage){
 	        $messagesModel->changeOneValue('messages', $userMessage['messages_id'], 'is_read', 1);
 	    }
@@ -202,7 +245,7 @@ class MessagesController extends SiteController{
 	    
 	    $isSave = false;
 	    $thisMessage = $messagesModel->load($request->messageId);
-	    if ($thisMessage) {
+	    if ($thisMessage){
 	        $messagesModel->load($request->messageId);
 	        if ($thisMessage && $thisMessage['author_id'] == $user->id){
     	        $isSave = true;
@@ -216,9 +259,14 @@ class MessagesController extends SiteController{
     	    }
 	    }
 	    
-    	    
-	    $this->GetFolderMessagesAction();
+    	if ($request->pageName == "mymessages"){
+    	    $this->GetFolderMessagesAction();
+    	}elseif ($request->pageName == "correspondent"){
+    	    $this->returnCorrespondentPage();
+    	}
 	}
+	
+	
 	
 	
 	

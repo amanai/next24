@@ -25,7 +25,6 @@
 						<div id="user_profile_js">
 						<form method="post" action="">
 						<input type="hidden" value="new_message" name="message_action" />
-						<input type="hidden" value="60" name="sender" />
 						<table width="100%">
 						<tr>
 						  <td>Кому</td>

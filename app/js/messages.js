@@ -8,7 +8,14 @@ function ShowMessages(pageNumber, groupId, groupName){
 
 function DelMessage(messageId, current_page, groupId, groupName){
     ajax(
-        {"url":"\/del_message","type":"POST","async":true,"data":{"toElement":"cmod_messages", "messageId":messageId, "groupId":groupId, "current_page":current_page},"dataType":"json"},
+        {"url":"\/del_message","type":"POST","async":true,"data":{"messageId":messageId, "groupId":groupId, "current_page":current_page, "pageName":"mymessages"},"dataType":"json"},
+        true);
+    return true;
+}
+
+function DelMessageCorrespondence(messageId, corr_user_id){
+    ajax(
+        {"url":"\/del_message","type":"POST","async":true,"data":{"messageId":messageId, "corr_user_id":corr_user_id, "pageName":"correspondent"},"dataType":"json"},
         true);
     return true;
 }
