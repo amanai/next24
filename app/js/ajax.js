@@ -184,6 +184,12 @@ function handleResponse(msg){
 		    		}
 		    	});
 		    }
+		    
+		    if (p.runFunction){
+				$.each(p.runFunction, function(i, item){
+				        eval(item.fName);
+					});
+			}
 		    cancel(msg);
 		}
 	}

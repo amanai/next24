@@ -1,11 +1,11 @@
-<div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 	<div class="block_title"><h2>Управление</h2></div>
 	<a href="<?php echo $this -> createUrl('Messages', 'Mymessages');?>">Личная почта <span id="total_mesall">(<?php echo '<font class="red">'.$this->aGroupMessagesCount['all']['new'].'</font>/'.$this->aGroupMessagesCount['all']['read']; ?>)</span></a></a><br />
 	<a href="<?php echo $this -> createUrl('Messages', 'SendMessage');?>">Написать письмо</a><br />
 	<a href="<?php echo $this -> createUrl('Messages', 'SendMessage');?>/message_to:admin">Письмо администрации</a><br />
 	<!--<a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">Управление друзьями</a><br />-->
 	
-</div></div></div>
+</div></div></div></div>
 
 <?php 
 if ($this->isShowMessageGroups){ 

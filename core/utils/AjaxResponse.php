@@ -84,6 +84,11 @@ class AjaxResponse{
 			$this -> _response['show'][] = $id;
 		}
 		
+		public function runFunction($fName){
+		    $param['fName'] = $fName;
+			$this -> _response['runFunction'][] = $param;
+		}
+		
 		
 		
 		public function effect($id, $effect_name, $properties=array()){

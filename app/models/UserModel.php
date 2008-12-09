@@ -493,5 +493,14 @@ class UserModel extends BaseModel{
     }
     
     
+    public function saveUserTabsMap($user_id, $tabs_map){
+        $DE = Project::getDatabase();
+        $sql = "
+            UPDATE `users` SET 
+            tabs_map = '".serialize($tabs_map)."'
+            WHERE id = '".$user_id."'
+        ";
+        $DE -> query($sql);
+    }
 }
 ?>
