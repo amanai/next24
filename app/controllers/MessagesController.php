@@ -167,7 +167,8 @@ class MessagesController extends SiteController{
 	        if ($messagesModel->id == $request->mess_id && $messagesModel->recipient_id == $user->id){
         	    $mess_header = "Re: ".$messagesModel->header;
         	    $m_text = ">> ".$messagesModel->m_text;
-        	    $recipient_name = $messagesModel->author_id;
+        	    $author = $userModel->getUserById($messagesModel->author_id);
+        	    $recipient_name = $author['login'];
 	        }
 	    
 	    }elseif ($request->message_action == 'sent'){
