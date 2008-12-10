@@ -27,7 +27,7 @@ class HomeView extends BaseSiteView{
             if ($tab['selected']) $checked = 'checked="checked"'; else $checked = '';
             $tab_id = $tab['id'];
             $tab_name = $tabs_map['main_tabs'][$tab_id]['name'];
-            $htmlStr .= '<input name="tabInputs" type="checkbox" '.$checked.' value="'.$tab_id.'" id="manager_tab'.$tab_id.'"/> '.$tab_name.'<br/>';
+            $htmlStr .= '<label><input name="tabInputs" type="checkbox" '.$checked.' value="'.$tab_id.'" id="manager_tab'.$tab_id.'"/> '.$tab_name.'</label><br/>';
         }
         return $htmlStr;
     }
@@ -134,7 +134,7 @@ class HomeView extends BaseSiteView{
             $imgSrc = ($item['thumbnail']===false)?$this -> image_url.'noimage.gif' :$this -> image_url.$item['thumbnail'];
             $htmlPage .= '
                 <div class="photo_gallery">
-				<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+				<div class="block_ee1" style="width: 170px;"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<div class="block_title">
                         <h2><a href="'.PhotoController::getAlbumUrl($item['id'], $item['login']).'">'.$item['name'].'</a></h2>
 					</div>

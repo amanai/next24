@@ -2,7 +2,7 @@
 	{
 	width: 100%;
 	}
-	
+
 #tabs .tab
 	{
 	border: 1px solid #C7EEF8;
@@ -15,6 +15,10 @@
 	margin-right: 1px;
 	z-index: 2;
 	}
+.tab {
+
+}
+
 .tab_space{
     width: 80px;
 }

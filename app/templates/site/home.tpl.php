@@ -44,6 +44,9 @@
         $("#top_tabs").sortable({
             axis: 'x',
             placeholder: 'tab tab_space',
+            sort:function(ev, ui) {
+                $("#top_tabs").find(".tab").css({'clear' : 'none'});
+            },
         	stop: function(ev, ui) {
         	   //$("#top_tabs").find(".tab").prepend('<img src="<?php echo $this->image_url; ?>aload.gif" width="16" height="16" align="top" style="margin-right: 4px;" border="0">'); 
         	   SortTabs();
