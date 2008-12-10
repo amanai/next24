@@ -109,7 +109,7 @@ class MessagesView extends BaseSiteView{
 				<h3>'.$userMessage['author_login'].'</h3>,  <h3>'.$userMessage['header'].'</h3>,  '.$userMessage['send_date'].'  
 				
 				';
-			    if ($message['author_id'] != $this->user_id){
+			    if ($userMessage['author_id'] != $this->user_id){
 					$htmlMess .= '
 					<a href="'.Project::getRequest() -> createUrl('Messages', 'SendMessage').'/message_action:reply/mess_id:'.$userMessage['id'].'"><b>написать сообщение</b></a> | 
             		<a onclick="return DelMessageCorrespondence('.$userMessage['messages_id'].', '.$message['corr_user_id'].');" href="javascript: void(0);"><b>удалить</b></a>';
