@@ -15,7 +15,10 @@
 	margin-right: 1px;
 	z-index: 2;
 	}
-	
+.tab_space{
+    width: 80px;
+}
+
 #tabs .tab-over
 	{
 	background-color: white;

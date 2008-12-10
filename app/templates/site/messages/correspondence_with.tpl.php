@@ -43,7 +43,7 @@
 
 					</div></div></div></div>
 					
-					
+					<?=$this -> flash_messages; ?>
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					
 					<div class="block_title">
@@ -56,34 +56,62 @@
 					<div id="user_profile_js2">
 					<form method="post" action="<?php echo Project::getRequest() -> createUrl('Messages', 'SendMessage'); ?>">
 					<input type="hidden" value="new_message" name="message_action" />
+					<input type="hidden" value="Messages" name="redirect_controller" />
+					<input type="hidden" value="CorrespondenceWith" name="redirect_action" />
+					<input type="hidden" value="/corr_user_id:<?php echo $this->correspondent_user['id']; ?>" name="redirect_url" />
+					<input type="hidden" value="<?php echo $this->correspondent_user['login']; ?>" name="recipient_name" />
 					<table width="100%">
 					<tr>
-					   <td valign="top" style="padding-right: 20px;" rowspan="2">
+					   <td valign="top" style="padding-right: 20px;">
 					   <h2 style="margin-bottom: 5px;"><?php echo '<a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $this->curr_user['login']).'">'.$this->curr_user['login'].'</a>'; ?></h2>
 					   <div class="av_preview">
 					   <?php $avator_path = ($this->curr_user_avatar['sys_av_id'])?$this->curr_user_avatar['sys_path']:$this->curr_user_avatar['path']; ?>
 	                   <img style="margin: 5px;" alt="<?php echo $this->curr_user_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>"/>
 					   </div>
+					   <!--
 					   <p class="icons">
-					   <a href="/u/ipartemk/diary/"><img height="16" width="16" align="absmiddle" alt="Дневник пользователя ipartemk" src="/images/icons/diary.gif"/></a> 
-					   <a href="/u/ipartemk/album/"><img height="16" width="16" align="absmiddle" alt="Альбом пользователя ipartemk" src="/images/icons/album.gif"/></a> 
-					   <a href="/u/ipartemk/pm/"><img height="16" width="16" align="absmiddle" alt="Отправить личное сообщение пользователю ipartemk" src="/images/icons/pm.gif"/></a>  
-					   <a href="/addfriend/ipartemk/"><img height="16" width="16" align="absmiddle" alt="Добавить пользователя в друзья" src="/images/icons/addfriend.gif"/></a>
+					   <a href="/u/ipartemk/diary/"><img height="16" width="16" align="absmiddle" alt="Дневник пользователя" src="<?php echo $this->image_url; ?>icons/diary1.gif"/></a> 
+					   <a href="/u/ipartemk/album/"><img height="16" width="16" align="absmiddle" alt="Альбом пользователя" src="<?php echo $this->image_url; ?>icons/albums.gif"/></a> 
+					   <a href="/u/ipartemk/pm/"><img height="16" width="16" align="absmiddle" alt="Отправить личное сообщение пользователю" src="<?php echo $this->image_url; ?>icons/pm.gif"/></a>  
+					   <a href="/addfriend/ipartemk/"><img height="16" width="16" align="absmiddle" alt="Добавить пользователя в друзья" src="<?php echo $this->image_url; ?>icons/addfriend.gif"/></a>
 					   </p>
+					   -->
 					   </td>
 					   <td width="100%">
-					   <input type="text" name="topic" style="width: 100%;"/>
-					   <textarea name="message" style="width: 100%; height: 150px;" ></textarea>
+					   <input type="text" name="mess_header" style="width: 100%;"/>
+					   <textarea name="m_text" style="width: 100%; height: 150px;" ></textarea>
 					   </td>
 					   
-					   <td valign="top" align="right" style="padding-left: 20px;" rowspan="2"><h2 style="margin-bottom: 5px;">stepanova_julia</h2><img id="iborder" onmouseout="APOut();" onmouseover="APOver(49, this);" src="/users/stepanova_julia/avatars/1191445863.gif"/>
-					   <p class="icons"><a href="/u/stepanova_julia/diary/"><img height="16" width="16" align="absmiddle" alt="Дневник пользователя stepanova_julia" src="/images/icons/diary.gif"/></a> <a href="/u/stepanova_julia/album/"><img height="16" width="16" align="absmiddle" alt="Альбом пользователя stepanova_julia" src="/images/icons/album.gif"/></a> <a href="/u/stepanova_julia/pm/"><img height="16" width="16" align="absmiddle" alt="Отправить личное сообщение пользователю stepanova_julia" src="/images/icons/pm.gif"/></a>  <a href="/addfriend/stepanova_julia/"><img height="16" width="16" align="absmiddle" alt="Добавить пользователя в друзья" src="/images/icons/addfriend.gif"/></a></p>
+					   <td valign="top" align="left" style="padding-left: 20px;">
+					   <h2 style="margin-bottom: 5px;"><?php echo '<a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $this->correspondent_user['login']).'">'.$this->correspondent_user['login'].'</a>'; ?></h2>
+					   <div class="av_preview">
+					   <?php $avator_path = ($this->correspondent_user_avatar['sys_av_id'])?$this->correspondent_user_avatar['sys_path']:$this->correspondent_user_avatar['path']; ?>
+	                   <img style="margin: 5px;" alt="<?php echo $this->correspondent_user_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>"/>
+					   </div>
 					   </td>
 					</tr>
 					<tr>
+				            <td>&nbsp;</td>
+				            <td>
+				            Выберите аватор для сообщения:
+				            <select name="avatar_id" >
+                			    <option value="0" /> [Ваши аваторы]
+                    			<?php
+                    			foreach ($this->curr_user_avatars as $user_avatar){
+                    			    $selected = ($user_avatar['id']==$this->default_avatar['id'])?"selected":"";
+                    			    echo '<option value="'.$user_avatar['id'].'" '.$selected.' />'.$user_avatar['av_name'];
+                    			}
+                    			?>
+                			    </select>
+				            </td>
+				            <td>&nbsp;</td>
+				        </tr>
+					<tr>
+					   <td>&nbsp;</td>
 					   <td align="right" style="padding-right: 5px;">
 					   <input type="submit" value="Отправить" alt="Отправить" name="Submit"/>
 					   </td>
+					   <td>&nbsp;</td>
 					</tr>
 					</table>
 					</form>

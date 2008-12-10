@@ -19,18 +19,23 @@
 			$userModel = new UserModel();
 			$user = Project::getUser() -> getDbUser();
 			$tabs_map = $this->tabs_map;
+			$needToSave = false;
 			
-			if ($user){
+			if ($user->id){
 			    $tabs_map['selected_tabs'] = unserialize($user->tabs_map);
-			}else {
+			    if (!$tabs_map['selected_tabs']){
+			        $needToSave = true;
+			    }
+			}
+			if (!$user->id || !$tabs_map['selected_tabs']){
 			    $tabs_map['selected_tabs'][0] = array('id'=>'0', 'selected'=>true);
 			    $tabs_map['selected_tabs'][1] = array('id'=>'1', 'selected'=>true);
 			    $tabs_map['selected_tabs'][2] = array('id'=>'2', 'selected'=>true);
 			    $tabs_map['selected_tabs'][3] = array('id'=>'3', 'selected'=>true);
 			}
-			
 			$this -> _view -> assign('tabs_map', $tabs_map);
-			//$userModel->saveUserTabsMap($user->id, $tabs_map['selected_tabs']);
+			$this -> _view -> assign('user_id', $user->id);
+			if ($needToSave) $userModel->saveUserTabsMap($user->id, $tabs_map['selected_tabs']);
 			
 			$this -> _view -> Home();
 			$this -> _view -> parse();
@@ -46,13 +51,13 @@
 			
 			if ($user){
 			    $old_selected_tabs = unserialize($user->tabs_map);
+			    foreach ($checkBoxes as $tabActiveId){
+			        $tabs_map['selected_tabs'][] = array('id'=>$tabActiveId, 'selected'=>true);
+			    }
 			    foreach ($old_selected_tabs as $old_tab){
-			        if (in_array($old_tab['id'], $checkBoxes)){
-			            $selected = true;
-			        }else{
-			            $selected = false;
+			        if (!in_array($old_tab['id'], $checkBoxes)){
+                        $tabs_map['selected_tabs'][] = array('id'=>$old_tab['id'], 'selected'=>false);
 			        }
-			        $tabs_map['selected_tabs'][] = array('id'=>$old_tab['id'], 'selected'=>$selected);
 			    }
 			    if (!$checkBoxes) $tabs_map['selected_tabs'][0]['selected'] = true;
 			    $userModel->saveUserTabsMap($user->id, $tabs_map['selected_tabs']);
@@ -60,6 +65,7 @@
 			    return;
 			}
 			$message['tabs_map'] = $tabs_map;
+			$message['user_id'] = $user->id;
     	    
     	    
     	    

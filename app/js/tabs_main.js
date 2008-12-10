@@ -302,17 +302,28 @@ function UserCloseTab(num)
 	}
 }
 
+function SortTabs()
+{
+	aTabsId = getAllActiveTabsId(-1);
+    ajax(
+    {"url":"\/change_index_tabs","type":"POST","async":true,"data":{"checkBoxes[]":aTabsId, "addTheme":1},"dataType":"json"}, 
+    true);
+	return false;
+}
+
 function getAllActiveTabsId(idExeption){
     var aTabs = $("#top_tabs").find(".tab");
     var aTabsId = new Array();
-    var j = 0;
+    var j = 0, s="";
     for (var i=0; i<aTabs.length; i++){
         id = aTabs[i].id.substr(3);
         if (id != idExeption){
             aTabsId[j] = id;
+            //s += id+'; ';
             j++;
         }        
     }
+    //alert(s);
     return aTabsId;
 }
 	
@@ -325,3 +336,6 @@ function TabOut(tab)
 	{
 	if (tab.className=='tab-over tab') tab.className='tab';
 	}
+
+	
+

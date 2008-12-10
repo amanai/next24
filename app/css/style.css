@@ -1058,6 +1058,12 @@ font-weight:bold;
     float: left;
     width: 115px;
 }
+.photo_gallery{
+    display: block;
+    float: left;
+    width: 180px;
+}
+
 .av_preview{
   text-align: center;
   width: 100px;

@@ -73,6 +73,7 @@ class MessagesController extends SiteController{
 	    $this -> _view -> assign('user_id', $user->id);
 	    $this -> _view -> assign('curr_user', $userModel->getUserById($user->id));
 	    $this -> _view -> assign('curr_user_avatar', $userModel->getUserAvatar($user->id));
+	    $this -> _view -> assign('curr_user_avatars', $userModel->getAllUserAvatars($user->id));
 	    
 	    $aMessages = $messagesModel->getCorrespondenceBetweenUsers(array($user->id, $correspondent_user['id']));
 	    $this -> _view -> assign('aMessages', $aMessages);
@@ -154,8 +155,11 @@ class MessagesController extends SiteController{
 	                $this->sendMessage($mess_header, $m_text, $user->id, $recipient['id'], $request->avatar_id, 0, 0);
 	                $addUrl = '';
 	            }
+	            $redirect_controller = ($request->redirect_controller)?$request->redirect_controller:'Messages';
+	            $redirect_action = ($request->redirect_action)?$request->redirect_action:'SendMessage';
+	            $redirect_url = ($request->redirect_url)?$request->redirect_url:"/message_action:sent".$addUrl;
 	            
-                Project::getResponse()->redirect(Project::getRequest()->createUrl('Messages', 'SendMessage')."/message_action:sent".$addUrl);
+                Project::getResponse()->redirect(Project::getRequest()->createUrl($redirect_controller, $redirect_action).$redirect_url);
 	        }
 	    
 	    }elseif ($request->message_action == 'reply'){ // ответить на сообщение

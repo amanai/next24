@@ -87,7 +87,7 @@
 					        
 					   </h2>
 					</div>
-					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n1')" style="cursor: pointer;" /></div>
+					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n1')" style="cursor: pointer;" /></div>
 				</div>
 				
 				<div id="rss_cat_n1">
@@ -145,7 +145,7 @@
     					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, false); if ($this->shownow != "allnews"){?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTreeFeeds:".$this->filterNewsTreeFeeds; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?>
     					   </h2>
     					</div>
-    					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n<?php echo $this->filterNewsTreeFeeds;?>')" style="cursor: pointer;" /></div>
+    					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n<?php echo $this->filterNewsTreeFeeds;?>')" style="cursor: pointer;" /></div>
     				</div>
     				
     				<div id="rss_cat_n<?php echo $this->filterNewsTreeFeeds;?>">
@@ -183,7 +183,7 @@
     					   <?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false);  if ($this->shownow  != "allnews"){ ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?>
     					   </h2>
     					</div>
-    					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n<?php echo $newsTree['id'];?>')" style="cursor: pointer;" /></div>
+    					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n<?php echo $newsTree['id'];?>')" style="cursor: pointer;" /></div>
     				</div>
     				
     				<div id="rss_cat_n<?php echo $newsTree['id'];?>">
@@ -212,7 +212,7 @@
     					    Нет новостей для отображения
     					   </h2>
     					</div>
-    					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" align="left" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n2')" style="cursor: pointer;" /></div>
+    					<div class="block_title_right"><img src="<?php echo $this -> image_url;?>close.png" width="21" height="24" onclick="ShowOrHide(this, 'rss_cat_n2')" style="cursor: pointer;" /></div>
     				</div>
     				
     				<div id="rss_cat_n2">

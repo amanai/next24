@@ -155,6 +155,25 @@ class ArticleModel extends BaseModel {
 				" OR `rate_status` = ".ARTICLE_COMPETITION_STATUS::EDITED;
 		return Project::getDatabase()->query($sql);
 	}
+	
+	public function getLastArticles($numberArticles){
+	    $result = array();
+	    $sql = "SELECT articles.*
+	           FROM articles
+	           ORDER BY articles.creation_date DESC
+	           LIMIT 0, ".$numberArticles."
+	    ";
+		$aArticles = Project::getDatabase()->select($sql);
+		foreach ($aArticles as $article){
+		    $sql = "SELECT article_pages.*
+    	           FROM article_pages
+    	           WHERE article_pages.article_id = ".$article['id']."
+    	    ";
+		    $page = Project::getDatabase()->selectRow($sql);
+		    $result[] = array_merge($article, array("page_text"=>$page['p_text']));
+		}
+		return $result;
+	}
 }
 
 ?>

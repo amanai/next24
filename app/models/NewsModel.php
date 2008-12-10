@@ -710,16 +710,7 @@ class NewsModel extends BaseModel{
         $DE -> query($sql, $news_tree_feeds_id);
     }
     
-    function getNWordsFromText($text, $nWords){
-        $sText = "";
-        $aText = split(" ", $text, $nWords);
-        if (is_array($aText) && count($aText)>0){
-            array_pop($aText);
-            $sText = implode(" ", $aText);
-        }
-        
-        return $sText;
-    }
+    
     
     // get all parents. Ex.: mainCat -> cat1 -> cat2 -> lastCat
     function getNewsTreeBreadCrumb($news_tree_id){
