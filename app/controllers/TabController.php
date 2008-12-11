@@ -498,6 +498,20 @@ class TabController{
 
     return $tabs;
   }  
+  
+    static public function getVariableTabs($aTabsParams) {
+    	$request = Project::getRequest();
+    	foreach ($aTabsParams as $tabParams){
+    	    $tabs[] = array(
+							'name' => $tabParams['name'],
+							'title' => $tabParams['title'],
+							'selected' => $tabParams['selected'],
+						 	'url' => $request -> createUrl($tabParams['controller_name'], $tabParams['action_name'], null, false)
+    					);
+    	}
+    	
+    	return $tabs;
+    }
 
 }
 ?>

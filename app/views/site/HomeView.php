@@ -131,7 +131,7 @@ class HomeView extends BaseSiteView{
         $albumModel = new AlbumModel();
         $aAlbums = $albumModel->loadAll(0, 0);
         foreach ($aAlbums  as $key => $item){
-            $imgSrc = ($item['thumbnail']===false)?$this -> image_url.'noimage.gif' :$this -> image_url.$item['thumbnail'];
+            $imgSrc = (!$item['thumbnail'])?$this -> image_url.'noimage.gif' :$this -> image_url.$item['thumbnail'];
             $htmlPage .= '
                 <div class="photo_gallery">
 				<div class="block_ee1" style="width: 170px;"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">

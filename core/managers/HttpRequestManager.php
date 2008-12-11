@@ -238,6 +238,11 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			}
 		}
 		
+		public function getParentHost(){
+			$host = ($this -> IsSecure() ? "https://" : "http://") . $this -> _config -> get('base_host') . '/';
+			return $host;
+		}
+		
 		public function createUrl($service = null, $action = null, $parameters = null, $user = null){
 			if ($service === null){
 				$service = $this -> _current_controller;

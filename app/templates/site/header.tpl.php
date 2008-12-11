@@ -26,7 +26,7 @@
 		<!-- HEADER -->
 		<table width="100%" height="180" cellpadding="0">
 		<tr>
-			<td width="270"><a href="/"><img src="<?php echo $this -> image_url;?>logo.png" width="270" height="180" /></a></td>
+			<td width="270"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>"><img src="<?php echo $this -> image_url;?>logo.png" width="270" height="180" /></a></td>
 			<td class="header2" align="right">
 				<!-- Блок авторизации -->
 				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
@@ -71,7 +71,7 @@
 								</tr>
 								</table>
 								<div class="user2_x"><input type="checkbox" id="remember" name="remember" value="1" style="padding: 0px;" /> <label for="remember"></>Запомнить</label> <input type="submit" value="Вход" style="width: 45px;" /></div>
-								<div class="user2_x"><a href="#">Забыли пароль?</a> | <a href="<?php echo $this->createUrl('User', 'RegistrationForm');?>">Регистрация</a></div>
+								<div class="user2_x"><a href="<?php echo $this->createUrl('User', 'RemindPassword', false, null);?>">Забыли пароль?</a> | <a href="<?php echo $this->createUrl('User', 'RegistrationForm');?>">Регистрация</a></div>
 							</form>
 						</td>
 						<td class="user3"> </td>

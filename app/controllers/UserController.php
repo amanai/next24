@@ -659,5 +659,56 @@
 			$this -> _view -> parse();
 		}
 		
+		function RemindPasswordAction(){
+		    $varTabs = array();
+		    $request = Project::getRequest();
+		    $this -> _view -> clearFlashMessages();
+		    
+		    if ($request->remind){
+		        $userModel = new UserModel();
+		        $noErrors = true;
+		        $email = trim($request->email);
+		        
+		        if (!$email){
+		            $this -> _view -> addFlashMessage(FM::ERROR, "Введите Email");
+		            $noErrors = false;
+		        }else{
+		            
+		            $userModel->loadByEmail($email);
+		            if (!$userModel->id){
+    		            $this -> _view -> addFlashMessage(FM::ERROR, "Такой Email не регистрировался");
+    		            $noErrors = false;
+		            }
+		        }
+		        
+		        if ($noErrors){
+		            $newPass = rand(111111, 9999999);
+		            $salt = AppCrypt::generateSalt();
+		            $userModel -> salt = $salt;
+    				$userModel -> pass = AppCrypt::getHash($newPass, $salt);
+    				$userModel -> save();
+    				$mailer = new PHPMailer();
+    				$mailer->CharSet = "utf-8";
+    				$mailer->From = "info@next24.ru";
+    				$mailer->FromName = "Next24.ru";
+    				$mailer->Subject = "Восстановление пароля в системе Next24.ru ";
+    				$body = "Восстановление пароля в системе Next24.ru: <br>Логин: ".$userModel->login." <br>Новый пароль: ".$newPass;
+    				$alt_body = "Восстановление пароля в системе Next24.ru: \nЛогин: ".$userModel->login." \nНовый пароль: ".$newPass;
+    				$mailer->Body    = $body;  
+                    $mailer->AltBody = $alt_body;  
+                    $mailer->AddAddress($email, $userModel->first_name." ".$userModel->middle_name." ".$userModel->last_name); 
+    				$mailer->Send();
+    				$this -> _view -> addFlashMessage(FM::INFO , "На указанный Email был выслан новый пароль");
+		        }
+		        
+		    }
+		    
+		    
+		    $varTabs[] = array('name'=>"Напоминание пароля", 'title'=>"Напоминание пароля", 'selected'=>true, 'controller_name'=>"User",  'action_name'=>"RemindPassword");
+			$this-> _view -> assign('tab_list', TabController::getVariableTabs($varTabs)); // Show tabs
+			$this -> _view -> RemindPassword();
+			$this -> _view -> parse();
+		}
+		
 	}
 ?>

@@ -14,7 +14,7 @@
 			parent::__construct($view_class);
 		}
 		
-		public function IndexAction(){		
+		public function IndexAction(){	
 			$this -> BaseSiteData();	
 			$userModel = new UserModel();
 			$user = Project::getUser() -> getDbUser();
