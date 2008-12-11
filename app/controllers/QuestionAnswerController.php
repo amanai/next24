@@ -54,8 +54,8 @@ class QuestionAnswerController extends SiteController {
 		if($id > 0) {
 			$question_model = new QuestionModel();
 			$data['question'] = $question_model->loadQuestion($id);
-			$data['question_tab'] = substr($question_model->q_text, 0, 100);
-			count($question_model->q_text) > 100 ? $data['question_tab'] .= "..." : "";
+			
+			$data['question_tab'] = $question_model->getNWordsFromText($question_model->q_text, 8);
 
 			$controller = new BaseCommentController();
 			$data['comment_list'] = $controller -> CommentList(

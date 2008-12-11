@@ -282,12 +282,20 @@ abstract class BaseModel{
             return $sqlLimit;
         }
         
-        function getNWordsFromText($text, $nWords){
+        function getNWordsFromText($text, $nWords, $addStr = "..."){
             $sText = "";
+            $aTextFull = split(" ", $text);
             $aText = split(" ", $text, $nWords);
+            
             if (is_array($aText) && count($aText)>0){
-                array_pop($aText);
-                $sText = implode(" ", $aText);
+                if (count($aTextFull)>count($aText)){
+                    array_pop($aText);
+                    $doAddStr = $addStr;
+                }else{
+                    $doAddStr = "";
+                }
+                
+                $sText = implode(" ", $aText).$doAddStr;
             }
             
             return $sText;

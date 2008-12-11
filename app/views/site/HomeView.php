@@ -117,7 +117,7 @@ class HomeView extends BaseSiteView{
         			<h1><a href="'.Project::getRequest()->createUrl('Article', 'ArticleView').'/'.$article['id'].'">'.$article['title'].'</a></h1> <div id="micro"><img height="16" width="16" id="ico2" src="'.$this->image_url.'time.png"/> '.$article['creation_date'].'</div>
         		</div>
                 <div class="articles_c">
-    				<br/><p>'.$articleModel -> getNWordsFromText($article['page_text'], 100).'...</p>
+    				<br/><p>'.$articleModel -> getNWordsFromText($article['page_text'], 100).'</p>
     			</div>';
         }
             

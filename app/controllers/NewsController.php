@@ -116,7 +116,7 @@ class NewsController extends SiteController{
 		    $news = $newsModel -> getNewsById($request->news_id, $user->id, $isNewsTreeActive, $isNewsBannersActive);
 		    if (!$news) Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'News'));
 		    $this-> _view -> assign('news', $news); 
-		    $tabsNews = array("title"=>$newsModel -> getNWordsFromText($news['news_title'], 6)."...", "id"=>$request->news_id);
+		    $tabsNews = array("title"=>$newsModel -> getNWordsFromText($news['news_title'], 7), "id"=>$request->news_id);
 		    if (!$isTabsSnow){
 		        $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false, false, true, $tabsNews)); // Show tabs
 		        $isTabsSnow = true;
@@ -576,7 +576,7 @@ class NewsController extends SiteController{
                         $category = iconv(strtoupper($aFeeds['encoding']), 'UTF-8', $category);
                         $enclosure = iconv(strtoupper($aFeeds['encoding']), 'UTF-8', $enclosure);
                     }
-		            $short_text = $newsModel -> getNWordsFromText($description, 40)."...";
+		            $short_text = $newsModel -> getNWordsFromText($description, 40);
 		            $pub_date = date("Y-m-d H:i:s", strtotime($pubDate));
 		            if (!$newsTreeFeeds['category_tag'] || strtoupper($newsTreeFeeds['category_tag']) == strtoupper($category)){
 		            // if RSS-feeds have different categories => it should be same as in item
