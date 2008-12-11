@@ -67,10 +67,10 @@
 				            <td><textarea style="width: 100%; height: 250px;" name="m_text"><?php echo $this->m_text; ?></textarea></td>
 				        </tr>
 				        <tr>
-				            <td>Выберите аватор для сообщения:</td>
+				            <td>Выберите аватар для сообщения:</td>
 				            <td>
 				            <select name="avatar_id" >
-                			    <option value="0" /> [Ваши аваторы]
+                			    <option value="0" /> [Ваши аватары]
                     			<?php
                     			foreach ($this->user_avatars as $user_avatar){
                     			    $selected = ($user_avatar['id']==$this->default_avatar['id'])?"selected":"";

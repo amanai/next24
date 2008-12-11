@@ -99,7 +99,7 @@ if ($this -> user_id){
 			<tr>
 			    <td nowrap>
 			    <select name="avatar_id" >
-			    <option value="0" /> [Выберите аватор для сообщения]
+			    <option value="0" /> [Выберите аватар для сообщения]
 			<?php
 			foreach ($this->user_avatars as $user_avatar){
 			    $selected = ($user_avatar['id']==$this->default_avatar['id'])?"selected":"";

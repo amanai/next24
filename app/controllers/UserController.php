@@ -512,7 +512,7 @@
 			if ($request->avatar_action == 'create_avatar'){
 			    
 			    if ($userModel->getCountAllUserAvatars($user->id) > 9 && !$isAdmin){
-			        $this -> _view -> addFlashMessage(FM::ERROR, "У Вас максимально разрешенное количество аваторов");
+			        $this -> _view -> addFlashMessage(FM::ERROR, "У Вас максимально разрешенное количество аватаров");
     	            $noErrors = false;
 			    }
 			    if (!$request->newava_name){
@@ -520,7 +520,7 @@
     	            $noErrors = false;
 			    }
 			    if (!$request->_files['newava_file']['name']){
-    			    $this -> _view -> addFlashMessage(FM::ERROR, "Выберите файл аваторы");
+    			    $this -> _view -> addFlashMessage(FM::ERROR, "Выберите файл аватары");
     	            $noErrors = false;
 			    }
 			    

@@ -93,9 +93,9 @@
 					<tr>
 				            <td>&nbsp;</td>
 				            <td>
-				            Выберите аватор для сообщения:
+				            Выберите аватар для сообщения:
 				            <select name="avatar_id" >
-                			    <option value="0" /> [Ваши аваторы]
+                			    <option value="0" /> [Ваши аватары]
                     			<?php
                     			foreach ($this->curr_user_avatars as $user_avatar){
                     			    $selected = ($user_avatar['id']==$this->default_avatar['id'])?"selected":"";
