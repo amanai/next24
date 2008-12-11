@@ -47,6 +47,20 @@ class CApp {
 			$action_function = $autorize -> getAction() -> name . 'Action';
 			$controller -> $action_function();
 			$this -> _request_complete = true;
+			
+			// Сохраняем время пользователя на серваке
+			$user = Project::getUser() -> getDbUser();
+			if ($user->id){
+			    $userModel = new UserModel();
+			    $userModel->refreshUsersOnline();
+			    if (!$userModel->isUserOnline($user->id)){
+			        $userModel->addUserOnline($user->id);
+			    }else{
+			        $userModel->updateUserOnline($user->id);
+			    }
+			}
+			// END Сохраняем время пользователя на серваке
+			
 			return $controller;
 		}
 		

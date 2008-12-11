@@ -502,5 +502,78 @@ class UserModel extends BaseModel{
         ";
         $DE -> query($sql);
     }
+    
+    
+    /* USERS ONLINE */
+    
+    public function isUserOnline($user_id){
+        $DE = Project::getDatabase();
+        $sql = "
+            SELECT * 
+            FROM users_online
+            WHERE user_id = '".$user_id."'
+        ";
+        $result = $DE -> selectRow($sql);
+        if($result) return true;
+        else return false;
+    }
+    
+    public function addUserOnline($user_id){
+        $DE = Project::getDatabase();
+        $time = time();
+        $sql = "
+            INSERT INTO users_online (`user_id` , `time_login` , `last_update` )
+            VALUES (
+            '".$user_id."', '".$time."',  '".$time."'
+            )
+        ";
+        $DE -> query($sql);
+    }
+    
+    public function updateUserOnline($user_id){
+        $DE = Project::getDatabase();
+        // обновляем last_update юзерам online
+        $time = time();
+        $sql = "
+            UPDATE users_online 
+            SET last_update = ".$time."
+            WHERE user_id = ".$user_id."
+        ";
+        $DE -> query($sql);
+    }
+
+    
+    // проверяет последнее посещение пользователем страницы, если текущее время - last_update > 4 мин - то пользователь ушел
+    public function refreshUsersOnline(){
+        $DE = Project::getDatabase();
+        $time = time();
+        // ищем ушедших пользователей
+        $sql = "
+            SELECT users_online.user_id, last_update - time_login as logged_time
+            FROM users_online
+            WHERE (".$time." - last_update) > 240
+        ";
+        $goneUsers = $DE -> select($sql);
+        foreach ($goneUsers as $goneUser){ // все ушедшие пользователи
+            $sql = "
+            UPDATE users 
+            SET logged_time = logged_time + ".$goneUser['logged_time']." 
+            WHERE id =  ".$goneUser['user_id']."
+            ";
+            $DE -> query($sql);
+            $sql = "
+            DELETE FROM users_online 
+            WHERE user_id =  ".$goneUser['user_id']."
+            ";
+            $DE -> query($sql);
+        }
+    }
+    
+    /* END USERS ONLINE */
+    
 }
+
+
+
+
 ?>
