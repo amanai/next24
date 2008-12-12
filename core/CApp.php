@@ -58,8 +58,13 @@ class CApp {
 			    }else{
 			        $userModel->updateUserOnline($user->id);
 			    }
+			    $userModel = new UserModel();
+			    $user = $userModel->getUserById($user->id);	
+			    $userModel->checkForUserBans($user);
 			}
 			// END Сохраняем время пользователя на серваке
+			
+			
 			
 			return $controller;
 		}

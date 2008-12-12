@@ -449,17 +449,21 @@
 		}
 		
 		public function LoginAction(){
+		    $userModel = new UserModel();
 			$request = Project::getRequest();
 			$res = Project::getSecurityManager() -> login($request -> login, $request -> pass);
 			if ($res){
+			    $user = $userModel->getUserByLogin($request -> login);	
+			    $userModel->checkForUserBans($user);		    
 				Project::getResponse() -> redirect(Project::getRequest() -> createUrl('User', 'Profile', null, $request -> login));
 			} else {
 				$this -> _view -> assign('login_result', false);
 				$this -> _view -> Login();
 				$this -> _view -> parse();
 			}
-			
 		}
+		
+		
 		
 		public function ProfileAction(){
 		    $userModel = new UserModel();

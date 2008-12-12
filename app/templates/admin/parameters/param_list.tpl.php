@@ -34,10 +34,10 @@
  	                    <?php echo $item['number']; ?>
  	                </td>
  	                <td>
- 	                    <input type="text" name="param_name[<?php echo $item['id'];?>]" value="<?php echo $item['name']; ?>"/>
+ 	                    <input type="text" size="70" name="param_name[<?php echo $item['id'];?>]" value="<?php echo $item['name']; ?>"/>
  	                </td>
  	                <td>
- 	                    <input type="text" name="param_value[<?php echo $item['id'];?>]" value="<?php echo $item['value']; ?>"/>
+ 	                    <input type="text" size="5" name="param_value[<?php echo $item['id'];?>]" value="<?php echo $item['value']; ?>"/>
  	                </td>
  	                <td>
  	                    <select name="php_type[<?php echo $item['id'];?>]">

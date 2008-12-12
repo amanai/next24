@@ -571,6 +571,22 @@ class UserModel extends BaseModel{
     
     /* END USERS ONLINE */
     
+    public function checkForUserBans($user){
+		$banHistoryModel = new BanHistoryModel();
+		$paramModel = new ParamModel();
+	    if ($user['banned'] || $banHistoryModel->isBanned($user['id'])){ // если забанен , проверить может уже все
+		    $t_ban_time_sec = $paramModel->getParam("UserController", "T_BAN_TIME_SEC");
+		    if (time() > $user['banned_date']+$t_ban_time_sec){
+		        $this->load($user['id']);
+		        $this->banned = 0;
+		        $this->save();
+		        $banHistoryModel->unban($user['id'], 1);
+		    }else{
+		        Project::getSecurityManager() -> logout();
+	            Project::getResponse() -> redirect(Project::getRequest() -> createUrl('Index', 'Index', null, false));
+		    }
+	    }
+	}
 }
 
 
