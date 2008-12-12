@@ -272,6 +272,22 @@ class MessagesController extends SiteController{
 	}
 	
 	
+	/* FRIEND PART */
+		
+	public function FriendAction(){
+	    $request = Project::getRequest();
+	    $this -> _view -> clearFlashMessages();
+	    $user = Project::getUser()->getDbUser();
+	    $friendModel = new FriendModel();
+	    
+	    $aFriendGroups = $friendModel->getUserFriendGroups($user->id);
+	    $this -> _view -> assign('aFriendGroups', $aFriendGroups);
+	    $this -> _view -> assign('user_id', $user->id);
+	    
+	    $this -> _view -> FriendPage();
+		$this -> _view -> parse();
+	}
+	
 	
 	
 	

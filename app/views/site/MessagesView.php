@@ -2,6 +2,25 @@
 class MessagesView extends BaseSiteView{
 	protected $_dir = 'messages';
 
+	public function showFriendsInGroup($user_id, $group_id){
+	    $friendModel = new FriendModel();
+	    $aFirends = $friendModel->getFriendsInGroup($user_id, $group_id);
+	    $htmlStr = "";
+	    foreach ($aFirends as $friend){
+	        $htmlStr .= '
+	           <div style="padding-left: 23px;">
+	           <a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $friend['login']).'">'.$friend['login'].'</a>  
+	           <span class="personNotice">'.$friend['note'].'</span>  
+	           <span class="personActions">
+	               <form class="editForm" method="post" action="/user/friends/editfriend/">
+	               <input type="hidden" value="181" name="friendid"/>
+	               <span id="micro">[ <a onclick="this.parentNode.parentNode.submit(); return false;" href="#">редактировать</a> ]</span>
+	               </form>
+	           </span>
+	           </div>';
+	    }
+	    return $htmlStr;
+	}
 	
 	/**
      *  Pages VIEW
@@ -30,6 +49,11 @@ class MessagesView extends BaseSiteView{
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'messages.js';
 	    $this -> setTemplate(null, 'correspondence_with.tpl.php');
+	}
+	
+	
+	function FriendPage(){
+	    $this -> setTemplate(null, 'friend_manager.tpl.php');
 	}
 
 	/**

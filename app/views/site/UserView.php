@@ -141,5 +141,7 @@ class UserView extends BaseSiteView{
 			$this -> setTemplate(null, 'remind_password.tpl.php');
 		}
 		
+		
+		
 }
 ?>
