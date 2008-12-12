@@ -583,7 +583,7 @@ class UserModel extends BaseModel{
 		        $banHistoryModel->unban($user['id'], 1);
 		    }else{
 		        Project::getSecurityManager() -> logout();
-	            Project::getResponse() -> redirect(Project::getRequest() -> createUrl('Index', 'Index', null, false));
+	            Project::getResponse() -> redirect(Project::getRequest() -> createUrl('User', 'Login', null, false)."/error:ban/login:".$user['login']);
 		    }
 	    }
 	}

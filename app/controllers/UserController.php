@@ -451,12 +451,17 @@
 		public function LoginAction(){
 		    $userModel = new UserModel();
 			$request = Project::getRequest();
+			$this -> _view -> clearFlashMessages();
 			$res = Project::getSecurityManager() -> login($request -> login, $request -> pass);
 			if ($res){
 			    $user = $userModel->getUserByLogin($request -> login);	
-			    $userModel->checkForUserBans($user);		    
+			    $userModel->checkForUserBans($user);
 				Project::getResponse() -> redirect(Project::getRequest() -> createUrl('User', 'Profile', null, $request -> login));
 			} else {
+			    if ($request->error == 'ban'){
+			        $user = $userModel->getUserByLogin($request->login);
+			        $this -> _view -> addFlashMessage(FM::ERROR, "Ваш аккаун заблокирован до ".date("Y-m-d H:i:s", $user['banned_date']));
+			    }
 				$this -> _view -> assign('login_result', false);
 				$this -> _view -> Login();
 				$this -> _view -> parse();

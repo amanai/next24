@@ -12,7 +12,7 @@
 <input type="hidden" name="user_profile_js_state" id="user_profile_js_state" value="<?=($this->helper->user_profile_js_state?$this->helper->user_profile_js_state:1)?>"/>
 <div id="user_profile_js" <?=(($this->helper->user_profile_js_state==1||!$this->helper->user_profile_js_state)?'':'style="display: none;"')?>>
 
-<table class="regdetails" cellpadding="4">
+<table class="regdetails" cellpadding="5">
 	<tr>
 		<td colspan="2">
 			<p>Символом <span class="necessary">*</span> отмечены поля, обязательные для заполнения.</p><br/>
