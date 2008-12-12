@@ -1,6 +1,4 @@
 <?php
-//define('SEC_TO_DELETE_NEWS_FROM_FEEDS', 259200); // 259200 = 3 days
-//define('NEWS_PER_PAGE', 15); 
 
 class NewsController extends SiteController{
 	

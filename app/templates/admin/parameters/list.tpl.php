@@ -8,12 +8,8 @@
 				<td>
 					Описание
 				</td>
-				<td>
-					Контроллер
-				</td>
-				<td>
-					Количество параметров
-				</td>
+				<!--<td>Контроллер</td>-->
+				<td>Количество параметров</td>
 				<td>
 					Действия
 				</td>
@@ -27,18 +23,11 @@
 				<td>
 					<?php echo $item['controller_description']; ?>
 				</td>
-				<td>
-					<?php echo $item['label']; ?>
-				</td>
-				<td>
-					<?php echo (int)$item['count_param']; ?>
-				</td>
+				<!--<td><?php echo $item['label']; ?></td>-->
+				<td><?php echo (int)$item['count_param']; ?></td>
 				<td>
 					<div class="button bsmall" style="float: left;">
 						<a href="<?php echo $item['edit_link']; ?>"><img src="<?php echo $this -> image_url;?>icons/small_edit.gif" alt="Правка"/></a>
-					</div>
-					<div style="float: left;">
-						<a href="#" >Права доступа</a>
 					</div>
 				</td>
 	

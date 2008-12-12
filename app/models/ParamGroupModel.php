@@ -16,7 +16,7 @@ class ParamGroupModel extends BaseModel{
 				   " FROM controller as c " .
 				   " LEFT JOIN param_group pg ON LOWER(c.name) = LOWER(pg.label) " .
 				   " LEFT JOIN param p ON p.param_group_id=pg.id " .
-				   " GROUP BY c.id ";
+				   " GROUP BY c.description ";
 			
 			return $DE -> select($sql);
 		}
