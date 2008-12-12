@@ -115,6 +115,13 @@ class AdminUserController extends AdminController{
 				$this -> _view -> clearFlashMessages();
 				$model -> login = $request -> login;
 				$model -> user_type_id = $request -> user_group;
+				if ($request->bann){
+				    $model -> banned = 1;
+				    $model -> banned_date = strtotime($request -> ban_date);
+				}else{
+				    $model -> banned = 0;
+				}
+				
 				
 				$ban_date = $request -> ban_date;
 				if (strlen($ban_date)){
