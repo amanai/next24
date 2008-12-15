@@ -222,5 +222,22 @@ class HelpFunctions{
 			return trim($entry)==Project::getSession()->getKey('captcha_keystring');
 		}
 		
+		
+		static function getDirSize($path){
+            $fileSize = 0;
+            $dir = scandir($path);
+            
+            foreach($dir as $file)
+            {
+                if (($file!='.') && ($file!='..'))
+                    if(is_dir($path . '/' . $file))
+                        $fileSize += HelpFunctions::getDirSize($path.'/'.$file);
+                    else
+                        $fileSize += filesize($path . '/' . $file);
+            }
+            
+            return $fileSize;
+		}
+		
 }
 ?>

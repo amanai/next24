@@ -4,6 +4,10 @@ class PhotoView extends BaseSiteView{
 	
 		function PhotoList($info){
 			$pagerView = new SitePagerView();
+			$this->_js_files[] = 'jquery.js';
+    	    $this->_js_files[]='blockUI.js';
+    	    $this->_js_files[]='ajax.js';
+    	    $this->_js_files[] = 'photo.js';
 			$info['list_pager_html'] = $pagerView -> show($info['list_pager'], $info['list_controller'], $info['list_action'], $info['list_user']);
 			$this -> setTemplate(null, 'photo_list.tpl.php');
 			$this -> set($info);

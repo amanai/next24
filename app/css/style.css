@@ -1131,6 +1131,14 @@ font-weight:bold;
 	font-weight:normal;
 }
 
+/* Фото альбом */
+.complaintPhoto{
+    display: none;
+}
+.complaintText{
+  font-size: 9px;
+}
+
 
 
 

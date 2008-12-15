@@ -69,10 +69,19 @@
 																	</div>
 																</div>
 															<?php } ?>
+															<a href="javascript: void(0);" onclick="ShowHideComplaint('complaintPhoto<?php echo $item['id'];?>');">пожаловаться</a>
+															<div class="complaintPhoto" id="complaintPhoto<?php echo $item['id'];?>">
+                											<label><input type="radio" name="complaint<?php echo $item['id'];?>" value="1" /><font  class="complaintText">На фото никого не видно</font></label><br/>
+                											<label><input type="radio" name="complaint<?php echo $item['id'];?>" value="2" /><font  class="complaintText">Чужое фото</font></label><br/>
+                											<label><input type="radio" name="complaint<?php echo $item['id'];?>" value="3" /><font  class="complaintText">Фото из другой тематики</font></label><br/>
+                											<input type="text" name="complaint_text<?php echo $item['id'];?>" value="" /><br/>
+                											<input type="button" onclick="sendArbitration(<?php echo $item['id'];?>);" value="Отправить жалобу" />
+                											</div>
 														</div>
 													</div>
 												</div>
 											</div>
+											
 										</td>
 								<?php }?>
 								<?php if ($this -> can_edit && count($this->photo_list)) { ?>

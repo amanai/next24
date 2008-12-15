@@ -3,10 +3,11 @@
  * Контролер для управления фотоальбомами
  */
 	class AlbumController extends SiteController{
-		const DEFAULT_ALBUM_PER_PAGE = 8;
-		const DEFAULT_PHOTO_PER_PAGE = 8;
+		private $DEFAULT_ALBUM_PER_PAGE = 8, $DEFAULT_PHOTO_PER_PAGE = 8;
 		
 		function __construct($view_class = null){
+		    if ($this->getParam("album_per_page")) $this->DEFAULT_ALBUM_PER_PAGE = $this->getParam("album_per_page");
+		    if ($this->getParam("photo_per_page")) $this->DEFAULT_ALBUM_PER_PAGE = $this->getParam("photo_per_page");
 			if ($view_class === null){
 				$view_class = "AlbumView";
 			}
@@ -38,7 +39,7 @@
 				$this -> UploadFormAction($request -> getKeys());
 				return;
 			}
-			$ids = array();
+			$ids = array(); $user_dir_size = HelpFunctions::getDirSize(USER_UPLOAD_DIR);
 			foreach ($_FILES as $post_file){
 				$uploadfile = false;
 				$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
@@ -60,9 +61,9 @@
 				}
 				
 				if (!$ok || !$ok_thumb){
-					$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка загрузки изображения в директорию пользователя");
+					$this -> _view -> addFlashMessage(FM::ERROR, $post_file['name']." ошибка загрузки изображения в директорию пользователя");
 					$this -> UploadFormAction($request -> getKeys());
-					return;
+					continue;
 				}
 				
 				
@@ -73,7 +74,17 @@
 				$uploaded = false;
 				if ($ok === true){
 					$f = $images . DIRECTORY_SEPARATOR . $fn;
-					if (move_uploaded_file($post_file['tmp_name'], $f)) {
+					$max_image_size = $this->getParam('max_image_size');
+					$max_userdir_size = $this->getParam('max_userdir_size');
+					$user_dir_size += $post_file['size'];
+					
+					if ($max_image_size<$post_file['size']){
+					    $this -> _view -> addFlashMessage(FM::ERROR, $post_file['name']." превышает максимальный размер фото (".$max_image_size." байт)");
+					    continue;
+					}elseif ($user_dir_size > $max_userdir_size){
+					    $this -> _view -> addFlashMessage(FM::ERROR, "Вы превысили максимальный размер загруженных фото (".$max_userdir_size." байт)");
+					    continue;
+					}elseif (move_uploaded_file($post_file['tmp_name'], $f)){
 						// TODO:: write tщ log if thumb size no specified
 						$width = $this -> getParam('thumb_size', 99999);
 						if ($width <= 0){
@@ -87,9 +98,9 @@
 							}
 						}
 					} else {
-						$this -> _view -> addFlashMessage(FM::ERROR, "Ошибка загрузки изображения");
+						$this -> _view -> addFlashMessage(FM::ERROR, $post_file['name']." ошибка загрузки изображения");
 						$this -> UploadFormAction($request -> getKeys());
-						return;
+						continue;
 					}
 				}
 				
@@ -258,7 +269,7 @@
 				$info['can_edit'] = true;
 				$info['access_list'] = HelpFunctions::getAccessList();
 			}
-			$this -> _list($info, "creation_date", "DESC", $this -> getParam('album_per_page', self::DEFAULT_ALBUM_PER_PAGE), 'List');
+			$this -> _list($info, "creation_date", "DESC", $this -> getParam('album_per_page', $this->DEFAULT_ALBUM_PER_PAGE), 'List');
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
 		}
@@ -277,7 +288,7 @@
 			}
 			$info['tab_list'] = $tabs;
 			$info['left_panel'] = false;
-			$this -> _list($info, "album_rating", "DESC", $this -> getParam('top_per_page', self::DEFAULT_ALBUM_PER_PAGE), 'TopList');
+			$this -> _list($info, "album_rating", "DESC", $this -> getParam('top_per_page', $this->DEFAULT_ALBUM_PER_PAGE), 'TopList');
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
 		}
@@ -297,7 +308,7 @@
 			}
 
 			$info['tab_list'] = $tabs;
-			$this -> _list($info, "creation_date", "DESC", $this -> getParam('album_per_page', self::DEFAULT_ALBUM_PER_PAGE), 'LastList');
+			$this -> _list($info, "creation_date", "DESC", $this -> getParam('album_per_page', $this->DEFAULT_ALBUM_PER_PAGE), 'LastList');
 			$this -> _view -> AlbumList($info);
 			$this -> _view -> parse();
 		}
