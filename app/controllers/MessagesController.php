@@ -297,7 +297,7 @@ class MessagesController extends SiteController{
 	                   $this -> _view -> addFlashMessage(FM::ERROR, "Группа с таким именем уже существует");
 	               }
 	               
-	           }if ($request->del_group){
+	           }elseif ($request->del_group){
 	               $friendModel -> changeFriendsGroup($user->id, $group_id, 0);
 	               $friendModel->delOneRecord('friend_group', $group_id);
 	               Project::getResponse()->redirect(Project::getRequest()->createUrl('Messages', 'Friend'));
