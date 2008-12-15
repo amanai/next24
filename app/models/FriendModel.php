@@ -38,11 +38,60 @@ class FriendModel extends BaseModel{
 			return Project::getDatabase() -> select($sql, (int)$user_id);
 		}
 		
+		function getFriendById($friend_table_id){
+		    $sql = "
+		      SELECT friend.*, users.login as friend_login
+		      FROM friend 
+		      INNER JOIN users 
+		          ON friend.friend_id = users.id
+		      WHERE friend.id = '".$friend_table_id."'
+		    ";
+		    return Project::getDatabase() -> selectRow($sql);
+		}
+		
+		
+		function changeFriendsGroup($user_id, $old_group_id, $new_group_id){
+		    $sql = "
+		      UPDATE friend
+		      SET group_id = '".$new_group_id."'
+		      WHERE user_id = '".$user_id."' AND group_id = '".$old_group_id."'
+		    ";
+		    Project::getDatabase() -> query($sql);
+		}
+		
+		/* Friend Groups */
+		
+		
 		function getUserFriendGroups($user_id){
 			$sql =  " SELECT * " .
     				" FROM friend_group " .
     				" WHERE user_id = ?d ";
 			return Project::getDatabase() -> select($sql, (int)$user_id);
 		}
+		
+		function isDublicateGroup($user_id, $name){
+			$sql =  " SELECT * " .
+    				" FROM friend_group " .
+    				" WHERE user_id = ?d  AND name = '".$name."'";
+			$result = Project::getDatabase() -> select($sql, (int)$user_id);
+			if ($result) return true;
+			else return false;
+		}
+		
+		function getFriendGroupById($group_id){
+		    $sql =  " SELECT * " .
+    				" FROM friend_group " .
+    				" WHERE id = ?d ";
+			return Project::getDatabase() -> selectRow($sql, (int)$group_id);
+		}
+		
+		function addFriendGroup($user_id, $name, $editable = null){
+		    $sql =  " INSERT INTO friend_group (`user_id`, `name`, `editable`) " .
+    				" VALUES ('".$user_id."', '".htmlspecialchars($name)."', '".$editable."') ";
+			Project::getDatabase() -> query($sql);
+		}
+		
+		/* END Friend Groups */
+		
 }
 ?>

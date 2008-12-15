@@ -12,8 +12,9 @@ class MessagesView extends BaseSiteView{
 	           <a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $friend['login']).'">'.$friend['login'].'</a>  
 	           <span class="personNotice">'.$friend['note'].'</span>  
 	           <span class="personActions">
-	               <form class="editForm" method="post" action="/user/friends/editfriend/">
-	               <input type="hidden" value="181" name="friendid"/>
+	               <form class="editForm" method="post" action="'.Project::getRequest() -> createUrl('Messages','Friend').'">
+	               <input type="hidden" value="changeFriend" name="messageAction" />
+	               <input type="hidden" value="'.$friend['id'].'" name="friend_table_id"/>
 	               <span id="micro">[ <a onclick="this.parentNode.parentNode.submit(); return false;" href="#">редактировать</a> ]</span>
 	               </form>
 	           </span>

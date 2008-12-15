@@ -1126,7 +1126,10 @@ font-weight:bold;
   display: block;
 }
 
-
+.personNotice {
+	color:#999999 !important;
+	font-weight:normal;
+}
 
 
 

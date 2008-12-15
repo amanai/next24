@@ -278,7 +278,94 @@ class MessagesController extends SiteController{
 	    $request = Project::getRequest();
 	    $this -> _view -> clearFlashMessages();
 	    $user = Project::getUser()->getDbUser();
+	    $userModel = new UserModel();
 	    $friendModel = new FriendModel();
+	    $messagesModel = new MessagesModel();
+	    $isDefAction = true;
+	    //$this -> _view -> addFlashMessage(FM::ERROR, "Выберите из списка друзей или введите имя вручную");
+	    
+	    if ($request->messageAction == "changeGroup"){
+	        $group_id = $request->group_id;
+	        $friendGroup = $friendModel->getFriendGroupById($group_id);
+	        if ($friendGroup){
+	           $isDefAction = false;
+	           if ($request->save_group){
+	               $group_name = $request->group_name;
+	               if (!$friendModel->isDublicateGroup($user->id, htmlspecialchars($group_name))){
+	                   $friendModel->changeOneValue('friend_group', $group_id, 'name', htmlspecialchars($group_name));
+	               }else{
+	                   $this -> _view -> addFlashMessage(FM::ERROR, "Группа с таким именем уже существует");
+	               }
+	               
+	           }if ($request->del_group){
+	               $friendModel -> changeFriendsGroup($user->id, $group_id, 0);
+	               $friendModel->delOneRecord('friend_group', $group_id);
+	               Project::getResponse()->redirect(Project::getRequest()->createUrl('Messages', 'Friend'));
+	               
+	           }else{
+	               $group_name = $friendGroup['name'];
+	           }
+	           $this -> _view -> assign('pageAction', 'changeGroup');
+	           $this -> _view -> assign('groupName', $group_name);
+	        }
+	        $this -> _view -> assign('group_id', $group_id);
+	        
+	        
+	    }elseif ($request->messageAction == "changeFriend"){ 
+	       $friend_table_id = $request->friend_table_id;
+	       $friend = $friendModel->getFriendById($friend_table_id);
+	       if ($friend){
+	           if ($request->save_friend){
+	               $friendModel->load($friend_table_id);
+	               $friendModel->group_id = $request->group_id;
+	               $friendModel->note = htmlspecialchars($request->note);
+	               $friendModel->save();
+	               Project::getResponse()->redirect(Project::getRequest()->createUrl('Messages', 'Friend'));
+	           }
+	           $isDefAction = false;
+	           $this -> _view -> assign('pageAction', 'changeFriend');
+	           $this -> _view -> assign('friend', $friend);
+	           $this -> _view -> assign('aFriendGroups', $friendModel->getUserFriendGroups($user->id));
+	       }	 
+	             
+	    
+	    
+	    }elseif ($request->messageAction == "addGroupFriend"){
+	        if ($request->add_group){
+	            if (!$friendModel->isDublicateGroup($user->id, htmlspecialchars($request->group_name))){
+                   $friendModel->addFriendGroup($user->id, $request->group_name, null);
+	               Project::getResponse()->redirect(Project::getRequest()->createUrl('Messages', 'Friend'));
+               }else{
+                   $this -> _view -> addFlashMessage(FM::ERROR, "Группа с таким именем уже существует");
+               }
+	            
+	        }elseif ($request->add_friend){
+	            $friend = $userModel->getUserByLogin($request->friend_name);
+	            if ($friend && $friendModel->isFriend($user->id, $friend['id'])){
+	                $this -> _view -> addFlashMessage(FM::ERROR, "Этот пользователь уже добавлен в Ваши друзья");
+	            }elseif ($friend){
+                   $friendModel->load(0);
+                   $friendModel->friend_id = $friend['id'];
+                   $friendModel->user_id = $user->id;
+                   $friendModel->group_id = 0;
+                   $friendModel->save();
+	               Project::getResponse()->redirect(Project::getRequest()->createUrl('Messages', 'Friend'));
+               }else{
+                   $this -> _view -> addFlashMessage(FM::ERROR, "Пользователя с таким именем нет");
+               }
+	            
+	        }
+	        
+	    }
+	    if ($isDefAction){
+	        $this -> _view -> assign('pageAction', 'main');
+	    }
+	    
+	    $aGroupMessagesCount = array();
+	    $aGroupMessagesCount['all']=
+	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, -1, 1, 0),
+	                 "read"=>$messagesModel->getCountMessagesToUser($user->id, -1, 1, 1));
+	    $this -> _view -> assign('aGroupMessagesCount', $aGroupMessagesCount);
 	    
 	    $aFriendGroups = $friendModel->getUserFriendGroups($user->id);
 	    $this -> _view -> assign('aFriendGroups', $aFriendGroups);
