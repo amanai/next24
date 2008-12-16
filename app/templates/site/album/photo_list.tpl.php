@@ -24,7 +24,9 @@
 								<?php if ($this -> can_edit) { ?>
 									<form action="<?php echo $this -> createUrl('Photo', 'Save'); ?>" method="post">
 								<?php } ?>
-								<?php foreach($this->photo_list as $key => $item){ ?>
+								<?php 
+								foreach($this->photo_list as $key => $item){ 
+								?>
 									<?php if ($key%4 == 0){ ?><tr><?php } ?>
 										<td>
 											<div class="block_ee1" style="width: 160px;">
@@ -69,14 +71,16 @@
 																	</div>
 																</div>
 															<?php } ?>
-															<a href="javascript: void(0);" onclick="ShowHideComplaint('complaintPhoto<?php echo $item['id'];?>');">пожаловаться</a>
-															<div class="complaintPhoto" id="complaintPhoto<?php echo $item['id'];?>">
-                											<label><input type="radio" name="complaint<?php echo $item['id'];?>" value="1" /><font  class="complaintText">На фото никого не видно</font></label><br/>
-                											<label><input type="radio" name="complaint<?php echo $item['id'];?>" value="2" /><font  class="complaintText">Чужое фото</font></label><br/>
-                											<label><input type="radio" name="complaint<?php echo $item['id'];?>" value="3" /><font  class="complaintText">Фото из другой тематики</font></label><br/>
-                											<input type="text" name="complaint_text<?php echo $item['id'];?>" value="" /><br/>
-                											<input type="button" onclick="sendArbitration(<?php echo $item['id'];?>);" value="Отправить жалобу" />
+															<?php if ($this -> user_id) { ?>
+															<a href="javascript: void(0);" onclick="ShowHideComplaint('complaintArbitration<?php echo $item['id'];?>');">пожаловаться</a>
+															<div class="complaintArbitration" id="complaintArbitration<?php echo $item['id'];?>">
+                											<label><input type="radio" name="complaint<?php echo $item['id'];?>" id="complaint<?php echo $item['id'];?>" value="На фото никого не видно. " /><font  class="complaintText">На фото никого не видно</font></label><br/>
+                											<label><input type="radio" name="complaint<?php echo $item['id'];?>" id="complaint<?php echo $item['id'];?>" value="Чужое фото. " /><font  class="complaintText">Чужое фото</font></label><br/>
+                											<label><input type="radio" name="complaint<?php echo $item['id'];?>" id="complaint<?php echo $item['id'];?>" value="Фото из другой тематики. " /><font  class="complaintText">Фото из другой тематики</font></label><br/>
+                											<input type="text" name="complaint_text<?php echo $item['id'];?>" id="complaint_text<?php echo $item['id'];?>" value="" /><br/>
+                											<input type="button" onclick="sendArbitration(<?php echo $item['id'];?>, '<?php echo $item['login'];?>');" value="Отправить жалобу" />
                 											</div>
+                											<?php } ?>
 														</div>
 													</div>
 												</div>

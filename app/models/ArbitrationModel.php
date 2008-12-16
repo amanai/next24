@@ -5,8 +5,8 @@ class ArbitrationModel extends BaseModel{
         parent::__construct('arbitration');
     }
    
-   /* 
-    function getCorrespondenceBetweenUsers($aUsersID){
+    /*
+    function addComplaint($user_id, $complaint_on_user, $complaint_text, $arbitration_group){
         $DE = Project::getDatabase();
         $result = array();
         if ($aUsersID){

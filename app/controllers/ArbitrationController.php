@@ -13,23 +13,30 @@ class ArbitrationController extends SiteController{
 	public function AddComplaintAction(){
 	    $messagesModel = new MessagesModel();
 	    $user = Project::getUser() -> getDbUser();
+	    $userModel = new UserModel();
+	    $arbitrationModel = new ArbitrationModel();
 	    $request = Project::getRequest();
 	    
-	    
-	    $message['aMessages'] = $aMessages;
-	    $message['groupId'] = (int)$request->groupId;
-	    $message['groupName'] = $request->groupName;
-	    $message['current_page'] = $request->current_page;
-	    $message['messageCountAll']['new'] = $messagesModel->getCountMessagesToUser($user->id, -1, 1, 0);
-	    $message['messageCountAll']['read'] = $messagesModel->getCountMessagesToUser($user->id, -1, 1, 1);
-	    $message['messageCountGroup']['new'] = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 1, 0);
-	    $message['messageCountGroup']['read'] = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 1, 1);
-	    foreach ($aMessages as $userMessage){
-	        $messagesModel->changeOneValue('messages', $userMessage['messages_id'], 'is_read', 1);
+	    $user_login = $request->user_login;
+	    $complaint_on_user = $userModel->getUserByLogin($user_login);
+	    if ($complaint_on_user){
+	        $arbitrationModel->load(0);
+	        
+	        $arbitrationModel->user_id = $user->id;
+	        $arbitrationModel->complaint_on_user = $complaint_on_user['id'];
+	        $arbitrationModel->complaint_text = htmlspecialchars($request->complaint_text);
+	        $arbitrationModel->arbitration_group_id = $request->arbitration_group_id;
+	        $arbitrationModel->save();
+	        
+	        $message['item_id'] = (int)$request->item_id;
+	        
+	        $this -> _view -> returnArbitrationAdded($message);
+            $this -> _view -> ajax();
 	    }
 	    
-	    $this -> _view -> returnFolderMessages($message);
-        $this -> _view -> ajax();
+
+	    
+	    
 	}
 	
 }

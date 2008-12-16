@@ -287,6 +287,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$info['list_controller'] = 'Photo';
 			$info['list_action'] = 'Album';
 			$info['list_user'] = null;
+			$info['user_id'] = $user_id;
 			$this -> _view -> PhotoList($info);
 			$this -> _view -> parse();
 		}
