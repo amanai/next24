@@ -57,8 +57,16 @@
 			<span id="micro2">Кто сможет смотреть посты в этом разделе.</span>
 		</td>
 	</tr>
+	
 	<tr>
-		<td colspan="2" align="right"><input type="submit" value="Сохранить" /></td>
+		<td valign="top">Код баннера</td>
+		<td>
+            <textarea style="width: 300px; height:100px;" name="blog_banner_code"></textarea><br/>
+			<span id="micro2">Вы можете добавлять свои баннеры в посты.</span>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right"><input type="submit" name="save" value="Сохранить" />&nbsp;&nbsp;&nbsp;<input type="submit" name="delete" value="Удалить" onclick="return confirm('Автоматически удалятся все записи раздела. Уверены?');" /></td>
 	</tr>
 	</table>
 </form>

@@ -30,7 +30,20 @@
 								<div class="block_title_right"><?php echo date("j F Y", strtotime($this->post_creation_date));?> | <span class="tags"><a href="#taglink" class="astable"><?php echo $this->post_tag; ?></a></span></div>
 							</div>
 							<div>
-								<?php echo $this->full_text; ?><br><br>
+							
+            					<?php 
+            					if ($this->user_avatar){
+            					   $user_avatar = $this->user_avatar;
+            					   $avatar_path = ($user_avatar['sys_av_id'])?$user_avatar['sys_av_path']:$user_avatar['path']; 
+            					?>
+            					   <div class="av_preview av_gallery right5">
+            					   <img style="margin: 5px;" alt="<?php echo $user_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avatar_path; ?>"/>
+            					   </div>
+            					<?php
+            					}
+            					?>            					
+								<?php echo $this->full_text; ?><br>
+								<?php if($this->post_mood) echo '<hr align="left" class="hr_comment"/><div class="micro3">'.$this->post_mood.'</div>'; ?>
 							</div>
 							<br>
 					</div></div></div></div>
@@ -39,6 +52,7 @@
 						<?php //include(VIEWS_PATH.'/base_comment.tpl.php'); ?>
 					</div></div></div></div>
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+					<a name="comments"></a>
 						<?php echo $this -> comment_list; ?>
 					</div></div></div></div>
 					

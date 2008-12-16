@@ -26,7 +26,11 @@
 					<div class="info" id="flash_message"><?php echo $this -> flash_messages; ?></div>
 					<!-- Создание/редактирование поста -->
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-					<?php require('form_blog.tpl.php'); ?>
+					<?php 
+					if ($this->request_user_id == $this->user_id){ 
+					    require('form_blog.tpl.php');
+					}
+					?>
 					</div></div></div></div>
 					<!-- /Создание/редактирование поста -->
 					

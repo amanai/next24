@@ -102,13 +102,16 @@
 		 * Edit post action
 		 */
 		public function PostEditAction(){
-			
+			$info = array();
 			$request = Project::getRequest();
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			
+			$info['user_id'] = (int)$user_id;
+			$info['request_user_id'] = (int)$request_user_id;
+			
 			$this -> BaseSiteData();
-			$info = array();
+			
 			$this -> BaseBlogData($info);
 			
 			$post_id = (int)$request -> getKeyByNumber(0);
@@ -140,6 +143,9 @@
 			
 			$mood_model = new MoodModel;
 			$info['mood_list'] = $mood_model -> getList($request_user_id);
+			$userModel = new UserModel();
+			$info['user_avatars'] = $userModel -> getAllUserAvatars($user_id);
+			$info['avatar_id'] = $post_model -> avatar_id;
 			
 			$tree_model = new BlogTreeModel;
 			$tree_model -> load($post_model -> ub_tree_id);
@@ -171,6 +177,8 @@
 			$blog_model = new BlogModel;
 			$blog_model -> loadByUserId($user_id);
 			
+			$info['user_id'] = $user_id;
+			$info['request_user_id'] = $request_user_id;
 			$info['blog_title'] = $blog_model -> title;
 			$info['blog_access'] = $blog_model -> access;
 			$info['access_list'] = HelpFunctions::getBlogAccessList();
@@ -201,6 +209,7 @@
 				$blog_model -> creation_date = date("Y-m-d");
 				$blog_model -> creation_ip = $_SERVER['REMOTE_ADDR'];
 			}
+			$blog_model -> user_id = $user_id;
 			$blog_model -> title = $request -> blog_title;
 			$blog_model -> access = $request -> blog_access;
 			$blog_model -> save();
@@ -217,40 +226,40 @@
 			$post_id = (int)$request -> id;
 			$page_number = (int)$request -> page_number;
 			
-			
-			$post_model = new BlogPostModel;
-			$post_model -> load($request -> id);
-			$post_model -> title = $request -> post_title;
-			$post_model -> full_text = $request -> post_full_text;
-			$post_model -> small_text = $request -> post_small_text;
-			$post_model -> ub_tree_id = $request -> post_branch;
-			$post_model -> bc_tag_id = $request -> post_tag;
-			if ($request -> allow_comments){
-				$post_model -> allowcomments = 1;
-			} else {
-				$post_model -> allowcomments = 0;
+			if ($request_user_id == $user_id){
+    			$post_model = new BlogPostModel;
+    			$post_model -> load($request -> id);
+    			$post_model -> title = $request -> post_title;
+    			$post_model -> full_text = $request -> post_full_text;
+    			$post_model -> small_text = $request -> post_small_text;
+    			$post_model -> ub_tree_id = $request -> post_branch;
+    			$post_model -> bc_tag_id = $request -> post_tag;
+    			if ($request -> allow_comments){
+    				$post_model -> allowcomments = 1;
+    			} else {
+    				$post_model -> allowcomments = 0;
+    			}
+    			if ($request -> best_post){
+    				if ((int)$post_model -> bbp_status === BEST_POST_STATUS::NO){
+    					$post_model -> bbp_status = BEST_POST_STATUS::MODERATION;
+    				}
+    			} else {
+    				if (!$post_model -> bbp_status){
+    					$post_model -> bbp_status = BEST_POST_STATUS::NO;
+    				}
+    			}
+    			$post_model -> access = (int)$request -> post_access;
+    			$post_model -> mood = (int)$request -> post_mood;
+    			$post_model -> avatar_id = (int)$request -> post_avatar;
+    			
+    			if ($post_model -> id <= 0){
+    				$post_model -> creation_date = date("Y-m-d");
+    				$post_model -> creation_ip = $_SERVER['REMOTE_ADDR'];
+    				$post_model -> comments = 0;
+    				$post_model -> views = 0;
+    			}
+    			$post_id = $post_model -> save();
 			}
-			if ($request -> best_post){
-				if ((int)$post_model -> bbp_status === BEST_POST_STATUS::NO){
-					$post_model -> bbp_status = BEST_POST_STATUS::MODERATION;
-				}
-			} else {
-				if (!$post_model -> bbp_status){
-					$post_model -> bbp_status = BEST_POST_STATUS::NO;
-				}
-			}
-			$post_model -> access = (int)$request -> post_access;
-			$post_model -> mood = (int)$request -> post_mood;
-			$post_model -> avatar_id = (int)$request -> post_avatar;
-			
-			if ($post_model -> id <= 0){
-				$post_model -> creation_date = date("Y-m-d");
-				$post_model -> creation_ip = $_SERVER['REMOTE_ADDR'];
-				$post_model -> comments = 0;
-				$post_model -> views = 0;
-			}
-			$post_id = $post_model -> save();
-			
 			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostEdit', array($post_id, $page_number)));
 		}
 		
@@ -268,27 +277,34 @@
 			$page_number = (int)$request -> getKeyByNumber(2);
 			
 			
-			
-			
-			$controller = new BaseCommentController();
-			$info['comment_list'] = $controller -> CommentList(
-																$post_id,  // Id of comment item
-																$page_number, // current page number
-																$this -> getParam('comment_per_page'),  // page size
-																'Blog', 'Comments', 'blog', array($post_id, $post_page_number) // current view params
-																);
-			
-			
-			
 			$post_model = new BlogPostModel;
 			$post_model -> load($post_id);
 			$info['full_text'] = ($request_user_id !== $user_id ) ? $this -> PostPreprocess($post_model -> full_text, $user_id, $post_model -> ub_tree_id) : $post_model -> full_text;
 			$info['post_title'] = $post_model -> title;
 			$info['post_creation_date'] = $post_model -> creation_date;
 			$info['post_allow_comments'] = (int)$post_model -> allowcomments;
+			
+			$controller = new BaseCommentController();
+			$info['comment_list'] = $controller -> CommentList(
+																$post_id,  // Id of comment item
+																$page_number, // current page number
+																$this -> getParam('comment_per_page'),  // page size
+																'Blog', 'Comments', 'blog', array($post_id, $post_page_number), // current view params
+																(int)$post_model -> allowcomments
+																);
+			
+			
+			
+			
 			$tag_model = new BlogTagModel;
 			$tag_model -> load($post_model -> bc_tag_id);
 			$info['post_tag'] = $tag_model -> name;
+			$moodModel = new MoodModel();
+			$moodModel->load($post_model->mood);
+			$info['post_mood'] = $moodModel -> name;
+			
+			$userModel = new UserModel();
+			$info['user_avatar'] = $userModel->getFullAvatarById($post_model -> avatar_id);
 			
 			
 			$info['add_comment_url'] = $request -> createUrl('Blog', 'SaveComment', array($post_id, $post_page_number, $page_number));
@@ -408,6 +424,8 @@
 			
 			$tree_model = new BlogTreeModel;
 			$tree_model -> load($branch_id);
+			$info['user_id'] = $user_id;
+			$info['request_user_id'] = $request_user_id;
 			$info['branch_id'] = $tree_model -> id;
 			$info['branch_name'] = $tree_model -> name;
 			$info['branch_access'] = $tree_model -> access;
@@ -441,6 +459,7 @@
 			$request = Project::getRequest();
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			if ($request_user_id != $user_id) {Project::getResponse() -> redirect($request -> createUrl('Blog', 'EditBranch', array($branch_id)));}
 			
 			$branch_id = (int)$request -> branch_id;
 			$name = $request -> branch_name;
@@ -479,40 +498,60 @@
 				$child = null;
 			}
 			if ($child){
-				$this -> _view -> addFlashMessage(FM::ERROR, "Невозможно переместить раздел: есть зависимые разделы");
+				$this -> _view -> addFlashMessage(FM::ERROR, "Невозможно изменить раздел: есть зависимые разделы");
 				$this -> EditBranchAction($branch_id);
 				return;
 			}
 			
-			$tree_model -> name = $name;
-			$tree_model -> blog_id = $blog_id;
-			$tree_model -> access = $access;
-			$tree_model -> blog_catalog_id = $catalog_id;
-			$tree_model -> blog_banner_id = 0;
-			$n = $tree_model -> getNode();
-			if (!$n){
-				$tree_model -> key = '';
-				if ($parent_node){
-					$tree_model -> level = 2;
-				} else {
-					$tree_model -> level = 1;
-				}
-				$branch_id = $tree_model -> save();
-				$n = new Node(new Key($branch_id), 'ub_tree');
-				$tree_model -> key = $n -> key -> __toString();
-			}
+			if ($request->save){
+    			$tree_model -> name = $name;
+    			$tree_model -> blog_id = $blog_id;
+    			$tree_model -> access = $access;
+    			$tree_model -> blog_catalog_id = $catalog_id;
+    			
+    			if ($request->blog_banner_code){
+    			    $blogModel = new BlogModel();
+    			    $blog_banner = $blogModel -> getBlogBannerById($tree_model -> blog_banner_id);
+    			    if ($blog_banner){
+    			        $blog_banner_id = $request->blog_banner_code;
+    			        $blogModel->changeBlogBanner($tree_model -> blog_banner_id, $blog_banner_id);
+    			    }else{
+    			        $blog_banner_id = $blogModel->addBlogBanner($request->blog_banner_code);
+    			    }
+    			}else $blog_banner_id = 0;
+    			$tree_model -> blog_banner_id = $blog_banner_id;
+    			$n = $tree_model -> getNode();
+    			if (!$n){
+    				$tree_model -> key = '';
+    				if ($parent_node){
+    					$tree_model -> level = 2;
+    				} else {
+    					$tree_model -> level = 1;
+    				}
+    				$branch_id = $tree_model -> save();
+    				$n = new Node(new Key($branch_id), 'ub_tree');
+    				$tree_model -> key = $n -> key -> __toString();
+    			}
+    			
+    			if (!$parent_node){
+    				$node = new Node(new Key($tree_model -> id), 'ub_tree');
+    				$tree_model -> key = $node -> key -> __toString();
+    				$tree_model -> level = 1;
+    			}
+    			
+    			$branch_id = $tree_model -> save();
+    			if ($parent_node){
+    				$n -> changeParent($parent_node);
+    			}
+    			Project::getResponse() -> redirect($request -> createUrl('Blog', 'EditBranch', array($branch_id)));
 			
-			if (!$parent_node){
-				$node = new Node(new Key($tree_model -> id), 'ub_tree');
-				$tree_model -> key = $node -> key -> __toString();
-				$tree_model -> level = 1;
-			}
 			
-			$branch_id = $tree_model -> save();
-			if ($parent_node){
-				$n -> changeParent($parent_node);
+			}elseif($request->delete){
+			    $tree_model->delete($branch_id);
+			    $blog_model->deletePostsByUb_tree_id($branch_id);
+			    
+			    Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
 			}
-			Project::getResponse() -> redirect($request -> createUrl('Blog', 'EditBranch', array($branch_id)));
 			
 		}
 }

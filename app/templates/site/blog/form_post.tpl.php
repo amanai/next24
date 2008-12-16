@@ -58,6 +58,7 @@
 			<span id="micro2">Кто сможет смотреть и комментировать этот пост.</span>
 		</td>
 	</tr>
+	<!--
 	<tr>
 		<td valign="top">Отправить на модерацию в Лучшие за день</td>
 		<td>
@@ -73,7 +74,7 @@
 		</td>
 
 	</tr>
-	
+	-->
 	<tr>
 		<td valign="top">Разрешать комментировать</td>
 		<td>
@@ -103,6 +104,23 @@
 				<?php foreach ($this -> mood_list as $key=>$value){?>
 					<option value="<?php echo $value['id'];?>" <?php if ((int)$value['id'] === (int)$this -> post_mood) {echo 'selected';} ?>><?php echo $value['name'];?></option>
 				<?php } ?>
+			</select><br />
+			<span id="micro2">Настроение автора во время написания поста.</span>
+		</td>
+
+	</tr>
+	<tr>
+		<td valign="top">Аватар</td>
+		<td>
+
+			<select style="width: 300px;" name="post_avatar">
+				<option value="0">---</option>
+				<?php 
+    			foreach ($this -> user_avatars as $user_avatar){
+    				$selected = ($user_avatar['id']==$this->avatar_id)?"selected":"";
+    			    echo '<option value="'.$user_avatar['id'].'" '.$selected.' />'.$user_avatar['av_name'];        
+				} 
+				?>
 			</select><br />
 			<span id="micro2">Настроение автора во время написания поста.</span>
 		</td>

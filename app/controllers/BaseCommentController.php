@@ -14,7 +14,7 @@ class BaseCommentController extends CBaseController{
 		/**
 		 * 
 		 */
-		public function CommentList($item_id, $page_number, $page_size, $cur_controller, $cur_action, $item_name, $params){
+		public function CommentList($item_id, $page_number, $page_size, $cur_controller, $cur_action, $item_name, $params, $allowComment = 1){
 		    $userModel = new UserModel();
 		    $info = array();
 		    if ((int)$page_size <= 0){
@@ -53,6 +53,7 @@ class BaseCommentController extends CBaseController{
 			
 			$info['user_moods'] = $userModel->getAllUserMoods($user_id);
 			$info['user_avatars'] = $userModel->getAllUserAvatars($user_id);
+			$info['allowComment'] = $allowComment;
 			
 			
 			
@@ -83,7 +84,7 @@ class BaseCommentController extends CBaseController{
     		        $item_model = new SocialModel();
     		        break;
     		    case 'blog':
-    		        $item_model = new BlogModel();
+    		        $item_model = new BlogModel('blog_post');
     		        break;
     		        
     		}
@@ -95,7 +96,7 @@ class BaseCommentController extends CBaseController{
     			$item_model->save();
     			
     		}
-    		Project::getResponse()->redirect($request->createUrl($request->cur_controller, $request->cur_action, array($item_model->id)));
+    		Project::getResponse()->redirect($request->createUrl($request->cur_controller, $request->cur_action, array($request->element_id)));
     	}
     	
     	// удаление комментария

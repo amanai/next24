@@ -79,7 +79,7 @@ foreach($this->comment_list as $key => $item){
 
 <?php 
 // Add Comment
-if ($this -> user_id){
+if ($this -> user_id && $this->allowComment){
 ?>
         <form action="<?php echo $this->add_comment_url;?>" method="post">
 		<input type="hidden" name="id" value="<?php echo $this->add_comment_id;?>" />

@@ -313,6 +313,21 @@ class UserModel extends BaseModel{
         return $result;
     }
     
+    public function getFullAvatarById($id){
+        $DE = Project::getDatabase();
+        $result = array();
+        $sql ="
+            SELECT avatars.*, sys_av.av_name as sys_av_name, sys_av.path as sys_av_path
+            FROM avatars
+            LEFT JOIN sys_av
+                ON avatars.sys_av_id = sys_av.id
+            WHERE avatars.id = '".$id."'
+        ";
+        $result = $DE -> selectRow($sql);
+        return $result;
+    }
+    
+    
     public function addUserAvatar($user_id, $path, $av_name, $def, $sys_av_id = 0){
         $DE = Project::getDatabase();
         $sql ="
