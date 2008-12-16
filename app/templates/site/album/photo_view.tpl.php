@@ -61,6 +61,16 @@
 															}
 														?>
 													</div>
+													<?php if ($this -> user_id) { ?>
+													<a href="javascript: void(0);" onclick="ShowHideComplaint('complaintArbitration1');">пожаловаться</a>
+													<div class="complaintArbitration" id="complaintArbitration1">
+        											<label><input type="radio" name="complaint1" id="complaint1" value="На фото никого не видно. " /><font  class="complaintText">На фото никого не видно</font></label><br/>
+        											<label><input type="radio" name="complaint1" id="complaint1" value="Чужое фото. " /><font  class="complaintText">Чужое фото</font></label><br/>
+        											<label><input type="radio" name="complaint1" id="complaint1" value="Фото из другой тематики. " /><font  class="complaintText">Фото из другой тематики</font></label><br/>
+        											<input type="text" name="complaint_text1" id="complaint_text1" value="" /><br/>
+        											<input type="button" onclick="sendArbitration(1, '<?php echo $this->photo_owner_login;?>');" value="Отправить жалобу" />
+        											</div>
+        											<?php } ?>
 												</center>
 											
 											</div>

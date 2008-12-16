@@ -59,6 +59,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$album_model = new AlbumModel;
 			$album_model -> load($model -> album_id);
 			
+			$info['user_id'] = $user_id;
 			$info['album_name'] = $album_model -> name;
 			$info['album_id'] = $album_model -> id;
 			$info['photo_id'] = $model -> id;

@@ -24,7 +24,7 @@ class ArbitrationController extends SiteController{
 	        
 	        $arbitrationModel->user_id = $user->id;
 	        $arbitrationModel->complaint_on_user = $complaint_on_user['id'];
-	        $arbitrationModel->complaint_text = htmlspecialchars($request->complaint_text);
+	        $arbitrationModel->complaint_text = $_SERVER['HTTP_REFERER']." ".htmlspecialchars($request->complaint_text);
 	        $arbitrationModel->arbitration_group_id = $request->arbitration_group_id;
 	        $arbitrationModel->save();
 	        

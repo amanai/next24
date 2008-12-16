@@ -22,6 +22,9 @@ class PhotoView extends BaseSiteView{
 		
 		function Photo($info){
 		    $this->_js_files[]='jquery.js';
+		    $this->_js_files[]='blockUI.js';
+    	    $this->_js_files[]='ajax.js';
+    	    $this->_js_files[] = 'photo.js';
 			$this -> setTemplate(null, 'photo_view.tpl.php');
 			$this -> set($info);
 		}
