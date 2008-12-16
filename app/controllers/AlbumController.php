@@ -413,7 +413,7 @@
 			clearstatcache();
 			if (!file_exists($dir) || !is_dir($dir)){
 				if (mkdir($dir)){
-					chmod($dir, 0644);
+					chmod($dir, 0777);
 					return true;
 				} else {
 					return false;
