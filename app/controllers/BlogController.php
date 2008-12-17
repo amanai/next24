@@ -5,7 +5,6 @@
  */
 	class BlogController extends SiteController{
 		const DEFAULT_POST_PER_PAGE = 2;
-		const DEFAULT_COMMENT_PER_PAGE = 8;
 		const DEFAULT_SUBSCRIBE_TAG = 'subscribe';
 		private $_is_subscribed_to_log = false;
 		
@@ -57,7 +56,7 @@
 			$post_model -> setPager(new DbPager($page_number, $this -> getParam('post_per_page', self::DEFAULT_POST_PER_PAGE)));
 			
 			$subcribe_model = new BlogSubscribeModel;
-			$list = $post_model -> loadList($request_user_id, $user_id, $tree_id, $subcribe_model -> isSubscribed($user_id, $tree_id));
+			$list = $post_model -> loadList($user_id, $request_user_id,  $tree_id, $subcribe_model -> isSubscribed($user_id, $tree_id));
 			foreach ($list as &$item){
 				$item['comment_link'] = $request -> createUrl('Blog', 'Comments', array($item['id'], $page_number, 0));
 				if ($request_user_id === $user_id) {
@@ -278,11 +277,22 @@
 			
 			
 			$post_model = new BlogPostModel;
+			$post = $post_model->getPost($post_id, $user_id, $request_user_id);
+			if (!$post){
+			    Project::getResponse() -> redirect($_SERVER['HTTP_REFERER']);
+			}
 			$post_model -> load($post_id);
+			
 			$info['full_text'] = ($request_user_id !== $user_id ) ? $this -> PostPreprocess($post_model -> full_text, $user_id, $post_model -> ub_tree_id) : $post_model -> full_text;
 			$info['post_title'] = $post_model -> title;
 			$info['post_creation_date'] = $post_model -> creation_date;
 			$info['post_allow_comments'] = (int)$post_model -> allowcomments;
+			
+			$tree_model = new BlogTreeModel;
+			$tree_model -> load($post_model->ub_tree_id);
+			$blog_banners_model = new BlogModel('blog_banners');
+			$blog_banners_model->load($tree_model->blog_banner_id);
+			$info['blog_banner_code'] = $blog_banners_model -> code;
 			
 			$controller = new BaseCommentController();
 			$info['comment_list'] = $controller -> CommentList(
@@ -305,8 +315,6 @@
 			
 			$userModel = new UserModel();
 			$info['user_avatar'] = $userModel->getFullAvatarById($post_model -> avatar_id);
-			
-			
 			$info['add_comment_url'] = $request -> createUrl('Blog', 'SaveComment', array($post_id, $post_page_number, $page_number));
 			
 			$this -> _view -> CommentList($info);
@@ -431,6 +439,8 @@
 			$info['branch_access'] = $tree_model -> access;
 			$info['blog_catalog_id'] = $tree_model -> blog_catalog_id;
 			$info['access_list'] = HelpFunctions::getBlogAccessList();
+			$blog_banner = $blog_model->getBlogBannerById($tree_model->blog_banner_id);
+			if ($blog_banner) $info['blog_banner_code'] = $blog_banner['code'];
 			
 			$catalog_model = new BlogCatalogModel;
 			$info['catalog_list'] = $catalog_model -> loadAll();
@@ -509,16 +519,16 @@
     			$tree_model -> access = $access;
     			$tree_model -> blog_catalog_id = $catalog_id;
     			
-    			if ($request->blog_banner_code){
-    			    $blogModel = new BlogModel();
-    			    $blog_banner = $blogModel -> getBlogBannerById($tree_model -> blog_banner_id);
-    			    if ($blog_banner){
-    			        $blog_banner_id = $request->blog_banner_code;
-    			        $blogModel->changeBlogBanner($tree_model -> blog_banner_id, $blog_banner_id);
-    			    }else{
-    			        $blog_banner_id = $blogModel->addBlogBanner($request->blog_banner_code);
-    			    }
-    			}else $blog_banner_id = 0;
+			
+			    $blogModel = new BlogModel();
+			    $blog_banner = $blogModel -> getBlogBannerById($tree_model -> blog_banner_id);
+			    if ($blog_banner){
+			        $blog_banner_id = $tree_model -> blog_banner_id;
+			        $blogModel->changeBlogBanner($tree_model -> blog_banner_id, $request->blog_banner_code);
+			    }else{
+			        $blog_banner_id = $blogModel->addBlogBanner($request->blog_banner_code);
+			    }
+    			
     			$tree_model -> blog_banner_id = $blog_banner_id;
     			$n = $tree_model -> getNode();
     			if (!$n){
@@ -553,6 +563,24 @@
 			    Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
 			}
 			
+		}
+		
+		function DoSubscribeAction(){
+		    $request = Project::getRequest();
+			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
+			$user_id = (int)Project::getUser() -> getDbUser() -> id;
+			$subscribeModel = new BlogSubscribeModel();
+			$subscribe_id = $subscribeModel->isSubscribed($user_id, $request->tree_id);
+			$subscribeModel->load($subscribe_id);
+			if ($subscribeModel->id){
+			    $subscribeModel->delete($subscribe_id);
+			}else{
+			    $subscribeModel->user_id = $user_id;
+			    $subscribeModel->ub_tree_id = $request->tree_id;
+			    $subscribeModel->save();
+			}
+			
+			Project::getResponse() -> redirect($_SERVER['HTTP_REFERER']);
 		}
 }
 ?>

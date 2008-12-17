@@ -25,7 +25,7 @@ class SiteCommentView extends BaseSiteView{
 		            }else $i++;
 		            // цитата
 		            $res_text .= $this->headQuote($item2);
-		            $res_text .= $this->bodyQuote($items2[2][$key]);
+		            $res_text .= $this->bodyQuote(htmlspecialchars_decode($items2[2][$key]));
 		        }
 		        if ($items4){
 		            $res_text .= nl2br(htmlspecialchars($items4[1]));

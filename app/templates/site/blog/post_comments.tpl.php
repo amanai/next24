@@ -46,11 +46,12 @@
 								<?php if($this->post_mood) echo '<hr align="left" class="hr_comment"/><div class="micro3">'.$this->post_mood.'</div>'; ?>
 							</div>
 							<br>
+							
 					</div></div></div></div>
-					
-					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-						<?php //include(VIEWS_PATH.'/base_comment.tpl.php'); ?>
-					</div></div></div></div>
+					<div style="clear: both;">
+						<?php echo $this->blog_banner_code; ?><hr/>
+					</div>
+
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<a name="comments"></a>
 						<?php echo $this -> comment_list; ?>

@@ -61,7 +61,7 @@
 	<tr>
 		<td valign="top">Код баннера</td>
 		<td>
-            <textarea style="width: 300px; height:100px;" name="blog_banner_code"></textarea><br/>
+            <textarea style="width: 300px; height:100px;" name="blog_banner_code"><?php echo $this->blog_banner_code; ?></textarea><br/>
 			<span id="micro2">Вы можете добавлять свои баннеры в посты.</span>
 		</td>
 	</tr>
