@@ -118,12 +118,14 @@
 			
 			$post_model = new BlogPostModel;
 			$post_model -> load($post_id);
-			$tree_model = new BlogTreeModel;
-			$tree_model -> load($post_model -> ub_tree_id);
-			$blog_model = new BlogModel();
-			$blog_model -> load($tree_model->blog_id);
-			if ($blog_model->user_id != $user_id){
-			    Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+			if ($post_model->id){
+    			$tree_model = new BlogTreeModel;
+    			$tree_model -> load($post_model -> ub_tree_id);
+    			$blog_model = new BlogModel();
+    			$blog_model -> load($tree_model->blog_id);
+    			if ($blog_model->user_id != $user_id){
+    			    Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+    			}
 			}
 			
 			$info['post_id'] = (int)$post_model -> id;
