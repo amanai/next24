@@ -38,7 +38,7 @@
 			$blog_model = Project::getUser() -> getShowedUser() -> getBlog();
 			$tree_model = new BlogTreeModel;
 			$info['branch_list'] = $tree_model -> getBranchList($blog_model -> id, $user_id);
-			$info['blog_title'] = $blog_model -> title;
+			$info['blog_info']['title'] = $blog_model->title;
 		}
 		
 		function PostListAction(){
