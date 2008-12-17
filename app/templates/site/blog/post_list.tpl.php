@@ -12,7 +12,7 @@
 							<div class="block_ee1"><div class="block_ee2">
 								<div class="block_ee3">
 									<div class="block_ee4">
-										<div class="block_title"><h2><? echo $this->blog_info['title'];  ?></h2></div>
+										<div class="block_title"><h2><? echo $this->blog_title;  ?></h2></div>
 											<?php require('blog_left_tree.tpl.php'); ?>
 										</div>
 									</div>
@@ -25,7 +25,7 @@
 			<td class="next24u_right">
 				<!-- Список постов -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-								<?php if (is_array($this->post_list)){?>
+								<?php if (is_array($this->post_list) && count($this->post_list)){?>
 									<?php foreach ($this->post_list as $key=>$item){?>
 										<div class="block_title" id="record_93">
 											<div class="block_title_left"><h2><?php echo $item['title']; ?></h2></div>
@@ -48,10 +48,14 @@
 										</div>
 										<br>
 									<?php }?>
-								<?php }?>
+								<?php } else{
+								            echo 'В данном разделе нет записей';
+								      } 
+								?>
+
 	
 		
-</div></div></div></div>
+                            </div></div></div></div>
 
 							<!-- /Список постов -->
 							<!-- Листинг -->

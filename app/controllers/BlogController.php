@@ -38,6 +38,7 @@
 			$blog_model = Project::getUser() -> getShowedUser() -> getBlog();
 			$tree_model = new BlogTreeModel;
 			$info['branch_list'] = $tree_model -> getBranchList($blog_model -> id, $user_id);
+			$info['blog_title'] = $blog_model -> title;
 		}
 		
 		function PostListAction(){
@@ -220,7 +221,7 @@
 			$blog_model -> title = $request -> blog_title;
 			$blog_model -> access = $request -> blog_access;
 			$blog_model -> save();
-			Project::getResponse() -> redirect($request -> createUrl('Blog', 'Edit'));
+			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
 		}
 		
 		function PostSaveAction(){
@@ -267,7 +268,7 @@
     			}
     			$post_id = $post_model -> save();
 			}
-			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostEdit', array($post_id, $page_number)));
+			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
 		}
 		
 		public function CommentsAction(){
@@ -561,7 +562,7 @@
     			if ($parent_node){
     				$n -> changeParent($parent_node);
     			}
-    			Project::getResponse() -> redirect($request -> createUrl('Blog', 'EditBranch', array($branch_id)));
+    			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
 			
 			
 			}elseif($request->delete){
@@ -577,17 +578,18 @@
 		    $request = Project::getRequest();
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
-			$subscribeModel = new BlogSubscribeModel();
-			$subscribe_id = $subscribeModel->isSubscribed($user_id, $request->tree_id);
-			$subscribeModel->load($subscribe_id);
-			if ($subscribeModel->id){
-			    $subscribeModel->delete($subscribe_id);
-			}else{
-			    $subscribeModel->user_id = $user_id;
-			    $subscribeModel->ub_tree_id = $request->tree_id;
-			    $subscribeModel->save();
+			if ($user_id){
+    			$subscribeModel = new BlogSubscribeModel();
+    			$subscribe_id = $subscribeModel->isSubscribed($user_id, $request->tree_id);
+    			$subscribeModel->load($subscribe_id);
+    			if ($subscribeModel->id){
+    			    $subscribeModel->delete($subscribe_id);
+    			}else{
+    			    $subscribeModel->user_id = $user_id;
+    			    $subscribeModel->ub_tree_id = $request->tree_id;
+    			    $subscribeModel->save();
+    			}
 			}
-			
 			Project::getResponse() -> redirect($_SERVER['HTTP_REFERER']);
 		}
 }

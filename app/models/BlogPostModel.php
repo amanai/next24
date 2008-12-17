@@ -20,7 +20,8 @@ class BlogPostModel extends BaseModel{
 					" LEFT JOIN bc_tag ON bc_tag.id=blog_post.bc_tag_id " .
 					" WHERE " .
 					//(($tree_id > 0)?"  blog_post.ub_tree_id=".(int)$tree_id." AND ":" ") .
-					"  blog_post.ub_tree_id=".(int)$tree_id." AND " .
+					(($tree_id > 0)?"  blog_post.ub_tree_id=".(int)$tree_id." AND ":" blog.user_id = ".(int)$request_user_id." AND ") .
+					//"  blog_post.ub_tree_id=".(int)$tree_id." AND " .
 					//" ( (ubt.access=".ACCESS::ALL.") OR (?d AND ubt.access=".ACCESS::FRIEND.") OR (blog.user_id=?d) OR (blog.user_id = bs.user_id AND ubt.access=".ACCESS::SUBSCRIBE.") )" .
 					//" AND ( (blog_post.access=".ACCESS::ALL.") OR (?d AND blog_post.access=".ACCESS::FRIEND.") OR (blog.user_id=?d) OR (?d AND ubt.access=".ACCESS::SUBSCRIBE.") )" .
 					" ((blog.user_id=".(int)$user_id.") OR ( blog_post.access <> ".ACCESS::MYSELF." )) " .
