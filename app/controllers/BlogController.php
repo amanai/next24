@@ -118,6 +118,13 @@
 			
 			$post_model = new BlogPostModel;
 			$post_model -> load($post_id);
+			$tree_model = new BlogTreeModel;
+			$tree_model -> load($post_model -> ub_tree_id);
+			$blog_model = new BlogModel();
+			$blog_model -> load($tree_model->blog_id);
+			if ($blog_model->user_id != $user_id){
+			    Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+			}
 			
 			$info['post_id'] = (int)$post_model -> id;
 			$info['full_text'] = $post_model -> full_text;
@@ -146,8 +153,7 @@
 			$info['user_avatars'] = $userModel -> getAllUserAvatars($user_id);
 			$info['avatar_id'] = $post_model -> avatar_id;
 			
-			$tree_model = new BlogTreeModel;
-			$tree_model -> load($post_model -> ub_tree_id);
+			
 			
 			$info['tag_list'] = $tag_model -> loadList($tree_model -> blog_catalog_id, true);
 			
