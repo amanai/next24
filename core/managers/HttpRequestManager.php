@@ -267,6 +267,12 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 				throw new InvalidValueException(__METHOD__."::". __LINE__.":: Bad request key: controller - ".$controller_model -> name."; action - ".$action_model -> name.";action ID=".$action_model -> id);
 			}
 			
+			// Default user controller action ----------
+			if ($service=='User'&&$action_model->default&&$this->getUsername()) {
+				$action_model -> request_key='';
+			}
+			// -----------------------------------------
+			
 			if (!$this -> _rewrite){
 				if ($action !== null) {
 					$parameters = array_merge(array($this -> _request_action_key=>$action), $parameters);

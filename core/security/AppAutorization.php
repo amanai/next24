@@ -41,6 +41,9 @@ class AppAutorization extends ApplicationManager implements IManager{
 				$request = Project::getRequest();
 				$load_default = false;
 				$request_action = $request -> getAction();
+				// Default action...
+				if (!$request_action&&$request->getUsername()) $request_action='user_profile';
+				// 
 				$action_model = new ActionModel;
 				$action_model -> loadByRequestKey($request_action);
 				if ((int)$action_model -> id > 0){

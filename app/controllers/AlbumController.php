@@ -145,7 +145,7 @@
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			$request = Project::getRequest();
-			if ($user_id === $request_user_id){
+			if (Project::getUser()->isMyArea()){
 				// Album is for user - so can add/update
 				$id = (int)$request -> id;
 				$onmain = $request -> is_onmain;
@@ -169,7 +169,7 @@
 						// For new albums no thumbnail
 						$album_model -> thumbnail_id = 0;
 					}
-					$album_model -> user_id = $user_id;
+					$album_model -> user_id = $request_user_id;
 					$album_model -> name = $name;
 					$album_model -> access = $access;
 					$album_model -> is_onmain = $onmain;
@@ -265,7 +265,7 @@
 
 			$info = array();
 			$info['tab_name'] = 'Фотоальбомы';
-			if ($request_user_id === $user_id){
+			if (Project::getUser() -> isMyArea()){
 				$info['can_edit'] = true;
 				$info['access_list'] = HelpFunctions::getAccessList();
 			}
@@ -338,7 +338,7 @@
 		protected function BaseAlbumData(&$info, $album_id, $album_list = false){
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
-			if ($request_user_id === $user_id) {
+			if (Project::getUser()->isMyArea()) {
 				$v = new AlbumView();
 				$v -> ControlPanel();
 				$info['control_panel'] = $v -> parse();
@@ -355,7 +355,7 @@
 			$album_model = new AlbumModel();
 			$tmp['album_menu_list'] = $album_model -> loadByUser($request_user_id, $user_id);
 			$tmp['album_id'] = $album_id;
-			if ($request_user_id === $user_id) {
+			if (Project::getUser()->isMyArea()) {
 				$tmp['album_owner'] = true;
 			}
 			$v = new AlbumView();

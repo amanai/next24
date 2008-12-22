@@ -5,6 +5,8 @@ class AppUser{
 	private $_showed_user;
 	private $_is_my_area = false;
 	private $_is_friend = false;
+	private $_is_admin = false;
+	
 			function __construct(IManager $autorization){
 				$this -> _dbUser = new UserModel();
 				if ($autorization -> needAutorization() === true){
@@ -13,6 +15,7 @@ class AppUser{
 					if ($logged) {
 						$this -> _guest = false;
 						$this -> _dbUser -> load($session -> getKey('logged_user_id'));
+						$this->_is_admin = $this -> _dbUser -> user_type_id==1?true:false;
 					} else {
 						$this -> _guest = true;
 					}
@@ -38,10 +41,16 @@ class AppUser{
 						}
 					}
 				}
+				
+				if ($this->_is_admin) $this -> _is_my_area = true;
 			}
 			
 			function isGuest(){
 				return $this -> _guest;
+			}
+			
+			function isAdmin(){
+				return $this -> _is_admin;
 			}
 			
 			function setIsGuest(){

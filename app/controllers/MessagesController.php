@@ -192,10 +192,15 @@ class MessagesController extends SiteController{
 		$this -> _view -> parse();
 	}
 	
-	function sendMessage($mess_header, $m_text, $user_id, $resipient_id, $avatar_id, $is_read, $is_deleted){
+	function sendMessage($mess_header, $m_text, $user_id, $resipient_id, $avatar_id, $is_read, $is_deleted, $allow_html=false){
 	    $messagesModel = new MessagesModel();
-	    $messagesModel->header = stripslashes(htmlspecialchars($mess_header));
-        $messagesModel->m_text = stripslashes(htmlspecialchars($m_text));
+	    if ($allow_html) {
+	    	$messagesModel->header = $mess_header;
+        	$messagesModel->m_text = $m_text;
+	    } else {
+	    	$messagesModel->header = stripslashes(htmlspecialchars($mess_header));
+        	$messagesModel->m_text = stripslashes(htmlspecialchars($m_text));
+	    }
         $messagesModel->send_date = date("Y-m-d H:i:s");
         $messagesModel->author_id = $user_id;
         $messagesModel->recipient_id = $resipient_id;

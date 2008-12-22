@@ -141,6 +141,28 @@ class BaseView{
 			}
 		}
 		
+		function generateTemplate($dir=null, $file=null, $params=null) {
+			// Remember old params
+			$old_dir=$this -> _dir;
+			$old_file=$this -> _file;
+			$old_content=$this -> _content;
+			// Setting new params
+			$this->setTemplate($dir, $file);
+			if (is_array($params)) {
+				foreach ($params as $k=>$v) {
+					$this->$k=$v;
+				}
+			}
+			// Generating...
+			$result=$this->parse();
+			// Restore old params
+			$this -> _dir=$old_dir;
+			$this -> _file=$old_file;
+			$this -> _content=$old_content;
+			
+			return $result;
+		}
+		
 		function _include($rel_path){
 			$dir = dirname($this -> _fullpath);
 			$arr = explode(DIRECTORY_SEPARATOR, $this -> _fullpath);
@@ -149,7 +171,8 @@ class BaseView{
 			for($i = 0; $i < $c; $i++){
 				array_pop($arr);// Go to 1 level upper
 			}
-			$file = implode(DIRECTORY_SEPARATOR, $arr) . DIRECTORY_SEPARATOR . basename($rel_path);
+			$rel_path = str_replace("../","",$rel_path);
+			$file = implode(DIRECTORY_SEPARATOR, $arr) . DIRECTORY_SEPARATOR . $rel_path;
 			return $file;
 		}
 		

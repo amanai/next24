@@ -357,6 +357,7 @@
 		}
 		
 		public function SaveprofileAction(){
+			$this->checkOfficeAccess();
 		    $request = Project::getRequest();
 			if ($this -> ValidateSaveAction() && $request->register){
 				$user_model = Project::getUser() -> getShowedUser();
@@ -476,6 +477,11 @@
 			
 			$friend_model = new FriendModel;
 			$ui_model = new UserInterestsModel;
+			$relation = new RelationsModel;
+			
+			$this -> _view -> assign('relations', $relation->getList());
+			$this -> _view -> assign('my_relation', $relation->getRelation($this->_view->current_user->id, $user->id));
+			$this -> _view -> assign('his_relation', $relation->getRelation($user->id, $this->_view->current_user->id));
 			
 			$this -> _view -> assign('user_default_avatar', $userModel->getUserAvatar($user->id));
 			$this -> _view -> assign('friend_list', $friend_model -> getFriends($user -> id));
@@ -489,6 +495,8 @@
 		}
 		
 		function ProfileEditAction(){
+			$this->checkOfficeAccess();
+			
 		    $userModel = new UserModel();
 			$user = Project::getUser() -> getShowedUser();
 			$request = Project::getRequest();
@@ -512,7 +520,7 @@
 		function AvatarEditAction(){
 		    $userModel = new UserModel();
 		    $user = Project::getUser() -> getShowedUser();
-		    $isAdmin = ($user->user_type_id == 1)?true:false;
+		    $isAdmin = Project::getUser() -> isAdmin();
 			$request = Project::getRequest();
 			$this -> _view -> clearFlashMessages();
 			$uploaddir = "app/images/avatar/";
@@ -719,8 +727,19 @@
 			$this -> _view -> parse();
 		}
 		
-		
-		
+		public function ChangeRelationAction() {
+			$request = Project::getRequest();
+			$relation = new RelationsModel;
+			$user = Project::getUser() -> getShowedUser();
+
+			$relation->setRelation($this->_view->current_user->id, $user->id, $request->relation_text);
+			// Send message
+			$m=new MessagesController();
+			$m->sendMessage('Отношение','Пользователь '.$this->_view->current_user->login.' указал свое отношение к вам. Чтобы просмотреть что именно было указано, <a href="'.$request->createUrl('User', 'Profile', null, $this->_view->current_user->login).'">перейдите в профиль пользователя '.$this->_view->current_user->login.'</a>.',$this->_view->current_user->id,$user->id,0,0,0,1);
+			// ------------
+			
+			Project::getResponse() -> redirect(Project::getRequest() -> createUrl("User", "Profile"));
+		}
 		
 	}
 ?>

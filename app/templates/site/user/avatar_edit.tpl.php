@@ -19,7 +19,7 @@
 					<div class="block_title">
 							<div class="block_title_left"><h2>Загрузка аватара</h2></div>
 							<div class="block_title_right">
-								<img height="24" width="21" style="cursor: pointer;" onclick="ShowOrHide(this, 'user_profile_js'); return false;" src="http://admin.gek_next24.ru/app/images//close.png"/>
+								<img height="24" width="21" style="cursor: pointer;" onclick="ShowOrHide(this, 'user_profile_js'); return false;" src="<?=$this -> image_url;?>close.png"/>
 							</div>
 					</div>
 					<div id="user_profile_js" style="display: block;">
@@ -66,7 +66,7 @@
 					<div class="block_title">
 							<div class="block_title_left"><h2>Выбор системного аватара</h2></div>
 							<div class="block_title_right">
-								<img height="24" width="21" style="cursor: pointer;" onclick="ShowOrHide(this, 'user_profile_js3'); return false;" src="http://admin.gek_next24.ru/app/images/open.png"/>
+								<img height="24" width="21" style="cursor: pointer;" onclick="ShowOrHide(this, 'user_profile_js3'); return false;" src="<?=$this -> image_url;?>open.png"/>
 							</div>
 					</div>
 					<div id="user_profile_js3" style="display: none;">
@@ -109,8 +109,8 @@
 					<div class="block_title">
 							<div class="block_title_left"><h2>Управление аватарами</h2></div>
 							<div class="block_title_right">
-								<!--<img src="http://admin.gek_next24.ru/app/images//close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" />-->
-								<img height="24" width="21" style="cursor: pointer;" onclick="ShowOrHide(this, 'user_profile_js2'); return false;" src="http://admin.gek_next24.ru/app/images//close.png"/>
+								<!--<img src="<?=$this -> image_url;?>close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" />-->
+								<img height="24" width="21" style="cursor: pointer;" onclick="ShowOrHide(this, 'user_profile_js2'); return false;" src="<?=$this -> image_url;?>close.png"/>
 							</div>
 					</div>
 					<div id="user_profile_js2" style="display: block;">

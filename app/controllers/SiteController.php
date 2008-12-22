@@ -68,6 +68,9 @@
 			Project::getResponse() -> redirect(Project::getRequest() -> createUrl(null, 'LoginForm'));
 		}
 		
+		private function checkOfficeAccess() {
+			if (!Project::getUser() -> isMyArea()) Project::getResponse() -> redirect(Project::getRequest() -> createUrl("User", "Profile"));
+		}
 		
 		public function UserTypeAction(){
 		}

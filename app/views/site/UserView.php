@@ -5,6 +5,7 @@ class UserView extends BaseSiteView{
 		
 		function Profile(){
 			$this->_js_files[]='jquery.js';
+			$this->_js_files[]='relations.js';
 			
 			$request = Project::getRequest();
 			

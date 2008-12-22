@@ -130,6 +130,15 @@ class HttpSessionManager extends ApplicationManager implements IManager, Countab
 			$_SESSION[$key] = $value;
 		}
 		
+		public function __set($var, $val){
+			if ($val!=null) $this->add($var, $val);
+			else $this->remove($var);
+		}
+		
+		public function __get($var){
+			return $this->getKey($var);
+		}
+		
 		/**
 		 * Remove value from session
 		 */
