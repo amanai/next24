@@ -479,6 +479,8 @@
 			$ui_model = new UserInterestsModel;
 			$relation = new RelationsModel;
 			
+			$this -> _view -> assign('places', $user->loadGeoPlaces());
+			
 			$this -> _view -> assign('relations', $relation->getList());
 			$this -> _view -> assign('my_relation', $relation->getRelation($this->_view->current_user->id, $user->id));
 			$this -> _view -> assign('his_relation', $relation->getRelation($user->id, $this->_view->current_user->id));

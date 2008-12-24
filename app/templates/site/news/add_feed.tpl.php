@@ -29,12 +29,14 @@
 			     <span id="micro2">Полный URL вашей RSS-ленты.</span>
 			</td>
 		</tr>
+<? if ($this->is_partner) { ?>
 		<tr>
 			<td nowrap>Код баннера:</td>
 			<td><textarea name="code" cols="45" rows="7"><?php echo $this -> code; ?></textarea><br />
 			     <span id="micro2">Можно будет заполнить позже или заменить.</span>
 			</td>
 		</tr>
+<? } ?>
 		<tr>
 			<td nowrap>Категория в ленте:</td>
 			<td><input type="text" name="category_tag" value="<?php echo $this -> category_tag; ?>" /><br />

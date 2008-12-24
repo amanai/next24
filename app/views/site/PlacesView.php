@@ -16,6 +16,7 @@ class PlacesView extends BaseSiteView{
 		    $this->_js_files[]='blockUI.js';
 		    $this->_js_files[]='ajax.js';
 		    $this->_js_files[] = 'places.js';
+		    $this->_css_files[] = 'gobjects.css';
 		}
 		
 		private function getDependsList($entity_name) {

@@ -48,7 +48,7 @@
 			<td>
 				<?=$this->_dropdown('geo_subtype', 'выберите город', '- выберите тип -', $this->geo_subtypes); ?>
 				
-				<input type="submit" name="add_type" value="добавить тип">
+				<input type="submit" name="add_type" value="добавить тип" onClick="return AddType();">
 			</td>
 		</tr>
 		<tr>
@@ -60,14 +60,21 @@
 				<input type="submit" value="добавить место" name="add_place" onClick="return AddPlace();">&nbsp;<span id="show_users"></span>
 			</td>
 		</tr>
-		<tr><td colspan="2" align="left"><br/><input type="submit" class="button" name="tmp" onClick="return AddObjToUser(); " value="Добавить"/></td></tr>
+		<tr><td colspan="2" align="left"><br/><input type="submit" class="button" name="add_object_to_user" onClick="return AddObjToUser(); " value="Добавить"/></td></tr>
 		</table>
 
+	
 		
-</form>
+		<? if (Project::getRequest()->add_type) include($this -> _include('addtype_form.tpl.php')); ?>
+		<? if (Project::getRequest()->add_place) include($this -> _include('addplace_form.tpl.php')); ?>
+		<? if (Project::getRequest()->add_object_to_user) include($this -> _include('add_object_to_user_form.tpl.php')); ?>
+		
+		<? if ($this->edit_place) include($this -> _include('add_object_to_user_form.tpl.php')); ?>
+		
+		<? if (is_array($this->users_list)) include($this -> _include('users_list.tpl.php')); ?>
 		
 		
-		
+		</form>
 	
 </div></div></div></div>
 

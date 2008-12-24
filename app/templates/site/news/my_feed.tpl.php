@@ -23,7 +23,9 @@
                           <td><b>Название RSS</b></td>
                           <td><b>URL</b></td>
                           <td><b>Тег<br />категории</b></td>
+<? if ($this->is_partner) { ?>
                           <td><b>Код баннера</b></td>
+<? } ?>
                           <td><b>Раздел</b></td>
                          
                           <td><b>Добавил</b></td>
@@ -62,8 +64,9 @@
         				    echo '   
         					   </td>
         					   <td>'.$newsTreeFeeds['url'].'</td>
-        					   <td>'.$newsTreeFeeds['category_tag'].'</td>
-        					   <td>';
+        					   <td>'.$newsTreeFeeds['category_tag'].'</td>';
+if ($this->is_partner) {
+        					echo ' <td>';
         				    if ($newsTreeFeeds['news_banner_id']){ // we have a banner
         				        echo '
         					       <a href="javascript:void(0);" class="show_banner">Показать код баннера</a><div class="banner_code"><pre>'.htmlspecialchars($newsTreeFeeds['code']).'</pre></div><div class="list_status" id="news_banners'.$newsTreeFeeds['news_banner_id'].'">'.$news_banners_state.'</div>';
@@ -81,8 +84,9 @@
         				        echo 'нет кода баннера';
         				    }
         				    echo '
-        					   </td>
-        					   <td>'.$this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTreeFeeds['news_tree_id']).'<div class="list_status" id="news_tree'.$newsTreeFeeds['news_tree_id'].'">'.$news_tree_state.'</div>';
+        					   </td>';
+}
+        					  echo ' <td>'.$this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTreeFeeds['news_tree_id']).'<div class="list_status" id="news_tree'.$newsTreeFeeds['news_tree_id'].'">'.$news_tree_state.'</div>';
         				    echo '
         					   </td>
         					   

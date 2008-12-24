@@ -81,8 +81,16 @@
 			<input type="checkbox" name="allow_comments" <?php if (1 === (int)$this -> post_allow_comments) {echo 'checked';} ?> />
 			<span id="micro2">Смогут ли пользователи комментировать пост</span>
 		</td>
-
 	</tr>
+<? if (!$this->post_id) { ?>
+	<tr>
+		<td valign="top">В "Лучшие за день"</td>
+		<td>
+			<input type="checkbox" name="best_post"/>
+			<span id="micro2">Пост будет добавлен на модерацию в "Лучшие за день"</span>
+		</td>
+	</tr>
+<? } ?>
 	<tr>
 		<td valign="top">Уровень доступа</td>
 		<td>

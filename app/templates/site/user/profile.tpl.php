@@ -79,6 +79,37 @@
 
 					</div></div></div></div>
 					
+					<?if ($this->places) { ?>
+					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+						<div class="block_title">
+								<div class="block_title_left"><h2>Места учебы, работы, отдыха, службы</h2></div>
+								<div class="block_title_right">
+									<img src="<?php echo $this -> image_url;?>/open.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js2'); return false;" style="cursor: pointer;" />
+								</div>
+						</div>
+
+						<div id="user_profile_js2" style="display: none;">
+							<table cellpadding="10">
+							<? foreach ($this->places as $place) { ?>
+								<tr>
+									<td class="gocapt"><?=$place['date_start'];?>&nbsp;&mdash;&nbsp;<?=$place['date_end'];?> гг.</td>
+		
+									<td class="govalue">
+										<b><?=$place['name'];?></b>
+										<br />
+										<div class="go_descr"><?=$place['city'];?></div>
+									</td>
+								</tr>
+
+							<? } ?>
+							
+							</table>
+						</div>
+
+					</div></div></div></div>
+					
+					<? } ?>
+					
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 						<div class="block_title">
 								<div class="block_title_left"><h2>О пользователе</h2></div>

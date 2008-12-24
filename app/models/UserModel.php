@@ -602,6 +602,19 @@ class UserModel extends BaseModel{
 		    }
 	    }
 	}
+	
+	public function loadGeoPlaces() {
+        return Project::getDatabase() -> select('SELECT UG.`id`, P.`id` as `geo_place_id`, UG.`date_start`, UG.`date_end`, UG.`surname`, P.`name`, C.`name` as `city` FROM ((`users_geo_places` as UG LEFT JOIN `geo_places` P ON UG.`geo_place_id`=P.`id`) LEFT JOIN `cities` as C ON P.`city_id`=C.`id`) WHERE UG.`user_id`=?d', $this->id);
+	}
+	
+	public function loadAllByPlaces($place_id) {
+		$result=Project::getDatabase() -> select('SELECT U.*, UG.`date_start`, UG.`date_end`, UG.`surname` FROM `users_geo_places` as UG LEFT JOIN `users` as U ON UG.`user_id`=U.`id` WHERE UG.`geo_place_id`=?d', $place_id);
+		
+		foreach ($result as &$user) {
+			$user['avatar']=$this-> getUserAvatar($user['id']);
+		}
+		return $result;
+	}
 }
 
 

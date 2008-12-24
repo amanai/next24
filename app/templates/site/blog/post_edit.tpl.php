@@ -23,7 +23,7 @@
 				<!-- /левый блок -->
 			</td>
 			<td class="next24u_right">
-					<div class="info" id="flash_message"><?php echo $this -> flash_messages; ?></div>
+					<?php echo $this -> flash_messages; ?>
 					<!-- Создание/редактирование поста -->
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<?php 

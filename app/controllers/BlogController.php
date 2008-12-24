@@ -267,6 +267,15 @@
     				$post_model -> views = 0;
     			}
     			$post_id = $post_model -> save();
+    			
+    			// Best posts
+    			if ($request->best_post) {
+    				$best = new BestBlogPostsModel();
+    				$best->blog_post_id = $post_id;
+    				$best -> date = date("Y-m-d H:i:s");
+    				$best -> active = 0;
+    				$best -> save();
+    			}
 			}
 			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
 		}

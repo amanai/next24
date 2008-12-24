@@ -337,6 +337,8 @@ class NewsController extends SiteController{
 	            $text_parse_type = 2;
 	        }
 	        
+	        $this->_view->assign('is_partner', $is_partner);
+	        
 	        if (!$request->feed_name){
 	            $this -> _view -> addFlashMessage(FM::ERROR, "Введите название RSS-ленты");
 	            $noErrors = false;
@@ -464,6 +466,7 @@ class NewsController extends SiteController{
 	    $user = Project::getUser()->getDbUser();
 	    $isAdmin = ($user->user_type_id == 1)?true:false;
 	    
+	    if ($user->user_type_id == 1 || $user->user_type_id == 4) $this-> _view -> assign('is_partner', 1); 
 	    $this-> _view -> assign('isAdmin', $isAdmin); 
 	    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, true)); // Show tabs
 		
