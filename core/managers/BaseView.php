@@ -148,17 +148,19 @@ class BaseView{
 			$old_content=$this -> _content;
 			// Setting new params
 			$this->setTemplate($dir, $file);
-			if (is_array($params)) {
+			$this->_nested_params=$params;
+			/*if (is_array($params)) {
 				foreach ($params as $k=>$v) {
 					$this->$k=$v;
 				}
-			}
+			}*/
 			// Generating...
 			$result=$this->parse();
 			// Restore old params
 			$this -> _dir=$old_dir;
 			$this -> _file=$old_file;
 			$this -> _content=$old_content;
+			$this->_nested_params=null;
 			
 			return $result;
 		}

@@ -12,6 +12,10 @@ class PlacesView extends BaseSiteView{
 								'geo_place'=>array('geo_subtype')
 								);
 			parent::__construct();
+		    $this->_js_files[] = 'jquery.js';
+		    $this->_js_files[]='blockUI.js';
+		    $this->_js_files[]='ajax.js';
+		    $this->_js_files[] = 'places.js';
 		}
 		
 		private function getDependsList($entity_name) {
@@ -19,6 +23,19 @@ class PlacesView extends BaseSiteView{
 			$result=$arr;
 			foreach ($arr as $item) {
 				$result=array_merge($result, $this->getDependsList($item));
+			}
+			return $result;
+		}
+		
+		public function getReverceDependsList($entity_name) {
+			$result=array();
+			foreach ($this->depends as $k=>$d) {
+				foreach ($d as $depend) {
+					if ($depend==$entity_name) { 
+						$result[]=$k; 
+						$result=array_merge($result, $this->getReverceDependsList($k));
+					}
+				}
 			}
 			return $result;
 		}
@@ -42,11 +59,17 @@ class PlacesView extends BaseSiteView{
 		public function ListPlaces(){
 			$this -> setTemplate(null, 'places_main.tpl.php');
 		}
+		
+		public function ReloadDropDowns($depends) {
+			$response = Project::getAjaxResponse();
+			if (in_array('country',$depends)) $response -> block('country_block', true, $this->_dropdown('country', 'выберите тип', '- выберите страну -', $this->countries));
+			if (in_array('city',$depends)) $response -> block('city_block', true, $this->_dropdown('city', 'выберите страну', '- выберите город -', $this->cities));
+			if (in_array('geo_subtype',$depends)) $response -> block('geo_subtype_block', true, $this->_dropdown('geo_subtype', 'выберите город', '- выберите тип -', $this->geo_subtypes));
+			if (in_array('geo_place',$depends)) $response -> block('geo_place_block', true, $this->_dropdown('geo_place', 'выберите тип', '- выберите место -', $this->geo_places));
+		}
 			
-		public function _dropdown($name, $message1, $message2) {
-			return $this->generateTemplate(null,'dropdown.tpl.php',array('_drop_down_name'=>$name, '_message1'=>$message1, '_message2'=>$message2))
-			//$this->assign('_drop_down_name', $name);
-			//$this -> setTemplate(null, 'places_main.tpl.php');
+		public function _dropdown($name, $message1, $message2, $entities) {
+			return $this->generateTemplate(null,'dropdown.tpl.php',array('drop_down_name'=>$name, 'message1'=>$message1, 'message2'=>$message2,  'entities'=>$entities));
 		}	
 }
 ?>

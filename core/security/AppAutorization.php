@@ -46,6 +46,7 @@ class AppAutorization extends ApplicationManager implements IManager{
 				// 
 				$action_model = new ActionModel;
 				$action_model -> loadByRequestKey($request_action);
+				
 				if ((int)$action_model -> id > 0){
 					// requested action exists
 					$controller_model = new ControllerModel;

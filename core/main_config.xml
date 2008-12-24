@@ -69,14 +69,14 @@
 		<param key="value_delimiter" value=":" />
 		<param key="request_action_key" value="act" />
 		<param key="set_to_registry" value="false" />
-		<param key="base_host" value="gek_next24.ru" />
+		<param key="base_host" value="next24.home" />
 	</module>
 	
 	<!-- Sesion module -->
 	<module id="session"  class="HttpSessionManager" >
 		<!-- Params such as session live time, name etc. -->
 		<param key="set_to_registry" value="false" />
-		<param key="session_name" value="nextsk11" />
+		<param key="session_name" value="PHPSESSID" />
 		<param key="autoStart" value="true" />
 	</module>
 	
@@ -105,6 +105,7 @@
 	</module>
 	
 	<!-- Http response handling -->
+	<!--
 	<module id="response" class="HttpResponse">
 		<param key="DefaultCharset" value="UTF-8"/>
 		<param key="ContentType" value="text/html"/>
@@ -112,6 +113,7 @@
 		<param key="CacheControl" value="nocache" />
 		<param key="set_to_registry" value="false" />
 	</module>
+	-->
 	
 	
 </application>
