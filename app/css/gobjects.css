@@ -1,0 +1,77 @@
+/* Geographic objects management page styles */
+
+.gobject_layout {
+  margin-top:15px;
+  margin-bottom:15px;
+}
+.gobject_layout TD {
+  width:30%;
+  padding-right:10px;
+  padding-left:10px;
+  vertical-align:top;
+}
+.gobject_layout P {
+  margin-top:5px;
+  margin-bottom:5px;
+}
+.button {
+  width:365px;
+}
+.field {
+  width:250px;
+}
+.notice {
+  width:400px;
+  color:#999;
+  font-size:12px;
+  margin-top:0px;
+  margin-bottom:15px;
+}
+#yfrom,#yto {
+  width:76px;
+}
+#ysurname {
+  width:167px;
+}
+.yright {
+  text-align:right;
+  padding-right:10px;
+}
+H2.tmarg {
+  margin-top:20px;
+}
+.taddobj TD {
+  padding-top:5px;
+  padding-bottom:5px;
+}
+.tresults {
+  border-collapse:collapse;
+}
+.tresults TD {
+  vertical-align:top;
+}
+.tresults .avatar {
+  width:100px;
+  padding:0;
+  text-align:center;
+}
+.tresults .uinfo {
+  padding:10px 30px 10px 10px;
+  background-Color:#f2f2f2;
+}
+.tresults .uinfo1 {
+  padding:10px 30px 10px 10px;
+  padding-top:5px;
+  background-Color:#fafafa;
+}
+.tresults .years {
+  padding:12px 30px 10px 30px;
+  background-Color:#f2f2f2;
+}
+.tresults .years1 {
+  padding:12px 30px 10px 30px;
+  background-Color:#fafafa;
+}
+.udiv {
+  height:10px;
+}
