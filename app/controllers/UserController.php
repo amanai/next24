@@ -252,6 +252,15 @@
 					}
 				}
 				
+				// Blog 
+				$blog_model = new BlogModel;
+				$blog_model -> creation_date = date("Y-m-d");
+				$blog_model -> creation_ip = $_SERVER['REMOTE_ADDR'];
+				$blog_model -> user_id = $user_id;
+				$blog_model -> title = 'Мой блог';
+				$blog_model -> access = 2;
+				$blog_model -> save();
+				
 				Project::getResponse() -> redirect(Project::getRequest() -> createUrl("User", "CompleteRegistration"));
 			} else {
 				$this->RegistrationFormAction();

@@ -445,7 +445,7 @@
 			$blog_model -> loadByUserId($user_id);
 			$blog_id = (int)$blog_model -> id;
 			if ($blog_id <= 0){
-				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Post'));
+				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Edit'));
 			}
 			
 			$tree_model = new BlogTreeModel;
@@ -503,9 +503,9 @@
 			$blog_model -> loadByUserId($user_id);
 			$blog_id = (int)$blog_model -> id;
 			if ($blog_id <= 0){
-				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Post'));
+				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Edit'));
 			}
-			
+
 			$parent_tree_model = new BlogTreeModel;
 			$parent_tree_model -> load($parent_id);
 			$parent_node = $parent_tree_model -> getNode();
@@ -566,7 +566,6 @@
     				$tree_model -> key = $node -> key -> __toString();
     				$tree_model -> level = 1;
     			}
-    			
     			$branch_id = $tree_model -> save();
     			if ($parent_node){
     				$n -> changeParent($parent_node);
