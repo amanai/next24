@@ -319,9 +319,25 @@ class BookmarksController extends SiteController {
       $v_bm_category_model = new BookmarksCategoryModel();
       $v_bm_category_model->user_id = $v_current_userID;
       $v_bm_category_model->name    = $v_request->inp_categiry_name;
-      $v_bm_category_model->active  = 0;
+      $v_bm_category_model->active  = Project::getUser() -> isAdmin()?1:0;
       $v_bm_category_model->parent_id = (int)$v_request->sel_parent_category;
       $v_bm_category_model->save();
+      
+      // -- Отправка сообщения
+	  if (!Project::getUser() -> isAdmin()) {
+	  	$admin = new UserModel();
+	  	$admin->loadAdmin();
+	  	
+	  	$view = new BaseSiteView();
+	  	$view->setTemplate('mail', 'bookmarks_new_category.tpl.php');
+	  	$view->assign('user', Project::getUser()->getDbUser());
+	  	$view->assign('category', $v_bm_category_model);
+	  	nl2br($body) = $view->parse();
+	  	
+	  	$message = new MessagesModel();
+	  	$message->sendMessage($admin->id, $admin->id, 'Новая категория в закладках', $body);
+	  }
+      // ---------------------
       Project::getResponse()->redirect($v_request->createUrl('Bookmarks', 'BookmarksCategorySaveMessage'));
     }
   }
@@ -562,7 +578,45 @@ class BookmarksController extends SiteController {
     }
     return -1; // -- Выбираемая закладка с несуществующим ID 
   }
-    
+  
+  // ********** Админские функции ************** //
+  public function CategoryFormAction() {
+  	$request = Project::getRequest();
+  	$category = new BookmarksCategoryModel();
+  	$category -> load($request->id);
+  	$this->_view->assign('category', $category);
+  	$this->_view->assign('type', $request->type);
+  	$this->_view->CategoryForm();
+  	$this->_view->parse();
+  }
+  
+  public function AllowDenyCategoryAction() {
+  	$request = Project::getRequest();
+  	$category = new BookmarksCategoryModel();
+  	$category -> load($request->id);
+  	$category -> active = $request->type;
+  	if ($category->save()) {
+      // -- Отправка сообщения
+	  	$admin = new UserModel();
+	  	$admin->loadAdmin();
+	  	
+	  	$view = new BaseSiteView();
+	  	$view->setTemplate('mail', 'bookmarks_category_allowdeny.tpl.php');
+	  	$view->assign('category', $category);
+	  	$view->assign('type', $request->type);
+	  	$view->assign('comment', $request->comment);
+	  	
+	  	nl2br($body) = $view->parse();
+	  	
+	  	$message = new MessagesModel();
+	  	$message->sendMessage($admin->id, $category -> user_id, 'Ответ на запрос на создание категории в закладках', $body);
+      // ---------------------
+  	}
+  	$this->_view->CloseCategoryForm();
+  	$this->_view->parse();
+  	
+  }
+      
 }
 
 ?>

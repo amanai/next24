@@ -42,6 +42,15 @@ class BaseView{
 			$this -> cj_cache_url = $url . $tm -> getCJCachePath();
 			$this -> cj_cache_path = $_SERVER['DOCUMENT_ROOT'].'/'.$tm -> getCJCachePath();
 			
+			// Setting title
+			$title=array();
+			$controller=Project::getSecurityManager()->getAutorize()->getController();
+			$action=Project::getSecurityManager()->getAutorize()->getAction();
+			if ($action->page_title) $title[]=$action->page_title;
+			if ($controller->description) $title[]=$controller->description;
+			$title[]='Next24.Ru';
+			$this->page_title = implode(" | ", $title);
+			//print_r($action);
 			$this -> helper = &$request;
 		}
 		

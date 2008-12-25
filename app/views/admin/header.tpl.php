@@ -81,5 +81,5 @@
 				<div class="welcome">Здравствуйте, <?php echo $this -> current_user -> first_name." ".$this -> current_user -> middle_name; ?></div>
 				<div class="lastvisit"><img src="<?php echo $this -> image_url;?>visit_left.gif" alt=""/><div>Вы зарегистрованы <?php echo date("Y-m-d", strtotime($this -> current_user -> registration_date)); ?></div><img src="<?php echo $this -> image_url?>visit_right.gif" alt=""/></div>
 			</div>
-			<div class="info" id="flash_message"><?php echo $this -> flash_messages; ?></div>
+			<?php echo $this -> flash_messages; ?>
 			<div id="edit_block"></div>

@@ -36,7 +36,13 @@ class BookmarksView extends BaseSiteView {
     $this->set($data);
   }
   
-	
+  public function CategoryForm() {
+  	$this->setTemplate(null, 'category_form.tpl.php');
+  }
+  
+  public function CloseCategoryForm() {
+  	$this->setTemplate(null, '../popup_close.tpl.php');
+  }
 	
 }
 

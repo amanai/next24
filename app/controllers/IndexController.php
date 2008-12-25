@@ -15,7 +15,7 @@
 		}
 		
 		public function IndexAction(){	
-			$this -> BaseSiteData();	
+			//$this -> BaseSiteData();	
 			$userModel = new UserModel();
 			$user = Project::getUser() -> getDbUser();
 			$tabs_map = $this->tabs_map;

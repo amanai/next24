@@ -615,6 +615,12 @@ class UserModel extends BaseModel{
 		}
 		return $result;
 	}
+	
+	public function loadAdmin() {
+		$result = Project::getDatabase() -> selectRow("SELECT * FROM ".$this -> _table." WHERE `user_type_id`=1");
+		$this -> bind($result);
+		return $this->id;
+	}
 }
 
 

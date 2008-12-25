@@ -125,6 +125,34 @@ class MessagesModel extends BaseModel{
         }
         return $result;
     }
+    
+    function sendMessage($form, $to, $subject, $body, $avatar=false, $allow_html=true) {
+	    if ($allow_html) {
+	    	$this->header = $subject;
+        	$this->m_text = $body;
+	    } else {
+	    	$this->header = stripslashes(htmlspecialchars($subject));
+        	$this->m_text = stripslashes(htmlspecialchars($body));
+	    }
+        $this->send_date = date("Y-m-d H:i:s");
+        $this->author_id = $form;
+        $this->recipient_id = $to;
+        
+        if (!$avatar) {
+	        $user=new UserModel();
+	        $user->load($from);        
+	        $this->avatar_id =  $user->getUserAvatar($user->id);
+	        $this->avatar_id = $this->avatar_id['id'];
+        } else {
+        	$this->avatar_id = $avatar;
+        }
+        
+        
+        $this->is_read = 0;
+        $this->is_deleted = 0;
+        $messageId = $this->save();
+        return $messageId;
+    }
 
 }
 ?>

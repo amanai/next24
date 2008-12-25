@@ -1,18 +1,7 @@
 <html>
 <head>
-	<title>Next24</title>
+	<title><?=$this->page_title;?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	
-	<!--<script type="text/javascript" src="<?php echo $this -> js_url;?>sys.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>xpath.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>blockUI.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>ajax.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.dimensions.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.pack.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.ru_RU.js"></script>
-	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.date_input.format.js"></script>-->
 	
 	<link href="<?=$this->getBothCJ($this -> _css_files,'css');?>" type="text/css" rel="StyleSheet"/>
 	<script type="text/javascript" src="<?=$this->getBothCJ($this -> _js_files,'js');?>"></script>
@@ -20,6 +9,7 @@
 	<link id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
 </head>
 <body>
+
 <table width="100%" height="100%" cellpadding="0">
 <tr>
 	<td class="header">
@@ -41,7 +31,7 @@
 								<a href="<?php echo $this->createUrl('Album', 'List', null, $this->current_user->login)?>">Фотоальбом</a><br />
 								<a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>">Подписка</a><br />
 
-								<a href="#">Дневник</a><br />
+								<a href="<?php echo $this->createUrl('Messages', 'Mymessages', null, $this->current_user->login)?>">Сообщения</a><br />
 								<!--<a href="#">Сообщения</a>-->
 							</div>
 

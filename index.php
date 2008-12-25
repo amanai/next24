@@ -12,7 +12,6 @@
 	$app = new CApp();
 	$app -> init(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'main_config.xml'); // 0,1538 sec	
 	$controller = $app -> run(); // 0,0875 sec
-	//print_r($controller);
 	$app -> complete($controller);
 	
 	// Time seek
