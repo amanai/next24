@@ -48,6 +48,7 @@ function ShowHideLinks()
 </script>
 <form action="<?php echo $this->createUrl('Album', 'Upload');?>" method="post" enctype="multipart/form-data">
 	<h1>Загрузка фотографий</h1><br/>
+	<?php echo $this -> flash_messages; ?>
 	<table>
 		<tr>
 			<td width="100">Файл</td>

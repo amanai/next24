@@ -7,5 +7,5 @@
 	foreach($this -> messages as $message) { ?>
 		<li><? echo $message;?></li>
 	<?php } 
-	echo '</ul></tr></table></div>';
+	echo '</ul></tr></table></div><br/>';
 }?>

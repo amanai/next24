@@ -34,7 +34,7 @@
 				return;
 			}
 			
-			if (!count($_FILES)){
+			if (!count($_FILES)||$_FILES['photo_file_1']['error']==4){
 				$this -> _view -> addFlashMessage(FM::ERROR, "Нет изображений для загрузки");
 				$this -> UploadFormAction($request -> getKeys());
 				return;
@@ -63,7 +63,7 @@
 				if (!$ok || !$ok_thumb){
 					$this -> _view -> addFlashMessage(FM::ERROR, $post_file['name']." ошибка загрузки изображения в директорию пользователя");
 					$this -> UploadFormAction($request -> getKeys());
-					continue;
+					return;
 				}
 				
 				
@@ -80,10 +80,12 @@
 					$user_dir_size += $post_file['size'];
 					if ($max_image_size<$post_file['size']){
 					    $this -> _view -> addFlashMessage(FM::ERROR, $post_file['name']." превышает максимальный размер фото (".$max_image_size." байт)");
-					    continue;
+					    $this -> UploadFormAction($request -> getKeys());
+					    return;
 					}elseif ($user_dir_size > $max_userdir_size){
 					    $this -> _view -> addFlashMessage(FM::ERROR, "Вы превысили максимальный размер загруженных фото (".$max_userdir_size." байт)");
-					    continue;
+					    $this -> UploadFormAction($request -> getKeys());
+					    return;
 					}elseif (HelpFunctions::_imageResize($post_file['tmp_name'], $f, $max_photo_width, $ext)){
 						//move_uploaded_file($post_file['tmp_name'], $f)
 						//HelpFunctions::_imageResize($post_file['tmp_name'], $f, $max_photo_width)
@@ -102,7 +104,7 @@
 					} else {
 						$this -> _view -> addFlashMessage(FM::ERROR, $post_file['name']." ошибка загрузки изображения");
 						$this -> UploadFormAction($request -> getKeys());
-						continue;
+						return;
 					}
 				}
 				
