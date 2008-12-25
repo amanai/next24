@@ -16,7 +16,7 @@
 
 			<select style="width: 300px;" name="blog_access">
 				<?php foreach ($this -> access_list as $key=>$value){?>
-					<option value="<?php echo $key;?>" <?php if ((!$this -> blog_title&&$key==2)||((int)$key === (int)$this -> blog_access)) {echo 'selected';} ?>><?php echo $value;?></option>
+					<option value="<?php echo $key;?>" <?php if ((!$this -> blog_title&&$key==2)||($this -> blog_title&&(int)$key === (int)$this -> blog_access)) {echo 'selected';} ?>><?php echo $value;?></option>
 				<?php } ?>
 			</select><br />
 			<span id="micro2">Кто сможет смотреть и комментировать в этом блоге.</span>

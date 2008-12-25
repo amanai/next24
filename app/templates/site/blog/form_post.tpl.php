@@ -106,13 +106,14 @@
 	<tr>
 		<td valign="top">Настроение</td>
 		<td>
-
 			<select style="width: 300px;" name="post_mood">
-				<option value="0">---</option>
+				<option value="0">[Введите текст настроения, или выберите имеющиеся]</option>
+				<? $flag=false; ?>
 				<?php foreach ($this -> mood_list as $key=>$value){?>
-					<option value="<?php echo $value['id'];?>" <?php if ((int)$value['id'] === (int)$this -> post_mood) {echo 'selected';} ?>><?php echo $value['name'];?></option>
+					<option value="<?php echo $value['name'];?>" <?php if ($value['name'] == $this -> post_mood) {$flag=true; echo 'selected';} ?>><?php echo $value['name'];?></option>
 				<?php } ?>
 			</select><br />
+			<input type="text" id="mood_text" name="mood_text" value="<?=!$flag?$this -> post_mood:'';?>" maxlength="100" style="width: 200px;" /><br />
 			<span id="micro2">Настроение автора во время написания поста.</span>
 		</td>
 

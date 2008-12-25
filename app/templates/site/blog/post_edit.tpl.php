@@ -23,9 +23,9 @@
 				<!-- /левый блок -->
 			</td>
 			<td class="next24u_right">
-					<?php echo $this -> flash_messages; ?>
 					<!-- Создание/редактирование поста -->
 					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+					<?php echo $this -> flash_messages; ?>
 					<?php 
 					if ($this->request_user_id == $this->user_id){ 
 					    require('form_post.tpl.php'); 

@@ -135,7 +135,7 @@
 			$info['post_title'] = $post_model -> title;
 			$info['post_creation_date'] = $post_model -> creation_date;
 			$info['post_tree_id'] = (int)$post_model -> ub_tree_id;
-			$info['post_mood'] = (int)$post_model -> mood;
+			$info['post_mood'] = $post_model -> mood;
 			$info['post_access'] = (int)$post_model -> access;
 			$info['post_allow_comments'] = (int)$post_model -> allowcomments;
 			$info['best_post'] = (int)$post_model -> bbp_status;
@@ -257,7 +257,7 @@
     				}
     			}
     			$post_model -> access = (int)$request -> post_access;
-    			$post_model -> mood = (int)$request -> post_mood;
+    			$post_model -> mood = $request -> mood_text?htmlspecialchars($request -> mood_text):$request -> post_mood;
     			$post_model -> avatar_id = (int)$request -> post_avatar;
     			
     			if ($post_model -> id <= 0){
@@ -327,9 +327,10 @@
 			$tag_model = new BlogTagModel;
 			$tag_model -> load($post_model -> bc_tag_id);
 			$info['post_tag'] = $tag_model -> name;
-			$moodModel = new MoodModel();
-			$moodModel->load($post_model->mood);
-			$info['post_mood'] = $moodModel -> name;
+			//$moodModel = new MoodModel();
+			//$moodModel->load($post_model->mood);
+			$info['post_mood'] = $post_model->mood;
+			//$moodModel -> name;
 			
 			$userModel = new UserModel();
 			$info['user_avatar'] = $userModel->getFullAvatarById($post_model -> avatar_id);
@@ -515,7 +516,11 @@
 				return;
 			}
 			
-			
+			if (!$name){
+				$this -> _view -> addFlashMessage(FM::ERROR, "Имя раздела не может быть пустым");
+				$this -> EditBranchAction($branch_id);
+				return;
+			}
 			
 			$tree_model = new BlogTreeModel;
 			$tree_model -> load($branch_id);
