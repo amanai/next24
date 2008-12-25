@@ -332,7 +332,7 @@ class BookmarksController extends SiteController {
 	  	$view->setTemplate('mail', 'bookmarks_new_category.tpl.php');
 	  	$view->assign('user', Project::getUser()->getDbUser());
 	  	$view->assign('category', $v_bm_category_model);
-	  	nl2br($body) = $view->parse();
+	  	$body = nl2br($view->parse());
 	  	
 	  	$message = new MessagesModel();
 	  	$message->sendMessage($admin->id, $admin->id, 'Новая категория в закладках', $body);
@@ -606,7 +606,7 @@ class BookmarksController extends SiteController {
 	  	$view->assign('type', $request->type);
 	  	$view->assign('comment', $request->comment);
 	  	
-	  	nl2br($body) = $view->parse();
+	  	$body = nl2br($view->parse());
 	  	
 	  	$message = new MessagesModel();
 	  	$message->sendMessage($admin->id, $category -> user_id, 'Ответ на запрос на создание категории в закладках', $body);
