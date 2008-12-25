@@ -148,9 +148,9 @@ class HelpFunctions{
 		/**
 		 * Resize image
 		 */
-		static public function _imageResize($fn, $new_fn, $toWidth){
+		static public function _imageResize($fn, $new_fn, $toWidth, $ext=false){
 			$p = pathinfo($fn);
-			$ext = isset($p['extension'])?$p['extension']:null;
+			if (!$ext) $ext = isset($p['extension'])?$p['extension']:null;
 			list($width, $height) = getimagesize($fn);
 			if ($toWidth < $width) {
 				$percent = (float)$toWidth/$width;
@@ -165,6 +165,7 @@ class HelpFunctions{
 				imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 				self::imageSave($thumb, $new_fn, $ext);
 			}
+			return true;
 		}
 		
 		static public function imageSave($resource, $name, $ext){

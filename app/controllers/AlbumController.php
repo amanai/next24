@@ -76,22 +76,24 @@
 					$f = $images . DIRECTORY_SEPARATOR . $fn;
 					$max_image_size = $this->getParam('max_image_size');
 					$max_userdir_size = $this->getParam('max_userdir_size');
+					$max_photo_width = $this->getParam('max_photo_width');
 					$user_dir_size += $post_file['size'];
-					
 					if ($max_image_size<$post_file['size']){
 					    $this -> _view -> addFlashMessage(FM::ERROR, $post_file['name']." превышает максимальный размер фото (".$max_image_size." байт)");
 					    continue;
 					}elseif ($user_dir_size > $max_userdir_size){
 					    $this -> _view -> addFlashMessage(FM::ERROR, "Вы превысили максимальный размер загруженных фото (".$max_userdir_size." байт)");
 					    continue;
-					}elseif (move_uploaded_file($post_file['tmp_name'], $f)){
+					}elseif (HelpFunctions::_imageResize($post_file['tmp_name'], $f, $max_photo_width, $ext)){
+						//move_uploaded_file($post_file['tmp_name'], $f)
+						//HelpFunctions::_imageResize($post_file['tmp_name'], $f, $max_photo_width)
 						// TODO:: write tщ log if thumb size no specified
 						$width = $this -> getParam('thumb_size', 99999);
 						if ($width <= 0){
 							$width = 100;
 						}
 						if ($ok_thumb === true){
-							if (HelpFunctions::_imageResize($f, $thumbs . DIRECTORY_SEPARATOR . $fn, $width)){
+							if (HelpFunctions::_imageResize($post_file['tmp_name'], $thumbs . DIRECTORY_SEPARATOR . $fn, $width, $ext)){
 								$thumb = true;
 							} else {
 								// TODO:: error resizing image

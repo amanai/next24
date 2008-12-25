@@ -20,9 +20,9 @@
 								</table>
 						</td>
 						<td class="next24u_right">
-							<div class="info" id="flash_message"><?php echo $this -> flash_messages; ?></div>
 							<!-- Создание нового альбома -->
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
+							<?php echo $this -> flash_messages; ?>
 							<?php include($this -> _include('/form_upload.tpl.php')); ?>
 							</div></div></div></div>
 							<!-- /Создание нового альбома -->

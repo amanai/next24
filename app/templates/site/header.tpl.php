@@ -38,7 +38,7 @@
 							<div class="user2_title">ДОБРО ПОЖАЛОВАТЬ</div>
 							<div class="user2_zz">
 								<a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>">Профиль</a><br />
-								<a href="<?php echo $this->createUrl('Photo', 'LastList', null, $this->current_user->login)?>">Фотоальбом</a><br />
+								<a href="<?php echo $this->createUrl('Album', 'List', null, $this->current_user->login)?>">Фотоальбом</a><br />
 								<a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>">Подписка</a><br />
 
 								<a href="#">Дневник</a><br />

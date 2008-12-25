@@ -47,6 +47,7 @@ function ShowHideLinks()
 -->
 </script>
 <form action="<?php echo $this->createUrl('Album', 'Upload');?>" method="post" enctype="multipart/form-data">
+	<h1>Загрузка фотографий</h1><br/>
 	<table>
 		<tr>
 			<td width="100">Файл</td>
@@ -67,7 +68,7 @@ function ShowHideLinks()
 			<td>
 				<select style="width: 300px;" name="pic_access">
 					<?php foreach ($this -> access_list as $key=>$value){?>
-						<option value="<?php echo $key;?>" <?php if ((int)$this -> pic_access === $key) echo 'selected'; ?>><?php echo $value;?></option>
+						<option value="<?php echo $key;?>" <?=$key==2?'selected':''; ?>><?php echo $value;?></option>
 					<?php } ?>
 				</select><br />
 				<span id="micro2">Кто сможет смотреть и комментировать эту фотографию.</span>
