@@ -257,13 +257,16 @@ class MessagesController extends SiteController{
 	    $thisMessage = $messagesModel->load($request->messageId);
 	    if ($thisMessage){
 	        $messagesModel->load($request->messageId);
-	        if ($thisMessage && $thisMessage['author_id'] == $user->id){
+			if ($thisMessage && $thisMessage['author_id']==$thisMessage['recipient_id']) {
+    	    	$messagesModel->delete($thisMessage['id']);
+    	    }
+	        elseif ($thisMessage && $thisMessage['author_id'] == $user->id){
     	        $isSave = true;
     	        $messagesModel->is_deleted = 1;
     	    }elseif ($thisMessage && $thisMessage['recipient_id'] == $user->id){
     	        $isSave = true;
     	        $messagesModel->is_deleted = 2;
-    	    }
+    	    } 
     	    if ($isSave) {
     	        $messagesModel->save();
     	    }

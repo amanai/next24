@@ -21,6 +21,7 @@
 				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
 				$oFCKeditor -> Value = $this -> small_text;
 				$oFCKeditor -> Width = 600;
+				$oFCKeditor -> ProcessHTMLEntities = false;
 				$oFCKeditor -> Create() ;
 			?>
 			<span id="micro2">Текст, отображаемый при просмотре списка постов.</span>
@@ -34,6 +35,7 @@
 				$oFCKeditor -> BasePath = $this -> js_url.'fckeditor/' ;
 				$oFCKeditor -> Value = $this -> full_text;
 				$oFCKeditor -> Width = 600;
+				$oFCKeditor -> ProcessHTMLEntities = false;
 				$oFCKeditor -> Create() ;
 			?>
 			<span id="micro2">Полный текст сообщения.</span>
