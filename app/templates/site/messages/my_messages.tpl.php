@@ -51,7 +51,7 @@
 					<td class="cmod_x2a" rowspan="2">
 						<p>'.$userMessage['send_date'].$sIsRead.'</p>
 						<h3>'.$userMessage['header'].'</h3><br/>
-						'.$userMessage['m_text'].'
+						'.nl2br($userMessage['m_text']).'
 					</td>
 					<td class="cmod_x4">
 					   <a onclick="return DelMessage('.$userMessage['messages_id'].', '.(int)$message['current_page'].', '.(int)$message['groupId'].', \''.$message['groupName'].'\');" href="javascript: void(0);">удалить</a>

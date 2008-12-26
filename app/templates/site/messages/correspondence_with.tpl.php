@@ -33,7 +33,7 @@
 							    }
         						echo '
         							<p>
-        								'.$message['m_text'].'
+        								'.nl2br($message['m_text']).'
         							</p>
         						</div>';
 							}
