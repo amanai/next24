@@ -1,52 +1,18 @@
 <?php
-	class TestController extends CBaseController{
-		
-		var $formFields = array(
-			'name' => array(
-				'name' => 'name',
-				'title' => 'Название',
-				'desc' => 'Поле наименование',
-				'type' => FORM_FIELD_TEXT,
-				'required' => true,
-            ),
-			'value' => array(
-				'name' => 'value',
-				'title' => 'Значение',
-				'desc' => 'Поле содержащее значение',
-				'type' => FORM_FIELD_TEXTAREA,
-				'required' => true,
-            ),
-			'check' => array(
-				'name' => 'check',
-				'title' => 'Чек бокс',
-				'desc' => 'Поле с чекбоксом',
-				'type' => FORM_FIELD_CHECKBOX,
-				'required' => true,
-            ),
-		);
+	class TestController extends SiteController{
 
-		function __construct($View=null, $params = array(), $vars = array()){
-			$view = new CBaseView(VIEWS_PATH . "testview.tpl.php");
-			$this->setModel("Test");
-			parent::__construct($view, $params, $vars);	
+		function __construct($view_class = null){
+			if ($view_class === null){
+				$view_class = "TestView";
+			}
+			parent::__construct($view_class);
+			
 		}
 		
 		public function IndexAction(){
-			echo "TestController/IndexAction<br/><br/>";
-			$data = $this->model->getAll();
-			$content = '<table>';
-			$content .= '<tr><th>name</th><th>value</th><th>check</th><th>options</th></tr>';
-			foreach($data as $item)
-			{
-				$content .= '<tr><td>'.$item['name'].'</td><td>'.$item['value'].'</td><td>'.$item['check'].'</td><td><a href="/Test/Delete/id:'.$item['id'].'">Удалить</a>&nbsp;<a href="/Test/Edit/id:'.$item['id'].'">Редактировать</a></td></tr>';
-			}
-			
-			$router = getManager('CRouter');
-			$url = $router->createUrl('Test', 'Add');
-			$content .= '<tr><th></th><th></th><th></th><th><a href="'.$url.'">Добавить</a></th></tr>';
-			$content .= '</table>';
-			$this->view->content = $content;
-			$this->view->display();
+			$this->_view->assign('text',Project::getRequest()->text);
+			$this->_view->Test();
+			$this->_view->parse();
 		}
 		
 		public function DeleteAction(){

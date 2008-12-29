@@ -111,7 +111,7 @@ FCKConfig.ToolbarSets["Default"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Basic"] = [
-	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About']
+	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About', 'Flash']
 ] ;
 
 FCKConfig.EnterMode = 'p' ;			// p | div | br
@@ -304,3 +304,4 @@ FCKConfig.SmileyColumns = 8 ;
 FCKConfig.SmileyWindowWidth		= 320 ;
 FCKConfig.SmileyWindowHeight	= 240 ;
 
+FCKConfig.Plugins.Add( 'youtube', 'en' ) ;
