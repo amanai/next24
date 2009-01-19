@@ -178,6 +178,7 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 		
 		public function clear(){
 			$this -> _request = array();
+			$this -> _request_by_number = array();
 		}
 		
 		public function getApplicationFilePath(){

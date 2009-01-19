@@ -595,6 +595,7 @@ class BookmarksController extends SiteController {
   	$category = new BookmarksCategoryModel();
   	$category -> load($request->id);
   	$category -> active = $request->type;
+  	if ($request->rename) $category -> name=$request->name;
   	if ($category->save()) {
       // -- Отправка сообщения
 	  	$admin = new UserModel();

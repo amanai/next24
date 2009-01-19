@@ -37,6 +37,7 @@ class BookmarksView extends BaseSiteView {
   }
   
   public function CategoryForm() {
+  	$this->_js_files[]='jquery.js';
   	$this->setTemplate(null, 'category_form.tpl.php');
   }
   

@@ -24,6 +24,7 @@
 			</td>
 			<td class="next24u_right">
 				<!-- Список постов -->
+				<?php echo $this -> flash_messages; ?>
 							<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 								<?php if (is_array($this->post_list) && count($this->post_list)){?>
 									<?php foreach ($this->post_list as $key=>$item){?>

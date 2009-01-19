@@ -36,6 +36,33 @@
 				$oFCKeditor -> Width = 600;
 				$oFCKeditor -> Create() ;
 			?>
+			<a href="#" onClick="Test();">test</a>
+			<script language="JavaScript">
+				var smallTextSet=false;
+			
+				function Test() {
+					alert(FCKeditorAPI.GetInstance('post_small_text').GetHTML());
+					// FCKeditorAPI.GetInstance('post_small_text').GetHTML() - получаем код
+					// FCKeditorAPI.GetInstance('post_small_text').SetHTML() - устанавливаем код
+					// OnFocus() - ставим обработчик 
+				}
+				
+				function setSmallText() {
+					if (!smallTextSet) {
+						small=FCKeditorAPI.GetInstance('post_small_text').GetHTML();
+						full=FCKeditorAPI.GetInstance('post_full_text').GetHTML();
+						FCKeditorAPI.GetInstance('post_full_text').SetHTML(small+full);
+						smallTextSet=true;
+					}
+				}
+				
+				function FCKeditor_OnComplete( editorInstance )	{
+					if (editorInstance.Name=='post_full_text') {
+    					editorInstance.Events.AttachEvent( 'OnFocus', setSmallText ) ;
+					}
+				}
+				//alert(FCKeditorAPI.GetInstance('post_small_text'));
+			</script>
 			<span id="micro2">Полный текст сообщения.</span>
 		</td>
 	</tr>

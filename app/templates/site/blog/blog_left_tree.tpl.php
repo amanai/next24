@@ -8,12 +8,12 @@ if (is_array($this->branch_list)) {
 			<?php if ($this->blog_owner) {?>
 				<a href="<?php echo $this->createUrl('Blog', 'EditBranch', array($item['id']));?>"><img src="<?php echo $this -> image_url; ?>edit.gif" alt="Редактировать раздел" class="editbtn" height="12" width="11"></a>
 			<?php }else{?>
-			<a href="<?php echo $this->createUrl('Blog', 'DoSubscribe', array("tree_id"=>$item['id'])); ?>">
+		 	<a href="<?php echo $this->createUrl('Blog', 'DoSubscribe', array("tree_id"=>$item['id'])); ?>" id="micro">
 			<?php 
 			if ($item['subscribe_id']){
-				echo "Отписаться";
+				echo "[отписаться]";
 			}else{
-			    echo "Подписаться";
+			    echo "[подписаться]";
 			}
 			?>
 			</a>

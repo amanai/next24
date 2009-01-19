@@ -297,7 +297,10 @@
 			$post_model = new BlogPostModel;
 			$post = $post_model->getPost($post_id, $user_id, $request_user_id);
 			if (!$post){
-			    Project::getResponse() -> redirect($_SERVER['HTTP_REFERER']);
+				$request->clear();
+				$this -> _view -> addFlashMessage(FM::ERROR, "Полный текст этого поста доступен только после подписки на блог.");
+			    $this->PostListAction();
+			    return;
 			}
 			$post_model -> load($post_id);
 			
@@ -530,11 +533,12 @@
 			} else {
 				$child = null;
 			}
-			if ($child){
-				$this -> _view -> addFlashMessage(FM::ERROR, "Невозможно изменить раздел: есть зависимые разделы");
-				$this -> EditBranchAction($branch_id);
-				return;
-			}
+			
+			//if ($child&&$child!=$tree_model->key){
+			//	$this -> _view -> addFlashMessage(FM::ERROR, "Невозможно изменить раздел: есть зависимые разделы");
+			//	$this -> EditBranchAction($branch_id);
+			//	return;
+			//}
 			
 			if ($request->save){
     			$tree_model -> name = $name;
@@ -557,7 +561,7 @@
     			if (!$n){
     				$tree_model -> key = '';
     				if ($parent_node){
-    					$tree_model -> level = 2;
+    					$tree_model -> level = 1;
     				} else {
     					$tree_model -> level = 1;
     				}
