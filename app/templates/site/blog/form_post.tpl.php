@@ -36,7 +36,6 @@
 				$oFCKeditor -> Width = 600;
 				$oFCKeditor -> Create() ;
 			?>
-			<a href="#" onClick="Test();">test</a>
 			<script language="JavaScript">
 				var smallTextSet=false;
 			
