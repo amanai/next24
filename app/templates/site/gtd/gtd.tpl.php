@@ -4,7 +4,6 @@
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 	
 	<div class="tab-page tab-page-selected">
-	<table width="100%" height="100%" cellpadding="0">
-	<tr>
-	<?php echo 'srfsdgfsadgdfg'?>
+		<?php echo $this->viewTreeCategories(); ?>
+	</div>
 <?php include($this -> _include('../footer.tpl.php')); ?>	
