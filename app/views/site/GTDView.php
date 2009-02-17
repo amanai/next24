@@ -22,16 +22,22 @@ class GTDView extends BaseSiteView{
 		if(is_array($categories)) {
 			foreach ($categories['subcategories'] as $key => $values) {		
 				$this->GTDTree .= '<li>';
-				$this->GTDTree .= '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" />';				
+				if($values['subcategories']) {
+					$this->GTDTree .= '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" />';	
+				}				
 				$this->GTDTree .= '<label style="white-space: nowrap; ">';
-				$this->GTDTree .=  '<form action="'.Project::getRequest() -> createUrl('gtd','GTD').'" method="post">';
-				$this->GTDTree .= '<input type="text" name="CategoryName" value="" />';
+				$this->GTDTree .=  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddCategory').'" method="post">';
+				$this->GTDTree .= '<input type="text" name="CategoryName" value="" /><input type="hidden" name="id" value="'.$values['id'].'" />';
 				$this->GTDTree .= '<input type="submit" name="AddCategory" value="Добавить группу" />';
 				$this->GTDTree .= '</form>';				
 				$this->GTDTree .= $values['category_name'].'</label>';								
-				if($values['subcategories']) $this->GTDTree .= '<ul class="checkbox_tree">';
+				if($values['subcategories']) {
+					$this->GTDTree .= '<ul class="checkbox_tree">';
+				}
 				$this->buildTreeCategories($values);
-								if($values['subcategories']) $this->GTDTree .= '</ul>';	
+				if($values['subcategories']) {
+					$this->GTDTree .= '</ul>';	
+				}
 				$this->GTDTree .= '</li>';
 			}
 		}
