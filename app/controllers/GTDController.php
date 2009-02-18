@@ -83,10 +83,12 @@ class GTDController extends SiteController{
 		}
 		if(!file_exists('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid'])) {
 			mkdir('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid']);
-		}		
-		move_uploaded_file($fname,$path);
-		$dbpath = '#app#user_files#'.$request_keys['cid'].'#'.$request_keys['fid'].'#'.$realfname;
-		$model->addFolderFile($request_keys['fid'],$realfname,$dbpath);
+		}	
+		if(!file_exists($path)) {	
+			move_uploaded_file($fname,$path);
+			$dbpath = '#app#user_files#'.$request_keys['cid'].'#'.$request_keys['fid'].'#'.$realfname;
+			$model->addFolderFile($request_keys['fid'],$realfname,$dbpath);
+		}
 		$files = $model->getFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);
 		$folder_name = $model->getFolderName($request_keys['fid']); 
