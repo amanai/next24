@@ -15,6 +15,7 @@ class GTDModel extends BaseModel{
 			$root = $this->db->selectRow($sql);
 			$sql = "select id from GTDCategories where parent_id = {$root['id']}";
 			$nums = $this->db->selectCol($sql);
+			if(is_array($nums))
 			foreach($nums as $key => $id) {
 				$res = $this->getCategories($id['id']);
 				$result[] = $res;
@@ -27,6 +28,29 @@ class GTDModel extends BaseModel{
 			$result = $this->db->selectRow($sql);
 			return $result;
 		}
+//----------------------------------------------------------------------------------------		
+		public function getRootFolders($id_root) {
+			$result['subcategories'][0] = $this->getFolders($id_root);
+			return $result;
+		}		
+		public function getFolders($id_root) {
+			$sql = "select id,user_id,parent_id,category_name from GTDfolders where id = $id_root";
+			$root = $this->db->selectRow($sql);
+			$sql = "select id from GTDfolders where parent_id = {$root['id']}";
+			$nums = $this->db->selectCol($sql);
+			if(is_array($nums))
+			foreach($nums as $key => $id) {
+				$res = $this->getFolders($id['id']);
+				$result[] = $res;
+			}
+			$root['subcategories'] = $result; 
+			return $root;
+		}
+		private function getSubFolders($id) {
+			$sql = "select * from GTDfolders where id = $id";
+			$result = $this->db->selectRow($sql);
+			return $result;
+		}		
 		public function addCategory($user_id,$parent_id,$category_name) {
 			$sql = "INSERT INTO GTDCategories(user_id,parent_id,category_name) values($user_id,$parent_id,'$category_name')";
 			$result = $this->db->query($sql);
