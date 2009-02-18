@@ -11,16 +11,16 @@ class GTDController extends SiteController{
 		$model = new GTDModel();
 		$user_id = Project::getUser() -> getDbUser() -> id;
 		$categories = $model->getRootCategory($user_id);
-		print '<pre>';
-		print_r($categories);
-		print '</pre>';			
+//		print '<pre>';
+//		print_r($categories);
+//		print '</pre>';			
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
     	$temp = $v_request->getKeys();		    	
 		$this->_view->GTDOutput();
-		print '<pre>';
-		print_r($categories);
-		print '</pre>';
+//		print '<pre>';
+//		print_r($categories);
+//		print '</pre>';
 		$this->_view->buildViewTreeCategories($categories);
 		$this->_view->parse(); 
 		
@@ -37,17 +37,30 @@ class GTDController extends SiteController{
 		$this->_view->buildViewTreeCategories($categories);
 		$this->_view->parse();    	 			
 	}
-	function GTDViewFoldersAction() {
+	function GTDAddFolderAction() {
 		$model = new GTDModel();
-		$folders = $model->getRootFolders(1);
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
-    	$temp = $v_request->getKeys();		    	
-		$this->_view->GTDOutput();
-		print '<pre>';
-		print_r($folders);
-		print '</pre>';
-		$this->_view->buildViewTreeCategories($folders);
+    	$request_keys = $v_request->getKeys();	
+    	$user_id = Project::getUser() -> getDbUser() -> id;
+    	$model->addFolder($request_keys['cid'],$request_keys['id'],$request_keys['FolderName']);
+    	$folders = $model->getRootFolder($request_keys['cid']);
+    	$this->_view->GTDOutput();
+		$this->_view->buildTreeFolders($folders);
+		$this->_view->parse(); 		
+	}
+	function GTDViewFoldersAction() {
+		$model = new GTDModel();
+		$v_request = Project::getRequest();
+    	$v_session = Project::getSession();
+    	$request_keys = $v_request->getKeys();			
+		$folders = $model->getRootFolder($request_keys['cid']);	   
+		$category_name = $model->getCategoryName($request_keys['cid']); 	
+		$this->_view->GTDOutputFolders($category_name);
+//		print '<pre>';
+//		print_r($folders);
+//		print '</pre>';
+		$this->_view->buildTreeFolders($folders);
 		$this->_view->parse();
 	}
 }	

@@ -7,9 +7,9 @@
 		<?php echo $this->viewTreeCategories();
 		$v_request = Project::getRequest();
 		$temp = $v_request->getKeys();
-	//	print '<pre>';
-	//	print_r($temp);
-	//	print '</pre>';
+		print '<pre>';
+		print_r($temp);
+		print '</pre>';
 		
 		
 		?>
