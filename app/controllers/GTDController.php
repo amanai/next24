@@ -10,7 +10,10 @@ class GTDController extends SiteController{
 	function GTDAction() {	
 		$model = new GTDModel();
 		$user_id = Project::getUser() -> getDbUser() -> id;
-		$categories = $model->getRootCategories($user_id);
+		$categories = $model->getRootCategory($user_id);
+		print '<pre>';
+		print_r($categories);
+		print '</pre>';			
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
     	$temp = $v_request->getKeys();		    	
@@ -19,7 +22,8 @@ class GTDController extends SiteController{
 		print_r($categories);
 		print '</pre>';
 		$this->_view->buildViewTreeCategories($categories);
-		$this->_view->parse();
+		$this->_view->parse(); 
+		
 	}
 	function GTDAddCategoryAction() {
 		$model = new GTDModel();
@@ -28,7 +32,7 @@ class GTDController extends SiteController{
     	$request_keys = $v_request->getKeys();	
     	$user_id = Project::getUser() -> getDbUser() -> id;
     	$model->addCategory($user_id,$request_keys['id'],$request_keys['CategoryName']);
-    	$categories = $model->getRootCategories($user_id);
+    	$categories = $model->getRootCategory($user_id);
     	$this->_view->GTDOutput();
 		$this->_view->buildViewTreeCategories($categories);
 		$this->_view->parse();    	 			

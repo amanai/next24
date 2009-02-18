@@ -6,55 +6,43 @@ class GTDModel extends BaseModel{
 		//	$this -> _caches(true, true, true);
 			$this->db = Project::getDatabase();
 		}
-		public function getRootCategories($id_root) {
-			$result['subcategories'][0] = $this->getCategories($id_root);
-			return $result;
-		}		
-		public function getCategories($id_root) {
-			$sql = "select id,user_id,parent_id,category_name from GTDCategories where id = $id_root";
-			$root = $this->db->selectRow($sql);
-			$sql = "select id from GTDCategories where parent_id = {$root['id']}";
-			$nums = $this->db->selectCol($sql);
-			if(is_array($nums))
-			foreach($nums as $key => $id) {
-				$res = $this->getCategories($id['id']);
-				$result[] = $res;
-			}
-			$root['subcategories'] = $result; 
-			return $root;
+		public function getRootCategory($user_id) {
+			$sql = "SELECT id FROM GTDCategories WHERE user_id = $user_id";
+			$root_id = $this->db->selectCell($sql);
+			$result['subcategories'][0] = $this->getCategories($root_id);
+			return $result;					
 		}
-		private function getSubcategories($id) {
-			$sql = "select * from GTDCategories where id = $id";
+		public function getCategories($id) {
+			$sql = "SELECT id,parent_id,category_name,level FROM GTDCategories WHERE id = $id";
 			$result = $this->db->selectRow($sql);
-			return $result;
-		}
-//----------------------------------------------------------------------------------------		
-		public function getRootFolders($id_root) {
-			$result['subcategories'][0] = $this->getFolders($id_root);
-			return $result;
-		}		
-		public function getFolders($id_root) {
-			$sql = "select id,user_id,parent_id,category_name from GTDfolders where id = $id_root";
-			$root = $this->db->selectRow($sql);
-			$sql = "select id from GTDfolders where parent_id = {$root['id']}";
+			$root_id = $result['id'];
+			$sql = "SELECT id FROM GTDCategories WHERE parent_id = $root_id";
 			$nums = $this->db->selectCol($sql);
-			if(is_array($nums))
-			foreach($nums as $key => $id) {
-				$res = $this->getFolders($id['id']);
-				$result[] = $res;
+			foreach($nums as $k => $v) {
+				$result['subcategories'][] = $this->getCategories($v);
 			}
-			$root['subcategories'] = $result; 
-			return $root;
-		}
-		private function getSubFolders($id) {
-			$sql = "select * from GTDfolders where id = $id";
-			$result = $this->db->selectRow($sql);
 			return $result;
-		}		
-		public function addCategory($user_id,$parent_id,$category_name) {
-			$sql = "INSERT INTO GTDCategories(user_id,parent_id,category_name) values($user_id,$parent_id,'$category_name')";
+		}
+		public function getFolders($category_id) {
+			$sql = "SELECT id AS ARRAY_KEY_1,parent_id AS ARRAY_KEY_2,folder_name,level FROM GTDfolders WHERE category_id = $category_id";
+			$result = $this->db->select($sql);
+			return $result;	
+		}
+		public function addFolder($category_id,$parent_id,$folder_name) {
+			$sql = "INSERT INTO GTDfolders(category_id,parent_id,folder_name) VALUES($category_id,$parent_id,$folder_name)";
 			$result = $this->db->query($sql);
-			
-		}			
+		}
+		public function addCategory($user_id,$parent_id,$category_name) {
+			$sql = "INSERT INTO GTDCategories(user_id,parent_id,category_name) VALUES($user_id,$parent_id,'$category_name')";
+			$result = $this->db->query($sql);	
+		}	
+		public function deleteCategory($category_id) {
+			$sql = "DELETE FROM GTDCategories WHERE id = $category_id";
+			$result = $this->db->query($sql);			
+		}
+		public function deleteFolder($id_folder) {
+			$sql = "DELETE FROM GTDfolders WHERE id = $id_folder";
+			$result = $this->db->query($sql);	
+		}
 }		
 ?>
