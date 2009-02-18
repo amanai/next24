@@ -43,16 +43,21 @@ class GTDController extends SiteController{
     	$v_session = Project::getSession();
     	$request_keys = $v_request->getKeys();	
     	$user_id = Project::getUser() -> getDbUser() -> id;
+ //   	print '<pre>';
+  //  		print_r($request_keys);
+   // 	print '</pre>';	
     	$model->addFolder($request_keys['cid'],$request_keys['id'],$request_keys['FolderName']);
     	$folders = $model->getRootFolder($request_keys['cid']);
-    	$this->_view->GTDOutput();
-		$this->_view->buildTreeFolders($folders);
+    	$category_name = $model->getCategoryName($request_keys['cid']); 
+    	$this->_view->GTDOutputFolders($category_name);
+		$this->_view->buildViewTreeFolders($folders);
 		$this->_view->parse(); 		
 	}
 	function GTDViewFoldersAction() {
 		$model = new GTDModel();
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
+    	
     	$request_keys = $v_request->getKeys();			
 		$folders = $model->getRootFolder($request_keys['cid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']); 	
@@ -60,7 +65,7 @@ class GTDController extends SiteController{
 //		print '<pre>';
 //		print_r($folders);
 //		print '</pre>';
-		$this->_view->buildTreeFolders($folders);
+		$this->_view->buildViewTreeFolders($folders);
 		$this->_view->parse();
 	}
 }	

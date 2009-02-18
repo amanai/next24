@@ -41,7 +41,7 @@ class GTDModel extends BaseModel{
 			return $result;
 		}
 		public function addFolder($category_id,$parent_id,$folder_name) {
-			$sql = "INSERT INTO GTDfolders(category_id,parent_id,folder_name) VALUES($category_id,$parent_id,$folder_name)";
+			$sql = "INSERT INTO GTDfolders(category_id,parent_id,folder_name) VALUES($category_id,$parent_id,'$folder_name')";
 			$result = $this->db->query($sql);
 		}
 		public function addCategory($user_id,$parent_id,$category_name) {

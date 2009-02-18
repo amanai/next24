@@ -6,14 +6,8 @@
 	<div class="tab-page tab-page-selected">
 		<?php 
 		echo $this->viewCategoryName();
-		echo $this->viewTreeCategories();
-		$v_request = Project::getRequest();
-		$temp = $v_request->getKeys();
-		print '<pre>';
-		print_r($temp);
-		print '</pre>';
-		
-		
+		echo '<br /><br />';
+		echo $this->viewTreeCategories();		
 		?>
 	</div>
 <?php include($this -> _include('../footer.tpl.php')); ?>	
