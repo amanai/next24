@@ -61,5 +61,10 @@ class GTDModel extends BaseModel{
 			$result = $this->db->selectCell($sql);
 			return $result;				
 		}
+		public function getFolderFiles($id_folder) {
+			$sql = "SELECT id AS ARRAY_KEY,file_name FROM GTDFiles WHERE id_folder = $id_folder";
+			$result = $this->db->select($sql);
+			return $result;
+		}
 }		
 ?>

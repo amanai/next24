@@ -79,7 +79,7 @@ class GTDView extends BaseSiteView{
 				$this->GTDTree .= '<input type="text" name="FolderName" value="" /><input type="hidden" name="id" value="'.$values['id'].'" /><input type="hidden" name="cid" value="'.$this->getCategoryId().'" />';
 				$this->GTDTree .= '<input type="submit" name="AddFolder" value="Добавить папку" />';
 				$this->GTDTree .= '</form>';				
-				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'">'.$values['folder_name'].'</a></label>';								
+				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFiles').'/fid:'.$values['id'].'">'.$values['folder_name'].'</a></label>';								
 				if($values['subfolders']) {
 					$this->GTDTree .= '<ul class="checkbox_tree">';
 				}
@@ -94,8 +94,5 @@ class GTDView extends BaseSiteView{
 			throw new TemplateException("Argument is not an array !");
 		}
 	}	
-	public function categoryName() {
-		
-	}
 }		
 ?>
