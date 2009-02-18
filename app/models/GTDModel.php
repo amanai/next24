@@ -66,5 +66,10 @@ class GTDModel extends BaseModel{
 			$result = $this->db->select($sql);
 			return $result;
 		}
+		public function getFolderName($id_folder) {
+			$sql = "SELECT folder_name FROM GTDfolders WHERE id = $id_folder";
+			$result = $this->db->selectCell($sql);
+			return $result;				
+		}
 }		
 ?>

@@ -37,9 +37,6 @@ class GTDController extends SiteController{
     	$v_session = Project::getSession();
     	$request_keys = $v_request->getKeys();	
     	$user_id = Project::getUser() -> getDbUser() -> id;
- //   	print '<pre>';
-  //  		print_r($request_keys);
-   // 	print '</pre>';	
     	$model->addFolder($request_keys['cid'],$request_keys['id'],$request_keys['FolderName']);
     	$folders = $model->getRootFolder($request_keys['cid']);
     	$category_name = $model->getCategoryName($request_keys['cid']); 
@@ -50,15 +47,11 @@ class GTDController extends SiteController{
 	function GTDViewFoldersAction() {
 		$model = new GTDModel();
 		$v_request = Project::getRequest();
-    	$v_session = Project::getSession();
-    	
+    	$v_session = Project::getSession();  	
     	$request_keys = $v_request->getKeys();			
 		$folders = $model->getRootFolder($request_keys['cid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']); 	
-		$this->_view->GTDOutputFolders($category_name);
-//		print '<pre>';
-//		print_r($folders);
-//		print '</pre>';
+		$this->_view->GTDOutputFolders($category_name,$request_keys['cid']);
 		$this->_view->buildViewTreeFolders($folders);
 		$this->_view->parse();
 	}
@@ -66,14 +59,11 @@ class GTDController extends SiteController{
 		$model = new GTDModel();
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
-    	$request_keys = $v_request->getKeys();	
-		$files = $model->getFolderFiles(1);	   
-		$category_name = $model->getCategoryName(1); 	
-//		$this->_view->GTDOutputFiles($category_name,$folder_name);
-		print '<pre>';
-		print_r($folders);
-		print '</pre>';
-//		$this->_view->buildViewTreeFolders($folders);
+    	$request_keys = $v_request->getKeys();	  	
+		$files = $model->getFolderFiles($request_keys['fid']);	   
+		$category_name = $model->getCategoryName($request_keys['cid']);
+		$folder_name = $model->getFolderName($request_keys['fid']); 	
+		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);
 		$this->_view->parse();    		
 	}
 }	
