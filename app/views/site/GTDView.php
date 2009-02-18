@@ -90,11 +90,13 @@ class GTDView extends BaseSiteView{
 				if($values['subcategories']) {
 					$this->GTDTree .= '</ul>';	
 				}
-				$this->GTDTree .= '</li>';
 			}
 		}
 		else {
-			throw new TemplateException("Argument is not an array !");
+				$this->GTDTree =  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddCategory').'" method="post">';
+				$this->GTDTree .= '<input type="text" name="CategoryName" value="" /><input type="hidden" name="id" value="0" />';
+				$this->GTDTree .= '<input type="submit" name="AddCategory" value="Добавить группу" />';
+				$this->GTDTree .= '</form>';
 		}
 	}
 	public function getCategoryId() {
@@ -126,7 +128,10 @@ class GTDView extends BaseSiteView{
 			}
 		}
 		else {
-			throw new TemplateException("Argument is not an array !");
+				$this->GTDTree =  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddFolder').'" method="post">';
+				$this->GTDTree .= '<input type="text" name="FolderName" value="" /><input type="hidden" name="id" value="0" /><input type="hidden" name="cid" value="'.$this->getCategoryId().'" />';
+				$this->GTDTree .= '<input type="submit" name="AddFolder" value="Добавить папку" />';
+				$this->GTDTree .= '</form>';
 		}
 	}	
 }		
