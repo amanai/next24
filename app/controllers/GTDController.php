@@ -1,6 +1,5 @@
 <?php
 class GTDController extends SiteController{
-	
 	function __construct($view_class = null){
 		if ($view_class === null){
 			$view_class = "GTDView";
@@ -62,9 +61,38 @@ class GTDController extends SiteController{
     	$request_keys = $v_request->getKeys();	  	
 		$files = $model->getFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);
-		$folder_name = $model->getFolderName($request_keys['fid']); 	
+		$folder_name = $model->getFolderName($request_keys['fid']); 
+		$this->_view->BuldTreeFilesView($files);	
 		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);
 		$this->_view->parse();    		
+	}
+	function GTDAddFileAction() {
+		$model = new GTDModel();
+		$v_request = Project::getRequest();
+    	$v_session = Project::getSession();
+    	$request_keys = $v_request->getKeys();	  	
+//		print '<pre>';
+//		print_r($_FILES);
+//		print_r($request_keys);
+//		print '</pre>';    				
+		$fname = $_FILES['FileName']['tmp_name'];
+		$realfname = $_FILES['FileName']['name'];
+		$path = 'app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid'] . DIRECTORY_SEPARATOR .$realfname;
+		if(!file_exists('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'])) {
+			mkdir('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid']);
+		}
+		if(!file_exists('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid'])) {
+			mkdir('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid']);
+		}		
+		move_uploaded_file($fname,$path);
+		$dbpath = '#app#user_files#'.$request_keys['cid'].'#'.$request_keys['fid'].'#'.$realfname;
+		$model->addFolderFile($request_keys['fid'],$realfname,$dbpath);
+		$files = $model->getFolderFiles($request_keys['fid']);	   
+		$category_name = $model->getCategoryName($request_keys['cid']);
+		$folder_name = $model->getFolderName($request_keys['fid']); 
+		$this->_view->BuldTreeFilesView($files);	
+		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);
+		$this->_view->parse(); 		
 	}
 }	
 ?>

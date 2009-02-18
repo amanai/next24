@@ -7,7 +7,9 @@
 		<?php 
 		echo $this->viewFolderName();
 		echo '<br /><br />';
-		echo $this->loadFileView();		
+		echo $this->loadFileView();	
+		echo '<br />';
+		echo $this->TreeFilesView();	
 		?>
 	</div>
 <?php include($this -> _include('../footer.tpl.php')); ?>	
