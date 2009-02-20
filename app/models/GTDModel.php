@@ -72,6 +72,10 @@ class GTDModel extends BaseModel{
 			$sql = "DELETE FROM GTDfolders WHERE id = $folder_id";
 			$result = $this->db->query($sql);						
 		}		
+		public function deleteFile($file_id) {
+			$sql = "DELETE FROM GTDFiles WHERE id = $file_id";
+			$result = $this->db->query($sql);
+		}
 		public function getCategoryName($category_id) {
 			$sql = "SELECT category_name FROM GTDCategories WHERE id = $category_id";
 			$result = $this->db->selectCell($sql);

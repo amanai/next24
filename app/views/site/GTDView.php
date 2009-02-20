@@ -46,7 +46,7 @@ class GTDView extends BaseSiteView{
 		$result = '<ul class="checkbox_tree">';
 		foreach ($files as $key => $value) {
 			$path = str_replace('#',DIRECTORY_SEPARATOR,$value['file_path']);
-			$result .= '<li><a href="'.$path.'">'.$value['file_name'].'</a></li>';
+			$result .= '<li><a href="'.$path.'">'.$value['file_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteFile').'/flid:'.$key.'">Удалить файл</a></li>';
 		}
 		$result .= '</ul>';
 		$this->filesTree = $result;
