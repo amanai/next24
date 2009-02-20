@@ -214,5 +214,27 @@ class GTDController extends SiteController{
 		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);	
 		$this->_view->parse();   		
 	}
+	public function GTDAddSecureUserAction() {
+		$model = new GTDModel();
+		$user_id = Project::getUser() -> getDbUser() -> id;	
+		$v_request = Project::getRequest();
+    	$v_session = Project::getSession();
+    	$request_keys = $v_request->getKeys();		
+		print '<pre>';
+		print_r($request_keys);
+		print '</pre>';  
+		$model->addSecureUser($request_keys['id'],$request_keys['section'],$request_keys['addusr']);
+		switch($request_keys['section']) {
+			case 1:
+				$this->GTDAction();
+			break;
+			case 2:
+				$this->GTDViewFoldersAction();
+			break;
+			case 3:
+				$this->GTDViewFilesAction();
+			break;												    	
+		}
+	}
 }	
 ?>

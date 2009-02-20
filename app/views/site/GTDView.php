@@ -23,17 +23,19 @@ class GTDView extends BaseSiteView{
 		$result .= '</select></form>';
 		return $result;
 	}
-	public function viewSelectSecureUserList($name,$key,$style = '') {
+	public function viewSelectSecureUserList($name,$key,$section,$style = '') {
+		$user_id = Project::getUser() -> getDbUser() -> id;
 		$users = $this->_stack['users'];
-		$selected_user = $this->_stack['selected_user'];
-		$result = '<form '.$style.' name="usr_list'.$key.'" method="post" action="'.Project::getRequest() -> createUrl('GTD','GTDViewAnotherUserCategories').'">';
+		$result = '<form '.$style.' name="usr_list'.$key.'" method="post" action="'.Project::getRequest() -> createUrl('GTD','GTDAddSecureUser').'">';
 		$result .= '<select name="'.$name.'" onchange="usr_list'.$key.'.submit();">';
+		$result .= '<option>Добавить пользователя...</option>';
 		foreach ($users as $id => $user) {
-			if($id!=$selected_user) {
+			if($id!=$user_id) {
 				$result .= '<option value="'.$id.'">'.$user['full_name'].'</option>';
 			}	
 		}
-		$result .= '</select></form>';
+		$result .= '</select><input type="hidden" name="id" value="'.$key.'" />
+		<input type="hidden" name="section" value="'.$section.'" /></form>';
 		return $result;
 	}	
 	public function GTDOutput() {
@@ -82,7 +84,7 @@ class GTDView extends BaseSiteView{
 			$path = str_replace('#','/',$value['file_path']);
 			$result .= '<li><a href="http://next24.home'.$path.'">'.$value['file_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteFile').'/flid:'.$key.'">Удалить файл</a>';
 			if(!$value['secure']) {
-				$result .= ' (Добавить пользователя для просмотра '.$this->viewSelectSecureUserList('addusr',$key,'style="display: inline;"').')';
+				$result .= ' (Добавить пользователя для просмотра '.$this->viewSelectSecureUserList('addusr',$key,3,'style="display: inline;"').')';
 			}	
 			$result .= '</li>';
 		}
@@ -201,7 +203,7 @@ class GTDView extends BaseSiteView{
 				$this->GTDTree .= '</form>';				
 				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'/cid:'.$values['id'].'">'.$values['category_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteCategory').'/cid:'.$values['id'].'">Удалить группу</a>';
 				if(!$values['secure']) {
-					$this->GTDTree .= ' (Добавить пользователя для просмотра '.$this->viewSelectSecureUserList('addusr',$key,'style="display: inline;"').')';
+					$this->GTDTree .= ' (Добавить пользователя для просмотра '.$this->viewSelectSecureUserList('addusr',$key,1,'style="display: inline;"').')';
 				}	
 				$this->GTDTree .= '</label>';								
 				if($values['subcategories']) {
@@ -241,7 +243,7 @@ class GTDView extends BaseSiteView{
 				$this->GTDTree .= '</form>';				
 				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFiles').'/fid:'.$values['id'].'/cid:'.$this->category_id.'">'.$values['folder_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteFolder').'/fid:'.$values['id'].'">Удалить папку</a>';
 				if(!$values['secure']) {
-					$this->GTDTree .= ' (Добавить пользователя для просмотра '.$this->viewSelectSecureUserList('addusr',$key,'style="display: inline;"').')';
+					$this->GTDTree .= ' (Добавить пользователя для просмотра '.$this->viewSelectSecureUserList('addusr',$key,2,'style="display: inline;"').')';
 				}	
 				$this->GTDTree .= '</label>';												
 				if($values['subfolders']) {

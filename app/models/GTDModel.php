@@ -100,5 +100,17 @@ class GTDModel extends BaseModel{
 			$result = $this->db->select($sql);
 			return $result;
 		}
+		public function addSecureUser($id,$section,$user_id) {
+			switch($section) {
+				case 1:
+					//1
+				break;
+				case 2:
+					//2
+				case 3:
+					//3
+				break;			
+			}
+		}
 }		
 ?>
