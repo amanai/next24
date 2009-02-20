@@ -10,12 +10,13 @@ class GTDController extends SiteController{
 		$model = new GTDModel();
 		$user_id = Project::getUser() -> getDbUser() -> id;
 		$categories = $model->getRootCategory($user_id);		
-//		$v_request = Project::getRequest();
-//    	$v_session = Project::getSession();
-//    	$temp = $v_request->getKeys();		
-		$users = $model->getUserList();    	
+		$v_request = Project::getRequest();
+    	$v_session = Project::getSession();
+    	$request_keys = $v_request->getKeys();		
+		$users = $model->getUserList();
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);		    	
 		$this->_view->GTDOutput();
-		$this->_view->__set('users',$users);
 //		print '<pre>';
 //		print_r($users);
 //		print '</pre>';
@@ -31,7 +32,10 @@ class GTDController extends SiteController{
     	$user_id = Project::getUser() -> getDbUser() -> id;
     	$model->addCategory($user_id,$request_keys['id'],$request_keys['CategoryName']);
     	$categories = $model->getRootCategory($user_id);
-    	$this->_view->GTDOutput();
+    	$users = $model->getUserList();
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);    	  
+    	$this->_view->GTDOutput();	
 		$this->_view->buildViewTreeCategories($categories);
 		$this->_view->parse();    	 			
 	}
@@ -47,7 +51,10 @@ class GTDController extends SiteController{
     	$model->addFolder($request_keys['cid'],$request_keys['id'],$request_keys['FolderName']);
     	$folders = $model->getRootFolder($request_keys['cid']);
     	$category_name = $model->getCategoryName($request_keys['cid']); 
-    	$this->_view->GTDOutputFolders($category_name);
+    	$users = $model->getUserList();  
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);    	
+    	$this->_view->GTDOutputFolders($category_name);   	
 		$this->_view->buildViewTreeFolders($folders);
 		$this->_view->parse(); 		
 	}
@@ -58,7 +65,10 @@ class GTDController extends SiteController{
     	$request_keys = $v_request->getKeys();			
 		$folders = $model->getRootFolder($request_keys['cid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']); 	
-		$this->_view->GTDOutputFolders($category_name,$request_keys['cid']);
+		$users = $model->getUserList();  
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);	
+		$this->_view->GTDOutputFolders($category_name,$request_keys['cid']);		
 		$this->_view->buildViewTreeFolders($folders);
 		$this->_view->parse();
 	}
@@ -69,9 +79,14 @@ class GTDController extends SiteController{
     	$request_keys = $v_request->getKeys();	  	
 		$files = $model->getFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);
-		$folder_name = $model->getFolderName($request_keys['fid']); 
+		$folder_name = $model->getFolderName($request_keys['fid']);
+		$users = $model->getUserList();   
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);		
 		$this->_view->BuldTreeFilesView($files);	
 		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);		
 		$this->_view->parse();    		
 	}
 	function GTDAddFileAction() {
@@ -100,8 +115,11 @@ class GTDController extends SiteController{
 		$files = $model->getFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);
 		$folder_name = $model->getFolderName($request_keys['fid']); 
+		$users = $model->getUserList();  
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);		
 		$this->_view->BuldTreeFilesView($files);	
-		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);
+		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);		
 		$this->_view->parse(); 		
 	}
 	public function GTDDeleteCategoryAction() {
@@ -111,8 +129,11 @@ class GTDController extends SiteController{
     	$v_session = Project::getSession();
     	$request_keys = $v_request->getKeys();	
 		$model->deleteCategory($request_keys['cid']);
-		$categories = $model->getRootCategory($user_id);    		    	
-		$this->_view->GTDOutput();
+		$categories = $model->getRootCategory($user_id);   
+		$users = $model->getUserList();
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);		   		    	
+		$this->_view->GTDOutput();		
 //		print '<pre>';
 //		print_r($request_keys);
 //		print '</pre>';
@@ -126,8 +147,11 @@ class GTDController extends SiteController{
     	$request_keys = $v_request->getKeys();	
     	$model->deleteFolder($request_keys['fid']);		
 		$folders = $model->getRootFolder($request_keys['cid']);	   
-		$category_name = $model->getCategoryName($request_keys['cid']); 	
-		$this->_view->GTDOutputFolders($category_name,$request_keys['cid']);
+		$category_name = $model->getCategoryName($request_keys['cid']); 
+		$users = $model->getUserList();  	
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);		
+		$this->_view->GTDOutputFolders($category_name,$request_keys['cid']);		
 		$this->_view->buildViewTreeFolders($folders);
 		$this->_view->parse();		
 	}
@@ -140,8 +164,11 @@ class GTDController extends SiteController{
 		$files = $model->getFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);
 		$folder_name = $model->getFolderName($request_keys['fid']); 
+		$users = $model->getUserList();  
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);		
 		$this->_view->BuldTreeFilesView($files);	
-		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);
+		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);		
 		$this->_view->parse(); 		
 	}
 	public function GTDViewAnotherUserCategoriesAction() {
@@ -150,9 +177,12 @@ class GTDController extends SiteController{
 		$categories = $model->getRootCategory($user_id);		
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
-    	$temp = $v_request->getKeys();		    	
-		$this->_view->GTDOutput();
-		$this->_view->buildViewTreeCategories($categories);
+    	$request_keys = $v_request->getKeys();		
+    	$users = $model->getUserList();
+		$this->_view->__set('selected_user',$request_keys['usr']);
+		$this->_view->__set('users',$users);    	      	
+    	$this->_view->buildViewTreeCategories($categories);    	
+		$this->_view->GTDOutput();				
 		$this->_view->parse(); 		
 	}
 }	

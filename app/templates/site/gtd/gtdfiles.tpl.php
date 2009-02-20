@@ -4,6 +4,7 @@
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 	
 	<div class="tab-page tab-page-selected">
+	<div style="float: left;">
 		<?php 
 		echo $this->viewFolderName();
 		echo '<br /><br />';
@@ -11,5 +12,9 @@
 		echo '<br />';
 		echo $this->TreeFilesView();	
 		?>
+	</div>
+	<div style="float:right;">
+	<?php echo $this->viewSelectUserList(); ?>
+	</div>	
 	</div>
 <?php include($this -> _include('../footer.tpl.php')); ?>	
