@@ -29,7 +29,7 @@ class GTDController extends SiteController{
     	$v_session = Project::getSession();
     	$request_keys = $v_request->getKeys();	
     	$user_id = Project::getUser() -> getDbUser() -> id;
-    	$model->addCategory($user_id,$request_keys['id'],$request_keys['CategoryName']);
+    	$model->addCategory($user_id,$request_keys['id'],$request_keys['CategoryName'],$request_keys['secure']);
     	$categories = $model->getRootCategory($user_id);
     	$users = $model->getUserList();
 		$this->_view->__set('users',$users);    	  
@@ -46,7 +46,7 @@ class GTDController extends SiteController{
  //   	    	print '<pre>';
   //  		print_r($request_keys);
   //  	print '</pre>';	
-    	$model->addFolder($request_keys['cid'],$request_keys['id'],$request_keys['FolderName']);
+    	$model->addFolder($request_keys['cid'],$request_keys['id'],$request_keys['FolderName'],$request_keys['secure']);
     	$folders = $model->getRootFolder($request_keys['cid']);
     	$category_name = $model->getCategoryName($request_keys['cid']); 
     	$users = $model->getUserList();  
@@ -103,7 +103,7 @@ class GTDController extends SiteController{
 		if(!file_exists($path)) {	
 			move_uploaded_file($fname,$path);
 			$dbpath = '#app#user_files#'.$request_keys['cid'].'#'.$request_keys['fid'].'#'.$realfname;
-			$model->addFolderFile($request_keys['fid'],$realfname,$dbpath);
+			$model->addFolderFile($request_keys['fid'],$realfname,$dbpath,$request_keys['secure']);
 		}
 		$files = $model->getFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);

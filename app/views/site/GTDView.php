@@ -53,7 +53,10 @@ class GTDView extends BaseSiteView{
 		if(!$this->_stack['another_user']) {	
 			$result = '<form enctype="multipart/form-data" action="'.Project::getRequest() -> createUrl('GTD','GTDAddFile').'/cid:'.$this->category_id.'/fid:'.$this->folder_id.'" method="post">
 				<input type="file" name="FileName" value="" />
-				<input type="submit" name="AddCategory" value="Загрузить Файл" /></form>';	
+				<input type="submit" name="AddCategory" value="Загрузить Файл" />
+				<input type="radio" checked="checked" name="secure" value="0"> Доступен для всех
+				<input type="radio" name="secure" value="1"> По приглашению
+				</form>';	
 			return $result;	
 		}
 	}
@@ -176,7 +179,8 @@ class GTDView extends BaseSiteView{
 				$this->GTDTree .= '<label style="white-space: nowrap; ">';
 				$this->GTDTree .=  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddCategory').'" method="post">';
 				$this->GTDTree .= '<input type="text" name="CategoryName" value="" /><input type="hidden" name="id" value="'.$values['id'].'" />';
-				$this->GTDTree .= '<input type="submit" name="AddCategory" value="Добавить группу" />';
+				$this->GTDTree .= '<input type="submit" name="AddCategory" value="Добавить группу" /><input type="radio" checked="checked" name="secure" value="0"> Доступно для всех
+				<input type="radio" name="secure" value="1"> По приглашению';
 				$this->GTDTree .= '</form>';				
 				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'/cid:'.$values['id'].'">'.$values['category_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteCategory').'/cid:'.$values['id'].'">Удалить группу</a></label>';								
 				if($values['subcategories']) {
@@ -210,7 +214,8 @@ class GTDView extends BaseSiteView{
 				$this->GTDTree .= '<label style="white-space: nowrap; ">';
 				$this->GTDTree .=  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddFolder').'" method="post">';
 				$this->GTDTree .= '<input type="text" name="FolderName" value="" /><input type="hidden" name="id" value="'.$values['id'].'" /><input type="hidden" name="cid" value="'.$this->getCategoryId().'" />';
-				$this->GTDTree .= '<input type="submit" name="AddFolder" value="Добавить папку" />';
+				$this->GTDTree .= '<input type="submit" name="AddFolder" value="Добавить папку" /><input type="radio" checked="checked" name="secure" value="0"> Доступно для всех
+				<input type="radio" name="secure" value="1"> По приглашению';
 				$this->GTDTree .= '</form>';				
 				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFiles').'/fid:'.$values['id'].'/cid:'.$this->category_id.'">'.$values['folder_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteFolder').'/fid:'.$values['id'].'">Удалить папку</a></label>';								
 				if($values['subfolders']) {

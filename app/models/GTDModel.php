@@ -40,12 +40,12 @@ class GTDModel extends BaseModel{
 			}
 			return $result;
 		}
-		public function addFolder($category_id,$parent_id,$folder_name) {
-			$sql = "INSERT INTO GTDfolders(category_id,parent_id,folder_name) VALUES($category_id,$parent_id,'$folder_name')";
+		public function addFolder($category_id,$parent_id,$folder_name,$secure) {
+			$sql = "INSERT INTO GTDfolders(category_id,parent_id,folder_name,secure) VALUES($category_id,$parent_id,'$folder_name',$secure)";
 			$result = $this->db->query($sql);
 		}
-		public function addCategory($user_id,$parent_id,$category_name) {
-			$sql = "INSERT INTO GTDCategories(user_id,parent_id,category_name) VALUES($user_id,$parent_id,'$category_name')";
+		public function addCategory($user_id,$parent_id,$category_name,$secure) {
+			$sql = "INSERT INTO GTDCategories(user_id,parent_id,category_name,secure) VALUES($user_id,$parent_id,'$category_name',$secure)";
 			$result = $this->db->query($sql);	
 		}	
 		public function deleteCategory($category_id) {
@@ -91,8 +91,8 @@ class GTDModel extends BaseModel{
 			$result = $this->db->select($sql);
 			return $result;
 		}
-		public function addFolderFile($id_folder,$fname,$path) {
-			$sql = "INSERT INTO GTDFiles(folder_id,file_name,file_path) VALUES($id_folder,'$fname','$path')";
+		public function addFolderFile($id_folder,$fname,$path,$secure) {
+			$sql = "INSERT INTO GTDFiles(folder_id,file_name,file_path,secure) VALUES($id_folder,'$fname','$path',$secure)";
 			$result = $this->db->query($sql);
 		}
 		public function getUserList() {
