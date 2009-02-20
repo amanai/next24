@@ -10,12 +10,14 @@ class GTDController extends SiteController{
 		$model = new GTDModel();
 		$user_id = Project::getUser() -> getDbUser() -> id;
 		$categories = $model->getRootCategory($user_id);		
-		$v_request = Project::getRequest();
-    	$v_session = Project::getSession();
-    	$temp = $v_request->getKeys();		    	
+//		$v_request = Project::getRequest();
+//    	$v_session = Project::getSession();
+//    	$temp = $v_request->getKeys();		
+		$users = $model->getUserList();    	
 		$this->_view->GTDOutput();
+		$this->_view->__set('users',$users);
 //		print '<pre>';
-//		print_r($categories);
+//		print_r($users);
 //		print '</pre>';
 		$this->_view->buildViewTreeCategories($categories);
 		$this->_view->parse(); 

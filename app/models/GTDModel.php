@@ -95,5 +95,10 @@ class GTDModel extends BaseModel{
 			$sql = "INSERT INTO GTDFiles(folder_id,file_name,file_path) VALUES($id_folder,'$fname','$path')";
 			$result = $this->db->query($sql);
 		}
+		public function getUserList() {
+			$sql = "SELECT id AS ARRAY_KEY,CONCAT(first_name,' ',middle_name,' ',last_name) AS full_name FROM users";
+			$result = $this->db->select($sql);
+			return $result;
+		}
 }		
 ?>

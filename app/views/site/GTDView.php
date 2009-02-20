@@ -6,7 +6,20 @@ class GTDView extends BaseSiteView{
 	private $FolderName;
 	private $folder_id;
 	private $filesTree;
+	private $_stack;
 	
+	public function __set($name,$var) {
+		$this->_stack[$name] = $var;
+	}
+	public function viewSelectUserList() {
+		$users = $this->_stack['users'];
+		$result = '<select>';
+		foreach ($users as $id => $user) {
+			$result .= '<option>'.$user['full_name'].'</option>';
+		}
+		$result .= '</select>';
+		return $result;
+	}
 	public function GTDOutput() {
 		$this->_js_files[] = 'jquery.js';
 	    $this->_js_files[] = 'news_tree.js';
