@@ -86,6 +86,60 @@ class GTDView extends BaseSiteView{
 		$this->buildTreeFolders($categories);
 		$this->GTDTree .= '</ul>';
 	}	
+	public function buildAnotherUserViewTreeCategories($categories) {
+		$this->GTDTree .= '<ul class="checkbox_tree">';
+		$this->buildAnotherUserTreeCategories($categories);
+		$this->GTDTree .= '</ul>';		
+	}
+	public function buildAnotherUserViewTreeFolders($folders) {
+		$this->GTDTree .= '<ul class="checkbox_tree">';
+		$this->buildAnotherUserTreeFolders($folders);
+		$this->GTDTree .= '</ul>';		
+	}	
+	public function buildAnotherUserTreeFolders($folders) {
+			if(is_array($folders)) {
+			foreach ($folders['subfolders'] as $key => $values) {		
+				$this->GTDTree .= '<li>';
+				if($values['subfolders']) {
+					$this->GTDTree .= '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" />';	
+				}				
+				$this->GTDTree .= '<label style="white-space: nowrap; ">';				
+				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'/cid:'.$values['id'].'/usr:'.$this->_stack['selected_user'].'">'.$values['folder_name'].'</a></label>';								
+				if($values['subfolders']) {
+					$this->GTDTree .= '<ul class="checkbox_tree">';
+				}
+				$this->buildTreeCategories($values);
+				if($values['subfolders']) {
+					$this->GTDTree .= '</ul>';	
+				}
+			}
+		}
+		else {
+				$this->GTDTree =  '<span style="color:red;">У данного ползователя не создано ни одной папки !</span>';
+		}		
+	}	
+	public function buildAnotherUserTreeCategories($categories) {
+			if(is_array($categories)) {
+			foreach ($categories['subcategories'] as $key => $values) {		
+				$this->GTDTree .= '<li>';
+				if($values['subcategories']) {
+					$this->GTDTree .= '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" />';	
+				}				
+				$this->GTDTree .= '<label style="white-space: nowrap; ">';				
+				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewAnotherUserFolders').'/cid:'.$values['id'].'/usr:'.$this->_stack['selected_user'].'">'.$values['category_name'].'</a></label>';								
+				if($values['subcategories']) {
+					$this->GTDTree .= '<ul class="checkbox_tree">';
+				}
+				$this->buildTreeCategories($values);
+				if($values['subcategories']) {
+					$this->GTDTree .= '</ul>';	
+				}
+			}
+		}
+		else {
+				$this->GTDTree =  '<span style="color:red;">У данного ползователя не создано ни одной группы !</span>';
+		}		
+	}
 	public function buildTreeCategories($categories) {
 		if(is_array($categories)) {
 			foreach ($categories['subcategories'] as $key => $values) {		

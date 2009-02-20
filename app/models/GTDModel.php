@@ -96,7 +96,7 @@ class GTDModel extends BaseModel{
 			$result = $this->db->query($sql);
 		}
 		public function getUserList() {
-			$sql = "SELECT id AS ARRAY_KEY,CONCAT(first_name,' ',middle_name,' ',last_name) AS full_name FROM users";
+			$sql = "SELECT id AS ARRAY_KEY,CONCAT(first_name,' ',middle_name,' ',last_name) AS full_name FROM users ORDER BY id";
 			$result = $this->db->select($sql);
 			return $result;
 		}
