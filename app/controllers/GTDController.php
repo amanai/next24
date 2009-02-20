@@ -15,7 +15,7 @@ class GTDController extends SiteController{
     	$temp = $v_request->getKeys();		    	
 		$this->_view->GTDOutput();
 //		print '<pre>';
-//		print_r(apc_cache_info());
+//		print_r($categories);
 //		print '</pre>';
 		$this->_view->buildViewTreeCategories($categories);
 		$this->_view->parse(); 
@@ -39,6 +39,9 @@ class GTDController extends SiteController{
     	$v_session = Project::getSession();
     	$request_keys = $v_request->getKeys();	
     	$user_id = Project::getUser() -> getDbUser() -> id;
+    	    	print '<pre>';
+    		print_r($request_keys);
+    	print '</pre>';	
     	$model->addFolder($request_keys['cid'],$request_keys['id'],$request_keys['FolderName']);
     	$folders = $model->getRootFolder($request_keys['cid']);
     	$category_name = $model->getCategoryName($request_keys['cid']); 
@@ -99,17 +102,32 @@ class GTDController extends SiteController{
 		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);
 		$this->_view->parse(); 		
 	}
-	public function GTDDeleteAction() {
+	public function GTDDeleteCategoryAction() {
 		$model = new GTDModel();
+		$user_id = Project::getUser() -> getDbUser() -> id;		
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
-    	$request_keys = $v_request->getKeys();	  	
-		$files = $model->getFolderFiles($request_keys['fid']);	   
-		$category_name = $model->getCategoryName($request_keys['cid']);
-		$folder_name = $model->getFolderName($request_keys['fid']); 
-		$this->_view->BuldTreeFilesView($files);	
-		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);
-		$this->_view->parse();  		
+    	$request_keys = $v_request->getKeys();	
+		$model->deleteCategory($request_keys['cid']);
+		$categories = $model->getRootCategory($user_id);    		    	
+		$this->_view->GTDOutput();
+//		print '<pre>';
+//		print_r($request_keys);
+//		print '</pre>';
+		$this->_view->buildViewTreeCategories($categories);
+		$this->_view->parse(); 		
+	}
+	public function GTDDeleteFolderAction() {
+		$model = new GTDModel();
+		$v_request = Project::getRequest();
+    	$v_session = Project::getSession();  	
+    	$request_keys = $v_request->getKeys();	
+    	$model->deleteFolder($request_keys['fid']);		
+		$folders = $model->getRootFolder($request_keys['cid']);	   
+		$category_name = $model->getCategoryName($request_keys['cid']); 	
+		$this->_view->GTDOutputFolders($category_name,$request_keys['cid']);
+		$this->_view->buildViewTreeFolders($folders);
+		$this->_view->parse();		
 	}
 	public function GTDViewAnotherUserCategoriesAction() {
 		$model = new GTDModel();

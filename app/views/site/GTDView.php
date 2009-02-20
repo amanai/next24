@@ -82,7 +82,7 @@ class GTDView extends BaseSiteView{
 				$this->GTDTree .= '<input type="text" name="CategoryName" value="" /><input type="hidden" name="id" value="'.$values['id'].'" />';
 				$this->GTDTree .= '<input type="submit" name="AddCategory" value="Добавить группу" />';
 				$this->GTDTree .= '</form>';				
-				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'/cid:'.$values['id'].'">'.$values['category_name'].'</a></label>';								
+				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'/cid:'.$values['id'].'">'.$values['category_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteCategory').'/cid:'.$values['id'].'">Удалить группу</a></label>';								
 				if($values['subcategories']) {
 					$this->GTDTree .= '<ul class="checkbox_tree">';
 				}
@@ -116,7 +116,7 @@ class GTDView extends BaseSiteView{
 				$this->GTDTree .= '<input type="text" name="FolderName" value="" /><input type="hidden" name="id" value="'.$values['id'].'" /><input type="hidden" name="cid" value="'.$this->getCategoryId().'" />';
 				$this->GTDTree .= '<input type="submit" name="AddFolder" value="Добавить папку" />';
 				$this->GTDTree .= '</form>';				
-				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFiles').'/fid:'.$values['id'].'/cid:'.$this->category_id.'">'.$values['folder_name'].'</a></label>';								
+				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFiles').'/fid:'.$values['id'].'/cid:'.$this->category_id.'">'.$values['folder_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteFolder').'/fid:'.$values['id'].'">Удалить папку</a></label>';								
 				if($values['subfolders']) {
 					$this->GTDTree .= '<ul class="checkbox_tree">';
 				}
