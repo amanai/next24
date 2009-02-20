@@ -195,7 +195,8 @@ class GTDView extends BaseSiteView{
 		else {
 				$this->GTDTree =  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddCategory').'" method="post">';
 				$this->GTDTree .= '<input type="text" name="CategoryName" value="" /><input type="hidden" name="id" value="0" />';
-				$this->GTDTree .= '<input type="submit" name="AddCategory" value="Добавить группу" />';
+				$this->GTDTree .= '<input type="submit" name="AddCategory" value="Добавить группу" /><input type="radio" checked="checked" name="secure" value="0"> Доступно для всех
+				<input type="radio" name="secure" value="1"> По приглашению';
 				$this->GTDTree .= '</form>';
 		}
 	}
@@ -231,7 +232,8 @@ class GTDView extends BaseSiteView{
 		else {
 				$this->GTDTree =  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddFolder').'/usr:'.$this->_stack['selected_user'].'" method="post">';
 				$this->GTDTree .= '<input type="text" name="FolderName" value="" /><input type="hidden" name="id" value="0" /><input type="hidden" name="cid" value="'.$this->getCategoryId().'" />';
-				$this->GTDTree .= '<input type="submit" name="AddFolder" value="Добавить папку" />';
+				$this->GTDTree .= '<input type="submit" name="AddFolder" value="Добавить папку" /><input type="radio" checked="checked" name="secure" value="0"> Доступно для всех
+				<input type="radio" name="secure" value="1"> По приглашению';
 				$this->GTDTree .= '</form>';
 		}
 	}	
