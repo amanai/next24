@@ -13,7 +13,7 @@ class GTDModel extends BaseModel{
 			return $result;					
 		}
 		public function getCategories($id) {
-			$sql = "SELECT id,parent_id,category_name,level FROM GTDCategories WHERE id = $id ORDER BY id";
+			$sql = "SELECT id,parent_id,category_name,level,secure FROM GTDCategories WHERE id = $id ORDER BY id";
 			$result = $this->db->selectRow($sql);
 			$root_id = $result['id'];
 			$sql = "SELECT id FROM GTDCategories WHERE parent_id = $root_id";
@@ -30,7 +30,7 @@ class GTDModel extends BaseModel{
 			return $result;					
 		}
 		public function getFolders($id) {
-			$sql = "SELECT id,parent_id,folder_name,level FROM GTDfolders WHERE id = $id ORDER BY id";
+			$sql = "SELECT id,parent_id,folder_name,level,secure FROM GTDfolders WHERE id = $id ORDER BY id";
 			$result = $this->db->selectRow($sql);
 			$root_id = $result['id'];
 			$sql = "SELECT id FROM GTDfolders WHERE parent_id = $root_id";
@@ -87,7 +87,7 @@ class GTDModel extends BaseModel{
 			return $result;				
 		}
 		public function getFolderFiles($id_folder) {
-			$sql = "SELECT id AS ARRAY_KEY,file_name,file_path FROM GTDFiles WHERE folder_id = $id_folder";
+			$sql = "SELECT id AS ARRAY_KEY,file_name,file_path,secure FROM GTDFiles WHERE folder_id = $id_folder";
 			$result = $this->db->select($sql);
 			return $result;
 		}

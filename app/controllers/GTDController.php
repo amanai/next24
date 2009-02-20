@@ -13,7 +13,7 @@ class GTDController extends SiteController{
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
     	$request_keys = $v_request->getKeys();		
-		$users = $model->getUserList();
+		$users = $model->getUserList();  
 		$this->_view->__set('users',$users);		    	
 		$this->_view->GTDOutput();
 //		print '<pre>';
@@ -31,8 +31,8 @@ class GTDController extends SiteController{
     	$user_id = Project::getUser() -> getDbUser() -> id;
     	$model->addCategory($user_id,$request_keys['id'],$request_keys['CategoryName'],$request_keys['secure']);
     	$categories = $model->getRootCategory($user_id);
-    	$users = $model->getUserList();
-		$this->_view->__set('users',$users);    	  
+    	$users = $model->getUserList();  
+		$this->_view->__set('users',$users);   	  
     	$this->_view->GTDOutput();	
 		$this->_view->buildViewTreeCategories($categories);
 		$this->_view->parse();    	 			
@@ -49,8 +49,8 @@ class GTDController extends SiteController{
     	$model->addFolder($request_keys['cid'],$request_keys['id'],$request_keys['FolderName'],$request_keys['secure']);
     	$folders = $model->getRootFolder($request_keys['cid']);
     	$category_name = $model->getCategoryName($request_keys['cid']); 
-    	$users = $model->getUserList();  
-		$this->_view->__set('users',$users);    	
+    	$users = $model->getUserList();    
+		$this->_view->__set('users',$users);   	
     	$this->_view->GTDOutputFolders($category_name);   	
 		$this->_view->buildViewTreeFolders($folders);
 		$this->_view->parse(); 		
@@ -62,8 +62,8 @@ class GTDController extends SiteController{
     	$request_keys = $v_request->getKeys();			
 		$folders = $model->getRootFolder($request_keys['cid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']); 	
-		$users = $model->getUserList();  
-		$this->_view->__set('users',$users);	
+		$users = $model->getUserList();   
+		$this->_view->__set('users',$users);
 		$this->_view->GTDOutputFolders($category_name,$request_keys['cid']);		
 		$this->_view->buildViewTreeFolders($folders);
 		$this->_view->parse();
@@ -76,8 +76,8 @@ class GTDController extends SiteController{
 		$files = $model->getFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);
 		$folder_name = $model->getFolderName($request_keys['fid']);
-		$users = $model->getUserList();   
-		$this->_view->__set('users',$users);		
+		$users = $model->getUserList();     
+		$this->_view->__set('users',$users);	
 		$this->_view->BuldTreeFilesView($files);	
 		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);	
 		$this->_view->parse();    		
@@ -108,8 +108,8 @@ class GTDController extends SiteController{
 		$files = $model->getFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);
 		$folder_name = $model->getFolderName($request_keys['fid']); 
-		$users = $model->getUserList();  
-		$this->_view->__set('users',$users);		
+		$users = $model->getUserList();    
+		$this->_view->__set('users',$users);	
 		$this->_view->BuldTreeFilesView($files);	
 		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);		
 		$this->_view->parse(); 		
@@ -122,8 +122,8 @@ class GTDController extends SiteController{
     	$request_keys = $v_request->getKeys();	
 		$model->deleteCategory($request_keys['cid']);
 		$categories = $model->getRootCategory($user_id);   
-		$users = $model->getUserList();
-		$this->_view->__set('users',$users);		   		    	
+		$users = $model->getUserList();  
+		$this->_view->__set('users',$users);	   		    	
 		$this->_view->GTDOutput();		
 //		print '<pre>';
 //		print_r($request_keys);
@@ -139,7 +139,7 @@ class GTDController extends SiteController{
     	$model->deleteFolder($request_keys['fid']);		
 		$folders = $model->getRootFolder($request_keys['cid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']); 
-		$users = $model->getUserList();  	
+		$users = $model->getUserList();    	
 		$this->_view->__set('users',$users);		
 		$this->_view->GTDOutputFolders($category_name,$request_keys['cid']);		
 		$this->_view->buildViewTreeFolders($folders);
@@ -154,8 +154,8 @@ class GTDController extends SiteController{
 		$files = $model->getFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);
 		$folder_name = $model->getFolderName($request_keys['fid']); 
-		$users = $model->getUserList();  
-		$this->_view->__set('users',$users);		
+		$users = $model->getUserList();    
+		$this->_view->__set('users',$users);	
 		$this->_view->BuldTreeFilesView($files);	
 		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);		
 		$this->_view->parse(); 		
@@ -171,10 +171,10 @@ class GTDController extends SiteController{
 		else {
 			$model = new GTDModel();
 			$categories = $model->getRootCategory($request_keys['usr']);	
-    		$users = $model->getUserList();
+    		$users = $model->getUserList();  
 			$this->_view->__set('selected_user',$request_keys['usr']);
 			$this->_view->__set('another_user',true);
-			$this->_view->__set('users',$users);    	      	
+			$this->_view->__set('users',$users);   	      	
     		$this->_view->buildAnotherUserViewTreeCategories($categories);    	
 			$this->_view->GTDOutput();				
 			$this->_view->parse(); 	
@@ -187,7 +187,7 @@ class GTDController extends SiteController{
     	$request_keys = $v_request->getKeys();			
 		$folders = $model->getRootFolder($request_keys['cid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']); 	
-		$users = $model->getUserList();  
+		$users = $model->getUserList();
 		$this->_view->__set('selected_user',$request_keys['usr']);
 		$this->_view->__set('another_user',true);
 		$this->_view->__set('users',$users);	
@@ -209,7 +209,7 @@ class GTDController extends SiteController{
 //		print '</pre>';	
 		$this->_view->__set('selected_user',$request_keys['usr']);
 		$this->_view->__set('another_user',true);
-		$this->_view->__set('users',$users);		
+		$this->_view->__set('users',$users);	
 		$this->_view->BuldAnotherUserTreeFilesView($files);	
 		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);	
 		$this->_view->parse();   		
