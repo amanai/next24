@@ -50,10 +50,12 @@ class GTDView extends BaseSiteView{
 		$this->setTemplate(null, 'gtdfiles.tpl.php');		
 	}
 	public function loadFileView() {
-		$result = '<form enctype="multipart/form-data" action="'.Project::getRequest() -> createUrl('GTD','GTDAddFile').'/cid:'.$this->category_id.'/fid:'.$this->folder_id.'/usr:'.$this->_stack['selected_user'].'" method="post">
-		<input type="file" name="FileName" value="" />
-		<input type="submit" name="AddCategory" value="Загрузить Файл" /></form>';	
-		return $result;	
+		if(!$this->_stack['another_user']) {	
+			$result = '<form enctype="multipart/form-data" action="'.Project::getRequest() -> createUrl('GTD','GTDAddFile').'/cid:'.$this->category_id.'/fid:'.$this->folder_id.'" method="post">
+				<input type="file" name="FileName" value="" />
+				<input type="submit" name="AddCategory" value="Загрузить Файл" /></form>';	
+			return $result;	
+		}
 	}
 	public function TreeFilesView() {
 		return $this->filesTree;
@@ -67,11 +69,35 @@ class GTDView extends BaseSiteView{
 		$result .= '</ul>';
 		$this->filesTree = $result;
 	}
+	public function BuldAnotherUserTreeFilesView($files) {
+		$result = '<ul class="checkbox_tree">';
+		if($files) {
+			foreach ($files as $key => $value) {
+				$path = str_replace('#',DIRECTORY_SEPARATOR,$value['file_path']);
+				$result .= '<li><a href="'.$path.'">'.$value['file_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteFile').'/flid:'.$key.'">Удалить файл</a></li>';
+			}
+			$result .= '</ul>';
+		}
+		else {
+			$result = '<span style="color:red;">У данного ползователя нет файлов или они запрещены для просмотра !</span>';
+		}
+		$this->filesTree = $result;
+	}	
 	public function viewCategoryName() {
-		return '<a href="'.Project::getRequest() -> createUrl('GTD','gtd').'/usr:'.$this->_stack['selected_user'].'">Группы</a> :: '.$this->CategoryName;	
+		if($this->_stack['another_user']) {
+			return '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewAnotherUserCategories').'/usr:'.$this->_stack['selected_user'].'">Группы</a> :: '.$this->CategoryName;		
+		}
+		else {
+			return '<a href="'.Project::getRequest() -> createUrl('GTD','gtd').'">Группы</a> :: '.$this->CategoryName;	
+		}	
 	}
 	public function viewFolderName() {
-		return '<a href="'.Project::getRequest() -> createUrl('GTD','gtd').'/usr:'.$this->_stack['selected_user'].'">Группы</a> :: '.$this->CategoryName.' :: <a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'/cid:'.$this->category_id.'/usr:'.$this->_stack['selected_user'].'">Папки</a> :: '.$this->FolderName;
+		if($this->_stack['another_user']) {
+			return '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewAnotherUserCategories').'/usr:'.$this->_stack['selected_user'].'">Группы</a> :: '.$this->CategoryName.' :: <a href="'.Project::getRequest() -> createUrl('GTD','GTDViewAnotherUserFolders').'/cid:'.$this->category_id.'/usr:'.$this->_stack['selected_user'].'">Папки</a> :: '.$this->FolderName;
+		}
+		else {
+			return '<a href="'.Project::getRequest() -> createUrl('GTD','gtd').'">Группы</a> :: '.$this->CategoryName.' :: <a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'/cid:'.$this->category_id.'">Папки</a> :: '.$this->FolderName;	
+		}
 	}
 	public function viewTreeCategories() {
 		return $this->GTDTree;
@@ -104,7 +130,7 @@ class GTDView extends BaseSiteView{
 					$this->GTDTree .= '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" />';	
 				}				
 				$this->GTDTree .= '<label style="white-space: nowrap; ">';				
-				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'/cid:'.$values['id'].'/usr:'.$this->_stack['selected_user'].'">'.$values['folder_name'].'</a></label>';								
+				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewAnotherUserFiles').'/fid:'.$values['id'].'/cid:'.$this->category_id.'/usr:'.$this->_stack['selected_user'].'">'.$values['folder_name'].'</a></label>';								
 				if($values['subfolders']) {
 					$this->GTDTree .= '<ul class="checkbox_tree">';
 				}
@@ -115,7 +141,7 @@ class GTDView extends BaseSiteView{
 			}
 		}
 		else {
-				$this->GTDTree =  '<span style="color:red;">У данного ползователя не создано ни одной папки !</span>';
+				$this->GTDTree =  '<span style="color:red;">У данного ползователя не создано ни одной папки или они запрещены для просмотра !</span>';
 		}		
 	}	
 	public function buildAnotherUserTreeCategories($categories) {
@@ -137,7 +163,7 @@ class GTDView extends BaseSiteView{
 			}
 		}
 		else {
-				$this->GTDTree =  '<span style="color:red;">У данного ползователя не создано ни одной группы !</span>';
+				$this->GTDTree =  '<span style="color:red;">У данного ползователя не создано ни одной группы или они запрещены для просмотра !</span>';
 		}		
 	}
 	public function buildTreeCategories($categories) {
@@ -148,11 +174,11 @@ class GTDView extends BaseSiteView{
 					$this->GTDTree .= '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" />';	
 				}				
 				$this->GTDTree .= '<label style="white-space: nowrap; ">';
-				$this->GTDTree .=  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddCategory').'/usr:'.$this->_stack['selected_user'].'" method="post">';
+				$this->GTDTree .=  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddCategory').'" method="post">';
 				$this->GTDTree .= '<input type="text" name="CategoryName" value="" /><input type="hidden" name="id" value="'.$values['id'].'" />';
 				$this->GTDTree .= '<input type="submit" name="AddCategory" value="Добавить группу" />';
 				$this->GTDTree .= '</form>';				
-				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'/cid:'.$values['id'].'/usr:'.$this->_stack['selected_user'].'">'.$values['category_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteCategory').'/cid:'.$values['id'].'">Удалить группу</a></label>';								
+				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFolders').'/cid:'.$values['id'].'">'.$values['category_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteCategory').'/cid:'.$values['id'].'">Удалить группу</a></label>';								
 				if($values['subcategories']) {
 					$this->GTDTree .= '<ul class="checkbox_tree">';
 				}
@@ -163,7 +189,7 @@ class GTDView extends BaseSiteView{
 			}
 		}
 		else {
-				$this->GTDTree =  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddCategory').'/usr:'.$this->_stack['selected_user'].'" method="post">';
+				$this->GTDTree =  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddCategory').'" method="post">';
 				$this->GTDTree .= '<input type="text" name="CategoryName" value="" /><input type="hidden" name="id" value="0" />';
 				$this->GTDTree .= '<input type="submit" name="AddCategory" value="Добавить группу" />';
 				$this->GTDTree .= '</form>';
@@ -182,11 +208,11 @@ class GTDView extends BaseSiteView{
 					$this->GTDTree .= '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" />';	
 				}				
 				$this->GTDTree .= '<label style="white-space: nowrap; ">';
-				$this->GTDTree .=  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddFolder').'/usr:'.$this->_stack['selected_user'].'" method="post">';
+				$this->GTDTree .=  '<form action="'.Project::getRequest() -> createUrl('GTD','GTDAddFolder').'" method="post">';
 				$this->GTDTree .= '<input type="text" name="FolderName" value="" /><input type="hidden" name="id" value="'.$values['id'].'" /><input type="hidden" name="cid" value="'.$this->getCategoryId().'" />';
 				$this->GTDTree .= '<input type="submit" name="AddFolder" value="Добавить папку" />';
 				$this->GTDTree .= '</form>';				
-				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFiles').'/fid:'.$values['id'].'/cid:'.$this->category_id.'/usr:'.$this->_stack['selected_user'].'">'.$values['folder_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteFolder').'/fid:'.$values['id'].'">Удалить папку</a></label>';								
+				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFiles').'/fid:'.$values['id'].'/cid:'.$this->category_id.'">'.$values['folder_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteFolder').'/fid:'.$values['id'].'">Удалить папку</a></label>';								
 				if($values['subfolders']) {
 					$this->GTDTree .= '<ul class="checkbox_tree">';
 				}
