@@ -164,7 +164,7 @@ class GTDController extends SiteController{
 		$user_id = Project::getUser() -> getDbUser() -> id;
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
-    	$request_keys = $v_request->getKeys();			
+    	$request_keys = $v_request->getKeys();		
 		if($user_id == $request_keys['usr']) {
 			$this->GTDAction();
 		}

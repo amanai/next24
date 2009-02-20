@@ -113,7 +113,7 @@ class GTDView extends BaseSiteView{
 		$this->GTDTree .= '</ul>';
 	}	
 	public function buildAnotherUserViewTreeCategories($categories) {
-		$this->GTDTree .= '<ul class="checkbox_tree">';
+		$this->GTDTree = '<ul class="checkbox_tree">';
 		$this->buildAnotherUserTreeCategories($categories);
 		$this->GTDTree .= '</ul>';		
 	}
@@ -134,7 +134,7 @@ class GTDView extends BaseSiteView{
 				if($values['subfolders']) {
 					$this->GTDTree .= '<ul class="checkbox_tree">';
 				}
-				$this->buildTreeCategories($values);
+				$this->buildAnotherUserTreeFolders($values);
 				if($values['subfolders']) {
 					$this->GTDTree .= '</ul>';	
 				}
@@ -156,7 +156,7 @@ class GTDView extends BaseSiteView{
 				if($values['subcategories']) {
 					$this->GTDTree .= '<ul class="checkbox_tree">';
 				}
-				$this->buildTreeCategories($values);
+				$this->buildAnotherUserTreeCategories($values);
 				if($values['subcategories']) {
 					$this->GTDTree .= '</ul>';	
 				}
