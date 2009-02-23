@@ -15,10 +15,17 @@ class GTDView extends BaseSiteView{
 	public function viewSelectUserList() {
 		$users = $this->_stack['users'];
 		$selected_user = $this->_stack['selected_user'];
+		$another_user = $this->_stack['another_user'];
+		$user_id = Project::getUser() -> getDbUser() -> id;
 		$result = '<form name="usr_list" method="post" action="'.Project::getRequest() -> createUrl('GTD','GTDViewAnotherUserCategories').'">';
 		$result .= '<select name="usr" onchange="usr_list.submit();">';
 		foreach ($users as $id => $user) {
-			$result .= '<option '.(($id==$selected_user)?'selected="selected"':'').' value="'.$id.'">'.$user['full_name'].'</option>';
+			if($another_user) {
+				$result .= '<option '.(($id==$selected_user)?'selected="selected"':'').' value="'.$id.'">'.$user['full_name'].'</option>';
+			}
+			else {
+				$result .= '<option '.(($id==$user_id)?'selected="selected"':'').' value="'.$id.'">'.$user['full_name'].'</option>';
+			}			
 		}
 		$result .= '</select></form>';
 		return $result;
@@ -35,7 +42,9 @@ class GTDView extends BaseSiteView{
 			}	
 		}
 		$result .= '</select><input type="hidden" name="id" value="'.$key.'" />
-		<input type="hidden" name="section" value="'.$section.'" /></form>';
+		<input type="hidden" name="section" value="'.$section.'" />
+		<input type="hidden" name="cid" value="'.$this->category_id.'" />
+		<input type="hidden" name="fid" value="'.$this->folder_id.'" /></form>';
 		return $result;
 	}	
 	public function GTDOutput() {
