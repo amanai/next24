@@ -239,6 +239,35 @@ class HelpFunctions{
             
             return $fileSize;
 		}
+		static function isValidUploadFilename($filename) {
+			$ext = substr($filename,-4);
+			switch ($ext) {
+				case '.php':
+					return false;
+				break;
+				case '.exe':
+					return false;
+				break;
+				case '.com':
+					return false;
+				break;
+				case '.htm':
+					return false;
+				break;
+				case 'html':
+					return false;
+				break;
+				case '.asp':
+					return false;
+				break;
+				case 'aspx':
+					return false;
+				break;
+				default:
+					return true;
+				break;													
+			}
+		}
 		
 }
 ?>

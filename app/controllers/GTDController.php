@@ -26,7 +26,10 @@ class GTDController extends SiteController{
     	$v_session = Project::getSession();
     	$request_keys = $v_request->getKeys();	
     	$user_id = Project::getUser() -> getDbUser() -> id;
-    	$model->addCategory($user_id,$request_keys['id'],$request_keys['CategoryName'],$request_keys['secure']);
+    	$category_name = $request_keys['CategoryName'];
+    	if(HelpFunctions::isValidLogin($category_name)) {
+    		$model->addCategory($user_id,$request_keys['id'],$category_name,$request_keys['secure']);
+    	}	
     	$categories = $model->getRootCategory($user_id);
     	$users = $model->getUserList();  
 		$this->_view->__set('users',$users);   	  
@@ -40,7 +43,10 @@ class GTDController extends SiteController{
     	$v_session = Project::getSession();
     	$request_keys = $v_request->getKeys();	
     	$user_id = Project::getUser() -> getDbUser() -> id;
-    	$model->addFolder($request_keys['cid'],$request_keys['id'],$request_keys['FolderName'],$request_keys['secure']);
+    	$folder_name = $request_keys['FolderName'];
+    	if(HelpFunctions::isValidLogin($folder_name)) {
+    		$model->addFolder($request_keys['cid'],$request_keys['id'],$folder_name,$request_keys['secure']);
+    	}	
     	$folders = $model->getRootFolder($request_keys['cid']);
     	$category_name = $model->getCategoryName($request_keys['cid']); 
     	$users = $model->getUserList();    
@@ -83,18 +89,20 @@ class GTDController extends SiteController{
     	$request_keys = $v_request->getKeys();	  	  				
 		$fname = $_FILES['FileName']['tmp_name'];
 		$realfname = $_FILES['FileName']['name'];
-		$path = 'app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid'] . DIRECTORY_SEPARATOR .$realfname;
-		if(!file_exists('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'])) {
-			mkdir('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid']);
-		}
-		if(!file_exists('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid'])) {
-			mkdir('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid']);
+		if(HelpFunctions::isValidUploadFilename($realfname)) {
+			$path = 'app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid'] . DIRECTORY_SEPARATOR .$realfname;
+			if(!file_exists('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'])) {
+				mkdir('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid']);
+			}
+			if(!file_exists('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid'])) {
+				mkdir('app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid']);
+			}	
+			if(!file_exists($path)) {	
+				move_uploaded_file($fname,$path);
+				$dbpath = '#app#user_files#'.$request_keys['cid'].'#'.$request_keys['fid'].'#'.$realfname;
+				$model->addFolderFile($request_keys['fid'],$realfname,$dbpath,$request_keys['secure']);
+			}
 		}	
-		if(!file_exists($path)) {	
-			move_uploaded_file($fname,$path);
-			$dbpath = '#app#user_files#'.$request_keys['cid'].'#'.$request_keys['fid'].'#'.$realfname;
-			$model->addFolderFile($request_keys['fid'],$realfname,$dbpath,$request_keys['secure']);
-		}
 		$files = $model->getFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);
 		$folder_name = $model->getFolderName($request_keys['fid']); 

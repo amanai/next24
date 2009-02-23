@@ -61,7 +61,10 @@ class GTDModel extends BaseModel{
 			$result = $this->db->query('DELETE FROM GTDCategories WHERE id IN(?a)', $this->delCategories);
 			$result = $this->db->query('DELETE FROM GTDCategories_secure WHERE category_id IN(?a)', $this->delCategories);
 			$folders_id = $this->db->selectCol('SELECT id FROM GTDfolders WHERE category_id IN(?a)',$this->delCategories);	
-			$files_id = $this->db->selectCol('SELECT id FROM GTDFiles WHERE file_id IN(?a)',$folders_id);	
+			$files_id = $this->db->selectCol('SELECT id FROM GTDFiles WHERE file_id IN(?a)',$folders_id);
+//			print '<pre>';
+//				print_r($files_id);
+//			print '</pre>';		   
 			$result = $this->db->query('DELETE FROM GTDFiles_secure WHERE file_id IN(?a)', $files_id);
 			$result = $this->db->query('DELETE FROM GTDFiles WHERE folder_id IN(?a)', $folders_id);
 			$result = $this->db->query('DELETE FROM GTDfolders_secure WHERE folder_id IN(?a)', $folders_id);								
