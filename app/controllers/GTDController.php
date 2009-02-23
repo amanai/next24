@@ -170,7 +170,7 @@ class GTDController extends SiteController{
 		}
 		else {
 			$model = new GTDModel();
-			$categories = $model->getRootCategory($request_keys['usr']);	
+			$categories = $model->getAnotherUserRootCategory($request_keys['usr']);	
     		$users = $model->getUserList();  
 			$this->_view->__set('selected_user',$request_keys['usr']);
 			$this->_view->__set('another_user',true);
@@ -185,7 +185,7 @@ class GTDController extends SiteController{
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();  	
     	$request_keys = $v_request->getKeys();			
-		$folders = $model->getRootFolder($request_keys['cid']);	   
+		$folders = $model->getAnotherUserRootFolder($request_keys['cid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']); 	
 		$users = $model->getUserList();
 		$this->_view->__set('selected_user',$request_keys['usr']);

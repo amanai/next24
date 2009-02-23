@@ -103,14 +103,71 @@ class GTDModel extends BaseModel{
 		public function addSecureUser($id,$section,$user_id) {
 			switch($section) {
 				case 1:
-					//1
+					$sql = "INSERT INTO GTDCategories_secure VALUES($id,$user_id)";
+					$result = $this->db->query($sql);
 				break;
 				case 2:
-					//2
+					$sql = "INSERT INTO GTDfolders_secure VALUES($id,$user_id)";
+					$result = $this->db->query($sql);
 				case 3:
-					//3
+					$sql = "INSERT INTO GTDFiles_secure VALUES($id,$user_id)";
+					$result = $this->db->query($sql);
 				break;			
 			}
 		}
+		public function getAnotherUserRootCategory($user_id) {
+			$cur_user_id = Project::getUser() -> getDbUser() -> id;	
+			$sql = "SELECT id FROM GTDCategories WHERE user_id = $user_id and parent_id = 0";
+			$root_id = $this->db->selectCell($sql);
+			$result['subcategories'][0] = $this->getAnotherUserCategories($root_id,$cur_user_id);
+			return $result;				
+		}
+		public function getAnotherUserCategories($id,$cur_user_id) {
+			$sql = "SELECT id,parent_id,category_name,level,secure FROM GTDCategories WHERE id = $id ORDER BY id";
+			$result = $this->db->selectRow($sql);
+				$root_id = $result['id'];
+				$sql = "SELECT id AS ARRAY_KEY,secure FROM GTDCategories WHERE parent_id = $root_id";
+				$nums = $this->db->select($sql);
+				foreach($nums as $k => $v) {
+					if(!$v['secure']) {
+						$result['subcategories'][] = $this->getAnotherUserCategories($k,$cur_user_id);
+					}
+					else {
+						$sql = "SELECT user_id FROM GTDCategories_secure WHERE category_id = $k";
+						$secure = $this->db->selectCell($sql);
+						if($secure == $cur_user_id) {
+							$result['subcategories'][] = $this->getAnotherUserCategories($k,$cur_user_id);
+						}
+					}		
+				}
+			return $result;
+		}	
+		public function getAnotherUserRootFolder($category_id) {
+			$cur_user_id = Project::getUser() -> getDbUser() -> id;	
+			$sql = "SELECT id FROM GTDfolders WHERE category_id = $category_id and parent_id = 0";
+			$root_id = $this->db->selectCell($sql);
+			$result['subfolders'][0] = $this->getAnotherUserFolders($root_id,$cur_user_id);
+			return $result;					
+		}
+		public function getAnotherUserFolders($id) {
+			$sql = "SELECT id,parent_id,folder_name,level,secure FROM GTDfolders WHERE id = $id ORDER BY id";
+			$result = $this->db->selectRow($sql);
+			$root_id = $result['id'];
+			$sql = "SELECT id AS ARRAY_KEY,secure FROM GTDfolders WHERE parent_id = $root_id";
+			$nums = $this->db->select($sql);
+			foreach($nums as $k => $v) {
+				if(!$v['secure']) {
+					$result['subfolders'][] = $this->getAnotherUserFolders($k,$cur_user_id);
+				}
+				else {
+					$sql = "SELECT user_id FROM GTDfolders_secure WHERE folder_id = $k";
+					$secure = $this->db->selectCell($sql);
+					if($secure == $cur_user_id) {
+						$result['subfolders'][] = $this->getAnotherUserFolders($k,$cur_user_id);
+					}									
+				}
+			}
+			return $result;
+		}			
 }		
 ?>
