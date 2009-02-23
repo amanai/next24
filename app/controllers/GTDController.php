@@ -16,9 +16,6 @@ class GTDController extends SiteController{
 		$users = $model->getUserList();  
 		$this->_view->__set('users',$users);		    	
 		$this->_view->GTDOutput();
-//		print '<pre>';
-//		print_r($users);
-//		print '</pre>';
 		$this->_view->buildViewTreeCategories($categories);
 		$this->_view->parse(); 
 		
@@ -43,15 +40,12 @@ class GTDController extends SiteController{
     	$v_session = Project::getSession();
     	$request_keys = $v_request->getKeys();	
     	$user_id = Project::getUser() -> getDbUser() -> id;
- //   	    	print '<pre>';
-  //  		print_r($request_keys);
-  //  	print '</pre>';	
     	$model->addFolder($request_keys['cid'],$request_keys['id'],$request_keys['FolderName'],$request_keys['secure']);
     	$folders = $model->getRootFolder($request_keys['cid']);
     	$category_name = $model->getCategoryName($request_keys['cid']); 
     	$users = $model->getUserList();    
 		$this->_view->__set('users',$users);   	
-    	$this->_view->GTDOutputFolders($category_name);   	
+    	$this->_view->GTDOutputFolders($category_name,$request_keys['cid']);   	
 		$this->_view->buildViewTreeFolders($folders);
 		$this->_view->parse(); 		
 	}
@@ -77,20 +71,16 @@ class GTDController extends SiteController{
 		$category_name = $model->getCategoryName($request_keys['cid']);
 		$folder_name = $model->getFolderName($request_keys['fid']);
 		$users = $model->getUserList();     
-		$this->_view->__set('users',$users);	
+		$this->_view->__set('users',$users);		
+		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);
 		$this->_view->BuldTreeFilesView($files);	
-		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);	
 		$this->_view->parse();    		
 	}
 	function GTDAddFileAction() {
 		$model = new GTDModel();
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
-    	$request_keys = $v_request->getKeys();	  	
-//		print '<pre>';
-//		print_r($_FILES);
-//		print_r($request_keys);
-//		print '</pre>';    				
+    	$request_keys = $v_request->getKeys();	  	  				
 		$fname = $_FILES['FileName']['tmp_name'];
 		$realfname = $_FILES['FileName']['name'];
 		$path = 'app' . DIRECTORY_SEPARATOR . 'user_files' . DIRECTORY_SEPARATOR . $request_keys['cid'] . DIRECTORY_SEPARATOR . $request_keys['fid'] . DIRECTORY_SEPARATOR .$realfname;
@@ -109,9 +99,9 @@ class GTDController extends SiteController{
 		$category_name = $model->getCategoryName($request_keys['cid']);
 		$folder_name = $model->getFolderName($request_keys['fid']); 
 		$users = $model->getUserList();    
-		$this->_view->__set('users',$users);	
-		$this->_view->BuldTreeFilesView($files);	
-		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);		
+		$this->_view->__set('users',$users);				
+		$this->_view->GTDOutputFiles($category_name,$folder_name,$request_keys['cid'],$request_keys['fid']);
+		$this->_view->BuldTreeFilesView($files);		
 		$this->_view->parse(); 		
 	}
 	public function GTDDeleteCategoryAction() {
@@ -125,9 +115,6 @@ class GTDController extends SiteController{
 		$users = $model->getUserList();  
 		$this->_view->__set('users',$users);	   		    	
 		$this->_view->GTDOutput();		
-//		print '<pre>';
-//		print_r($request_keys);
-//		print '</pre>';
 		$this->_view->buildViewTreeCategories($categories);
 		$this->_view->parse(); 		
 	}
@@ -200,7 +187,7 @@ class GTDController extends SiteController{
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
     	$request_keys = $v_request->getKeys();	  	
-		$files = $model->getFolderFiles($request_keys['fid']);	   
+		$files = $model->getAnotherUserFolderFiles($request_keys['fid']);	   
 		$category_name = $model->getCategoryName($request_keys['cid']);
 		$folder_name = $model->getFolderName($request_keys['fid']);
 		$users = $model->getUserList();   
@@ -219,10 +206,7 @@ class GTDController extends SiteController{
 		$user_id = Project::getUser() -> getDbUser() -> id;	
 		$v_request = Project::getRequest();
     	$v_session = Project::getSession();
-    	$request_keys = $v_request->getKeys();		
-		print '<pre>';
-		print_r($request_keys);
-		print '</pre>';  
+    	$request_keys = $v_request->getKeys();		 
 		$model->addSecureUser($request_keys['id'],$request_keys['section'],$request_keys['addusr']);
 		switch($request_keys['section']) {
 			case 1:
