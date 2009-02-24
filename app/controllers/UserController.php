@@ -483,7 +483,6 @@
 		public function ProfileAction(){
 		    $userModel = new UserModel();
 			$user = Project::getUser() -> getShowedUser();
-			
 			$friend_model = new FriendModel;
 			$ui_model = new UserInterestsModel;
 			$relation = new RelationsModel;
