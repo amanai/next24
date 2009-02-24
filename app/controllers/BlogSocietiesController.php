@@ -33,7 +33,7 @@
 				$info['control_panel'] = null;
 				$info['blog_owner'] = false;
 			}
-			$info['tab_list'] = TabController::getOwnTabs(false, false, false, false, false, false, true);
+			$info['tab_list'] = TabController::getOwnTabs(false, false, false, false, false, false, false, true);
 			// User blog tree
 			$blog_model = Project::getUser() -> getShowedUser() -> getBlog();
 			$tree_model = new BlogTreeModelSocieties;

@@ -27,7 +27,7 @@ class TabController{
 		}
 		
 		function getOwnTabs($selected_profile = false, $selected_album = false, $selected_diary = false, $selected_arch_diary = false, 
-		                    $friends = false, $pm = false, $blog = false, $subscribe = false, $messages = false, $correspondent_user_id = 0){
+		                    $friends = false, $pm = false, $blog = false, $societies = false, $subscribe = false, $messages = false, $correspondent_user_id = 0){
 			$request = Project::getRequest();
 			$userModel = new UserModel();
 			$tabs = array();
@@ -50,6 +50,12 @@ class TabController{
 							'selected' => $blog,
 						 	'url' => $request -> createUrl('Blog', 'PostList')
 							);
+			$tabs[] = array(
+							'name' => 'Сообщества',
+							'title' => 'Сообщества',
+							'selected' => $societies,
+						 	'url' => $request -> createUrl('Societies', 'PostList')
+							);							
 			$tabs[] = array(
 							'name' => 'Дневник',
 							'title' => 'Дневник',
