@@ -17,7 +17,7 @@ class BlogAdminControllerSocieties extends AdminController{
 			$request = Project::getRequest();
 			$this -> BaseAdminData();
 			$info = array();
-			$catalog_model = new BlogCatalogModel;
+			$catalog_model = new BlogCatalogModelSocieties;
 			$pager = new DbPager($request -> getKeyByNumber(0), self::CATALOG_PER_PAGE);
 			$catalog_model -> setPager($pager);
 			$list = $catalog_model -> loadPage();
@@ -41,12 +41,12 @@ class BlogAdminControllerSocieties extends AdminController{
 			$page_number = (int)$request -> getKeyByNumber(1);
 			$tag_page_number = (int)$request -> getKeyByNumber(2);
 			
-			$catalog_model = new BlogCatalogModel;
+			$catalog_model = new BlogCatalogModelSocieties;
 			
 			
 			$info['edit_data'] = $catalog_model -> load($catalog_id);
 
-			$tag_model = new BlogTagModel;
+			$tag_model = new BlogTagModelSocieties;
 			$pager = new DbPager($tag_page_number, self::TAG_PER_PAGE);
 			$tag_model -> setPager($pager);
 			$info['tag_list'] = $tag_model -> loadList($catalog_id);
@@ -69,7 +69,7 @@ class BlogAdminControllerSocieties extends AdminController{
 			$request = Project::getRequest();
 			$name = $request -> name;
 			$id = (int)$request -> id;
-			$catalog_model = new BlogCatalogModel;
+			$catalog_model = new BlogCatalogModelSocieties;
 			$catalog_model -> load($id);
 			$catalog_model -> name = $name;
 			// TODO:: name validation
@@ -93,7 +93,7 @@ class BlogAdminControllerSocieties extends AdminController{
 				foreach ($request -> ids as $tag_id){
 					// TODO:: check for exists
 					if (isset($request -> tag_name[$tag_id]) && strlen($request -> tag_name[$tag_id])){
-						$tag_model = new BlogTagModel;
+						$tag_model = new BlogTagModelSocieties;
 						$tag_model -> load($tag_id);
 						$tag_model -> name = $request -> tag_name[$tag_id];
 						if ($tag_model -> id <= 0){
@@ -128,7 +128,7 @@ class BlogAdminControllerSocieties extends AdminController{
 			$page_number = (int)$request -> getKeyByNumber(1);
 			$tag_page_number = (int)$request -> getKeyByNumber(2);
 			$tag_id = (int)$request -> getKeyByNumber(3);
-			$tag_model = new BlogTagModel;
+			$tag_model = new BlogTagModelSocieties;
 			$tag_model -> delete($tag_id);
 			Project::getResponse() -> redirect($request -> createUrl('BlogAdmin', 'CatalogEdit', array($catalog_id, $page_number, $tag_page_number)));
 		}

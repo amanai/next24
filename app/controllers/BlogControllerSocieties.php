@@ -25,7 +25,7 @@
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			
 			if ($request_user_id === $user_id) {
-				$v = new BlogView();
+				$v = new BlogViewSocieties();
 				$v -> ControlPanel();
 				$info['control_panel'] = $v -> parse();
 				$info['blog_owner'] = true;
@@ -36,7 +36,7 @@
 			$info['tab_list'] = TabController::getOwnTabs(false, false, false, false, false, false, true);
 			// User blog tree
 			$blog_model = Project::getUser() -> getShowedUser() -> getBlog();
-			$tree_model = new BlogTreeModel;
+			$tree_model = new BlogTreeModelSocieties;
 			$info['branch_list'] = $tree_model -> getBranchList($blog_model -> id, $user_id);
 			$info['blog_info']['title'] = $blog_model->title;
 		}
@@ -53,10 +53,10 @@
 			$tree_id = (int)$request -> getKeyByNumber(0);
 			$page_number = (int)$request -> getKeyByNumber(1);
 			
-			$post_model = new BlogPostModel;
+			$post_model = new BlogPostModelSocieties;
 			$post_model -> setPager(new DbPager($page_number, $this -> getParam('post_per_page', self::DEFAULT_POST_PER_PAGE)));
 			
-			$subcribe_model = new BlogSubscribeModel;
+			$subcribe_model = new BlogSubscribeModelSocieties;
 			$list = $post_model -> loadList($user_id, $request_user_id,  $tree_id, $subcribe_model -> isSubscribed($user_id, $tree_id));
 			foreach ($list as &$item){
 				$item['comment_link'] = $request -> createUrl('Blog', 'Comments', array($item['id'], $page_number, 0));
@@ -83,13 +83,13 @@
 			$request = Project::getRequest();
 			$info = array();
 			
-			$post_model = new BlogPostModel;
+			$post_model = new BlogPostModelSocieties;
 			$post_model -> load($request -> getKeyByNumber(0));
-			$tag_model = new BlogTagModel;
+			$tag_model = new BlogTagModelSocieties;
 			$tag_model -> load($post_model -> bc_tag_id);
 			$info['post_tag_id'] = $tag_model -> id;
 			
-			$tree_model = new BlogTreeModel;
+			$tree_model = new BlogTreeModelSocieties;
 			$tree_model -> load($request -> getKeyByNumber(1));
 			
 			$info['tag_list'] = $tag_model -> loadList($tree_model -> blog_catalog_id, true);
@@ -117,12 +117,12 @@
 			$post_id = (int)$request -> getKeyByNumber(0);
 			$page_number = (int)$request -> getKeyByNumber(1);
 			
-			$post_model = new BlogPostModel;
+			$post_model = new BlogPostModelSocieties;
 			$post_model -> load($post_id);
 			if ($post_model->id){
-    			$tree_model = new BlogTreeModel;
+    			$tree_model = new BlogTreeModelSocieties;
     			$tree_model -> load($post_model -> ub_tree_id);
-    			$blog_model = new BlogModel();
+    			$blog_model = new BlogModelSocieties();
     			$blog_model -> load($tree_model->blog_id);
     			if ($blog_model->user_id != $user_id){
     			    Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
@@ -140,7 +140,7 @@
 			$info['post_allow_comments'] = (int)$post_model -> allowcomments;
 			$info['best_post'] = (int)$post_model -> bbp_status;
 			
-			$tag_model = new BlogTagModel;
+			$tag_model = new BlogTagModelSocieties;
 			$tag_model -> load($post_model -> bc_tag_id);
 			$info['post_tag'] = $tag_model -> name;
 			$info['post_tag_id'] = $tag_model -> id;
@@ -182,7 +182,7 @@
 				Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
 			}
 			
-			$blog_model = new BlogModel;
+			$blog_model = new BlogModelSocieties;
 			$blog_model -> loadByUserId($user_id);
 			
 			$info['user_id'] = $user_id;
@@ -210,7 +210,7 @@
 				Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
 			}
 			
-			$blog_model = new BlogModel;
+			$blog_model = new BlogModelSocieties;
 			$blog_model -> loadByUserId($user_id);
 			
 			if ($blog_model -> id <= 0){
@@ -235,7 +235,7 @@
 			$page_number = (int)$request -> page_number;
 			
 			if ($request_user_id == $user_id){
-    			$post_model = new BlogPostModel;
+    			$post_model = new BlogPostModelSocieties;
     			$post_model -> load($request -> id);
     			$post_model -> title = $request -> post_title;
     			$post_model -> full_text = $request -> post_full_text;
@@ -270,7 +270,7 @@
     			
     			// Best posts
     			if ($request->best_post) {
-    				$best = new BestBlogPostsModel();
+    				$best = new BestBlogPostsModelSocieties();
     				$best->blog_post_id = $post_id;
     				$best -> date = date("Y-m-d H:i:s");
     				$best -> active = 0;
@@ -294,7 +294,7 @@
 			$page_number = (int)$request -> getKeyByNumber(2);
 			
 			
-			$post_model = new BlogPostModel;
+			$post_model = new BlogPostModelSocieties;
 			$post = $post_model->getPost($post_id, $user_id, $request_user_id);
 			if (!$post){
 				$request->clear();
@@ -309,9 +309,9 @@
 			$info['post_creation_date'] = $post_model -> creation_date;
 			$info['post_allow_comments'] = (int)$post_model -> allowcomments;
 			
-			$tree_model = new BlogTreeModel;
+			$tree_model = new BlogTreeModeSocietiesl;
 			$tree_model -> load($post_model->ub_tree_id);
-			$blog_banners_model = new BlogModel('blog_banners');
+			$blog_banners_model = new BlogModelSocieties('blog_banners');
 			$blog_banners_model->load($tree_model->blog_banner_id);
 			$info['blog_banner_code'] = $blog_banners_model -> code;
 			
@@ -327,7 +327,7 @@
 			
 			
 			
-			$tag_model = new BlogTagModel;
+			$tag_model = new BlogTagModelSocieties;
 			$tag_model -> load($post_model -> bc_tag_id);
 			$info['post_tag'] = $tag_model -> name;
 			//$moodModel = new MoodModel();
@@ -344,7 +344,7 @@
 		}
 		
 		public function PostPreprocess($text, $user_id, $tree_id){
-			$subscribe_model = new BlogSubscribeModel;
+			$subscribe_model = new BlogSubscribeModelSocieties;
 			if (!$subscribe_model -> isSubscribed($user_id, $tree_id)){
 				$subscribe_tag = $this -> getParam('subscribe_tag', self::DEFAULT_SUBSCRIBE_TAG);
 				$startTag = '\<' . $subscribe_tag . '\>';
@@ -363,10 +363,10 @@
 			$post_page_number = (int)$request -> getKeyByNumber(1);
 			$page_number = (int)$request -> getKeyByNumber(2);
 			
-			$post_model = new BlogPostModel;
+			$post_model = new BlogPostModelSocieties;
 			$post_model -> load($post_id);
 			
-			$comment_model = new BlogCommentModel($request -> id);
+			$comment_model = new BlogCommentModelSocieties($request -> id);
 			if ($post_model -> id > 0){
 				$comment_model -> addComment($user_id, 0, 0, $post_id, $request -> comment, 0);
 			}
@@ -385,8 +385,8 @@
 			$post_id = $request -> getKeyByNumber(0);
 			$comment_id = $request -> getKeyByNumber(1);
 			
-			$comment_model = new BlogCommentModel($comment_id);
-			$post_model = new BlogPostModel;
+			$comment_model = new BlogCommentModelSocieties($comment_id);
+			$post_model = new BlogPostModelSocieties;
 			$post_model -> load($post_id);
 			if (($comment_model -> id > 0) && ($post_model -> id > 0) && ($comment_model -> blog_post_id == $post_model -> id)){
 				if (($comment_model -> user_id == $user_id) || ($post_model -> user_id == $user_id)){
@@ -412,10 +412,10 @@
 			$page_number = $request -> getKeyByNumber(1);
 			
 			// Delete comments
-			$comment_model = new BlogCommentModel();
+			$comment_model = new BlogCommentModelSocieties();
 			$comment_model -> deleteByItem($user_id, $post_id);
 			// Delete posts
-			$post_model = new BlogPostModel;
+			$post_model = new BlogPostModelSocieties;
 			$post_model -> load($post_id);
 			$tree_id = $post_model -> ub_tree_id;
 			$post_model -> delete($post_id);
@@ -445,14 +445,14 @@
 			
 			$branch_id = ($id !== null)?(int)$id:(int)$request -> getKeyByNumber(0);
 			
-			$blog_model = new BlogModel;
+			$blog_model = new BlogModelSocieties;
 			$blog_model -> loadByUserId($user_id);
 			$blog_id = (int)$blog_model -> id;
 			if ($blog_id <= 0){
 				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Edit'));
 			}
 			
-			$tree_model = new BlogTreeModel;
+			$tree_model = new BlogTreeModelSocieties;
 			$tree_model -> load($branch_id);
 			$info['user_id'] = $user_id;
 			$info['request_user_id'] = $request_user_id;
@@ -464,7 +464,7 @@
 			$blog_banner = $blog_model->getBlogBannerById($tree_model->blog_banner_id);
 			if ($blog_banner) $info['blog_banner_code'] = $blog_banner['code'];
 			
-			$catalog_model = new BlogCatalogModel;
+			$catalog_model = new BlogCatalogModelSocieties;
 			$info['catalog_list'] = $catalog_model -> loadAll();
 			
 			
@@ -503,14 +503,14 @@
 			$info = array();
 			$this -> BaseBlogData($info);
 			
-			$blog_model = new BlogModel;
+			$blog_model = new BlogModelSocieties;
 			$blog_model -> loadByUserId($user_id);
 			$blog_id = (int)$blog_model -> id;
 			if ($blog_id <= 0){
 				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Edit'));
 			}
 
-			$parent_tree_model = new BlogTreeModel;
+			$parent_tree_model = new BlogTreeModelSocieties;
 			$parent_tree_model -> load($parent_id);
 			$parent_node = $parent_tree_model -> getNode();
 			if ($parent_tree_model -> level > 1){
@@ -525,7 +525,7 @@
 				return;
 			}
 			
-			$tree_model = new BlogTreeModel;
+			$tree_model = new BlogTreeModelSocieties;
 			$tree_model -> load($branch_id);
 			$n = $tree_model -> getNode();
 			if ($n instanceof Node){
@@ -547,7 +547,7 @@
     			$tree_model -> blog_catalog_id = $catalog_id;
     			
 			
-			    $blogModel = new BlogModel();
+			    $blogModel = new BlogModelSocieties();
 			    $blog_banner = $blogModel -> getBlogBannerById($tree_model -> blog_banner_id);
 			    if ($blog_banner){
 			        $blog_banner_id = $tree_model -> blog_banner_id;
@@ -596,7 +596,7 @@
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			if ($user_id){
-    			$subscribeModel = new BlogSubscribeModel();
+    			$subscribeModel = new BlogSubscribeModelSocieties();
     			$subscribe_id = $subscribeModel->isSubscribed($user_id, $request->tree_id);
     			$subscribeModel->load($subscribe_id);
     			if ($subscribeModel->id){
