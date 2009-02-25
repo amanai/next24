@@ -21,11 +21,11 @@ class BlogAdminSocietiesController extends AdminController{
 			$catalog_model -> setPager($pager);
 			$list = $catalog_model -> loadPage();
 			$info['catalog_list'] = $list;
-			$info['edit_controller'] = 'BlogAdmin';
+			$info['edit_controller'] = 'BlogAdminSocieties';
 			$info['edit_action'] = 'CatalogEdit';
 			$info['page_number'] = $request -> getKeyByNumber(0);
 			$pager_view = new SitePagerView();
-			$info['list_pager_html'] = $pager_view -> show2($catalog_model -> getPager(), 'BlogAdmin', 'CatalogList');
+			$info['list_pager_html'] = $pager_view -> show2($catalog_model -> getPager(), 'BlogAdminSocieties', 'CatalogList');
 			
 			$this -> _view -> CatalogList($info);
 			$this -> _view -> parse();
@@ -49,15 +49,15 @@ class BlogAdminSocietiesController extends AdminController{
 			$pager = new DbPager($tag_page_number, self::TAG_PER_PAGE);
 			$tag_model -> setPager($pager);
 			$info['tag_list'] = $tag_model -> loadList($catalog_id);
-			$info['edit_tag_controller'] = 'BlogAdmin';
+			$info['edit_tag_controller'] = 'BlogAdminSocieties';
 			$info['edit_tag_action'] = 'TagEdit';
 			$pager_view = new SitePagerView();
-			$info['tag_pager_html'] = $pager_view -> show2($tag_model -> getPager(), 'BlogAdmin', 'CatalogEdit', array($catalog_id, $page_number));
+			$info['tag_pager_html'] = $pager_view -> show2($tag_model -> getPager(), 'BlogAdminSocieties', 'CatalogEdit', array($catalog_id, $page_number));
 			
 			$info['common_param'] =  array($catalog_id, $page_number, $tag_page_number);
-			$info['cancel_param'] = $request -> createUrl('BlogAdmin', 'CatalogList', array($page_number));
-			$info['save_param'] = $request -> createUrl('BlogAdmin', 'CatalogSave', array($catalog_id, $page_number, $tag_page_number));
-			$info['save_tag_action'] = $request -> createUrl('BlogAdmin', 'CatalogSaveTags', array($catalog_id, $page_number, $tag_page_number));
+			$info['cancel_param'] = $request -> createUrl('BlogAdminSocieties', 'CatalogList', array($page_number));
+			$info['save_param'] = $request -> createUrl('BlogAdminSocieties', 'CatalogSave', array($catalog_id, $page_number, $tag_page_number));
+			$info['save_tag_action'] = $request -> createUrl('BlogAdminSocieties', 'CatalogSaveTags', array($catalog_id, $page_number, $tag_page_number));
 			
 			
 			$this -> _view -> CatalogEdit($info);
@@ -79,7 +79,7 @@ class BlogAdminSocietiesController extends AdminController{
 			$tag_page_number = (int)$request -> getKeyByNumber(2);
 			$param = array($catalog_id, $page_number, $tag_page_number);
 
-			Project::getResponse() -> redirect($request -> createUrl('BlogAdmin', 'CatalogEdit', $param));
+			Project::getResponse() -> redirect($request -> createUrl('BlogAdminSocieties', 'CatalogEdit', $param));
 		}
 		
 		function CatalogSaveTagsAction(){
@@ -118,7 +118,7 @@ class BlogAdminSocietiesController extends AdminController{
 					
 				}
 			}
-			Project::getResponse() -> redirect($request -> createUrl('BlogAdmin', 'CatalogEdit', array($catalog_id, $page_number, $tag_page_number)));
+			Project::getResponse() -> redirect($request -> createUrl('BlogAdminSocieties', 'CatalogEdit', array($catalog_id, $page_number, $tag_page_number)));
 		}
 		
 		function CatalogDeleteTagAction(){
@@ -129,7 +129,7 @@ class BlogAdminSocietiesController extends AdminController{
 			$tag_id = (int)$request -> getKeyByNumber(3);
 			$tag_model = new BlogTagModelSocieties;
 			$tag_model -> delete($tag_id);
-			Project::getResponse() -> redirect($request -> createUrl('BlogAdmin', 'CatalogEdit', array($catalog_id, $page_number, $tag_page_number)));
+			Project::getResponse() -> redirect($request -> createUrl('BlogAdminSocieties', 'CatalogEdit', array($catalog_id, $page_number, $tag_page_number)));
 		}
 		
 		

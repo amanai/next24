@@ -59,17 +59,17 @@
 			$subcribe_model = new BlogSubscribeModelSocieties;
 			$list = $post_model -> loadList($user_id, $request_user_id,  $tree_id, $subcribe_model -> isSubscribed($user_id, $tree_id));
 			foreach ($list as &$item){
-				$item['comment_link'] = $request -> createUrl('Blog', 'Comments', array($item['id'], $page_number, 0));
+				$item['comment_link'] = $request -> createUrl('BlogSocieties', 'Comments', array($item['id'], $page_number, 0));
 				if ($request_user_id === $user_id) {
-					$item['edit_link'] = $request -> createUrl('Blog', 'PostEdit', array($item['id'], $page_number));
-					$item['del_link'] = $request -> createUrl('Blog', 'PostDelete', array($item['id'], $page_number));
+					$item['edit_link'] = $request -> createUrl('BlogSocieties', 'PostEdit', array($item['id'], $page_number));
+					$item['del_link'] = $request -> createUrl('BlogSocieties', 'PostDelete', array($item['id'], $page_number));
 					
 				}
 			}
 			$info['post_list'] = $list;
 			
 			$pager_view = new SitePagerView();
-			$info['post_list_pager'] = $pager_view -> show2($post_model -> getPager(), 'Blog', 'PostList', array($tree_id));
+			$info['post_list_pager'] = $pager_view -> show2($post_model -> getPager(), 'BlogSocieties', 'PostList', array($tree_id));
 			 
 			
 			$this -> _view -> PostList($info);
@@ -125,7 +125,7 @@
     			$blog_model = new BlogModelSocieties();
     			$blog_model -> load($tree_model->blog_id);
     			if ($blog_model->user_id != $user_id){
-    			    Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+    			    Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'PostList'));
     			}
 			}
 			
@@ -162,7 +162,7 @@
 			
 			
 			foreach($info['branch_list'] as &$item){
-				$item['change_branch_param'] = AjaxRequest::getJsonParam('Blog', 'AjaxChangeBranch', array($post_id, $item['id']));
+				$item['change_branch_param'] = AjaxRequest::getJsonParam('BlogSocieties', 'AjaxChangeBranch', array($post_id, $item['id']));
 			}
 			
 			$this -> _view -> PostEdit($info);
@@ -179,7 +179,7 @@
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			if (($request_user_id != $user_id) || !$user_id){
-				Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+				Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'PostList'));
 			}
 			
 			$blog_model = new BlogModelSocieties;
@@ -207,7 +207,7 @@
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
 			if (($request_user_id != $user_id) || !$user_id){
-				Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+				Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'PostList'));
 			}
 			
 			$blog_model = new BlogModelSocieties;
@@ -221,7 +221,7 @@
 			$blog_model -> title = $request -> blog_title;
 			$blog_model -> access = $request -> blog_access;
 			$blog_model -> save();
-			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+			Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'PostList'));
 		}
 		
 		function PostSaveAction(){
@@ -277,7 +277,7 @@
     				$best -> save();
     			}
 			}
-			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+			Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'PostList'));
 		}
 		
 		public function CommentsAction(){
@@ -309,7 +309,7 @@
 			$info['post_creation_date'] = $post_model -> creation_date;
 			$info['post_allow_comments'] = (int)$post_model -> allowcomments;
 			
-			$tree_model = new BlogTreeModeSocietiesl;
+			$tree_model = new BlogTreeModelSocieties;
 			$tree_model -> load($post_model->ub_tree_id);
 			$blog_banners_model = new BlogModelSocieties('blog_banners');
 			$blog_banners_model->load($tree_model->blog_banner_id);
@@ -337,7 +337,7 @@
 			
 			$userModel = new UserModel();
 			$info['user_avatar'] = $userModel->getFullAvatarById($post_model -> avatar_id);
-			$info['add_comment_url'] = $request -> createUrl('Blog', 'SaveComment', array($post_id, $post_page_number, $page_number));
+			$info['add_comment_url'] = $request -> createUrl('BlogSocieties', 'SaveComment', array($post_id, $post_page_number, $page_number));
 			
 			$this -> _view -> CommentList($info);
 			$this -> _view -> parse();
@@ -370,7 +370,7 @@
 			if ($post_model -> id > 0){
 				$comment_model -> addComment($user_id, 0, 0, $post_id, $request -> comment, 0);
 			}
-			Project::getResponse() -> redirect($request -> createUrl('Blog', 'Comments', array($post_id, $post_page_number, $page_number)));
+			Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'Comments', array($post_id, $post_page_number, $page_number)));
 		}
 		
 		/**
@@ -393,7 +393,7 @@
 					$comment_model -> delete($comment_model -> user_id, $comment_id);
 				}
 			}
-			Project::getResponse() -> redirect($request -> createUrl('Blog', 'Comments', array($post_id)));
+			Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'Comments', array($post_id)));
 			//TODO::avatar?warning?mood?
 		}
 		
@@ -421,7 +421,7 @@
 			$post_model -> delete($post_id);
 			
 			
-			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList', array($tree_id , $page_number)));
+			Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'PostList', array($tree_id , $page_number)));
 			
 			
 			// TODO:: need to delete warnings?
@@ -449,7 +449,7 @@
 			$blog_model -> loadByUserId($user_id);
 			$blog_id = (int)$blog_model -> id;
 			if ($blog_id <= 0){
-				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Edit'));
+				Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'Edit'));
 			}
 			
 			$tree_model = new BlogTreeModelSocieties;
@@ -491,7 +491,7 @@
 			$request = Project::getRequest();
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;
 			$user_id = (int)Project::getUser() -> getDbUser() -> id;
-			if ($request_user_id != $user_id) {Project::getResponse() -> redirect($request -> createUrl('Blog', 'EditBranch', array($branch_id)));}
+			if ($request_user_id != $user_id) {Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'EditBranch', array($branch_id)));}
 			
 			$branch_id = (int)$request -> branch_id;
 			$name = $request -> branch_name;
@@ -507,7 +507,7 @@
 			$blog_model -> loadByUserId($user_id);
 			$blog_id = (int)$blog_model -> id;
 			if ($blog_id <= 0){
-				Project::getResponse() -> redirect($request -> createUrl('Blog', 'Edit'));
+				Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'Edit'));
 			}
 
 			$parent_tree_model = new BlogTreeModelSocieties;
@@ -566,12 +566,12 @@
     					$tree_model -> level = 1;
     				}
     				$branch_id = $tree_model -> save();
-    				$n = new Node(new Key($branch_id), 'ub_tree');
+    				$n = new Node(new Key($branch_id), 'ub_tree_societies');
     				$tree_model -> key = $n -> key -> __toString();
     			}
     			
     			if (!$parent_node){
-    				$node = new Node(new Key($tree_model -> id), 'ub_tree');
+    				$node = new Node(new Key($tree_model -> id), 'ub_tree_societies');
     				$tree_model -> key = $node -> key -> __toString();
     				$tree_model -> level = 1;
     			}
@@ -579,14 +579,14 @@
     			if ($parent_node){
     				$n -> changeParent($parent_node);
     			}
-    			Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+    			Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'PostList'));
 			
 			
 			}elseif($request->delete){
 			    $tree_model->delete($branch_id);
 			    $blog_model->deletePostsByUb_tree_id($branch_id);
 			    
-			    Project::getResponse() -> redirect($request -> createUrl('Blog', 'PostList'));
+			    Project::getResponse() -> redirect($request -> createUrl('BlogSocieties', 'PostList'));
 			}
 			
 		}

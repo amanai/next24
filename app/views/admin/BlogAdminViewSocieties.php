@@ -18,7 +18,7 @@ class BlogAdminViewSocieties extends BaseAdminView{
 			foreach ($info['tag_list'] as &$item){
 				$p = $info['common_param'];
 				$p[] = $item['id'];
-				$item['delete_link'] = $request -> createUrl('BlogAdmin', 'CatalogDeleteTag', $p);
+				$item['delete_link'] = $request -> createUrl('BlogAdminSocieties', 'CatalogDeleteTag', $p);
 			}
 			
 			$this -> setTemplate($this -> _dir, 'catalog_edit.tpl.php');
