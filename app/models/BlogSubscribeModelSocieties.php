@@ -1,7 +1,7 @@
 <?php
 class BlogSubscribeModelSocieties extends BaseModel{
 			function __construct(){
-				parent::__construct('blog_subscribe');
+				parent::__construct('blog_subscribe_societies');
 			}
 			
 			function isSubscribed($user_id, $tree_id){

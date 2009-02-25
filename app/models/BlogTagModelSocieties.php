@@ -1,7 +1,7 @@
 <?php
 class BlogTagModelSocieties extends BaseModel{
 		function __construct(){
-			parent::__construct('bc_tag');
+			parent::__construct('bc_tag_societies');
 		}
 		
 		
@@ -16,7 +16,7 @@ class BlogTagModelSocieties extends BaseModel{
 		
 		function exists($name){
 			$sql = "SELECT * " .
-					   " FROM  bc_tag " .
+					   " FROM  bc_tag_societies " .
 						" WHERE " .
 						" param_group_id = ?d" .
 						" AND LOWER(name) = LOWER(?)";
