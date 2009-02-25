@@ -1,4 +1,4 @@
-<form action="<?php echo $this->createUrl('Blog', 'PostSave');?>" method="post">
+<form action="<?php echo $this->createUrl('Societies', 'PostSave');?>" method="post">
 	<input type="hidden" name="id" value="<?php echo $this -> post_id;?>"><br />
 	<input type="hidden" name="page_number" value="<?php echo $this -> post_page_number;?>"><br />
 	

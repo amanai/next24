@@ -35,7 +35,7 @@
 			}
 			$info['tab_list'] = TabController::getOwnTabs(false, false, false, false, false, false, false, true);
 			// User blog tree
-			$blog_model = Project::getUser() -> getShowedUser() -> getBlog();
+			$blog_model = Project::getUser() -> getShowedUser() -> getBlogSocieties();
 			$tree_model = new BlogTreeModelSocieties;
 			$info['branch_list'] = $tree_model -> getBranchList($blog_model -> id, $user_id);
 			$info['blog_info']['title'] = $blog_model->title;
@@ -70,7 +70,9 @@
 			
 			$pager_view = new SitePagerView();
 			$info['post_list_pager'] = $pager_view -> show2($post_model -> getPager(), 'Societies', 'PostList', array($tree_id));
-			
+//			print '<pre>';
+//				print_r($info);
+//			print '</pre>';	
 			$this -> _view -> PostList($info);
 			$this -> _view -> parse();
 		}

@@ -92,7 +92,11 @@ class UserModel extends BaseModel{
 			$blog_model -> loadByUserId($this -> id);
 			return $blog_model;
 		}
-		
+		function &getBlogSocieties(){
+			$blog_model_societies = new BlogModelSocieties;
+			$blog_model_societies -> loadByUserId($this -> id);
+			return $blog_model_societies;
+		}		
 		function ban($user_id){
 			Project::getDatabase() -> selectRow("UPDATE ".$this -> _table." SET banned=1 WHERE id=?d ", (int)$user_id);
 		}
