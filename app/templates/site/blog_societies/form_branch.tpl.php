@@ -1,4 +1,4 @@
-<form action="<?php echo $this->createUrl('Blog', 'SaveBranch');?>" method="post">
+<form action="<?php echo $this->createUrl('Societies', 'SaveBranch');?>" method="post">
 	<input type="hidden" name="branch_id" value="<?php echo $this -> branch_id;?>"><br />
 
 	<h1>Создание/редактирование раздела</h1>
