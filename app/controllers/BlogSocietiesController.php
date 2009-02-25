@@ -149,7 +149,7 @@
 			
 			
 			
-			$info['access_list'] = HelpFunctions::getBlogAccessList();
+			$info['access_list'] = HelpFunctions::getBlogSocietiesAccessList();
 			
 			$mood_model = new MoodModel;
 			$info['mood_list'] = $mood_model -> getList($request_user_id);
@@ -190,7 +190,7 @@
 			$info['request_user_id'] = $request_user_id;
 			$info['blog_title'] = $blog_model -> title;
 			$info['blog_access'] = $blog_model -> access;
-			$info['access_list'] = HelpFunctions::getBlogAccessList();
+			$info['access_list'] = HelpFunctions::getBlogSocietiesAccessList();
 
 			$this -> BaseSiteData();
 			$this -> BaseBlogData($info);
@@ -461,7 +461,7 @@
 			$info['branch_name'] = $tree_model -> name;
 			$info['branch_access'] = $tree_model -> access;
 			$info['blog_catalog_id'] = $tree_model -> blog_catalog_id;
-			$info['access_list'] = HelpFunctions::getBlogAccessList();
+			$info['access_list'] = HelpFunctions::getBlogSocietiesAccessList();
 			$blog_banner = $blog_model->getBlogBannerById($tree_model->blog_banner_id);
 			if ($blog_banner) $info['blog_banner_code'] = $blog_banner['code'];
 			

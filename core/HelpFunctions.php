@@ -18,7 +18,14 @@ class HelpFunctions{
 						ACCESS::SUBSCRIBE => 'требовать подписки'
 						);
 		}
-		
+		static function getBlogSocietiesAccessList(){
+			return  array(
+						ACCESS::ALL => 'для всех',
+					//	ACCESS::FRIEND => 'только для друзей',
+					//	ACCESS::MYSELF => 'только для себя',
+						ACCESS::SUBSCRIBE => 'требовать подписки'
+						);
+		}		
 		
 		
 		static function encode($str){
