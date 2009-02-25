@@ -1,4 +1,4 @@
-<form action="<?php echo $this->createUrl('Blog', 'Save');?>" method="post">
+<form action="<?php echo $this->createUrl('Societies', 'Save');?>" method="post">
 	<h1>Редактирование блога</h1>
 	<br />
 	<table>

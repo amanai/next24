@@ -1,4 +1,4 @@
-<?php include($this -> _include('../header.tpl.php')); ?>
+z<?php include($this -> _include('../header.tpl.php')); ?>
 <!-- Главный блок, с вкладками (Контент) -->
 <div class="tab-page" id="modules-cpanel">
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
