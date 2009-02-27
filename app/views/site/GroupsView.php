@@ -10,8 +10,22 @@ class GTDView extends BaseSiteView{
 		$this->_js_files[] = 'jquery.js';
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
-		$this->setTemplate(null, 'gtd.tpl.php');
+		$this->setTemplate(null, 'main_groups.tpl.php');
 	//	$this->set($data);
-	}	
+	}
+	public function subGroupView() {
+		$this->_js_files[] = 'jquery.js';
+	    $this->_js_files[] = 'news_tree.js';
+	    $this->_css_files[] = 'news_tree.css';
+		$this->setTemplate(null, 'inner_group.tpl.php');
+	//	$this->set($data);			
+	}
+	public function topicView() {
+		$this->_js_files[] = 'jquery.js';
+	    $this->_js_files[] = 'news_tree.js';
+	    $this->_css_files[] = 'news_tree.css';
+		$this->setTemplate(null, 'topic_forum.tpl.php');
+	//	$this->set($data);			
+	}
 }		
 ?>
