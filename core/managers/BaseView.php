@@ -80,7 +80,6 @@ class BaseView{
 			if ($this -> _base_dir !== null){
 				$template_root .= $this -> _base_dir;
 			}
-			
 			$template_root .= DIRECTORY_SEPARATOR . $this -> _dir . DIRECTORY_SEPARATOR;
 			$this -> _fullpath = $template_root . $this -> _file;
 			ob_start();

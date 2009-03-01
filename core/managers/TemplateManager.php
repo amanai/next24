@@ -12,7 +12,6 @@ class TemplateManager extends ApplicationManager implements IManager{
 				if (!file_exists($this -> _templateDir) || !is_dir($this -> _templateDir)){
 					throw new TemplateException("Template manager: root template directory is not exists");
 				}
-				
 				$this -> _js_path = $configuration -> get('js_path');
 				$this -> _css_path = $configuration -> get('css_path');
 				$this -> _image_path = $configuration -> get('image_path');
