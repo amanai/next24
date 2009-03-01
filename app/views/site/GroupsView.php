@@ -22,13 +22,20 @@ class GroupsView extends BaseSiteView{
 		$this->setTemplate(null, 'inner_group.tpl.php');
 	//	$this->set($data);			
 	}
-	public function topicView() {
+	public function topicsView() {
+		$this->_js_files[] = 'jquery.js';
+	    $this->_js_files[] = 'news_tree.js';
+	    $this->_css_files[] = 'news_tree.css';
+		$this->setTemplate(null, 'inner_sub_groups.php');
+	//	$this->set($data);			
+	}
+	public function messagesView() {
 		$this->_js_files[] = 'jquery.js';
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
 		$this->setTemplate(null, 'topic_forum.tpl.php');
 	//	$this->set($data);			
-	}
+	}	
 	public function createNewGroupForm() {
 		$pid = $this->_stack['pid'];
 		$result = '<form action="'.Project::getRequest() -> createUrl('Groups','groupsCreate').'" method="post" />
@@ -96,6 +103,37 @@ class GroupsView extends BaseSiteView{
 				   </form>';
 		return $result;
 	}	
+	public function createNewTopicForm() {
+		$pid = $this->_stack['pid'];
+		$result = '<form action="'.Project::getRequest() -> createUrl('Groups','topicCreate').'" method="post" />
+					<table>
+						<tr>
+							<td>
+								Название темы :
+							</td>
+							<td>
+								<input type="text" name="full_name" />
+							</td>
+							<td>
+								<input type="submit" name="crete_new_sub_group" value="Создать тему" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Описание :
+							</td>
+							<td>
+								<input type="text" name="description" />
+							</td>
+							<td>
+								Фотоальбом : <input type="checkbox" name="photo_album" value="1" />	
+							</td>
+						</tr>
+					</table>
+					<input type="hidden" name="pid" value="'.$pid.'" />
+				   </form>';
+		return $result;
+	}		
 	public function createGroupsTree() {
 		$groups = $this->_stack['groups'];
 		foreach ($groups as $group) {
@@ -107,9 +145,16 @@ class GroupsView extends BaseSiteView{
 	public function createSubGroupsTree() {
 		$sub_groups = $this->_stack['sub_groups'];
 		foreach ($sub_groups as $sub_group) {
-			$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','topicView').'/tid:'.$sub_group['id'].'">'.$sub_group['full_name'].'</a>';
+			$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','topicView').'/pid:'.$sub_group['id'].'">'.$sub_group['full_name'].'</a>';
 		}
 		return $result;		
 	}
+	public function createTopicsTree() {
+		$topics = $this->_stack['topics'];
+		foreach ($topics as $topic) {
+			$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','messagesView').'/tid:'.$topic['id'].'">'.$topic['full_name'].'</a>';
+		}
+		return $result;		
+	}	
 }		
 ?>

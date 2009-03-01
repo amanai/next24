@@ -45,5 +45,22 @@ class GroupsModel extends BaseModel{
 		$result = $this->db->select($sql);
 		return $result;			
 	}
+	public function addTopics($request) {
+		if(is_array($request)) {
+			$create_time = time();
+			$cur_user_id = Project::getUser() -> getDbUser() -> id;
+			if(!$request['photo_album']) {
+				$request['photo_album'] = 0;
+			}
+			$sql = "INSERT INTO groups_topics(group_id,id_user,full_name,description,create_time,photo_album) VALUES({$request['pid']},$cur_user_id,'{$request['full_name']}','{$request['description']}','{$create_time}',{$request['photo_album']})";
+			$result = $this->db->query($sql);	
+		//print '<pre>';
+		//	print_r($request);
+		//print '</pre>';	
+		}
+		else {
+			throw new TemplateException("Входная переменная - не массив !");
+		}			
+	}
 }		
 ?>

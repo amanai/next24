@@ -51,7 +51,7 @@ class GroupsController extends SiteController{
 	public function subGroupCreateAction() {
 		$model = new GroupsModel();
 		$model->addSubGroup($this->request);	
-		$this->_view->__set("pid",$this->request['id']);	 	    	
+//		$this->_view->__set("pid",$this->request['id']);	 	    	
 		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'subGroupView').'/id:'.$this->request['pid']);	
 	}
 	public function subGroupAlterAction() {
@@ -62,17 +62,25 @@ class GroupsController extends SiteController{
 	}
 	public function topicViewAction() {
 		$model = new GroupsModel();
-		$topics = $model->selectTopics($this->request['id'])
-		
+		$topics = $model->selectTopics($this->request['pid']);
+		$this->_view->__set("pid",$this->request['pid']);
+		$this->_view->__set("topics",$topics);	
+		$this->_view->topicsView();
+		$this->_view->parse(); 			
 	}
 	public function topicCreateAction() {
-		
+		$model = new GroupsModel();
+		$model->addTopics($this->request);	
+		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'topicView').'/pid:'.$this->request['pid']);			
 	}
 	public function topicAlterAction() {
 		
 	}
 	public function topicDeleteAction() {
 		
+	}
+	public function messagesViewAction() {
+		$this->_view->messagesView();
 	}
 	public function messageCreateAction() {
 		
