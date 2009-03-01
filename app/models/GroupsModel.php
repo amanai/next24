@@ -70,13 +70,29 @@ class GroupsModel extends BaseModel{
 			$cur_user_id = Project::getUser() -> getDbUser() -> id;
 			$sql = "INSERT INTO groups_topic_messages(id_user,id_topic,message_name,message_content,create_time) VALUES($cur_user_id,{$request['tid']},'{$request['message_name']}','{$request['message_content']}','{$create_time}')";
 			$result = $this->db->query($sql);	
-		//	print '<pre>';
-		//		print_r($request);
-		//	print '</pre>';	
 		}
 		else {
 			throw new TemplateException("Входная переменная - не массив !");
 		}			
+	}
+	public function selectAlterMessage($topic_id,$message_id) {
+		$sql = "SELECT id,id_user,id_topic,message_name,message_content,create_time FROM groups_topic_messages WHERE id_topic = $topic_id AND id = $message_id";
+		$result = $this->db->selectRow($sql);
+		return $result;			
+	}
+	public function alterMessage($request) {
+		if(is_array($request)) {
+			$create_time = time();
+			$sql = "UPDATE groups_topic_messages SET id_topic = {$request['tid']},message_name = '{$request['message_name']}',message_content = '{$request['message_content']}',create_time = '{$create_time}' WHERE id = {$request['mid']}";
+			$result = $this->db->query($sql);	
+		}
+		else {
+			throw new TemplateException("Входная переменная - не массив !");
+		}			
+	}
+	public function deleteMessage($id_message) {
+		$sql = "DELETE FROM groups_topic_messages WHERE id = $id_message";
+		$result = $this->db->query($sql);
 	}
 }		
 ?>

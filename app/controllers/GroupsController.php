@@ -20,19 +20,9 @@ class GroupsController extends SiteController{
 		
 	}
 	public function groupsCreateAction() {
-		$model = new GroupsModel();	
-		//if($this->request['crete_new_group'] && 
-		//   $this->request['group_name'] && 
-		  // HelpFunctions::isValidLogin($this->request['full_name']) && 
-		  // HelpFunctions::isValidLogin($this->request['decription'])
-		  // ) {
-			//print '<pre>';
-			//	print_r($this->request);
-			//print '</pre>';	
-			$model->addGroup($this->request);	
-			Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'groupsView'));	   					
-		//}
-  	 			
+		$model = new GroupsModel();		
+		$model->addGroup($this->request);	
+		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'groupsView'));	   						 			
 	}
 	public function groupsAlterAction() {
 		
@@ -50,8 +40,7 @@ class GroupsController extends SiteController{
 	}
 	public function subGroupCreateAction() {
 		$model = new GroupsModel();
-		$model->addSubGroup($this->request);	
-//		$this->_view->__set("pid",$this->request['id']);	 	    	
+		$model->addSubGroup($this->request);	 	    	
 		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'subGroupView').'/id:'.$this->request['pid']);	
 	}
 	public function subGroupAlterAction() {
@@ -96,10 +85,27 @@ class GroupsController extends SiteController{
 		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'messagesView').'/pid:'.$this->request['pid'].'/tid:'.$this->request['tid']);
 	}
 	public function messageAlterAction() {
-		
+		if(!$this->request['alter']) {
+			$model = new GroupsModel();
+			$messages = $model->selectMessages($this->request['tid']);
+			$this->_view->__set("tid",$this->request['tid']);
+			$this->_view->__set("pid",$this->request['pid']);		
+			$this->_view->__set("messages",$messages);
+			$alter_message = $model->selectAlterMessage($this->request['tid'],$this->request['mid']);	
+			$this->_view->__set("alter_message",$alter_message);	
+			$this->_view->messagesView();
+			$this->_view->parse();						
+		}
+		else {
+			$model = new GroupsModel();
+			$model->alterMessage($this->request);
+			Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'messagesView').'/pid:'.$this->request['pid'].'/tid:'.$this->request['tid']);			
+		}
 	}
 	public function messageDeleteAction() {
-		
+		$model = new GroupsModel();
+		$model->deleteMessage($this->request['mid']);
+		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'messagesView').'/pid:'.$this->request['pid'].'/tid:'.$this->request['tid']);		
 	}
 	public function photoAlbumViewAction() {
 		
