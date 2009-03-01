@@ -63,6 +63,7 @@ class GroupsController extends SiteController{
 	public function topicViewAction() {
 		$model = new GroupsModel();
 		$topics = $model->selectTopics($this->request['pid']);
+		$this->_view->__set("tid",$this->request['tid']);
 		$this->_view->__set("pid",$this->request['pid']);
 		$this->_view->__set("topics",$topics);	
 		$this->_view->topicsView();
@@ -80,10 +81,19 @@ class GroupsController extends SiteController{
 		
 	}
 	public function messagesViewAction() {
+		$model = new GroupsModel();
+		$messages = $model->selectMessages($this->request['tid']);
+		$this->_view->__set("tid",$this->request['tid']);
+		$this->_view->__set("pid",$this->request['pid']);		
+		$this->_view->__set("messages",$messages);	
 		$this->_view->messagesView();
+		$this->_view->parse();
+		
 	}
 	public function messageCreateAction() {
-		
+		$model = new GroupsModel();
+		$model->addMessage($this->request);
+		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'messagesView').'/pid:'.$this->request['pid'].'/tid:'.$this->request['tid']);
 	}
 	public function messageAlterAction() {
 		

@@ -4,11 +4,12 @@
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 	
 	<div class="tab-page tab-page-selected">
-		<div style="float:left;">
-		<?php echo 1;	?>
+		<div>
+			<?php echo $this->createMessagesTree();	?>
 		</div>
-		<div style="float: right;">
-			<?php echo 2;	?>
+		<hr />
+		<div>
+			<?php echo $this->createNewMessageForm();	?>
 		</div>
 	</div>
 <?php include($this -> _include('../footer.tpl.php')); ?>	

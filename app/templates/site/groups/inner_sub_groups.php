@@ -8,7 +8,7 @@
 		<?php echo $this->createTopicsTree(); ?>
 		</div>
 		<hr />
-		<div>
+		<div style="text-align: left;">
 			<?php echo $this->createNewTopicForm();	?>
 		</div>
 	</div>

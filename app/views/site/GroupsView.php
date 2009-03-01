@@ -133,7 +133,36 @@ class GroupsView extends BaseSiteView{
 					<input type="hidden" name="pid" value="'.$pid.'" />
 				   </form>';
 		return $result;
-	}		
+	}
+	public function createNewMessageForm() {
+		$tid = $this->_stack['tid'];
+		$pid = $this->_stack['pid'];
+		$result = '<form action="'.Project::getRequest() -> createUrl('Groups','messageCreate').'" method="post" />
+					<table>
+						<tr>
+							<td>
+								Сообщение :
+							</td>
+							<td>
+								<input type="text" name="message_name" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<textarea name="message_content" style="width: 100%;"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="submit" name="crete_new_sub_group" value="Создать сообщение" />
+							</td>
+						</tr>						
+					</table>
+					<input type="hidden" name="pid" value="'.$pid.'" />
+					<input type="hidden" name="tid" value="'.$tid.'" />
+				   </form>';
+		return $result;
+	}				
 	public function createGroupsTree() {
 		$groups = $this->_stack['groups'];
 		foreach ($groups as $group) {
@@ -152,9 +181,16 @@ class GroupsView extends BaseSiteView{
 	public function createTopicsTree() {
 		$topics = $this->_stack['topics'];
 		foreach ($topics as $topic) {
-			$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','messagesView').'/tid:'.$topic['id'].'">'.$topic['full_name'].'</a>';
+			$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','messagesView').'/pid:'.$topic['group_id'].'/tid:'.$topic['id'].'">'.$topic['full_name'].'</a>';
 		}
 		return $result;		
 	}	
+	public function createMessagesTree() {
+		$messages = $this->_stack['messages'];
+		foreach ($messages as $message) {
+			$result .= '<br /><div style="font-weight: bold;">'.$message['message_name'].'</div><div><div>'.$message['message_content'].'</div><div><a href="'.Project::getRequest() -> createUrl('Groups','messageDelete').'/tid:'.$message['id_topic'].'/tid:'.$message['id_topic'].'">удалить</a>&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','messageAlter').'/tid:'.$message['id_topic'].'/tid:'.$message['id_topic'].'">изменить</a></div></div>';
+		}
+		return $result;			
+	}
 }		
 ?>
