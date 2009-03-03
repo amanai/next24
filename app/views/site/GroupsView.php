@@ -333,12 +333,12 @@ class GroupsView extends BaseSiteView{
 		foreach ($groups as $group) {
 			if($group['access_rule']) {
 				if($group['access_rule_code']) {
-						$result .= '<br />'.$group['full_name'].'
+						$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">'.$group['full_name'].'</a>
 									<br />Метка группы : '.$group['group_name'].'<br />';							
 				}
 				else {
 					if($group['id_user'] == $current_user_id) {
-						$result .= '<br />'.$group['full_name'].'&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsDelete').'/id:'.$group['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsAlter').'/id:'.$group['id'].'">изменить</a>
+						$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">'.$group['full_name'].'</a>&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsDelete').'/id:'.$group['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsAlter').'/id:'.$group['id'].'">изменить</a>
 									<br />Метка группы : '.$group['group_name'].'<br />';	
 					}
 					else {
