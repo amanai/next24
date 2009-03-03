@@ -7,10 +7,7 @@ class GroupsModel extends BaseModel{
 		$this -> _caches(true, true, true);
 	}
 	public function selectAllGroups() {
-	/*	$sql = "SELECT t1.id,t1.full_name,t1.description,t1.create_time,t1.access_rule,t2.group_name FROM groups t1 
-				LEFT JOIN groups_names t2 ON t1.id_group_name = t2.id
-				WHERE t1.pid = 0"; */
-		$sql = "SELECT t1.id, t1.id_user, t1.full_name, t1.description, t1.create_time, t1.access_rule, t2.group_name, t3.access_rule_code
+		$sql = "SELECT t1.id, t1.id_user, t1.full_name, t1.description, t1.create_time, t1.access_rule, t2.group_name, t3.access_read, t3.add_subgroup, t3.accept_user, t3.mod_subgroup, t3.mod_photo, t3.make_posts
 				FROM groups t1
 				LEFT JOIN groups_names t2 ON t1.id_group_name = t2.id
 				LEFT JOIN groups_user_access t3 ON t1.id = t3.id_group AND t1.id_user = t3.id_user
@@ -26,7 +23,7 @@ class GroupsModel extends BaseModel{
 			$result_id = $this->db->query($sql);
 			if($request['access_rule']) {
 				foreach ($request['users'] as $id_user) {
-					$sql = "INSERT INTO groups_user_access(id_group,id_user,access_rule_code) VALUES($result_id,$id_user,32)";
+					$sql = "INSERT INTO groups_user_access(id_group,id_user,access_read,make_posts) VALUES($result_id,$id_user,1,1)";
 					$this->db->query($sql);
 				}
 			}
@@ -184,7 +181,7 @@ class GroupsModel extends BaseModel{
 		return $result;
 	}	
 	public function getGroupUserList($id_group) {
-		$sql = "SELECT t1.id AS ARRAY_KEY,CONCAT(t1.first_name,' ',t1.middle_name,' ',t1.last_name) AS full_name FROM users t1
+		$sql = "SELECT t1.id AS ARRAY_KEY,CONCAT(t1.first_name,' ',t1.middle_name,' ',t1.last_name) AS full_name, t2.access_read, t2.add_subgroup, t2.accept_user, t2.mod_subgroup, t2.mod_photo, t2.make_posts FROM users t1
 		INNER JOIN groups_user_access t2 on (t1.id = t2.id_user)
 		WHERE t2.id_group=$id_group
 		ORDER BY t1.id";

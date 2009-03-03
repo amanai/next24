@@ -30,8 +30,10 @@ class GroupsController extends SiteController{
 		if(!$this->request['alter']) {
 			$model = new GroupsModel();
 			$groups = $model->selectAllGroups();	
+			$user_list = $model->getGroupUserList($this->request['id']); 
 			$this->_view->__set("groups",$groups);		
 			$this->_view->__set("pid",0);	
+			$this->_view->__set("user_list",$user_list);
 			$this->_view->__set("id",$this->request['id']);	    			
 			$alter_group = $model->selectAlterGroup($this->request['id']);	
 			$this->_view->__set("alter_group",$alter_group);	

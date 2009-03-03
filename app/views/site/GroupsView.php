@@ -135,8 +135,9 @@ class GroupsView extends BaseSiteView{
 							</td>
 						</tr>							
 					</table>
-					<input type="hidden" name="id" value="'.$alter_group['id'].'" />	
-				   </form>';
+					<input type="hidden" name="id" value="'.$alter_group['id'].'" />';
+					$result .= $this->createGroupUsersTreeEnabled();	
+				    $result .= '</form>';
 			return $result;				
 		}
 	}
@@ -332,9 +333,15 @@ class GroupsView extends BaseSiteView{
 		$current_user_id = Project::getUser() -> getDbUser() -> id;
 		foreach ($groups as $group) {
 			if($group['access_rule']) {
-				if($group['access_rule_code']) {
+				if($group['access_read']) {
+					if($group['id_user'] == $current_user_id) {
+						$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">'.$group['full_name'].'</a>&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsDelete').'/id:'.$group['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsAlter').'/id:'.$group['id'].'">изменить</a>
+									<br />Метка группы : '.$group['group_name'].'<br />';	
+					}
+					else {
 						$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">'.$group['full_name'].'</a>
-									<br />Метка группы : '.$group['group_name'].'<br />';							
+									<br />Метка группы : '.$group['group_name'].'<br />';	
+					}												
 				}
 				else {
 					if($group['id_user'] == $current_user_id) {
@@ -422,27 +429,81 @@ class GroupsView extends BaseSiteView{
 								'.$user['full_name'].'
 							</td>
 							<td style="text-align: center;">
-								<input type="checkbox" disabled="disabled" name="access_rule[1]" value="1" />
+								<input type="checkbox" disabled="disabled" '.(($user['access_read'])?'checked="checked"':'').' name="access_rule[1]" value="1" />
 							</td>
 							<td style="text-align: center;">
-								<input type="checkbox" disabled="disabled" name="access_rule[2]" value="1" />
+								<input type="checkbox" disabled="disabled" '.(($user['add_subgroup'])?'checked="checked"':'').' name="access_rule[2]" value="1" />
 							</td>
 							<td style="text-align: center;">
-								<input type="checkbox" name="access_rule[3]" value="1" />
+								<input type="checkbox" '.(($user['accept_user'])?'checked="checked"':'').' name="access_rule[3]" value="1" />
 							</td>
 							<td style="text-align: center;">
-								<input type="checkbox" name="access_rule[4]" value="1" />
+								<input type="checkbox" '.(($user['mod_subgroup'])?'checked="checked"':'').' name="access_rule[4]" value="1" />
 							</td>	
 							<td style="text-align: center;">
-								<input type="checkbox" name="access_rule[5]" value="1" />
+								<input type="checkbox" '.(($user['mod_photo'])?'checked="checked"':'').' name="access_rule[5]" value="1" />
 							</td>	
 							<td style="text-align: center;">
-								<input type="checkbox" disabled="disabled" name="access_rule[6]" value="1" />
+								<input type="checkbox" disabled="disabled" '.(($user['make_posts'])?'checked="checked"':'').' name="access_rule[6]" value="1" />
 							</td>																			
 						</tr>';
 		}
 		$result .= '</table>';	
 		return $result;
 	}	
+	public function createGroupUsersTreeEnabled() {
+		$user_list = $this->_stack['user_list'];
+		$result = '<table cellspacing="5">';		
+		$result .= '<tr>
+						<td>
+							Пользователь
+						</td>	
+						<td>
+							Чтение
+						</td>
+						<td>
+							Создание подгрупп
+						</td>
+						<td>
+							Принятие в группу
+						</td>
+						<td>
+							Модерирование подгруппы
+						</td>
+						<td>
+							Модерирование фотоальбома
+						</td>
+						<td>
+							Публикация постов
+						</td>
+					</tr>';
+		foreach($user_list as $id => $user) {
+			$result .= '<tr>
+							<td>
+								'.$user['full_name'].'
+							</td>
+							<td style="text-align: center;">
+								<input type="checkbox" '.(($user['access_read'])?'checked="checked"':'').' name="access_rule[1]" value="1" />
+							</td>
+							<td style="text-align: center;">
+								<input type="checkbox" '.(($user['add_subgroup'])?'checked="checked"':'').' name="access_rule[2]" value="1" />
+							</td>
+							<td style="text-align: center;">
+								<input type="checkbox" '.(($user['accept_user'])?'checked="checked"':'').' name="access_rule[3]" value="1" />
+							</td>
+							<td style="text-align: center;">
+								<input type="checkbox" '.(($user['mod_subgroup'])?'checked="checked"':'').' name="access_rule[4]" value="1" />
+							</td>	
+							<td style="text-align: center;">
+								<input type="checkbox" '.(($user['mod_photo'])?'checked="checked"':'').' name="access_rule[5]" value="1" />
+							</td>	
+							<td style="text-align: center;">
+								<input type="checkbox" '.(($user['make_posts'])?'checked="checked"':'').' name="access_rule[6]" value="1" />
+							</td>																			
+						</tr>';
+		}
+		$result .= '</table>';	
+		return $result;
+	}		
 }		
 ?>
