@@ -7,16 +7,22 @@ class GroupsModel extends BaseModel{
 		$this -> _caches(true, true, true);
 	}
 	public function selectAllGroups() {
-		$sql = "SELECT t1.id,t1.full_name,t1.description,t1.create_time,t1.access_rule,t2.group_name FROM groups t1 
+	/*	$sql = "SELECT t1.id,t1.full_name,t1.description,t1.create_time,t1.access_rule,t2.group_name FROM groups t1 
 				LEFT JOIN groups_names t2 ON t1.id_group_name = t2.id
-				WHERE t1.pid = 0";
+				WHERE t1.pid = 0"; */
+		$sql = "SELECT t1.id, t1.id_user, t1.full_name, t1.description, t1.create_time, t1.access_rule, t2.group_name, t3.access_rule_code
+				FROM groups t1
+				LEFT JOIN groups_names t2 ON t1.id_group_name = t2.id
+				LEFT JOIN groups_user_access t3 ON t1.id = t3.id_group AND t1.id_user = t3.id_user
+				WHERE t1.pid =0";
 		$result = $this->db->select($sql);
 		return $result;				
 	}
 	public function addGroup($request) {
 		if(is_array($request)) {
+			$cur_user_id = Project::getUser() -> getDbUser() -> id;
 			$create_time = time();
-			$sql = "INSERT INTO groups(pid,id_group_name,full_name,description,create_time,access_rule) VALUES({$request['pid']},{$request['id_group_name']},'{$request['full_name']}','{$request['description']}','{$create_time}',{$request['access_rule']})";
+			$sql = "INSERT INTO groups(pid,id_user,id_group_name,full_name,description,create_time,access_rule) VALUES({$request['pid']},$cur_user_id,{$request['id_group_name']},'{$request['full_name']}','{$request['description']}','{$create_time}',{$request['access_rule']})";
 			$result_id = $this->db->query($sql);
 			if($request['access_rule']) {
 				foreach ($request['users'] as $id_user) {
@@ -40,7 +46,7 @@ class GroupsModel extends BaseModel{
 		}			
 	}
 	public function selectAlterGroup($id_group) {
-		$sql = "SELECT t1.id,t1.full_name,t1.description,t1.create_time,t1.access_rule,t2.group_name FROM groups t1 
+		$sql = "SELECT t1.id,t1.id_user, t1.full_name,t1.description,t1.create_time,t1.access_rule,t2.group_name FROM groups t1 
 				LEFT JOIN groups_names t2 ON t1.id_group_name = t2.id
 				WHERE t1.pid = 0 AND t1.id = $id_group";
 		$result = $this->db->selectRow($sql);
@@ -57,7 +63,7 @@ class GroupsModel extends BaseModel{
 		$result = $this->db->query($sql);		
 	}	
 	public function selectSubGroups($id) {
-		$sql = "SELECT t1.id,t1.full_name,t1.description,t1.create_time,t1.access_rule,t2.group_name FROM groups t1 
+		$sql = "SELECT t1.id,t1.id_user, t1.full_name,t1.description,t1.create_time,t1.access_rule,t2.group_name FROM groups t1 
 				LEFT JOIN groups_names t2 ON t1.id_group_name = t2.id
 				WHERE t1.pid = $id";
 		$result = $this->db->select($sql);
@@ -66,7 +72,8 @@ class GroupsModel extends BaseModel{
 	public function addSubGroup($request) {
 		if(is_array($request)) {
 			$create_time = time();
-			$sql = "INSERT INTO groups(pid,id_group_name,full_name,description,create_time,access_rule) VALUES({$request['pid']},0,'{$request['full_name']}','{$request['description']}','{$create_time}',0)";
+			$cur_user_id = Project::getUser() -> getDbUser() -> id;
+			$sql = "INSERT INTO groups(pid,id_user,id_group_name,full_name,description,create_time,access_rule) VALUES({$request['pid']},$cur_user_id,0,'{$request['full_name']}','{$request['description']}','{$create_time}',0)";
 			$result = $this->db->query($sql);	
 		}
 		else {
@@ -84,7 +91,7 @@ class GroupsModel extends BaseModel{
 		}			
 	}
 	public function selectAlterSubGroup($id) {
-		$sql = "SELECT t1.id,t1.full_name,t1.description,t1.create_time,t1.access_rule,t2.group_name FROM groups t1 
+		$sql = "SELECT t1.id,t1.id_user, t1.full_name,t1.description,t1.create_time,t1.access_rule,t2.group_name FROM groups t1 
 				LEFT JOIN groups_names t2 ON t1.id_group_name = t2.id
 				WHERE t1.id = $id";
 		$result = $this->db->selectRow($sql);
@@ -176,5 +183,13 @@ class GroupsModel extends BaseModel{
 		$result = $this->db->select($sql);
 		return $result;
 	}	
+	public function getGroupUserList($id_group) {
+		$sql = "SELECT t1.id AS ARRAY_KEY,CONCAT(t1.first_name,' ',t1.middle_name,' ',t1.last_name) AS full_name FROM users t1
+		INNER JOIN groups_user_access t2 on (t1.id = t2.id_user)
+		WHERE t2.id_group=$id_group
+		ORDER BY t1.id";
+		$result = $this->db->select($sql);
+		return $result;
+	}
 }		
 ?>

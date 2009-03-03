@@ -167,8 +167,9 @@ class GroupsView extends BaseSiteView{
 							</td>
 						</tr>
 					</table>
-					<input type="hidden" name="pid" value="'.$pid.'" />	
-				   </form>';
+					<input type="hidden" name="pid" value="'.$pid.'" />';
+				 $result.= $this->createGroupUsersTree();
+				 $result.= '</form>';
 			return $result;
 		}
 		else {
@@ -328,9 +329,26 @@ class GroupsView extends BaseSiteView{
 	}				
 	public function createGroupsTree() {
 		$groups = $this->_stack['groups'];
+		$current_user_id = Project::getUser() -> getDbUser() -> id;
 		foreach ($groups as $group) {
-			$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">'.$group['full_name'].'</a>&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsDelete').'/id:'.$group['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsAlter').'/id:'.$group['id'].'">изменить</a>
-						<br />Метка группы : '.$group['group_name'].'<br />';
+			if(!$group['access_rule']) {
+				if(!$group['access_rule_code']) {
+					$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">'.$group['full_name'].'</a>';
+					if($group['id_user'] == $current_user_id) {
+						$result .= '&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsDelete').'/id:'.$group['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsAlter').'/id:'.$group['id'].'">изменить</a>';
+					}
+						
+					$result .= '<br />Метка группы : '.$group['group_name'].'<br />';
+				}
+				else {
+					$result .= '<br />'.$group['full_name'].'&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">подать заявку</a>
+								<br />Метка группы : '.$group['group_name'].'<br />';					
+				}
+			}
+			else {
+				$result .= '<br />'.$group['full_name'].'&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">подать заявку</a>
+							<br />Метка группы : '.$group['group_name'].'<br />';					
+			}
 		}
 		return $result;
 	}
@@ -367,5 +385,59 @@ class GroupsView extends BaseSiteView{
 		$result .= '</select>';
 		return $result;
 	}
+	public function createGroupUsersTree() {
+		$user_list = $this->_stack['user_list'];
+		$result = '<table cellspacing="5">';		
+		$result .= '<tr>
+						<td>
+							Пользователь
+						</td>	
+						<td>
+							Чтение
+						</td>
+						<td>
+							Создание подгрупп
+						</td>
+						<td>
+							Принятие в группу
+						</td>
+						<td>
+							Модерирование подгруппы
+						</td>
+						<td>
+							Модерирование фотоальбома
+						</td>
+						<td>
+							Публикация постов
+						</td>
+					</tr>';
+		foreach($user_list as $id => $user) {
+			$result .= '<tr>
+							<td>
+								'.$user['full_name'].'
+							</td>
+							<td style="text-align: center;">
+								<input type="checkbox" disabled="disabled" name="access_rule[1]" value="1" />
+							</td>
+							<td style="text-align: center;">
+								<input type="checkbox" disabled="disabled" name="access_rule[2]" value="1" />
+							</td>
+							<td style="text-align: center;">
+								<input type="checkbox" name="access_rule[3]" value="1" />
+							</td>
+							<td style="text-align: center;">
+								<input type="checkbox" name="access_rule[4]" value="1" />
+							</td>	
+							<td style="text-align: center;">
+								<input type="checkbox" name="access_rule[5]" value="1" />
+							</td>	
+							<td style="text-align: center;">
+								<input type="checkbox" disabled="disabled" name="access_rule[6]" value="1" />
+							</td>																			
+						</tr>';
+		}
+		$result .= '</table>';	
+		return $result;
+	}	
 }		
 ?>

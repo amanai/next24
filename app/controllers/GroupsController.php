@@ -51,8 +51,10 @@ class GroupsController extends SiteController{
 	}
 	public function subGroupViewAction() {
 		$model = new GroupsModel();
-		$sub_groups = $model->selectSubGroups($this->request['id']);	
-		$this->_view->__set("sub_groups",$sub_groups);		
+		$sub_groups = $model->selectSubGroups($this->request['id']);
+		$user_list = $model->getGroupUserList($this->request['id']); 	 	
+		$this->_view->__set("user_list",$user_list);
+		$this->_view->__set("sub_groups",$sub_groups);			
 		$this->_view->__set("pid",$this->request['id']);
 		$this->_view->__set("id",$this->request['id']);	 	    	
 		$this->_view->subGroupView();
@@ -60,7 +62,7 @@ class GroupsController extends SiteController{
 	}
 	public function subGroupCreateAction() {
 		$model = new GroupsModel();
-		$model->addSubGroup($this->request);	 	    	
+		$model->addSubGroup($this->request);	   	
 		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'subGroupView').'/id:'.$this->request['pid']);	
 	}
 	public function subGroupAlterAction() {
