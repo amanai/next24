@@ -144,7 +144,9 @@ class GroupsView extends BaseSiteView{
 	public function createNewSubGroupForm() {
 		$pid = $this->_stack['pid'];
 		$id = $this->_stack['id'];
+		$access_create = $this->_stack['access_create'];
 		$alter_subgroup = $this->_stack['alter_subgroup'];
+		if($access_create) {
 		if(!is_array($alter_subgroup)) {		
 			$result = '<form action="'.Project::getRequest() -> createUrl('Groups','subGroupCreate').'" method="post" />
 					<table>
@@ -201,11 +203,14 @@ class GroupsView extends BaseSiteView{
 				   </form>';
 			return $result;			
 		}
+		}
 	}	
 	public function createNewTopicForm() {
 		$pid = $this->_stack['pid'];
 		$tid = $this->_stack['tid'];
 		$alter_topic = $this->_stack['alter_topic'];
+		$access_mod = $this->_stack['access_mod'];
+		if($access_mod) {
 		if(!is_array($alter_topic)) {
 			$result = '<form action="'.Project::getRequest() -> createUrl('Groups','topicCreate').'" method="post" />
 					<table>
@@ -266,6 +271,7 @@ class GroupsView extends BaseSiteView{
 					<input type="hidden" name="tid" value="'.$tid.'" />
 				   </form>';
 			return $result;				
+		}
 		}
 	}
 	public function createNewMessageForm() {
@@ -366,24 +372,39 @@ class GroupsView extends BaseSiteView{
 	}
 	public function createSubGroupsTree() {
 		$sub_groups = $this->_stack['sub_groups'];
+		$access_create = $this->_stack['access_create'];
 		$id = $this->_stack['id'];
 		foreach ($sub_groups as $sub_group) {
-			$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','topicView').'/pid:'.$sub_group['id'].'">'.$sub_group['full_name'].'</a>&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupDelete').'/id:'.$id.'/pid:'.$sub_group['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupAlter').'/id:'.$id.'/pid:'.$sub_group['id'].'">изменить</a>';
+			$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','topicView').'/id:'.$id.'/pid:'.$sub_group['id'].'">'.$sub_group['full_name'].'</a>';
+			if($access_create) {
+				$result .= '&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupDelete').'/id:'.$id.'/pid:'.$sub_group['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupAlter').'/id:'.$id.'/pid:'.$sub_group['id'].'">изменить</a>';
+			}	
 		}
 		return $result;		
 	}
 	public function createTopicsTree() {
 		$topics = $this->_stack['topics'];
+		$access_mod = $this->_stack['access_mod'];
+		$id = $this->_stack['id'];
 		foreach ($topics as $topic) {
-			$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','messagesView').'/pid:'.$topic['group_id'].'/tid:'.$topic['id'].'">'.$topic['full_name'].'</a>&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','topicDelete').'/pid:'.$topic['group_id'].'/tid:'.$topic['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','topicAlter').'/pid:'.$topic['group_id'].'/tid:'.$topic['id'].'">изменить</a>';
+			$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','messagesView').'/id:'.$id.'/pid:'.$topic['group_id'].'/tid:'.$topic['id'].'">'.$topic['full_name'].'</a>';
+			if($access_mod) {
+				$result .= '&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','topicDelete').'/id:'.$id.'/pid:'.$topic['group_id'].'/tid:'.$topic['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','topicAlter').'/id:'.$id.'/pid:'.$topic['group_id'].'/tid:'.$topic['id'].'">изменить</a>';
+			}	
 		}
 		return $result;		
 	}	
 	public function createMessagesTree() {
 		$messages = $this->_stack['messages'];
+		$access_mod_messages = $this->_stack['access_mod_messages'];
 		$pid = $this->_stack['tid'];
 		foreach ($messages as $message) {
-			$result .= '<br /><div style="font-weight: bold;">'.$message['message_name'].'</div><div><div>'.$message['message_content'].'</div><div><a href="'.Project::getRequest() -> createUrl('Groups','messageDelete').'/pid:'.$pid.'/tid:'.$message['id_topic'].'/mid:'.$message['id'].'">удалить</a>&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','messageAlter').'/pid:'.$pid.'/tid:'.$message['id_topic'].'/mid:'.$message['id'].'">изменить</a></div></div>';
+			if($access_mod_messages) {
+				$result .= '<br /><div style="font-weight: bold;">'.$message['message_name'].'</div><div><div>'.$message['message_content'].'</div><div><a href="'.Project::getRequest() -> createUrl('Groups','messageDelete').'/pid:'.$pid.'/tid:'.$message['id_topic'].'/mid:'.$message['id'].'">удалить</a>&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','messageAlter').'/pid:'.$pid.'/tid:'.$message['id_topic'].'/mid:'.$message['id'].'">изменить</a></div></div>';
+			}
+			else {
+				$result .= '<br /><div style="font-weight: bold;">'.$message['message_name'].'</div><div><div>'.$message['message_content'].'</div></div>';					
+			}
 		}
 		return $result;			
 	}

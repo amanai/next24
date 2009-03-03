@@ -54,11 +54,13 @@ class GroupsController extends SiteController{
 	public function subGroupViewAction() {
 		$model = new GroupsModel();
 		$sub_groups = $model->selectSubGroups($this->request['id']);
-		$user_list = $model->getGroupUserList($this->request['id']); 	 	
+		$user_list = $model->getGroupUserList($this->request['id']); 
+		$access_create = $model->checkAccessSubGroupCreate($this->request['id']); 	
 		$this->_view->__set("user_list",$user_list);
 		$this->_view->__set("sub_groups",$sub_groups);			
 		$this->_view->__set("pid",$this->request['id']);
-		$this->_view->__set("id",$this->request['id']);	 	    	
+		$this->_view->__set("id",$this->request['id']);	
+		$this->_view->__set("access_create",$access_create); 	    	
 		$this->_view->subGroupView();
 		$this->_view->parse(); 		
 	}
@@ -93,8 +95,11 @@ class GroupsController extends SiteController{
 	public function topicViewAction() {
 		$model = new GroupsModel();
 		$topics = $model->selectTopics($this->request['pid']);
+		$access_mod = $model->checkAccessSubGroupMod($this->request['id'],$this->request['pid']);
+		$this->_view->__set("id",$this->request['id']);
 		$this->_view->__set("tid",$this->request['tid']);
 		$this->_view->__set("pid",$this->request['pid']);
+		$this->_view->__set("access_mod",$access_mod);
 		$this->_view->__set("topics",$topics);	
 		$this->_view->topicsView();
 		$this->_view->parse(); 			
@@ -130,8 +135,10 @@ class GroupsController extends SiteController{
 	public function messagesViewAction() {
 		$model = new GroupsModel();
 		$messages = $model->selectMessages($this->request['tid']);
+		$access_mod_messages = $model->checkAccessMessagesMod($this->request['id'],$this->request['pid'],$this->request['tid']);
 		$this->_view->__set("tid",$this->request['tid']);
-		$this->_view->__set("pid",$this->request['pid']);		
+		$this->_view->__set("pid",$this->request['pid']);
+		$this->_view->__set("access_mod_messages",$access_mod_messages);		
 		$this->_view->__set("messages",$messages);	
 		$this->_view->messagesView();
 		$this->_view->parse();

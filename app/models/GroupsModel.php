@@ -37,6 +37,8 @@ class GroupsModel extends BaseModel{
 			$create_time = time();
 			$sql = "UPDATE groups SET id_group_name = {$request['id_group_name']},full_name = '{$request['full_name']}',description = '{$request['description']}',create_time = '{$create_time}',access_rule = {$request['access_rule']} WHERE id = {$request['id']}";
 			$result = $this->db->query($sql);	
+			$sql = "UPDATE groups_user_access SET access_read = ".(int) $request['access_rule'][1].",add_subgroup = ".(int) $request['access_rule'][2].", accept_user = ".(int) $request['access_rule'][3].", mod_subgroup = ".(int) $request['access_rule'][4].", mod_photo = ".(int) $request['access_rule'][5].", make_posts = ".(int) $request['access_rule'][6]." WHERE id_group = {$request['id']}";
+			$result = $this->db->query($sql);				
 		}
 		else {
 			throw new TemplateException("Входная переменная - не массив !");
@@ -188,5 +190,61 @@ class GroupsModel extends BaseModel{
 		$result = $this->db->select($sql);
 		return $result;
 	}
+	public function checkAccessSubGroupMod($id_group,$pid_group) {
+		$current_user_id = Project::getUser() -> getDbUser() -> id;
+		$sql = "SELECT id_user FROM groups WHERE pid=0 AND id=$id_group";
+		$user_id = $this->db->selectCell($sql);	
+		if($current_user_id == $user_id) {
+			return true;
+		}
+		else {
+			$sql = "SELECT mod_subgroup FROM groups_user_access WHERE id_group = $pid_group AND id_user = $id_user";
+			$result = $this->db->selectCell($sql);
+			if($result) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+	public function checkAccessSubGroupCreate($id_group) {
+		$current_user_id = Project::getUser() -> getDbUser() -> id;
+		$sql = "SELECT id_user FROM groups WHERE pid=0 AND id=$id_group";
+		$user_id = $this->db->selectCell($sql);
+		if($current_user_id == $user_id) {
+			return true;
+		}
+		else {
+			$sql = "SELECT add_subgroup FROM groups_user_access WHERE id_group = $id_group AND id_user = $current_user_id";
+			$result = $this->db->selectCell($sql);
+			if($result) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+	public function checkAccessMessagesMod($id_group,$pid_group,$id_topic) {
+		$current_user_id = Project::getUser() -> getDbUser() -> id;
+		$sql = "SELECT id_user FROM groups WHERE pid=0 AND id=$id_group";
+		$user_id = $this->db->selectCell($sql);	
+		$sql = "SELECT id_user FROM groups_topics WHERE id=$id_topic";
+		$user_topic_id = $this->db->selectCell($sql);
+		if(($current_user_id == $user_id) || ($current_user_id == $user_topic_id)) {
+			return true;
+		}
+		else {
+			$sql = "SELECT mod_subgroup FROM groups_user_access WHERE id_group = $pid_group AND id_user = $id_user";
+			$result = $this->db->selectCell($sql);
+			if($result) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}				
 }		
 ?>
