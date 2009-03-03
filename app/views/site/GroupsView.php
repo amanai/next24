@@ -331,23 +331,28 @@ class GroupsView extends BaseSiteView{
 		$groups = $this->_stack['groups'];
 		$current_user_id = Project::getUser() -> getDbUser() -> id;
 		foreach ($groups as $group) {
-			if(!$group['access_rule']) {
-				if(!$group['access_rule_code']) {
-					$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">'.$group['full_name'].'</a>';
-					if($group['id_user'] == $current_user_id) {
-						$result .= '&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsDelete').'/id:'.$group['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsAlter').'/id:'.$group['id'].'">изменить</a>';
-					}
-						
-					$result .= '<br />Метка группы : '.$group['group_name'].'<br />';
+			if($group['access_rule']) {
+				if($group['access_rule_code']) {
+						$result .= '<br />'.$group['full_name'].'
+									<br />Метка группы : '.$group['group_name'].'<br />';							
 				}
 				else {
-					$result .= '<br />'.$group['full_name'].'&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">подать заявку</a>
-								<br />Метка группы : '.$group['group_name'].'<br />';					
+					if($group['id_user'] == $current_user_id) {
+						$result .= '<br />'.$group['full_name'].'&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsDelete').'/id:'.$group['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsAlter').'/id:'.$group['id'].'">изменить</a>
+									<br />Метка группы : '.$group['group_name'].'<br />';	
+					}
+					else {
+						$result .= '<br />'.$group['full_name'].'&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">подать заявку</a>
+									<br />Метка группы : '.$group['group_name'].'<br />';		
+					}				
 				}
 			}
 			else {
-				$result .= '<br />'.$group['full_name'].'&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">подать заявку</a>
-							<br />Метка группы : '.$group['group_name'].'<br />';					
+				$result .= '<br /><a href="'.Project::getRequest() -> createUrl('Groups','subGroupView').'/id:'.$group['id'].'">'.$group['full_name'].'</a>';
+				if($group['id_user'] == $current_user_id) {
+					$result .= '&nbsp;&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsDelete').'/id:'.$group['id'].'">удалить</a>&nbsp;<a href="'.Project::getRequest() -> createUrl('Groups','groupsAlter').'/id:'.$group['id'].'">изменить</a>';	
+				}
+				$result .= '<br />Метка группы : '.$group['group_name'].'<br />';				
 			}
 		}
 		return $result;
