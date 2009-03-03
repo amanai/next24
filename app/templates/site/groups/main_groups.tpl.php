@@ -5,7 +5,7 @@
 	
 	<div class="tab-page tab-page-selected">
 		<div>
-		<?php echo $this->createGroupsTree();	?>
+			<?php echo $this->createGroupsTree();	?>
 		</div>
 		<hr />
 		<div>

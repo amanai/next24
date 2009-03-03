@@ -13,8 +13,10 @@ class GroupsController extends SiteController{
 	public function groupsViewAction() {	
 		$model = new GroupsModel();
 		$groups = $model->selectAllGroups();
+		$user_list = $model->getUserList();
 		$this->_view->__set("groups",$groups);		
-		$this->_view->__set("pid",0);	 	    	
+		$this->_view->__set("pid",0);
+		$this->_view->__set("user_list",$user_list);		 	    	
 		$this->_view->groupsView();
 		$this->_view->parse(); 
 		
@@ -25,16 +27,34 @@ class GroupsController extends SiteController{
 		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'groupsView'));	   						 			
 	}
 	public function groupsAlterAction() {
-		
+		if(!$this->request['alter']) {
+			$model = new GroupsModel();
+			$groups = $model->selectAllGroups();	
+			$this->_view->__set("groups",$groups);		
+			$this->_view->__set("pid",0);	
+			$this->_view->__set("id",$this->request['id']);	    			
+			$alter_group = $model->selectAlterGroup($this->request['id']);	
+			$this->_view->__set("alter_group",$alter_group);	
+			$this->_view->groupsView();
+			$this->_view->parse();					
+		}
+		else {
+			$model = new GroupsModel();
+			$model->alterGroup($this->request);						
+			Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'groupsView'));			
+		}			
 	}
 	public function groupsDeleteAction() {
-		
+		$model = new GroupsModel();
+		$model->deleteGroup($this->request['id']);	
+		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'groupsView').'/id:'.$this->request['id']);		
 	}
 	public function subGroupViewAction() {
 		$model = new GroupsModel();
 		$sub_groups = $model->selectSubGroups($this->request['id']);	
 		$this->_view->__set("sub_groups",$sub_groups);		
-		$this->_view->__set("pid",$this->request['id']);	 	    	
+		$this->_view->__set("pid",$this->request['id']);
+		$this->_view->__set("id",$this->request['id']);	 	    	
 		$this->_view->subGroupView();
 		$this->_view->parse(); 		
 	}
@@ -44,10 +64,27 @@ class GroupsController extends SiteController{
 		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'subGroupView').'/id:'.$this->request['pid']);	
 	}
 	public function subGroupAlterAction() {
-		
+		if(!$this->request['alter']) {
+			$model = new GroupsModel();
+			$sub_groups = $model->selectSubGroups($this->request['id']);	
+			$this->_view->__set("sub_groups",$sub_groups);		
+			$this->_view->__set("pid",$this->request['id']);
+			$this->_view->__set("id",$this->request['id']);	 	    			
+			$alter_subgroup = $model->selectAlterSubGroup($this->request['pid']);	
+			$this->_view->__set("alter_subgroup",$alter_subgroup);	
+			$this->_view->subGroupView();
+			$this->_view->parse(); 					
+		}
+		else {
+			$model = new GroupsModel();
+			$model->alterSubGroup($this->request);			
+			Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'subGroupView').'/id:'.$this->request['id']);			
+		}			
 	}
 	public function subGroupDeleteAction() {
-		
+		$model = new GroupsModel();
+		$model->deleteSubGroup($this->request['pid']);	
+		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'subGroupView').'/id:'.$this->request['id']);				
 	}
 	public function topicViewAction() {
 		$model = new GroupsModel();
@@ -64,10 +101,27 @@ class GroupsController extends SiteController{
 		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'topicView').'/pid:'.$this->request['pid']);			
 	}
 	public function topicAlterAction() {
-		
+		if(!$this->request['alter']) {
+			$model = new GroupsModel();
+			$topics = $model->selectTopics($this->request['pid']);
+			$this->_view->__set("tid",$this->request['tid']);
+			$this->_view->__set("pid",$this->request['pid']);
+			$this->_view->__set("topics",$topics);		
+			$alter_topic = $model->selectAlterTopic($this->request['pid'],$this->request['tid']);	
+			$this->_view->__set("alter_topic",$alter_topic);	
+			$this->_view->topicsView();
+			$this->_view->parse(); 						
+		}
+		else {
+			$model = new GroupsModel();
+			$model->alterTopic($this->request);
+			Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'topicView').'/pid:'.$this->request['pid'].'/tid:'.$this->request['tid']);			
+		}			
 	}
 	public function topicDeleteAction() {
-		
+		$model = new GroupsModel();
+		$model->deleteTopic($this->request['tid']);	
+		Project::getResponse()->redirect(Project::getRequest()->createUrl('Groups', 'topicView').'/pid:'.$this->request['pid']);			
 	}
 	public function messagesViewAction() {
 		$model = new GroupsModel();
