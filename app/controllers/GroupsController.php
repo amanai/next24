@@ -72,12 +72,14 @@ class GroupsController extends SiteController{
 	public function subGroupAlterAction() {
 		if(!$this->request['alter']) {
 			$model = new GroupsModel();
-			$sub_groups = $model->selectSubGroups($this->request['id']);	
+			$sub_groups = $model->selectSubGroups($this->request['id']);
+			$access_create = $model->checkAccessSubGroupCreate($this->request['id']);	
 			$this->_view->__set("sub_groups",$sub_groups);		
 			$this->_view->__set("pid",$this->request['id']);
 			$this->_view->__set("id",$this->request['id']);	 	    			
 			$alter_subgroup = $model->selectAlterSubGroup($this->request['pid']);	
-			$this->_view->__set("alter_subgroup",$alter_subgroup);	
+			$this->_view->__set("alter_subgroup",$alter_subgroup);
+			$this->_view->__set("access_create",$access_create);	
 			$this->_view->subGroupView();
 			$this->_view->parse(); 					
 		}
@@ -113,11 +115,13 @@ class GroupsController extends SiteController{
 		if(!$this->request['alter']) {
 			$model = new GroupsModel();
 			$topics = $model->selectTopics($this->request['pid']);
+			$access_mod = $model->checkAccessSubGroupMod($this->request['id'],$this->request['pid']);
 			$this->_view->__set("tid",$this->request['tid']);
 			$this->_view->__set("pid",$this->request['pid']);
 			$this->_view->__set("topics",$topics);		
 			$alter_topic = $model->selectAlterTopic($this->request['pid'],$this->request['tid']);	
 			$this->_view->__set("alter_topic",$alter_topic);	
+			$this->_view->__set("access_mod",$access_mod);
 			$this->_view->topicsView();
 			$this->_view->parse(); 						
 		}
@@ -153,11 +157,13 @@ class GroupsController extends SiteController{
 		if(!$this->request['alter']) {
 			$model = new GroupsModel();
 			$messages = $model->selectMessages($this->request['tid']);
+			$access_mod_messages = $model->checkAccessMessagesMod($this->request['id'],$this->request['pid'],$this->request['tid']);
 			$this->_view->__set("tid",$this->request['tid']);
 			$this->_view->__set("pid",$this->request['pid']);		
 			$this->_view->__set("messages",$messages);
 			$alter_message = $model->selectAlterMessage($this->request['tid'],$this->request['mid']);	
-			$this->_view->__set("alter_message",$alter_message);	
+			$this->_view->__set("alter_message",$alter_message);
+			$this->_view->__set("access_mod_messages",$access_mod_messages);	
 			$this->_view->messagesView();
 			$this->_view->parse();						
 		}
