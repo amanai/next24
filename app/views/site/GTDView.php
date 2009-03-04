@@ -240,6 +240,7 @@ class GTDView extends BaseSiteView{
 		return $request_keys['cid'];
 	}
 	public function buildTreeFolders($folders) {
+		$model = new GTDModel();
 		if(is_array($folders)) {
 			foreach ($folders['subfolders'] as $key => $values) {		
 				$this->GTDTree .= '<li>';
@@ -253,6 +254,12 @@ class GTDView extends BaseSiteView{
 				<input type="radio" name="secure" value="1"> По приглашению';
 				$this->GTDTree .= '</form>';				
 				$this->GTDTree .= '<a href="'.Project::getRequest() -> createUrl('GTD','GTDViewFiles').'/fid:'.$values['id'].'/cid:'.$this->category_id.'">'.$values['folder_name'].'</a> -- <a href="'.Project::getRequest() -> createUrl('GTD','GTDDeleteFolder').'/fid:'.$values['id'].'">Удалить папку</a>';
+				$files = $model->getFolderFiles($values['id']);
+				$this->BuldTreeFilesView($files);
+				$res = $this->filesTree;
+				if($res) {
+					$this->GTDTree .= $res;	
+				}
 				if($values['secure']) {
 					$this->GTDTree .= ' (Добавить пользователя для просмотра '.$this->viewSelectSecureUserList('addusr',$values['id'],2,'style="display: inline;"').')';
 				}	
