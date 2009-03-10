@@ -100,15 +100,18 @@ function doChangeCat() {
          		<b>Тип позиции :</b>
          	</td>
          	<td style="text-align: left;">
-         		Продукт <input type="radio" name="type" value="1" checked="checked" onclick="getElementById('type_num').style.display='block';" />
-         		Место <input type="radio" name="type" value="2" onclick="getElementById('type_num').style.display='none';" /><br />
+         		Продукт <input type="radio" name="type" value="1" checked="checked" onclick="getElementById('address').style.display='none'; getElementById('type_num').style.display='block';" />
+         		Место <input type="radio" name="type" value="2" onclick="getElementById('type_num').style.display='none'; getElementById('address').style.display='block';" /><br />
          		<select name="type_num" id="type_num">
          			<option value="1">Рынок</option>
          			<option value="2">Магазин</option>
          			<option value="3">Медицинское учредждение</option>
          			<option value="4">Фармацевтическое учреждение</option>
          			<option value="5">Торговые комплексы</option>
-         		</select>	
+         		</select>
+         		<span id="address" style="display: none;">
+         			<b>Адрес :</b> <input type="text" value=""	name="address" />
+         		</span>
          	</td>
          </tr>
          <tr id="id_div_vote1">
