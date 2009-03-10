@@ -31,9 +31,22 @@
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.hoverIntent.js"></script>
 	
 	<script type="text/javascript" src="<?php echo $this -> js_url;?>jquery.cluetip.min.js"></script>
+	
+      <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAIMN2iaCMFuGQ7iw1w3khQhR-v9yHoD50evrZ-pbO1wgn-sHpRBTCwGDBW1h8fK3f31phKFZTanuxDA"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+
+    function initialize() {
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("map_canvas"));
+        map.setCenter(new GLatLng(37.4419, -122.1419), 13);
+      }
+    }
+	
+    </script>	
 </head>
 
-<body>
+<body onload="initialize()" onunload="GUnload()">
 
 <div class="sm" id="sub2"><ul>
 	<li><a href="<?=$this->createUrl('AdminQuestionAnswer','CatList')?>">Категории вопросов</a></li>

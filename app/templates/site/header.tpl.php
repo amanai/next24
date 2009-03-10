@@ -7,8 +7,20 @@
 	<script type="text/javascript" src="<?=$this->getBothCJ($this -> _js_files,'js');?>"></script>
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> 
 	<link id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
+      <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAIMN2iaCMFuGQ7iw1w3khQhR-v9yHoD50evrZ-pbO1wgn-sHpRBTCwGDBW1h8fK3f31phKFZTanuxDA"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+
+    function initialize() {
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("map_canvas"));
+        map.setCenter(new GLatLng(37.4419, -122.1419), 13);
+      }
+    }
+	
+    </script>		
 </head>
-<body>
+<body onload="initialize()" onunload="GUnload()">
 
 <table width="100%" height="100%" cellpadding="0">
 <tr>

@@ -1,6 +1,5 @@
 <!-- TEMPLATE: Форма создания Соц.позиций, добавления комментариев, оценки -->
 <?php include($this -> _include('../header.tpl.php')); ?>
-
 <script language="JavaScript" type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
 
 <script language="JavaScript" type="text/javascript">
@@ -111,7 +110,9 @@ function doChangeCat() {
          		</select>
          		<span id="address" style="display: none;">
          			<b>Адрес :</b> <input type="text" value=""	name="address" />
-         		</span>
+         		</span><br />
+				<!-- <img src="http://maps.google.com/staticmap?center=40.714728,-73.998672&zoom=14&size=512x512&maptype=mobile\&markers=40.702147,-74.015794,blues%7C40.711614,-74.012318,greeng%7C40.718217,-73.998284,redc\&key=ABQIAAAAIMN2iaCMFuGQ7iw1w3khQhR-v9yHoD50evrZ-pbO1wgn-sHpRBTCwGDBW1h8fK3f31phKFZTanuxDA" style="width: 500px; height: 300px" /> -->
+    			  	<div id="map_canvas" style="width: 500px; height: 300px"></div>	         		
          	</td>
          </tr>
          <tr id="id_div_vote1">
@@ -191,5 +192,4 @@ function doChangeCat() {
 <script language="JavaScript" type="text/javascript">
   doChangeCat()
 </script>
-		
 <?php include($this -> _include('../footer.tpl.php')); ?>
