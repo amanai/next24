@@ -95,6 +95,22 @@ function doChangeCat() {
             <div style="color: blue;" id="id_sp_mess">Для данной категории критерии не определены.</div>            
             </td>
          </tr>
+         <tr>
+         	<td>
+         		<b>Тип позиции :</b>
+         	</td>
+         	<td style="text-align: left;">
+         		Продукт <input type="radio" name="type" value="1" checked="checked" onclick="getElementById('type_num').style.display='block';" />
+         		Место <input type="radio" name="type" value="2" onclick="getElementById('type_num').style.display='none';" /><br />
+         		<select name="type_num" id="type_num">
+         			<option value="1">Рынок</option>
+         			<option value="2">Магазин</option>
+         			<option value="3">Медицинское учредждение</option>
+         			<option value="4">Фармацевтическое учреждение</option>
+         			<option value="5">Торговые комплексы</option>
+         		</select>	
+         	</td>
+         </tr>
          <tr id="id_div_vote1">
           <td><b>Оценка : </b></td>
           <td style="text-align: left;">
