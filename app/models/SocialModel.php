@@ -37,6 +37,7 @@ class SocialModel extends BaseModel {
         sp.`Xcoord`,
         sp.`Ycoord`,
         sp.`Zoom`,
+        prod.`full_name`,
         IF (CHAR_LENGTH(sp.`name`)<=".self::C_MAX_LENGTH_NAME.", sp.`name`, CONCAT( LEFT(sp.`name`, ".self::C_MAX_LENGTH_NAME."), '...')) as name_cut,
         sp.`creation_date`,
         users.`login`,
@@ -62,6 +63,7 @@ class SocialModel extends BaseModel {
       GROUP BY spcv.`social_pos_id`
       ) spc
       ON sp.`id` = spc.`social_pos_id`
+    LEFT JOIN `social_products_places` prod on sp.`id_product` = prod.`id`  
     WHERE ".$v_sql_where."
     GROUP BY sp.`id` 
     ".$v_sql_order."
