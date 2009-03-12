@@ -33,6 +33,10 @@ class SocialModel extends BaseModel {
         sp.`user_id`,
         sp.`social_tree_id`,
         sp.`name`,
+        sp.`id_product`,
+        sp.`Xcoord`,
+        sp.`Ycoord`,
+        sp.`Zoom`,
         IF (CHAR_LENGTH(sp.`name`)<=".self::C_MAX_LENGTH_NAME.", sp.`name`, CONCAT( LEFT(sp.`name`, ".self::C_MAX_LENGTH_NAME."), '...')) as name_cut,
         sp.`creation_date`,
         users.`login`,
@@ -296,6 +300,11 @@ class SocialModel extends BaseModel {
 		return $result;
 	}
     */
+  public function getProductPlaces() {
+  	$sql = "SELECT id AS ARRAY_KEY_1,full_name FROM social_products_places ORDER BY id"; 
+  	$result = Project::getDatabase() -> select($sql);	
+  	return $result;
+  }
 }
 
 ?>

@@ -165,6 +165,7 @@ class SocialController extends SiteController {
     //$this->_BaseSiteData($data);
     if ($v_request->btn_submit == null) {
       // -- Открытие формы для создания
+      $this->_view->__set('product_places',$v_sp_model->getProductPlaces());
       $this->_view->assign('tab_list', TabController::getSocialTabs(false, false, false, true)); // Show tabs
       $this->_view->Social_PosAdd($data);
       $this->_view->parse();
@@ -186,8 +187,21 @@ class SocialController extends SiteController {
             $v_model->social_tree_id = $v_request->inp_sp_category;
             $v_model->user_id        = $v_current_userID;
             $v_model->name           = $v_request->inp_sp_name;
-            $v_model->creation_date  = date("Y-m-d H:i:s");
-            $v_new_id =$v_model->save();
+            $v_model->creation_date  = date("Y-m-d H:i:s"); 
+            if($v_request->type) {         
+           		$address = urlencode($v_request->address);
+                $Coords = file_get_contents('http://maps.google.com/maps/geo?q='.$address.'&output=csv&key=abcdefg');
+    			list($status,$Zoom,$Xcoord,$Ycoord) = split(',',$Coords);
+				if($status == 200) {
+					$v_model->Xcoord = $Xcoord;
+					$v_model->Ycoord = $Ycoord;
+					$v_model->Zoom = $Zoom;
+				}
+            }
+            else {
+            	$v_model->id_product     = $v_request->id_product;		  	
+            }
+			$v_new_id =$v_model->save();          
             // -- Сохранение коммента
             $v_comment_model = new SocialCommentModel();
             $v_comment_model->addComment(Project::getUser()->getDbUser()->id, 0, 0, $v_new_id, $v_request->inp_sp_comment, 0, 0);

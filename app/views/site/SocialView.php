@@ -2,7 +2,11 @@
 
 class SocialView extends BaseSiteView {
 	protected $_dir = 'Social'; // - ссылка на дирректорию, где хранятся шаблоны app\templates\site\Social
+	protected $_stack;
 
+	public function __set($name,$var) {
+		$this->_stack[$name] = $var;
+	}
   // -- Каталог позиций (все) - Основная вкладка
 	public function Social_MainList($data) {
 		$this->setTemplate(null, 'social_main_list.tpl.php');
@@ -24,6 +28,9 @@ class SocialView extends BaseSiteView {
     $this->set($data);
   }
   public function Social_PosAdd($data) {
+ // 	print '<pre>';
+  //		print_r($this->_stack['product_places']);
+  //	print '</pre>';	
     $this->setTemplate(null, 'social_pos_add.tpl.php');
     $this->set($data);
   }

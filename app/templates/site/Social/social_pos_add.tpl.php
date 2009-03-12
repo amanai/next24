@@ -1,5 +1,5 @@
 <!-- TEMPLATE: Форма создания Соц.позиций, добавления комментариев, оценки -->
-<?php include($this -> _include('../header.tpl.php')); ?>
+<?php include($this -> _include('../header.tpl.php')); ?> 
 <script language="JavaScript" type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
 
 <script language="JavaScript" type="text/javascript">
@@ -96,23 +96,19 @@ function doChangeCat() {
          </tr>
          <tr>
          	<td>
-         		<b>Тип позиции :</b>
+         		<b>Тип позиции :</b>     		
          	</td>
          	<td style="text-align: left;">
-         		Продукт <input type="radio" name="type" value="1" checked="checked" onclick="getElementById('address').style.display='none'; getElementById('type_num').style.display='block';" />
-         		Место <input type="radio" name="type" value="2" onclick="getElementById('type_num').style.display='none'; getElementById('address').style.display='block';" /><br />
-         		<select name="type_num" id="type_num">
-         			<option value="1">Рынок</option>
-         			<option value="2">Магазин</option>
-         			<option value="3">Медицинское учредждение</option>
-         			<option value="4">Фармацевтическое учреждение</option>
-         			<option value="5">Торговые комплексы</option>
+         		Продукт <input type="radio" name="type" value="0" checked="checked" onclick="getElementById('address').style.display='none'; getElementById('type_num').style.display='block';" />
+         		Место <input type="radio" name="type" value="1" onclick="getElementById('type_num').style.display='none'; getElementById('address').style.display='block';" /><br />
+         		<select name=id_product id="type_num">
+         			<?php foreach($this->_stack['product_places'] as $key => $value) {
+         				echo '<option value="'.$key.'">'.$value['full_name'].'</option>';
+         			}?>   
          		</select>
          		<span id="address" style="display: none;">
          			<b>Адрес :</b> <input type="text" value=""	name="address" />
-         		</span><br />
-				<!-- <img src="http://maps.google.com/staticmap?center=40.714728,-73.998672&zoom=14&size=512x512&maptype=mobile\&markers=40.702147,-74.015794,blues%7C40.711614,-74.012318,greeng%7C40.718217,-73.998284,redc\&key=ABQIAAAAIMN2iaCMFuGQ7iw1w3khQhR-v9yHoD50evrZ-pbO1wgn-sHpRBTCwGDBW1h8fK3f31phKFZTanuxDA" style="width: 500px; height: 300px" /> -->
-    			  	<div id="map_canvas" style="width: 500px; height: 300px"></div>	         		
+         		</span>     		
          	</td>
          </tr>
          <tr id="id_div_vote1">

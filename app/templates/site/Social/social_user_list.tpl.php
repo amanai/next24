@@ -60,6 +60,10 @@
              <a href="<?=$this->createUrl('Social', 'SocialView', array($item['id']))?>"><?=$item['name_cut'];?></a>
                <!-- $this- >createUrl('Bookmarks', 'BookmarksView', array($item['id'])) -->
                <!-- $item['description'] -->
+               &nbsp;&nbsp;&nbsp;
+               <?php if(!$item['id_product']) {?>
+               		<span style="cursor:pointer;cursor:hand;" onclick="Ycoord = <?=$item['Ycoord'];?>; Xcoord = <?=$item['Xcoord'];?>; window.open('http://next24.home/popup.html','map','toolbar=0,width=520,height=350,location=0,menubar=0,resizable=0,status=map'); return false;">посмотреть на карте</span>
+               <?php }?>	
           </td>
           <td style="text-align: center;"><a href="<?=$request->createUrl('Index','Index', null, $item['login']); ;?>"><?=$item['login']; ?></a></td>
           <td style="text-align: center;"><?=number_format($item['avg_rating'], 2, '.',' '); ?></td>
@@ -75,7 +79,12 @@
         </table>
        </div>
    <!-- листинг -->
-
+        				<!-- <img src="http://maps.google.com/staticmap?center=40.714728,-73.998672&zoom=14&size=512x512&maptype=mobile\&markers=40.702147,-74.015794,blues%7C40.711614,-74.012318,greeng%7C40.718217,-73.998284,redc\&key=ABQIAAAAIMN2iaCMFuGQ7iw1w3khQhR-v9yHoD50evrZ-pbO1wgn-sHpRBTCwGDBW1h8fK3f31phKFZTanuxDA" style="width: 500px; height: 300px" /> -->
+		<!-- 		 <form action="#" onsubmit="showAddress(this.address.value); return false"> 
+				    <input type="text" size="60" name="address" value="1600 Amphitheatre Pky, Mountain View, CA" /> 
+        			<input type="submit" value="Go!" /> 
+    			  	<div id="map_canvas" style="width: 500px; height: 300px"></div>	    
+    			  </form>	-->		  
     <?=$this->social_pos_list_pager; ?>
    <!-- /листинг -->
       </div>
