@@ -78,8 +78,9 @@ class HomeView extends BaseSiteView{
             $aNewsTree = $newsView -> getNewsTreeByListNewsSubscribe($aNewsSubscribe);
             $isOnlySubscribeNewsTree = true;
         }
+        $htmlPage = '<ul class="content-preview-list">';
         foreach ($aNewsTree as $newsTree){
-           $newsCount = $newsView -> getNewsCountByNewsTreeId($newsTree['id'], $user_id, $isOnlySubscribeNewsTree);
+       /*    $newsCount = $newsView -> getNewsCountByNewsTreeId($newsTree['id'], $user_id, $isOnlySubscribeNewsTree);
            if ($newsCount < 1) continue;
            $htmlPage .= '
         	<!-- Категория -->
@@ -91,18 +92,26 @@ class HomeView extends BaseSiteView{
         			   </h2>
         			</div>
         			<div class="block_title_right"><img src="'.$this -> image_url.'close.png" width="21" height="24" onclick="ShowOrHide(this, \'rss_cat_n'.$newsTree['id'].'\')" style="cursor: pointer;" /></div>
-        		</div>
-        		
-        		<div id="rss_cat_n'.$newsTree['id'].'">'.
+        		</div>'; */
+        $htmlPage .= '<li class="expanded-view">
+						<h3><a href="#">МИД России: Тбилиси выдает желаемое за действительное <img src="assets/i/temp/temp.1.jpg" alt="МИД России: Тбилиси выдает желаемое за действительное" /></a></h3>
+						<p>В Москве опровергают сообщения о том, что якобы минувшим днем российские войска в Южной Осетии вели огонь по грузинской территории... <a href="#">»</a></p>
+						<div class="meta">
+							<span class="auth">Вести.Ru</span>
+							<span class="date">20 минут назад</span>
+						</div>
+					</li>';		
+        /*		$htmlPage .= '<div id="rss_cat_n'.$newsTree['id'].'">'.
                    $newsView->ShowNewsListPreviewByNewsTreeId($newsTree['id'], 'full', $user_id, 4, array(), $isOnlySubscribeNewsTree).'
         		   <div class="rmb14"></div>
         		</div>
         
         	</div></div></div></div>
         	<!-- /Категория -->
-           ';
+           '; */
 
        }
+       $htmlPage .= '</ul>';
        return $htmlPage;
     }
     
@@ -111,16 +120,25 @@ class HomeView extends BaseSiteView{
         $user_id = (int)$user_id;
         $articleModel = new ArticleModel();
         $aLastArticles = $articleModel->getLastArticles(10);
+        $htmlPage = '<ul class="content-preview-list articles-preview-list">';
         foreach ($aLastArticles as $article){
-            $htmlPage .= '
+      /*      $htmlPage .= '
                 <div class="articles_t">
         			<h1><a href="'.Project::getRequest()->createUrl('Article', 'ArticleView').'/'.$article['id'].'">'.$article['title'].'</a></h1> <div id="micro"><img height="16" width="16" id="ico2" src="'.$this->image_url.'time.png"/> '.$article['creation_date'].'</div>
         		</div>
                 <div class="articles_c">
     				<br/><p>'.$articleModel -> getNWordsFromText($article['page_text'], 100).'</p>
-    			</div>';
+    			</div>'; */
+            $htmlPage .= '<li class="expanded-view">
+							<h3><a href="'.Project::getRequest()->createUrl('Article', 'ArticleView').'/'.$article['id'].'">'.$article['title'].' <img src="'.$this->image_url.'time.png" alt="'.$article['title'].'" /></a></h3>
+							<p>'.$articleModel -> getNWordsFromText($article['page_text'], 100).' <a href="'.Project::getRequest()->createUrl('Article', 'ArticleView').'/'.$article['id'].'">»</a></p>
+							<div class="meta">
+								<span class="auth">Вести.Ru</span>
+								<span class="date">'.$article['creation_date'].' минут назад</span>
+							</div>
+						</li>';
         }
-            
+        $htmlPage .= '</ul>';    
         return $htmlPage;
     }
     
@@ -130,11 +148,19 @@ class HomeView extends BaseSiteView{
         $user_id = (int)$user_id;
         $albumModel = new AlbumModel();
         $aAlbums = $albumModel->loadAll(0, 0);
+        $htmlPage = '<ul class="foto-preview-list clearfix">';
         foreach ($aAlbums  as $key => $item){
         	$dir = '/users/'.$item['login'].'/album'.'/thumbs/';
         	
             $imgSrc = (!$item['thumbnail'])?$this -> image_url.'noimage.gif' :$dir.$item['thumbnail'];
-            $htmlPage .= '
+            $htmlPage .= '<li>
+							<dl>
+								<dt><a href="'.PhotoController::getAlbumUrl($item['id'], $item['login']).'"><img src="'.$imgSrc.'" alt="" /></a></dt>
+								<dd class="auth"><a href="'.UserController::getProfileUrl($item['login']).'" class="with-icon-s"><i class="icon-s user-icon"></i>'.$item['login'].'</a></dd>
+								<dd><a href="'.PhotoController::getAlbumUrl($item['id'], $item['login']).'" class="with-icon-s"><i class="icon-s category-icon"></i>'.$item['name'].'</a> (14)</dd>
+							</dl>
+						</li>';
+       /*     $htmlPage .= '
                 <div class="photo_gallery">
 				<div class="block_ee1" style="width: 170px;"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
 					<div class="block_title">
@@ -149,37 +175,45 @@ class HomeView extends BaseSiteView{
 					</div>
 				</div></div></div></div>
 				</div>
-            ';
+            '; */
         }
-            
+        $htmlPage .= '</ul>';    
         return $htmlPage;
     }
     
     
     function viewQuestionPage($user_id){
-        $htmlPage = '
+    /*    $htmlPage = '
                 <table class="questions">
     			<tr>
     				<td style="width: 100%; text-align: left;"><b>Вопросы пользователей</b></td>
     				<td><b>Автор</b></td>
     				<!--<td><b>Ответов</b></td>-->
     				<td><b>Дата создания</b></td>
-    			</tr>';
+    			</tr>'; */
         $user_id = (int)$user_id;
         $questionModel = new QuestionModel();
         $aQuestions = $questionModel->loadWhere();
+        $htmlPage = '<ul class="question-preview-list clearfix">';
         foreach ($aQuestions  as $question){
-            $htmlPage .= '
+        /*    $htmlPage .= '
     			<tr id="cmod_tab2">
     				<td style="width: 100%; text-align: left;"><img height="14" width="14" id="ico2" src="'.$this->image_url.'faq.png"/> <a href="'.Project::getRequest()->createUrl('QuestionAnswer', 'ViewQuestion').'/'.$question['id'].'">'.$question['q_text'].'</a></td>
     				<td><a href="'.UserController::getProfileUrl($question['login']).'">'.$question['login'].'</a></td>
     				<!--<td>'.$question['a_count'].'</td>-->
     				<td>'.$question['creation_date'].'</td>
     			</tr>
-            ';
+            '; */
+            $htmlPage .= '<li>
+							<dl>
+								<dt><a href="'.UserController::getProfileUrl($question['login']).'" class="with-icon-s"><i class="icon-s user-icon"></i>'.$question['login'].'</a> спрашивает</dt>
+								<dd class="question"><a href="'.Project::getRequest()->createUrl('QuestionAnswer', 'ViewQuestion').'/'.$question['id'].'">'.$question['q_text'].'</a></dd>
+								<dd class="reply"><a href="'.Project::getRequest()->createUrl('QuestionAnswer', 'ViewQuestion').'/'.$question['id'].'">'.$question['a_count'].' ответов</a></dd>
+							</dl>
+						</li>';
         }
-        $htmlPage .= '</table>';
-            
+    //    $htmlPage .= '</table>';
+        $htmlPage .= '</ul>';    
         return $htmlPage;
     }
     

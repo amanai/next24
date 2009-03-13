@@ -6,7 +6,7 @@ class BaseSiteView extends BaseView{
 	function __construct(){
 		$this -> _base_dir = 'site';
 		$this -> _js_files=array('sys.js', 'tab.js');
-		$this -> _css_files=array('style.css');
+		$this -> _css_files=array('screen.css');
 		parent::__construct();
 	}
 }
