@@ -99,16 +99,18 @@ function doChangeCat() {
          		<b>Тип позиции :</b>     		
          	</td>
          	<td style="text-align: left;">
-         		Продукт <input type="radio" name="type" value="0" checked="checked" onclick="getElementById('address').style.display='none'; getElementById('type_num').style.display='block';" />
-         		Место <input type="radio" name="type" value="1" onclick="getElementById('type_num').style.display='none'; getElementById('address').style.display='block';" /><br />
-         		<select name=id_product id="type_num">
+         		Продукт <input type="checkbox" name="type_prod" value="1" onclick="if(this.checked){getElementById('type_num').style.display='block'; getElementById('type_place').style.display='block';} else {getElementById('type_num').style.display='none'; getElementById('type_place').style.display='none'; getElementById('address').style.display='none';}" />
+         		<select name=id_product id="type_num" style="display: none;">
          			<?php foreach($this->_stack['product_places'] as $key => $value) {
          				echo '<option value="'.$key.'">'.$value['full_name'].'</option>';
          			}?>   
-         		</select>
-         		<span id="address" style="display: none;">
-         			<b>Адрес :</b> <input type="text" value=""	name="address" />
-         		</span>     		
+         		</select> 
+         		<div id="type_place" style="display: none;">       		
+         			Место <input type="checkbox" name="type_place" value="1"  onclick="if(this.checked){getElementById('address').style.display='block';} else {getElementById('address').style.display='none';}" />
+         			<span id="address" style="display: none;">
+         				<b>Адрес :</b> <input type="text" value=""	name="address" />
+         			</span>   
+         		</div>	  		
          	</td>
          </tr>
          <tr id="id_div_vote1">

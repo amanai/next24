@@ -61,13 +61,10 @@
                <!-- $this- >createUrl('Bookmarks', 'BookmarksView', array($item['id'])) -->
                <!-- $item['description'] -->
                &nbsp;&nbsp;&nbsp;
-               <?php if(!$item['id_product']) {?>
+               <?php if($item['id_product']) {?>
+               		<?php echo '('.$item['full_name'].')'; ?>
                		<span style="cursor:pointer;cursor:hand;" onclick="Ycoord = <?=$item['Ycoord'];?>; Xcoord = <?=$item['Xcoord'];?>; window.open('http://next24.home/popup.html','map','toolbar=0,width=520,height=350,location=0,menubar=0,resizable=0,status=map'); return false;">посмотреть на карте</span>
-               <?php }
-               		 else {
-               		 	echo '('.$item['full_name'].')';
-               		 }	
-               	?>	
+               <?php }?>	
           </td>
           <td style="text-align: center;"><a href="<?=$request->createUrl('Index','Index', null, $item['login']); ;?>"><?=$item['login']; ?></a></td>
           <td style="text-align: center;"><?=number_format($item['avg_rating'], 2, '.',' '); ?></td>

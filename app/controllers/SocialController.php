@@ -188,7 +188,10 @@ class SocialController extends SiteController {
             $v_model->user_id        = $v_current_userID;
             $v_model->name           = $v_request->inp_sp_name;
             $v_model->creation_date  = date("Y-m-d H:i:s"); 
-            if($v_request->type) {         
+            if($v_request->type_prod) {
+            	$v_model->id_product     = $v_request->id_product;		  	
+            }            
+            if($v_request->type_place) {         
            		$address = urlencode($v_request->address);
                 $Coords = file_get_contents('http://maps.google.com/maps/geo?q='.$address.'&output=csv&key=abcdefg');
     			list($status,$Zoom,$Xcoord,$Ycoord) = split(',',$Coords);
@@ -197,9 +200,6 @@ class SocialController extends SiteController {
 					$v_model->Ycoord = $Ycoord;
 					$v_model->Zoom = $Zoom;
 				}
-            }
-            else {
-            	$v_model->id_product     = $v_request->id_product;		  	
             }
 			$v_new_id =$v_model->save();          
             // -- Сохранение коммента
