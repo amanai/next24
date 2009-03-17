@@ -1,62 +1,88 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-			<!-- Главный блок, с вкладками (Контент) -->
-			<div class="tab-page" id="modules-cpanel">
-				<?php include($this -> _include('../tab_panel.tpl.php')); ?>
-				<div class="tab-page tab-page-selected">
-					<!-- ПРОФИЛЬ -->
-					<table width="100%" height="100%" cellpadding="0">
-					<tr>
-						<tr>
-							<?php if ($this -> left_panel === true) { ?>
-							<td class="next24u_left">
-								<table width="100%" height="100%" cellpadding="0">
-									<tr>
-										<td class="next24u_left">
-										<!-- левый блок -->
-											<?php echo $this -> album_menu;?>
-											<?php echo $this -> control_panel;?>
-										<!-- /левый блок -->
-										</td>
-									</tr>
-								</table>
-							</td>
-						<?php } ?>
-						<td class="next24u_right">
-							<table class="photo_table">
-								<?php foreach($this->photo_list as $key => $item){ ?>
-									<?php if ($key%4 == 0){ ?><tr><?php } ?>
-										<td>
-											<div class="block_ee1" style="width: 160px;">
-												<div class="block_ee2">
-													<div class="block_ee3">
-														<div class="block_ee4">
-															<div class="block_title">
-																<h2><a href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>"><?php echo $item['name'];?></a></h2>
-															</div>
-															<div style="width: 140px; height: 100px; text-align: center;">
-																<a href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>"><img src="<?php echo ($item['thumbnail'] ===false)?$this -> image_url.'noimage.gif' :$item['thumbnail'];?>" id="iborder"></a>
-															</div>
-															<div class="block_title2">
-																<a href="<?php echo PhotoController::getAlbumUrl($item['album_id'], $item['login']);?>"><?php echo $item['album_name'];?></a><br>
-																<span id="micro"><?php echo date("j F Y", strtotime($item['creation_date']));?></span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</td>
-								<?php }?>
-							</table>
-							
-							<br/><br/><br/>
 
-							
-						</td>
-					</tr>
-					</table>
-					<!-- /ПРОФИЛЬ -->
+				<div class="columns-page clearfix">
+					<div class="main"><div class="wrap">					
+						<ul class="view-filter clearfix">
+							<li><strong>Последние альбомы<span></span></strong></li> <!-- <?=$this -> createUrl('Album','LastList');?> -->
+							<li><a href="<?=$this -> createUrl('Photo','TopList');?>">TOP Фотографии</a></li>
+							<li><a href="<?=$this -> createUrl('Album','TopList');?>">TOP Альбомов</a></li>
+						</ul>
+						<!-- /view-filter -->
+						<div class="photo-album-list">
+						<ul class="in clearfix">
+						<?php foreach($this->photo_list as $key => $item){ ?>
+							<li class="it">
+								<dl>
+									<dt>
+										<a href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>"><?php echo $item['name'];?></a>									
+									</dt>
+									<dd class="av">
+										<a class="avatar" href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>"><img src="<?php echo ($item['thumbnail'] ===false)?$this -> image_url.'noimage.gif' :$item['thumbnail'];?>" alt="<?php echo $item['name'];?>" /></a>			
+									</dd>
+									<dd class="auth">
+										<a href="<?php echo PhotoController::getAlbumUrl($item['album_id'], $item['login']);?>"><?php echo $item['album_name'];?></a><i class="arrow-icon bid-arrow-icon"></i>
+									</dd>
+									<dd class="date"><?php echo date("j F Y", strtotime($item['creation_date']));?></dd>								
+								</dl>
+							</li>
+						<?php }?>
+					</ul>					
+					</div>
+					<?php echo $this -> album_list_pager; ?>
+						<!-- /photo-album-list -->
+			<!-- 		<ul class="pages-list clearfix">
+							<li class="control"><span>« Назад</span> <a href="#">Вперед »</a></li>
+							<li><strong>1</strong></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#">6</a></li>
+							<li><a href="#">7</a></li>
+							<li>...</li>
+							<li><a href="#">34</a></li>
+						</ul>	-->
+					</div></div>
+					<!-- /main -->
+					<div class="sidebar">
+						<div class="navigation">
+							<div class="title">
+								<h2>Фотоальбомы</h2>
+								<i title="Показать фильтр" class="filter-link icon show-filter-icon"></i>
+							</div>
+						<?php if ($this -> left_panel === true) { ?>
+							<!-- левый блок -->
+								<?php echo $this -> album_menu;?>
+								<?php echo $this -> control_panel;?>
+							<!-- /левый блок -->
+						<?php } ?>						
+							<ul class="nav-list">
+								<li><i class="arrow-icon"></i><a href="#">Авио</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Юмор</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Типографика</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Apple</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Дизайн</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Программирование</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Юмор</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Типографика</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Apple</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Дизайн</a></li>
+								<li><i class="arrow-icon"></i><a href="#">Программирование</a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- /sidebar -->
 				</div>
-
-			</div>
-			<!-- /Главный блок, с вкладками (Контент) -->
+				<!-- /columns-page -->
 <?php include($this -> _include('../footer.tpl.php')); ?>
