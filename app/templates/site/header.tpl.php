@@ -7,11 +7,10 @@
 		<meta name="keywords" content="" />
 		<link href="<?=$this->getBothCJ($this -> _css_files,'css');?>" type="text/css" rel="StyleSheet"/>
 		<script type="text/javascript" src="<?=$this->getBothCJ($this -> _js_files,'js');?>"></script>
-		<link type="text/css" rel="stylesheet" href="assets/screen.css" media="screen" />
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
-		<!--[if lte IE 7]><link type="text/css" rel="stylesheet" href="assets/ie.css"  media="screen" /><![endif]-->
-		<!--[if lte IE 6]><script language="javascript" type="text/javascript" src="assets/js/minmax.js"></script><![endif]-->
+		<!--[if lte IE 7]><link type="text/css" rel="stylesheet" href="/app/css/ie.css"  media="screen" /><![endif]-->
+		<!--[if lte IE 6]><script language="javascript" type="text/javascript" src="/app/css/minmax.js"></script><![endif]-->
 	</head>
 	<body id="main">
 
