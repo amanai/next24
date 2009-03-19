@@ -1,11 +1,11 @@
 <!-- TEMPLATE: "Поиск по интересам" -->
 <?php include($this -> _include('../header.tpl.php')); ?>
+<?php $request = Project::getRequest(); ?>
 
 <script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>tab.js"></script>
 
 
 <div id="tabs">
-<?php $request = Project::getRequest(); ?>
 <?php include($this -> _include('../tab_panel.tpl.php')); ?>
   
 <div class="tab-page tab-page-selected">
