@@ -4,8 +4,7 @@
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
 						<ul class="view-filter clearfix">
-							<li><strong>Каталог закладок<span></span></strong></li>
-							<li><a href="#">Популярные закладки</a></li>
+							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 						</ul>
 						<!-- /view-filter -->
 						<div class="display-filter clearfix">
@@ -33,6 +32,17 @@
 							</li>
 						<? } ?>	
 						</ul>
+  						<!-- панель-строка открытой категории -->
+  						<?php if (count($this->category_row) > 0) { ?>
+         					<b>Закладки категории:</b> &nbsp;<?=$this->category_row[0]['name']; ?>
+          					<?php if ($this->tag_name_selected !== null) { ?>
+          						&nbsp;<b>(Тег:</b> <?=$this->tag_name_selected;?><b>)</b>
+          					<? } ?>
+						<?php } ?>
+						<!-- строка тегов -->
+						<?php include($this -> _include('list_tags.tpl.php')); ?>
+						<!-- /строка тегов -->
+  						<!-- /панель-строка открытой категории -->						
 						<?=$this->bookmarks_list_pager; ?>
 			<!-- 		<ul class="pages-list clearfix">
 							<li class="control"><span>« Назад</span> <a href="#">Вперед »</a></li>
@@ -46,9 +56,6 @@
 							<li>...</li>
 							<li><a href="#">34</a></li>
 						</ul>   -->
-  <!-- строка тегов -->
-<?php include($this -> _include('list_tags.tpl.php')); ?>
-  <!-- /строка тегов -->
 					</div></div>
 					<!-- /main -->
 					<div class="sidebar">
@@ -83,39 +90,5 @@
 
 <script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>tab.js"></script>
 <script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>category_panel.js"></script>
-
-<div id="tabs">
-<?php include($this -> _include('../tab_panel.tpl.php')); ?>
-<?php $request = Project::getRequest(); ?>
-  
-<div class="tab-page tab-page-selected">
-<!-- Вопросы пользователей -->
-
-<table  width="100%" height="100%" cellpadding="0">
- <tr>
-  <td class="next24u_left">
-   <!-- панель слева -->
    <?php include($this -> _include('panel_category.tpl.php')); ?>
-   <!-- /панель слева -->
-  </td>
-  <td class="next24u_right">
-  <!-- панель-строка открытой категории -->
-  <?php if (count($this->category_row) > 0) { ?>
-  <div class="block_ee1">
-    <div class="block_ee2">
-      <div class="block_ee3">
-        <div class="block_ee4">
-          <div style="margin: 0px 10px;">
-          <b>Закладки категории:</b> &nbsp;<?=$this->category_row[0]['name']; ?>
-          <?php if ($this->tag_name_selected !== null) { ?>
-          &nbsp;<b>(Тег:</b> <?=$this->tag_name_selected;?><b>)</b>
-          <? } ?>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<?php } ?>
-  <!-- /панель-строка открытой категории -->
-
 <?php include($this -> _include('../footer.tpl.php')); ?>

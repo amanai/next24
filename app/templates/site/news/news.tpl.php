@@ -2,6 +2,7 @@
 <div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
 						<ul class="view-filter clearfix">
+							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 							<li><strong>Все новости<span></span></strong></li> <!-- <?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_all/ -->
 							<li><a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_subscribe/">Только подписанные</a></li>
 							<li><a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_stared/">Избранные (254)</a></li>

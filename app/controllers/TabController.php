@@ -175,6 +175,12 @@ class TabController{
 									)
 										
 							);
+				$tabs[]= array(
+								'name' => 'Мои RSS-ленты',
+								'title' => 'Мои RSS-ленты',
+								'selected' => $selected_myrss,
+							 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
+								);							
 
 			if ($user_id){
 				$tabs[]= array(
@@ -393,8 +399,8 @@ class TabController{
                  'url' => $request -> createUrl('Bookmarks', 'BookmarksList', null, false)
                 ),
             1 => array(
-                'name' => 'Самые посещаемые',
-                'title' => 'Самые посещаемые',
+                'name' => 'Популярные закладки',
+                'title' => 'Популярные закладки',
                 'selected' => $p_selected_tab_most_visit,
                  'url' => $request -> createUrl('Bookmarks', 'BookmarksMostVisit', null, false)
                 ),

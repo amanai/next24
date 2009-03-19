@@ -13,8 +13,7 @@
 								<input type="hidden" name="inp_hide" value="find">
 							</form>
 							<ul class="clearfix">
-								<li><strong>Каталог позиций<span></span></strong></li> <!-- <?=$this->createUrl('Social', 'SocialView')?>  -->
-								<li><a href="<?=$this->createUrl('Social', 'SocialLastAddPos')?>">Популярные</a></li>
+								<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 							</ul>
 						</div>
 						<!-- /view-filter -->

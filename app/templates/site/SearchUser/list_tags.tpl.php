@@ -10,14 +10,14 @@
               }
               foreach ($this->interests_list as $key => $value) { 
                 $v_URL  = $this->createUrl('SearchUser', $this->action, array($value['id']));
-                if ($v_count_tag_max > 1) {
+/*                if ($v_count_tag_max > 1) {
                   $v_size = 100 + ceil(75*($value['count']-1)/$v_count_tag_max);
                 } else {
                   $v_size = 100;
-                }
+                }	*/
                 if ($v_id_interest == $value['id']) {
                   // -- Выбранный тег
-                  $tags_set[] = '<li><b style="color: gray; font-size: '.$v_size.'%">'.$value['name'].'</b></li>';
+                  $tags_set[] = '<li><b class="w'.rand(1,5).'">'.$value['name'].'</b></li>';
                   $v_name_tag_selected = $value['name'];
                 } else {
                   $tags_set[] = '<li><a class="w'.rand(1,5).'" rel="tag" href="'.$v_URL.'" title="'.$value['count'].' раз(а)">'.$value['name'].'</a></li>';

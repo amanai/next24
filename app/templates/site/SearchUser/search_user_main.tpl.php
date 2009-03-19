@@ -3,8 +3,7 @@
 <?php $request = Project::getRequest(); ?>
 				<div class="friends-page">
 					<ul class="view-filter clearfix">
-						<li><strong>Найти знакомых<span></span></strong></li>
-						<li><a href="#">Поиск по интересам</a></li>
+						<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 					</ul>
 					<!-- /view-filter -->
 					<form class="find-friends" name="frm_search" method="post" action="<?=$this->createUrl('SearchUser', 'SearchUserMain');?>">
@@ -84,11 +83,4 @@
 					</ul>  -->
 				</div>
 				<!-- /friends-page -->
-				
-
-
-
-<?php include($this -> _include('../tab_panel.tpl.php')); ?>
- 
-
 <?php include($this -> _include('../footer.tpl.php')); ?>
