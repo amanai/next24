@@ -30,6 +30,9 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 			return $this -> getKey($param);
 		}
 		
+		public function getCurrentControllerName() {
+			return $this->_current_controller;
+		}
 		public function initialize(IConfigParameter $configuration){
 			if (get_magic_quotes_gpc()) {
 				HelpFunctions::strips($_GET);

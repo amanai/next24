@@ -1,6 +1,6 @@
-<!-- TEMPLATE: "Найти знакомых" - основная вкладка -->
 <?php include($this -> _include('../header.tpl.php')); ?>
 <?php $request = Project::getRequest(); ?>
+<!-- TEMPLATE: "Найти знакомых" - основная вкладка -->
 				<div class="friends-page">
 					<ul class="view-filter clearfix">
 						<?php include($this -> _include('../tab_panel.tpl.php')); ?>

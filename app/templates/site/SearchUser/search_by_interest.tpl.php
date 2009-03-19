@@ -1,6 +1,6 @@
-<!-- TEMPLATE: "Поиск по интересам" -->
 <?php include($this -> _include('../header.tpl.php')); ?>
 <?php $request = Project::getRequest(); ?>
+<!-- TEMPLATE: "Поиск по интересам" -->
 <div class="friends-page">
 	<ul class="view-filter clearfix">
 		<?php include($this -> _include('../tab_panel.tpl.php')); ?>

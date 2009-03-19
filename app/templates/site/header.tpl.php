@@ -9,6 +9,7 @@
 		<script type="text/javascript" src="<?=$this->getBothCJ($this -> _js_files,'js');?>"></script>
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
+		<link type="text/css" rel="stylesheet" href="/app/css/screen.css"  media="screen" />
 		<!--[if lte IE 7]><link type="text/css" rel="stylesheet" href="/app/css/ie.css"  media="screen" /><![endif]-->
 		<!--[if lte IE 6]><script language="javascript" type="text/javascript" src="/app/css/minmax.js"></script><![endif]-->
 	</head>
@@ -68,19 +69,20 @@
 				</ul>
 				<!-- /user-menu -->
 				<? } ?>
-
+				<?php $request = Project::getRequest(); ?>
+				<?php $currentController = $request->getCurrentControllerName(); echo $currentController; ?>
 				<ul class="menu clearfix">
-					<li class="no-text active"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Рабочий стол"><i class="icon desktop-icon"></i></a></li>
+					<li class="no-text <? if($currentController=='Index') {echo 'active';}?>"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Рабочий стол"><i class="icon desktop-icon"></i></a></li>
 					<li class="no-text"><a href="#" title="Моя страница"><i class="icon home-icon"></i></a></li>
-					<li><a href="<?php echo $this->createUrl('News', 'News', null, false); ?>"><i class="icon news-icon"></i>Новости</a></li>
-					<li class="alt"><a href="<?php echo $this->createUrl('Debate', 'DebateHistory', null, false); ?>"><i class="icon debate-icon"></i>Дебаты</a></li>
-					<li><a href="<?php echo $this->createUrl('Article', 'List', null, false); ?>"><i class="icon articles-icon"></i>Статьи</a></li>
-					<li><a href="<?php echo $this->createUrl('Album', 'LastList', null, false); ?>"><i class="icon foto-icon"></i>Фото</a></li>
-					<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false); ?>"><i class="icon answers-icon"></i>Ответы</a></li>
-					<li><a href="#"><i class="icon blogs-icon"></i>Блоги</a></li>
-					<li><a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false); ?>"><i class="icon social-icon"></i>Социальные сервисы</a></li>
-					<li><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>"><i class="icon bookmarks-icon"></i>Закладки</a></li>
-					<li><a href="<?php echo $this->createUrl('SearchUser','SearchUserMain'); ?>"><i class="icon friends-icon"></i>Найти знакомых</a></li>
+					<li <? if($currentController=='News') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('News', 'News', null, false); ?>"><i class="icon news-icon"></i>Новости</a></li>
+					<li class="alt <? if($currentController=='Debate') {echo 'active';}?>"><a href="<?php echo $this->createUrl('Debate', 'DebateHistory', null, false); ?>"><i class="icon debate-icon"></i>Дебаты</a></li>
+					<li <? if($currentController=='Article') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Article', 'List', null, false); ?>"><i class="icon articles-icon"></i>Статьи</a></li>
+					<li <? if($currentController=='Album') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Album', 'LastList', null, false); ?>"><i class="icon foto-icon"></i>Фото</a></li>
+					<li <? if($currentController=='QuestionAnswer') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false); ?>"><i class="icon answers-icon"></i>Ответы</a></li>
+					<li <? if($currentController=='Blog') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Blog', 'PostList', null, false); ?>"><i class="icon blogs-icon"></i>Блоги</a></li>
+					<li <? if($currentController=='Social') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false); ?>"><i class="icon social-icon"></i>Социальные сервисы</a></li>
+					<li <? if($currentController=='Bookmarks') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>"><i class="icon bookmarks-icon"></i>Закладки</a></li>
+					<li <? if($currentController=='SearchUser') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('SearchUser','SearchUserMain'); ?>"><i class="icon friends-icon"></i>Найти знакомых</a></li>
 				</ul>
 				<!-- /menu -->
 

@@ -1,6 +1,6 @@
-<!-- TEMPLATE: "Каталог закладок" - основная вкладка раздела закладки -->
 <?php include($this -> _include('../header.tpl.php')); ?>
 <?php $request = Project::getRequest(); ?>
+<!-- TEMPLATE: "Каталог закладок" - основная вкладка раздела закладки -->
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
 						<ul class="view-filter clearfix">
@@ -25,8 +25,8 @@
 									<dd class="auth">добавил: <img class="avatar" src="assets/i/temp/avatar.jpg" alt="" /><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s wuser-icon"></i><?=$item['login']; ?></a></dd>
 									<dd class="date"><?=date_format(new DateTime($item['creation_date']),'d.m.y H:i'); ?></dd>
 									<dd class="number-of">
-										<div>просмотры:  <strong><?=number_format($item['views'], 0, '',' '); ?></strong><br />
-											 комментарии: <strong><?=$item['count_comments']; ?></strong></div>
+										<div>просмотры:  <strong><?=number_format($item['views'], 0, '',' '); ?></strong>
+									<!-- <br />комментарии: <strong><?=$item['count_comments']; ?></strong></div> -->
 									</dd>
 								</dl>
 							</li>

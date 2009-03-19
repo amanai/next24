@@ -39,32 +39,22 @@
 								<i title="Показать фильтр" class="filter-link icon show-filter-icon"></i>
 							</div>
 							<ul class="nav-list">
-								<li><i class="arrow-icon"></i><a href="#">Авио</a></li>
-								<li class="active"><i class="arrow-icon"></i><a href="#">Internet</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Юмор</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Типографика</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Apple</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Дизайн</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Программирование</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Юмор</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Типографика</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Apple</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Дизайн</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Программирование</a></li>
+							<? if (count($this->bookmarks_category_list) > 0) { $v_count = 0; ?>
+								<? foreach($this->bookmarks_category_list as $key => $item){ ?>
+									<? if ($item['level_item']==0) { ?>
+										<?=$item['name']?>
+									<? } else { ?>
+										<li><a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']))?>"><?=$item['name']?></a></li>
+									<? } ?>	
+								<? } ?>
+							<? } ?>		
 							</ul>
 						</div>
 					</div>
 					<!-- /sidebar -->
 				</div>
 				<!-- /columns-page -->	
+				<?php 
+					echo $request->getCurrentControllerName();
+				?>
 <?php include($this -> _include('../footer.tpl.php')); ?>
