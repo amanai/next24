@@ -54,7 +54,4 @@
 					<!-- /sidebar -->
 				</div>
 				<!-- /columns-page -->	
-				<?php 
-					echo $request->getCurrentControllerName();
-				?>
 <?php include($this -> _include('../footer.tpl.php')); ?>
