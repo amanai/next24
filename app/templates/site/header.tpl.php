@@ -33,15 +33,28 @@
 				<!-- /site-info -->
 
 				<div class="user-bar clearfix">
+				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
+					<ul>
+						<li class="user-link"><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><img style="width: 28px; height: 25px;" src="assets/i/temp/user.png" alt="<?php echo $this->current_user->login;?>" /><?php echo $this->current_user->login;?></a></li>
+						<li class="updates-link"><i class="icon updates-icon"></i><a href="#" class="script-link"><span class="t">Обновления (30)</span><i class="arrow-icon"></i></a></li>
+						<li class="actions-link"><i class="icon actions-icon"></i><a href="#" class="script-link"><span class="t">Действия</span><i class="arrow-icon"></i></a></li>
+						<li class="rating-link"><i class="icon rating-icon"></i><a href="#">105.29 nr</a> <span class="sep">|</span> <a href="#" class="alt">240 nm</a></li>
+						<li class="login-link">
+							<span class="settings-link"><i class="icon settings-icon"></i><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>">Настройки</a></span>
+							<span class="logout-link"><a href="<?php echo $this->createUrl('User', 'Logout')?>">Выход</a></span>
+						</li>
+					</ul>					
+				<?php } else { ?>
 					<ul>
 						<li class="not-login-link">
-							<i class="icon close-icon"></i><span class="cabinet-link"><a href="#" class="script-link"><span class="t">Личный кабинет</span></a></span>
+							<i class="icon close-icon"></i><span class="cabinet-link"><a href="/site_login" class="script-link"><span class="t">Личный кабинет</span></a></span>
 							| <span class="register-link"><a href="<?php echo $this->createUrl('User', 'RegistrationForm');?>">Регистрация</a></span>
 						</li>
-					</ul>
+					</ul>				
+				<? } ?>	
 				</div>
 				<!-- /user-bar -->
-
+				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
 				<ul class="user-menu">
 					<li><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><span>Профиль</span></a> |</li>
 					<li><a href="<?php echo $this->createUrl('Messages', 'Mymessages', null, $this->current_user->login)?>"><span>Мои сообщения</span> <em class="alt">(<span>3</span>)</em></a> |</li>
@@ -54,12 +67,13 @@
 					<li><a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>"><span>Подписка</span> <em>(4)</em></a></li>
 				</ul>
 				<!-- /user-menu -->
+				<? } ?>
 
 				<ul class="menu clearfix">
 					<li class="no-text active"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Рабочий стол"><i class="icon desktop-icon"></i></a></li>
 					<li class="no-text"><a href="#" title="Моя страница"><i class="icon home-icon"></i></a></li>
 					<li><a href="<?php echo $this->createUrl('News', 'News', null, false); ?>"><i class="icon news-icon"></i>Новости</a></li>
-					<li class="alt"><a href="#"><i class="icon debate-icon"></i>Дебаты</a></li>
+					<li class="alt"><a href="<?php echo $this->createUrl('Debate', 'DebateHistory', null, false); ?>"><i class="icon debate-icon"></i>Дебаты</a></li>
 					<li><a href="<?php echo $this->createUrl('Article', 'List', null, false); ?>"><i class="icon articles-icon"></i>Статьи</a></li>
 					<li><a href="<?php echo $this->createUrl('Album', 'LastList', null, false); ?>"><i class="icon foto-icon"></i>Фото</a></li>
 					<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false); ?>"><i class="icon answers-icon"></i>Ответы</a></li>

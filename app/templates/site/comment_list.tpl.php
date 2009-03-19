@@ -83,7 +83,7 @@ if ($this -> user_id && $this->allowComment){
 <div class="leave-comment">
 	<h2><a name="addCommentAnchor"></a>Задать вопрос</h2>
 	<div class="rules"><a href="#">правила</a></div>
-	<form action="<?php echo $this->add_comment_url;?> method="post" class="comment-form">
+	<form action="<?php echo $this->add_comment_url;?>" method="post" class="comment-form">
 		<input type="hidden" name="id" value="<?php echo $this->add_comment_id;?>" />
 	    <input type="hidden" name="element_id" value="<?php echo $this->add_comment_element_id;?>" />
 	    <input type="hidden" name="cur_controller" value="<?php echo $this->cur_controller;?>" />
@@ -91,7 +91,7 @@ if ($this -> user_id && $this->allowComment){
 	    <input type="hidden" name="item_name" value="<?php echo $this->item_name;?>" />								
 		<table>
 			<tr class="textarea-field">
-				<td colspan="4"><textarea id="addCommentArea" name="comment" rows="5" cols="20">[quote name="ipartemk"]сколько выпил?[/quote]</textarea></td>
+				<td colspan="4"><textarea id="addCommentArea" name="comment" rows="5" cols="20"></textarea></td>
 			</tr>
 			<tr>
 				<td class="select-field">
