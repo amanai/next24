@@ -64,31 +64,10 @@
 								<h2>Категории</h2>
 								<i title="Показать фильтр" class="filter-link icon show-filter-icon"></i>
 							</div>
-							<ul class="nav-list">
-							<? if (count($this->bookmarks_category_list) > 0) { $v_count = 0; ?>
-								<? foreach($this->bookmarks_category_list as $key => $item){ ?>
-									<? if ($item['level_item']==0) { ?>
-										<?=$item['name']?>
-									<? } else { ?>
-										<li><a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']))?>"><?=$item['name']?></a></li>
-									<? } ?>	
-								<? } ?>
-							<? } ?>		
-							</ul>
+							<?php include($this -> _include('panel_category.tpl.php')); ?>
 						</div>
 					</div>
 					<!-- /sidebar -->
 				</div>
 				<!-- /columns-page -->
-				
-				
-				
-				
-				
-				
-				
-
-<script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>tab.js"></script>
-<script language="JavaScript" type="text/javascript" src="<?=$this -> js_url; ?>category_panel.js"></script>
-   <?php include($this -> _include('panel_category.tpl.php')); ?>
 <?php include($this -> _include('../footer.tpl.php')); ?>

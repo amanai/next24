@@ -66,17 +66,7 @@
 								<h2>Категории</h2>
 								<i title="Показать фильтр" class="filter-link icon show-filter-icon"></i>
 							</div>
-							<ul class="nav-list">
-							<? if (count($this->social_category_list) > 0) { ?>
-   								<? foreach($this->social_category_list as $key => $item){ $v_count++; ?>
-   									<? if ($item['level_item']==0) { ?>
-   										<li><?=$item['name']?></li>
-   									<? } else {?>	
-										<li><a href="<?=$this->createUrl('Social', $this->action, array($item['id']))?>"><?=$item['name']?></a></li>
-									<? } ?>	
-								<? } ?>	
-							<? } ?>								
-							</ul>
+							<?php include($this -> _include('panel_category.tpl.php')); ?>
 						</div>
 					</div>
 					<!-- /sidebar -->

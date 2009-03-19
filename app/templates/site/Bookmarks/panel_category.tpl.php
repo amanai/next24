@@ -1,35 +1,25 @@
 <!-- TEMPLATE: Панель "Категории" - содержит дерево-каталог категорий закладок -->
-<div class="block_ee1">
- <div class="block_ee2">
-  <div class="block_ee3">
-   <div class="block_ee4">
-    <div class="block_title"><h2>Категории</h2></div>
-<? if (count($this->bookmarks_category_list) > 0) { $v_count = 0; ?>
-   <? foreach($this->bookmarks_category_list as $key => $item){ ?>
-    <!-- для всех дочерних Категорий организуем контейнер-скрыватель-раскрыватель -->
-    <!-- Его состояние обрабатывается JavaScript function //align="absmiddle" -->
-    <? if ($item['level_item']==0) { ?>
-      <? if ($v_count != 0) { ?></span><? } ?>
-        <? $v_count++; ?>
-     <p style="font-weight: bolder; line-height: 14px; cursor: pointer;" id="id_<?=$item['id']?>" onclick="doLevelMainClick(this.id)">
-       <input type="image" tag="+" id="inp_id_<?=$item['id']?>" src="<?=$this -> image_url."icons/plus.gif"; ?>" title="Открыть/закрыть категорию" style="vertical-align: middle; border: 0; cursor: pointer;" />
-       <?=$item['name']?>
-     </p>
-     <span style="display: none;" id="span_show_id_<?=$item['id']?>">
-    <? } else { ?>
-     <p style="padding-left: 14px; line-height: 14px;">
-       <b>» </b> 
-       <? if ($this->bookmarks_category_selectedID == $item['id']) { ?>
-         <?=$item['name']?>
-       <? } else { ?>  
-         <a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']))?>"><?=$item['name']?></a>
-       <? } ?>
-     </p>
-    <? } ?>
- <? } ?>
-   </span>
-<? } ?>
-
+<ul class="nav-list">
+	<? if (count($this->bookmarks_category_list) > 0) { $v_count = 0; ?>
+		<? foreach($this->bookmarks_category_list as $key => $item){ ?>
+			<? if ($v_count==0) { ?>			
+				<li><a href="#"><?=$item['name']?></a><ul class="nav-list">										
+			<? } ?>
+			<? if (($item['level_item']==0) && $v_count) { ?>
+				</li></ul class="nav-list">
+					<a href="#"><?=$item['name']?></a>
+				<ul></li>	
+			<? } else { ?>
+				<? if ($this->bookmarks_category_selectedID == $item['id']) { ?>
+					<li><?=$item['name']?></li>
+				<? } else { ?>	
+					<li><a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']))?>"><?=$item['name']?></a></li>
+				<? } ?>	
+			<? } ?>	
+			<? $v_count++; ?>
+		<? } ?>
+	<? } ?>		
+</ul>
 <? if ($this->show_imported_bookmarks == true) { ?>
   <div class="block_title" style="margin-top: 5px;"><p style="text-indent: 12px;">
   <? if ($this->category_row[0]['id'] == -1) { ?>
@@ -39,14 +29,3 @@
   <? } ?>
   </p></div>
 <? } ?>
-
-<? if (count($this->category_row) > 0) { ?>
-<script language="JavaScript" type="text/javascript">
-  doLevelMainClick('id_'+<?=$this->category_row[0]['parent_id'];?>);
-</script>
-<? } ?>
-
-   </div>
-  </div>
- </div>
-</div>
