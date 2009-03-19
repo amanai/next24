@@ -1,6 +1,6 @@
 <!-- TEMPLATE: "Каталог социальных позиций(разделов)" - основная вкладка раздела соц.позиции -->
 <?php include($this -> _include('../header.tpl.php')); ?>
-
+<?php $request = Project::getRequest(); ?>
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
 						<div class="view-filter clearfix">
@@ -13,8 +13,8 @@
 								<input type="hidden" name="inp_hide" value="find">
 							</form>
 							<ul class="clearfix">
-								<li><strong>Каталог позиций<span></span></strong></li>
-								<li><a href="#">Популярные</a></li>
+								<li><strong>Каталог позиций<span></span></strong></li> <!-- <?=$this->createUrl('Social', 'SocialView')?>  -->
+								<li><a href="<?=$this->createUrl('Social', 'SocialLastAddPos')?>">Популярные</a></li>
 							</ul>
 						</div>
 						<!-- /view-filter -->
@@ -29,85 +29,25 @@
 								<tr>
 									<th class="main-row">Название</th>
 									<th><a class="script-link" href="#"><span class="t">Автор</span></a></th>
-									<th><span><a class="script-link" href="#"><span class="t">Рейтинг</span></a></span></th>
+									<th><span><a class="script-link" href="<?php echo $this->createUrl('Social', 'SocialMainList').(($request->inp_sort=='desc')?'&inp_sort=asc':'&inp_sort=desc');?>"><span class="t">Рейтинг</span></a></span></th>
 									<th><span class="sort-by-this"><a class="script-link" href="#"><span class="t">Отзывы</span><i class="arrow-icon"></i></a></span></th>
 									<th><a class="script-link" href="#"><span class="t">Дата создания</span></a></th>
 								</tr>
 							</thead>
 							<tbody>
+								<? foreach($this->social_pos_list as $key => $item) { ?>
 								<tr>
-									<td class="qv"><a href="#">Крутая тачка AUDI R8.</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an alt-an">75.96</td>
-									<td class="an">12</td>
-									<td class="date">20 января 2009, 18:53</td>
+									<td class="qv"><a href="<?=$this->createUrl('Social', 'SocialView', array($item['id']))?>" title="<?=$item['name'];?>"><?=$item['name_cut'];?></a></td>
+									<td class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t"><?=$item['login']; ?></span></a></td>
+									<td class="an alt-an"><?=number_format($item['avg_rating'], 2, '.',' '); ?></td>
+									<td class="an"><?=$item['count_comments']; ?></td>
+									<td class="date"><?=date_format(new DateTime($item['creation_date']),'d.m.y H:i'); ?></td>								
 								</tr>
-								<tr>
-									<td class="qv"><a href="#">Крутая тачка AUDI R8. Крутая тачка AUDI R8. Крутая тачка AUDI R8. Крутая тачка AUDI R8.</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an alt-an">75.96</td>
-									<td class="an">12</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">Крутая тачка AUDI R8.</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an alt-an">75.96</td>
-									<td class="an">12</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">Крутая тачка AUDI R8.</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an alt-an">75.96</td>
-									<td class="an">12</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">Крутая тачка AUDI R8.</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an alt-an">75.96</td>
-									<td class="an">12</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">Крутая тачка AUDI R8.</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an alt-an">75.96</td>
-									<td class="an">12</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">Крутая тачка AUDI R8.</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an alt-an">75.96</td>
-									<td class="an">12</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">Крутая тачка AUDI R8.</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an alt-an">75.96</td>
-									<td class="an">12</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">Крутая тачка AUDI R8.</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an alt-an">75.96</td>
-									<td class="an">12</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">Крутая тачка AUDI R8.</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an alt-an">75.96</td>
-									<td class="an">12</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
+								<? } ?>							
 							</tbody>
 						</table>
-						<ul class="pages-list clearfix">
+						<?=$this->social_pos_list_pager; ?>
+				<!-- 	<ul class="pages-list clearfix">
 							<li class="control"><a href="#">« Назад</a> <a href="#">Вперед »</a></li>
 							<li><a href="#">1</a></li>
 							<li><a href="#">2</a></li>
@@ -118,7 +58,7 @@
 							<li><a href="#">7</a></li>
 							<li>...</li>
 							<li><a href="#">34</a></li>
-						</ul>
+						</ul>   -->
 					</div></div>
 					<!-- /main -->
 					<div class="sidebar">
@@ -128,19 +68,15 @@
 								<i title="Показать фильтр" class="filter-link icon show-filter-icon"></i>
 							</div>
 							<ul class="nav-list">
-								<li><a href="#">Авио</a></li>
-								<li><a href="#">Internet</a></li>
-								<li><a href="#">Linux для всех</a></li>
-								<li><a href="#">Стартапы</a></li>
-								<li><a href="#">Типографика</a></li>
-								<li><a href="#">Apple</a></li>
-								<li><a href="#">Дизайн</a></li>
-								<li><a href="#">Программирование</a></li>
-								<li><a href="#">Юмор</a></li>
-								<li><a href="#">Internet</a></li>
-								<li><a href="#">Linux для всех</a></li>
-								<li><a href="#">Стартапы</a></li>
-								<li><a href="#">Типографика</a></li>
+							<? if (count($this->social_category_list) > 0) { ?>
+   								<? foreach($this->social_category_list as $key => $item){ $v_count++; ?>
+   									<? if ($item['level_item']==0) { ?>
+   										<li><?=$item['name']?></li>
+   									<? } else {?>	
+										<li><a href="<?=$this->createUrl('Social', $this->action, array($item['id']))?>"><?=$item['name']?></a></li>
+									<? } ?>	
+								<? } ?>	
+							<? } ?>								
 							</ul>
 						</div>
 					</div>
@@ -237,7 +173,7 @@
                <!-- $this- >createUrl('Bookmarks', 'BookmarksView', array($item['id'])) -->
                <!-- $item['description'] -->
           </td>
-          <td style="text-align: center;"><a href="<?=$request->createUrl('Index','Index', null, $item['login']); ;?>"><?=$item['login']; ?></a></td><!-- TODO: User profile -->
+          <td style="text-align: center;"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>"><?=$item['login']; ?></a></td><!-- TODO: User profile -->
           <td style="text-align: center;"><?=number_format($item['avg_rating'], 2, '.',' '); ?></td>
           <td style="text-align: center;"><?=$item['count_comments']; ?></td>
           <td><?=date_format(new DateTime($item['creation_date']),'d.m.y H:i'); ?></td>
