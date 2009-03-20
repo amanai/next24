@@ -455,6 +455,54 @@ class TabController{
     return $tabs;
   }  
 
+  static public function getQuestionAnswerTabs(
+    $p_selected_tab_list_name = false, 
+    $p_selected_tab_most_visit = false, 
+    $p_selected_tab_stats = false,
+    $p_selected_tab_my_list_name = false,
+    $p_selected_tab_add_question = false
+    ) {
+    $request = Project::getRequest();
+    $tabs = array(
+            0 => array(
+                'name' => 'Вопросы',
+                'title' => 'Вопросы',
+                'selected' => $p_selected_tab_list_name,
+                 'url' => $request->createUrl('QuestionAnswer','List', null, false)
+                ),
+            1 => array(
+                'name' => 'Популярные вопросы',
+                'title' => 'Популярные вопросы',
+                'selected' => $p_selected_tab_most_visit,
+                 'url' => $request->createUrl('QuestionAnswer','List', null, false)
+                ),
+            2 => array(
+                'name' => 'Подробная статистика',
+                'title' => 'Подробная статистика',
+                'selected' => $p_selected_tab_stats,
+                 'url' => $request->createUrl('QuestionAnswer','List', null, false)
+                ),                
+            );
+            
+            
+      $user_id = (int)Project::getUser() -> getDbUser() -> id;
+      if ($user_id > 0){
+        $tabs[] = array(
+              'name' => 'Мои вопросы',
+              'title' => 'Мои вопросы',
+              'selected' => $p_selected_tab_my_list_name,
+               'url' => $request->createUrl('QuestionAnswer','UserQuestions',null,false)
+              );
+      }
+        $tabs[] = array(
+              'name' => 'Задать вопрос',
+              'title' => 'Задать вопрос',
+              'selected' => $p_selected_tab_add_question,
+               'url' => $request->createUrl('QuestionAnswer', 'ManagedQuestion',null,false)
+              );      
+    return $tabs;
+  }    
+  
   static public function getSocialTabs(
     $p_selected_tab_main_list = false, 
     $p_selected_tab_last_add_pos_list = false, 

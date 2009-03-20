@@ -12,9 +12,14 @@ class QuestionAnswerController extends SiteController {
 	public function ListAction() {
 		$request = Project::getRequest();
 		$data = array();
+		
+		$question_cat_model = new QuestionCatModel();
+		$data['question_cat'] = $question_cat_model->loadAll();
+		
 		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1));
 		$this->BaseSiteData($data);
 		$data['action'] = 'List';
+		$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(true, false, false, false, false));
 		$this->_view->QuestionList($data);
 		$this->_view->parse();
 	}
@@ -66,6 +71,7 @@ class QuestionAnswerController extends SiteController {
 																);
 
 //			if($question_model->user_id == Project::getUser()->getDbUser()->id) $data['managed'] = true;
+			$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(true, false, false, false, false));
 			$this->_view->ViewQuestion($data);
 			$this->_view->parse();
 		} else {
@@ -93,6 +99,7 @@ class QuestionAnswerController extends SiteController {
 			}
 			$data['question_cat'] = $question_cat_model->loadAll();
 			$this->BaseSiteData($data);
+			$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(false, false, false, false, true));
 			$this->_view->ManagedQuestion($data);
 			$this->_view->parse();
 		} else {

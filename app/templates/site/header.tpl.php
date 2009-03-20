@@ -70,7 +70,7 @@
 				<!-- /user-menu -->
 				<? } ?>
 				<?php $request = Project::getRequest(); ?>
-				<?php $currentController = $request->getCurrentControllerName(); echo $currentController; ?>
+				<?php $currentController = $request->getCurrentControllerName(); ?>
 				<ul class="menu clearfix">
 					<li class="no-text <? if($currentController=='Index') {echo 'active';}?>"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Рабочий стол"><i class="icon desktop-icon"></i></a></li>
 					<li class="no-text"><a href="#" title="Моя страница"><i class="icon home-icon"></i></a></li>

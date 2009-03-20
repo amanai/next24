@@ -19,7 +19,7 @@ class BookmarksController extends SiteController {
   // -- BaseSiteData - определяет набор закладок, доступных на странице
 	protected function _BaseSiteData(&$data) {
 		$data['tab_list_name']     = "Каталог закладок";
-		$data['tab_most_visit']    = "Самые посещаемые";
+		$data['tab_most_visit']    = "Популярные закладки";
 		$data['tab_my_list_name']  = "Мои закладки";
 		$data['tab_add_bookmark']  = "Добавить закладку";
     $data['tab_category_edit'] = "Категория";
