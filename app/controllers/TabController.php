@@ -26,7 +26,7 @@ class TabController{
 			return $tabs;
 		}
 		
-		function getOwnTabs($selected_profile = false, $selected_album = false, $selected_diary = false, $selected_arch_diary = false, 
+/*		function getOwnTabs($selected_profile = false, $selected_album = false, $selected_diary = false, $selected_arch_diary = false, 
 		                    $friends = false, $pm = false, $blog = false, $societies = false, $subscribe = false, $messages = false, $correspondent_user_id = 0){
 			$request = Project::getRequest();
 			$userModel = new UserModel();
@@ -125,7 +125,7 @@ class TabController{
 			    }
 			}
 			return $tabs;
-		}
+		} */
 		
 		static public function getRegistrationTabs($selected1 = false, $selected2 = false, $selected3 = false, $complete_registration = false) {
 			$request = Project::getRequest();
@@ -158,7 +158,78 @@ class TabController{
 								);
 			}
 			return $tabs;
-		}
+		} 
+		
+		function getOwnTabs($selected_profile = false, $selected_friends = false, $selected_album = false,
+							$selected_blog = false, $selected_diary = false, $selected_bookmarks = false,
+							$selected_question_answer = false, $selected_subscribe = false, $selected_my_score = false,
+							$selected_my_messages = false){
+			$request = Project::getRequest();
+			$userModel = new UserModel();
+			$tabs = array();
+			$tabs[] = array(
+							'name' => 'Профиль',
+							'title' => 'Об авторе',
+							'selected' => $selected_profile,
+						 	'url' => $request -> createUrl('User', 'Profile')
+							);
+			
+			$tabs[] = array(
+							'name' => 'Друзья <em>(112)</em>',
+							'title' => 'Друзья',
+							'selected' => $selected_friends,
+						 	'url' => '#'
+							);
+			$tabs[] = array(
+							'name' => 'Фотоальбом <em>(5)</em>',
+							'title' => 'Фотоальбом',
+							'selected' => $selected_album,
+						 	'url' => $request -> createUrl('Album', 'List')
+							);
+			$tabs[] = array(
+							'name' => 'Блог',
+							'title' => 'Блог',
+							'selected' => $selected_blog,
+						 	'url' => $request -> createUrl('Blog', 'PostList')
+							);							
+			$tabs[] = array(
+							'name' => 'Дневник',
+							'title' => 'Дневник',
+							'selected' => $selected_diary,
+						 	'url' => '#'
+							);
+			$tabs[] = array(
+							'name' => 'Закладки',
+							'title' => 'Закладки',
+							'selected' => $selected_bookmarks,
+						 	'url' => '#'
+							);
+			$tabs[] = array(
+							'name' => 'Ответы',
+							'title' => 'Ответы',
+							'selected' => $selected_question_answer,
+						 	'url' => '#'
+							);
+			$tabs[] = array(
+							'name' => 'Подписка',
+							'title' => 'Подписка',
+							'selected' => $selected_subscribe,
+						 	'url' => $request -> createUrl('Subscribe', 'List')
+							);
+			$tabs[] = array(
+							'name' => 'Мой счет',
+							'title' => 'Мой счет',
+							'selected' => $selected_my_score,
+						 	'url' => '#'
+							);		
+			$tabs[] = array(
+							'name' => 'Мои сообщения<em class="alt">(<span>3</span>)</em>',
+							'title' => 'Мои сообщения',
+							'selected' => $selected_my_messages,
+						 	'url' => $request -> createUrl('Messages', 'Mymessages')
+							);													
+			return $tabs;
+		}		
 		
 		static public function getNewsTabs(
 		          $user_id, $isAdmin = false, $selected_news = false, $selected_addfeed = false, $selected_myrss = false, 
@@ -168,19 +239,31 @@ class TabController{
 			$request = Project::getRequest();
 			$tabs = array(
 							0 => array(
-									'name' => 'Новости',
+									'name' => 'Все новости',
 									'title' => 'Новости ввиде дерева',
 									'selected' => $selected_news,
-								 	'url' => $request -> createUrl('News', 'News', null, false)
+								 	'url' => $request -> createUrl('News', 'News', null, false).'/view:news_all/'
 									)
 										
 							);
 				$tabs[]= array(
+								'name' => 'Только подписанные',
+								'title' => 'Только подписанные',
+								'selected' => $selected_myrss,
+							 	'url' => $request -> createUrl('News', 'News', null, false).'/view:news_subscribe/'
+								);	
+				$tabs[]= array(
+								'name' => 'Избранные (254)',
+								'title' => 'Избранные (254)',
+								'selected' => $selected_myrss,
+							 	'url' => $request -> createUrl('News', 'News', null, false).'/view:news_stared/'
+								);																
+/*				$tabs[]= array(
 								'name' => 'Мои RSS-ленты',
 								'title' => 'Мои RSS-ленты',
 								'selected' => $selected_myrss,
 							 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
-								);							
+								);		*/					
 
 			if ($user_id){
 				$tabs[]= array(

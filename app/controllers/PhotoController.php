@@ -264,7 +264,8 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			if ((int)Project::getUser() -> getShowedUser() -> id <= 0){
 				$tabs = TabController::getMainAlbumTabs(false, false, true);
 			} else {
-				$tabs = TabController::getOwnTabs(false, true);
+			//	$tabs = TabController::getOwnTabs(false, true);
+				$tabs = TabController::getOwnTabs(false, false, true);
 			}
 			$info['tab_list'] = $tabs;
 			

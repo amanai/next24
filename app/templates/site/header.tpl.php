@@ -74,7 +74,7 @@
 				<ul class="menu clearfix">
 					<li class="no-text <? if($currentController=='Index') {echo 'active';}?>"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Рабочий стол"><i class="icon desktop-icon"></i></a></li>
 					<li class="no-text"><a href="#" title="Моя страница"><i class="icon home-icon"></i></a></li>
-					<li <? if($currentController=='News') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('News', 'News', null, false); ?>"><i class="icon news-icon"></i>Новости</a></li>
+					<li <? if($currentController=='News') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('News', 'News', null, false).'/view:news_all/'; ?>"><i class="icon news-icon"></i>Новости</a></li>
 					<li class="alt <? if($currentController=='Debate') {echo 'active';}?>"><a href="<?php echo $this->createUrl('Debate', 'DebateHistory', null, false); ?>"><i class="icon debate-icon"></i>Дебаты</a></li>
 					<li <? if($currentController=='Article') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Article', 'List', null, false); ?>"><i class="icon articles-icon"></i>Статьи</a></li>
 					<li <? if($currentController=='Album') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Album', 'LastList', null, false); ?>"><i class="icon foto-icon"></i>Фото</a></li>

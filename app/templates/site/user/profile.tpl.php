@@ -1,215 +1,304 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-<!-- Главный блок, с вкладками (Контент) -->
-<div class="tab-page" id="modules-cpanel">
-	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
-	<div class="tab-page tab-page-selected">
-		<!-- ПРОФИЛЬ -->
-		<table width="100%" height="100%" cellpadding="0">
-		<tr>
-			<td class="next24u_left">
-				<!-- левый блок -->
-					<?php include($this -> _include('control_panel.tpl.php')); ?>
-				<!-- /левый блок -->
-			</td>
-			<td class="next24u_right">
-				<!-- правый блок -->
-					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-						<div class="block_title">
-								<div class="block_title_left"><h2>Профиль пользователя</h2></div>
-								<div class="block_title_right">
-									<!--<img src="<?=$this -> image_url;?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js')" style="cursor: pointer;" />-->
-									<img src="<?php echo $this -> image_url;?>/close.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js'); return false;" style="cursor: pointer;" />
-								</div>
-						</div>
+				<ul class="view-filter clearfix">
+					<li><strong><?=$this->user_name;?><span></span></strong></li>
+					<li><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">Настройки профиля</a></li>
+				</ul>
+				<!-- /view-filter -->
 
-						<div id="user_profile_js">
-							<table width="100%" cellpadding="3">
-							<tr>
-								<td width="150"><b>Пользователь</b></td>
-								<td><?=$this->user_profile['login'];?></td>
-							</tr>
-							<? if ($this->user_name) { ?>
-							<tr>
-								<td><b>Имя пользователя</b></td>
-								<td>
-									<?=$this->user_name;?>
-								</td>
-							</tr>
-							<? } ?>
-							<tr>
-								<td><b>Дата рождения</b></td>
-								<td><?=$this->user_profile['birth_date'];?></td>
-							</tr>
-							<tr>
-								<td><b>Дата регистрации</b></td>
-								<td><?=$this->user_profile['registration_date'];?></td>
-							</tr>
-							<tr>
-								<td><b>Пол</b></td>
-								<td><?=$this->user_profile['gender']?'мужской':'женский';?></td>
-							</tr>
-							
-							<? if ($this->user_location) { ?>
-							<tr>
-								<td><b>Расположение</b></td>
-								<td><?=$this->user_location;?></td>
-							</tr>
-							<? } ?>
-							<? if ($this->user_profile['marital_status']) { ?>
-							<tr>
-								<td><b>Семейное положение</b></td>
-								<td><?=$this->user_profile['marital_status'];?></td>
-							</tr>
-							<? } ?>
-							<? if ($this->user_profile['phone']) { ?>
-							<tr>
-								<td><b>Телефон</b></td>
-								<td><?=$this->user_profile['phone'];?></td>
-							</tr>
-							<? } ?>
-							<? if ($this->user_profile['mobile_phone']) { ?>
-							<tr>
-								<td><b>Мобильный телефон</b></td>
-								<td><?=$this->user_profile['mobile_phone'];?></td>
-							</tr>
-							<? } ?>
-							
-							</table>
-						</div>
-
-					</div></div></div></div>
-					
-					<?if ($this->places) { ?>
-					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-						<div class="block_title">
-								<div class="block_title_left"><h2>Места учебы, работы, отдыха, службы</h2></div>
-								<div class="block_title_right">
-									<img src="<?php echo $this -> image_url;?>/open.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js2'); return false;" style="cursor: pointer;" />
-								</div>
-						</div>
-
-						<div id="user_profile_js2" style="display: none;">
-							<table cellpadding="10">
-							<? foreach ($this->places as $place) { ?>
-								<tr>
-									<td class="gocapt"><?=$place['date_start'];?>&nbsp;&mdash;&nbsp;<?=$place['date_end'];?> гг.</td>
-		
-									<td class="govalue">
-										<b><?=$place['name'];?></b>
-										<br />
-										<div class="go_descr"><?=$place['city'];?></div>
-									</td>
-								</tr>
-
-							<? } ?>
-							
-							</table>
-						</div>
-
-					</div></div></div></div>
-					
-					<? } ?>
-					
-					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-						<div class="block_title">
-								<div class="block_title_left"><h2>О пользователе</h2></div>
-								<div class="block_title_right">
-									<img src="<?php echo $this -> image_url;?>/open.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js1'); return false;" style="cursor: pointer;" />
-								</div>
-						</div>
-
-						<div id="user_profile_js1" style="display: none;">
-							<table width="100%" cellpadding="3">
-							<? if ($this->user_profile['about']) { ?>
-							<tr>
-								<td width="150"><b>О себе</b></td>
-								<td align="left">
+				<div class="user-profile">
+					<div class="clearfix">
+						<dl class="main-info">
+							<dt><span class="user-status"><span class="online">online</span></span> <strong><?=$this->user_name;?></strong>  / <span class="nick"><?=$this->user_profile['login'];?></span> /</dt>
+							<?php $avator_path = ($this->user_default_avatar['sys_av_id'])?$this->user_default_avatar['sys_path']:$this->user_default_avatar['path']; ?>
+							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>" /></dd>
+							<dd><?=$this->user_location;?></dd>
+							<dd>На сайте: <span class="date">12 дней</span></dd>
+							<dd>Настроение: <em>супер!</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+							<dd>Статус: <em>хочу есть и пить</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+						</dl>
+						<div class="about-info">
+							<div class="ttl"><strong>О себе</strong> <a href="#" class="script-link"><span class="t">изменить</span></a></div>
+							<div class="cnt">
+								<? if ($this->user_profile['about']) { ?>
 									<?=$this->user_profile['about'];?>
-								</td>
-							</tr>
-							<? } ?>
-							<? if ($this->user_interests) { ?>
-							<tr>
-								<td><b>Интересы</b></td>
-								<td><?=$this->user_interests;?></td>
-							</tr>
-							<? } ?>
-							<? if ($this->user_profile['books']) { ?>
-							<tr>
-								<td><b>Любимые книги</b></td>
-								<td align="left">
-									<?=$this->user_profile['books'];?>
-								</td>
-							</tr>
-							<? } ?>
-							<? if ($this->user_profile['films']) { ?>
-							<tr>
-								<td><b>Любимые фильмы</b></td>
-								<td align="left">
-									<?=$this->user_profile['films'];?>
-								</td>
-							</tr>
-							<? } ?>
-							<? if ($this->user_profile['musicians']) { ?>
-							<tr>
-								<td><b>Любимые музыканты</b></td>
-								<td align="left">
-									<?=$this->user_profile['musicians'];?>
-								</td>
-							</tr>
-							<? } ?>
-							<? if ($this->friend_list) { ?>
-							<tr>
-								<td><b>Друзья</b></td>
-								<td>
-									
-									<?=$this -> friend_list; ?>
-								</td>
-							</tr>
-							<? } ?>
-							<? if ($this->in_friend_list) { ?>
-							<tr>
-								<td><b>В друзьях у</b></td>
-								<td>
-									<?=$this -> in_friend_list; ?>
-								</td>
-							</tr>
-							<? } ?>
-							</table>
+								<? } ?>	
+							</div>	
 						</div>
-
-					</div></div></div></div>
-					
-					<!--
-					<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-						<div class="block_title">
-								<div class="block_title_left"><h2>Последние данные</h2></div>
-								<div class="block_title_right">
-									<img src="<?php echo $this -> image_url;?>/open.png" width="21" height="24" onclick="ShowOrHide(this, 'user_profile_js2'); return false;" style="cursor: pointer;" />
+						<div class="rating-info">
+							<div class="ttl"><strong>Рейтинг: <span class="nr">420 NR</span></strong></div>
+							<div class="cnt">
+								Профиль заполнен на:
+								<div class="rating-view">
+									<strong>48%</strong>
+									<div style="width:48%;"></div>
 								</div>
+								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a>
+							</div>
 						</div>
+					</div>
+					<ul class="user-tabs clearfix">
+						<?php include($this -> _include('../tab_panel_profile.tpl.php')); ?>
+					</ul>
+					<!-- /user-tabs -->
+				</div>
+				<!-- /user-profile -->
 
-						<div id="user_profile_js2" style="display: none;">
-							<table width="100%" cellpadding="3">
-							<tr>
-								<td width="150"><b>&nbsp;</b></td>
-								<td>
-									&nbsp;
-								</td>
-							</tr>
-							</table>
+				<div class="columns-page clearfix">
+					<div class="main"><div class="wrap">
+						<div class="profile-info">
+							<div class="info-title">
+								<div class="more-act">[ <a href="#">все друзья</a> ]</div>
+								<i class="arrow-icon up-arrow"></i><strong>Друзья</strong> (112)
+							</div>
+							<!-- /info-title -->
+							<div class="info-entry">
+								<? if ($this->friend_list) { ?>
+									<?=$this -> friend_list; ?>
+								<? } ?>
+								<? if ($this->in_friend_list) { ?>
+									<?=$this -> in_friend_list; ?>
+								<? } ?>								
+								<ul class="friends-profile-view clearfix">
+									<li>
+										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
+										<a href="#" class="nm">Андрей Шевченко</a>
+										<span class="where">Украина, Киев</span>
+									</li>
+									<li>
+										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
+										<a href="#" class="nm">Антонина Степановна</a>
+										<span class="where">Великобритания, Лондон</span>
+									</li>
+									<li>
+										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
+										<a href="#" class="nm">Андрей Шевченко</a>
+										<span class="where">Украина, Киев</span>
+									</li>
+									<li>
+										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
+										<a href="#" class="nm">Андрей Шевченко</a>
+										<span class="where">Украина, Киев</span>
+									</li>
+									<li>
+										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
+										<a href="#" class="nm">Андрей Шевченко</a>
+										<span class="where">Украина, Киев</span>
+									</li>
+									<li>
+										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
+										<a href="#" class="nm">Андрей Шевченко</a>
+										<span class="where">Украина, Киев</span>
+									</li>
+									<li>
+										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
+										<a href="#" class="nm">Андрей Шевченко</a>
+										<span class="where">Украина, Киев</span>
+									</li>
+									<li>
+										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
+										<a href="#" class="nm">Андрей Шевченко</a>
+										<span class="where">Украина, Киев</span>
+									</li>
+								</ul>
+							</div>
+							<!-- /info-entry -->
 						</div>
+						<!-- /profile-info -->
+						<div class="profile-info">
+							<div class="info-title">
+								<i class="arrow-icon up-arrow"></i><strong>Лента событий в подписке</strong> (112)
+							</div>
+							<!-- /info-title -->
+							<div class="info-entry">
+								<ul class="event-list">
+									<li><a href="#">Андрей Шевченко</a> и <a href="#">Викторчик</a> теперь друзья</li>
+									<li><a href="#">Ярослав Мудрый</a> добавил <a class="srv-link">комментарий</a> к своей личной <a class="srv-link">фотографии</a></li>
+									<li><a href="#">Андрей Шевченко</a> и <a href="#">Викторчик</a> теперь друзья</li>
+									<li><a href="#">Ярослав Мудрый</a> добавил <a class="srv-link">комментарий</a> к своей личной <a class="srv-link">фотографии</a></li>
+									<li><a href="#">Андрей Шевченко</a> и <a href="#">Викторчик</a> теперь друзья</li>
+									<li><a href="#">Ярослав Мудрый</a> добавил <a class="srv-link">комментарий</a> к своей личной <a class="srv-link">фотографии</a></li>
+									<li class="view-more last"><a href="#">Вся лента событий в подписке</a> (1145)</li>
+								</ul>
+							</div>
+							<!-- /info-entry -->
+						</div>
+						<!-- /profile-info -->
+						<div class="profile-info">
+							<div class="info-title">
+								<div class="more-act">[ <a href="<?php echo $this -> createUrl('Places', 'Index');?>">изменить</a> ]</div>
+								<i class="arrow-icon up-arrow"></i><strong>Личная информация</strong>
+							</div>
+							<!-- /info-title -->
+							<div class="info-entry">
+								<dl class="personal-info clearfix">
+									<dt>Логин:</dt>
+									<dd><strong>madvic</strong></dd>
+									<dt>Фамилия:</dt>
+									<dd>Шпаков</dd>
+									<dt>Имя:</dt>
+									<dd>Виктор</dd>
+									<dt>Отчество:</dt>
+									<dd>Батькович</dd>
+								<? if ($this->user_name) { ?>
+									<dt>Псевдоним:</dt>
+									<dd><?=$this->user_name;?></dd>
+								<? } ?>	
+									<dt>Дата рождения:</dt>
+									<dd><?=$this->user_profile['birth_date'];?></dd>
+									<dt>Дата регистрации</dt>
+									<dd><?=$this->user_profile['registration_date'];?></dd>
+								<? if ($this->user_location) { ?>	
+									<dt>Страна:</dt>
+									<dd><?=$this->user_location;?></dd>
+									<dt>Город:</dt>
+									<dd><?=$this->user_location;?></dd>
+								<? } ?>	
+									<dt>Пол:</dt>
+									<dd><?=$this->user_profile['gender']?'мужской':'женский';?></dd>
+								<? if ($this->user_profile['marital_status']) { ?>	
+									<dt>Семейное положение:</dt>	
+									<dd><?=$this->user_profile['marital_status'];?></dd>
+								<? } ?>	
+									<dt>icq:</dt>
+									<dd><a href="#">712121</a></dd>
+									<dt>skype:</dt>
+									<dd><a href="#">viktor200000</a></dd>
+									<dt>Сайт:</dt>
+									<dd><a href="#">www.madvic.ru</a></dd>
+								<? if ($this->user_profile['phone']) { ?>	
+									<dt>Телефон:</dt>
+									<dd><?=$this->user_profile['phone'];?></dd>
+								<? } ?>
+								<? if ($this->user_profile['mobile_phone']) { ?>	
+									<dt>Мобильный телефон</dt>
+									<dd><?=$this->user_profile['mobile_phone'];?></dd>
+								<? } ?>	
+								<? if ($this->user_interests) { ?>
+									<dt>Интересы:</dt>
+									<dd><?=$this->user_interests;?></dd>
+								<? } ?>
+								<? if ($this->user_profile['books']) { ?>
+									<dt>Любимые книги:</dt>
+									<dd><?=$this->user_profile['books'];?></dd>
+								<? } ?>	
+								<? if ($this->user_profile['films']) { ?>
+									<dt>Любимые фильмы:</dt>
+									<dd><?=$this->user_profile['films'];?></dd>
+								<? } ?>		
+								<? if ($this->user_profile['musicians']) { ?>
+									<dt>Любымые музыканты:</dt>
+									<dd><?=$this->user_profile['musicians'];?></dd>
+								<? } ?>																													
+									<dt>Адрес e-mail:</dt>
+									<dd><a href="#">madcros@gmail.com</a></dd>
+								<?if ($this->places) { ?>
+									<dt>Места учебы, работы, отдыха, службы</dt>
+									<dd>
+										<table cellpadding="10">
+										<? foreach ($this->places as $place) { ?>
+											<tr>
+												<td><?=$place['date_start'];?>&nbsp;&mdash;&nbsp;<?=$place['date_end'];?> гг.</td>		
+												<td>
+													<b><?=$place['name'];?></b>
+													<br />
+													<div><?=$place['city'];?></div>
+												</td>
+											</tr>
 
-					</div></div></div></div>
-					-->
-					
-				<!-- /правый блок -->
-			</td>
-		</tr>
-		</table>
-		<!-- /ПРОФИЛЬ -->
-	</div>
-
-</div>
-<!-- /Главный блок, с вкладками (Контент) -->
+										<? } ?>
+										</table>
+									</dd>
+								<? } ?>											
+								</dl>
+							</div>
+							<!-- /info-entry -->
+						</div>
+						<!-- /profile-info -->
+					</div></div>
+					<!-- /main -->
+					<div class="sidebar">
+						<div class="navigation">
+							<div class="title alt-title"><h2>Фотоальбомы</h2></div>
+							<ul class="short-list photo-short-list">
+								<li>
+									<dl class="clearfix">
+										<dt><a href="#"><img src="assets/i/temp/foto.s.jpg" alt="" /></a></dt>
+										<dd><a href="#">Мой Альбом</a></dd>
+										<dd>12 фото</dd>
+									</dl>
+								</li>
+								<li>
+									<dl class="clearfix">
+										<dt><a href="#"><img src="assets/i/temp/foto.s.jpg" alt="" /></a></dt>
+										<dd><a href="#">Мой Альбом</a></dd>
+										<dd>12 фото</dd>
+									</dl>
+								</li>
+								<li>
+									<dl class="clearfix">
+										<dt><a href="#"><img src="assets/i/temp/foto.s.jpg" alt="" /></a></dt>
+										<dd><a href="#">Мой Альбом</a></dd>
+										<dd>12 фото</dd>
+									</dl>
+								</li>
+								<li class="view-more"><a href="#">Все альбомы</a> (5)</li>
+							</ul>
+						</div>
+						<div class="navigation">
+							<div class="title alt-title"><h2>В блоге</h2></div>
+							<ul class="short-list text-short-list">
+								<li>
+									<span class="date">18 декабря 2008, 19:46</span>
+									<a href="#">Трехмерные танки на Flash!</a>
+								</li>
+								<li>
+									<span class="date">18 декабря 2008, 19:46</span>
+									<a href="#">Трехмерные танки на Flash!</a>
+								</li>
+								<li>
+									<span class="date">18 декабря 2008, 19:46</span>
+									<a href="#">Трехмерные танки на Flash!</a>
+								</li>
+								<li>
+									<span class="date">18 декабря 2008, 19:46</span>
+									<a href="#">Трехмерные танки на Flash!</a>
+								</li>
+								<li>
+									<span class="date">18 декабря 2008, 19:46</span>
+									<a href="#">Трехмерные танки на Flash!</a>
+								</li>
+								<li class="view-more"><a href="#">Все сообщения в блоге</a> (15)</li>
+							</ul>
+						</div>
+						<div class="navigation">
+							<div class="title alt-title"><h2>В дневниках</h2></div>
+							<ul class="short-list text-short-list">
+								<li>
+									<span class="date">18 декабря 2008, 19:46</span>
+									<a href="#">Трехмерные танки на Flash!</a>
+								</li>
+								<li>
+									<span class="date">18 декабря 2008, 19:46</span>
+									<a href="#">Трехмерные танки на Flash!</a>
+								</li>
+								<li>
+									<span class="date">18 декабря 2008, 19:46</span>
+									<a href="#">Трехмерные танки на Flash!</a>
+								</li>
+								<li>
+									<span class="date">18 декабря 2008, 19:46</span>
+									<a href="#">Трехмерные танки на Flash!</a>
+								</li>
+								<li>
+									<span class="date">18 декабря 2008, 19:46</span>
+									<a href="#">Трехмерные танки на Flash!</a>
+								</li>
+								<li class="view-more"><a href="#">Вся лента в дневнике</a> (354)</li>
+							</ul>
+							<?php include($this -> _include('control_panel.tpl.php')); ?>
+						</div>
+					</div>
+					<!-- /sidebar -->
+				</div>
+				<!-- /columns-page -->
 <?php include($this -> _include('../footer.tpl.php')); ?>

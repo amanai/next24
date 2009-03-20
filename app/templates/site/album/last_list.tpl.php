@@ -3,9 +3,7 @@
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">					
 						<ul class="view-filter clearfix">
-							<li><strong>Последние альбомы<span></span></strong></li> <!-- <?=$this -> createUrl('Album','LastList');?> -->
-							<li><a href="<?=$this -> createUrl('Photo','TopList');?>">TOP Фотографии</a></li>
-							<li><a href="<?=$this -> createUrl('Album','TopList');?>">TOP Альбомов</a></li>
+							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 						</ul>
 						<!-- /view-filter -->
 						<div class="photo-album-list">

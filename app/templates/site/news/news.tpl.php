@@ -3,9 +3,6 @@
 					<div class="main"><div class="wrap">
 						<ul class="view-filter clearfix">
 							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
-							<li><strong>Все новости<span></span></strong></li> <!-- <?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_all/ -->
-							<li><a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_subscribe/">Только подписанные</a></li>
-							<li><a href="<?php echo $this->createUrl('News', 'News', null, false); ?>/view:news_stared/">Избранные (254)</a></li>
 						</ul>
 						<!-- /view-filter -->
 						<div class="display-filter clearfix">
@@ -79,18 +76,27 @@
 									<li><select disabled="disabled"><option>Выберете раздел выше</option></select></li>
 								</ul>
 							</form>
-							<?php if ($this->shownow != "allnews"){?>
-							<form action="<?php echo $this->createUrl('News', 'SubscribeNews', null, false); ?>" method="POST">
-								<ul class="nav-list">
-									<?php 
-                        				$aLeafs = $this->getAllLeafs($this->news_tree_list);
-                        				$this->BuildTree($aLeafs, $this->news_tree_list, 0, $this->aNewsSubscribe, $this->user_id); echo $this->_htmlTree; 
-                        			?>
-                        		</ul>	
-                    			<?php if ($this->user_id){ ?>
-                    				<input type="submit" name="subscribe" value="Сохранить подписку" />
-                    			<?php } ?>                        		
-                        	</form>
+							<?php if (!$this -> isShowOneNews){ // не одна новость ?> 
+								<?php if ($this->shownow != "allnews"){?>
+								<form action="<?php echo $this->createUrl('News', 'SubscribeNews', null, false); ?>" method="POST">
+									<ul class="nav-list">
+										<?php 
+                        					$aLeafs = $this->getAllLeafs($this->news_tree_list);
+                        					$this->BuildTree($aLeafs, $this->news_tree_list, 0, $this->aNewsSubscribe, $this->user_id); echo $this->_htmlTree; 
+                        				?>
+                        			</ul>	
+                    				<?php if ($this->user_id){ ?>
+                    					<input type="submit" name="subscribe" value="Сохранить подписку" />
+                    				<?php } ?>                        		
+                        		</form>
+								<?php } ?>
+								<?php if ($this->user_id){ ?>
+									<h2>Управление</h2>
+									<div>
+						 				<a href="<?php echo $this->createUrl('News', 'AddFeed', null, false); ?>" >Добавить RSS-ленту</a><br />
+						 				<a href="<?php echo $this->createUrl('News', 'AddNewsTree', null, false); ?>" >Добавить новую ветвь в дерево</a>
+									</div>
+								<?php } ?>								
 							<?php } ?>
 						</div>
 					</div>
@@ -115,7 +121,7 @@
 	<table width="100%" height="100%" cellpadding="0">
 	<tr>
 	    <?php 
-	       if (!$this -> isShowOneNews){ // не одна новость
+	       if (!$this -> isShowOneNews) { // не одна новость
 	    ?> 
 		<td class="next24u_left">
 			 <!-- левый блок -->
@@ -186,10 +192,10 @@
 					       if ($this->news['favorite_news_id']) $starGif = "star_on.gif"; else $starGif = "star_off.gif"; 
 					       echo $this->news['news_title'];
 					       if ($this->user_id){
-    				           echo ' 
-    				           <a onclick=\'
+    				           echo '!!!!!!!!!!!!!!!!!!!!!!!!!! 
+    				           <span onclick=\'
         				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$this->news['news_id'], "imgUrl"=>$this -> image_url), "POST").', true);
-        				        \' href="javascript: void(0);"><img src="'.$this -> image_url.$starGif.'" id="imgstar'.$this->news['news_id'].'"></a>';
+        				        \' href="javascript: void(0);"><img src="'.$this -> image_url.$starGif.'" id="imgstar'.$this->news['news_id'].'">!!!!!!</span>';
 					       }
 					       ?>
 					        

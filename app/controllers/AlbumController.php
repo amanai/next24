@@ -288,7 +288,8 @@
 			if ((int)Project::getUser() -> getShowedUser() -> id <= 0){
 				$tabs = TabController::getMainAlbumTabs(false, false, true);
 			} else {
-				$tabs = TabController::getOwnTabs(false, true);
+			//	$tabs = TabController::getOwnTabs(false, true);
+				$tabs = TabController::getOwnTabs(false, false, true);
 			}
 			$info['tab_list'] = $tabs;
 			$info['left_panel'] = false;
@@ -308,7 +309,8 @@
 				$info['left_panel'] = false;
 				$tabs = TabController::getMainAlbumTabs(true);
 			} else {
-				$tabs = TabController::getOwnTabs(false, true);
+			//	$tabs = TabController::getOwnTabs(false, true);
+				$tabs = TabController::getOwnTabs(false, false, true);
 			}
 
 			$info['tab_list'] = $tabs;
@@ -351,7 +353,8 @@
 			}
 			
 			if ($request_user_id > 0){
-				$info['tab_list'] = TabController::getOwnTabs(false, true);
+			//	$info['tab_list'] = TabController::getOwnTabs(false, true);
+				$info['tab_list'] = TabController::getOwnTabs(false, false, true);
 			}
 			
 			

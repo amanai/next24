@@ -10,6 +10,7 @@ class SubscribeController extends SiteController{
 			
 		}
 		function BaseSubscribeData(&$info){
+		//	$info['tab_list'] = TabController::getOwnTabs(false, false, false, false, false, false, false, true);
 			$info['tab_list'] = TabController::getOwnTabs(false, false, false, false, false, false, false, true);
 		}
 		

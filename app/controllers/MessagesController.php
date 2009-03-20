@@ -14,7 +14,8 @@ class MessagesController extends SiteController{
 	    $friendModel = new FriendModel();
 	    $user = Project::getUser() -> getDbUser();
 	    
-	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false, false, false, false, false, false, false, false, true));
+//	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false, false, false, false, false, false, false, false, true));
+	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,false,false,false,true));
 	    
 	    $aFriendGroups = $friendModel->getUserFriendGroups($user->id);
 	    $this -> _view -> assign('aFriendGroups', $aFriendGroups);
@@ -63,7 +64,9 @@ class MessagesController extends SiteController{
 	    $request = Project::getRequest();
 	    
 	    $corr_user_id = $request->corr_user_id;
-	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false, false, false, false, false, false, false, false, false, $corr_user_id));
+//	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false, false, false, false, false, false, false, false, false, $corr_user_id));
+		 $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,false,false,false,true));
+		 
 	    $correspondent_user = $userModel->getUserById($corr_user_id);
 	    $this -> _view -> assign('user_login', $user->login);
 	    $this -> _view -> assign('correspondent_user_login', $correspondent_user['login']);
@@ -116,7 +119,8 @@ class MessagesController extends SiteController{
 	    $m_text = trim($request->m_text);
 	    $recipient_name = trim($request->recipient_name);
 	    
-	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false, false, false, false, false, false, false, false, true));
+//	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false, false, false, false, false, false, false, false, true));
+		 $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,false,false,false,true));
 	    
 	    if ($request->message_action == 'new_message'){
 	        $noErrors = true;

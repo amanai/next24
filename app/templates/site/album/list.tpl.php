@@ -1,10 +1,51 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
+<?php if ($this -> left_panel === true) { ?>
+				<ul class="view-filter clearfix">
+					<li><strong>Шпаков Виктор<span></span></strong></li>
+					<li><a href="#">Настройки профиля</a></li>
+				</ul>
+				<!-- /view-filter -->
+
+				<div class="user-profile">
+					<div class="clearfix">
+						<dl class="main-info">
+							<dt><span class="user-status"><span class="online">online</span></span> <strong>Викторчик</strong>  / <span class="nick">madvic</span> /</dt>
+							<dd class="av"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></dd>
+							<dd>Украина, Киев</dd>
+							<dd>На сайте: <span class="date">12 дней</span></dd>
+							<dd>Настроение: <em>супер!</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+							<dd>Статус: <em>хочу есть и пить</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+						</dl>
+						<div class="about-info">
+							<div class="ttl"><strong>О себе</strong> <a href="#" class="script-link"><span class="t">изменить</span></a></div>
+							<div class="cnt">Художественное опосредование, как бы это ни казалось парадоксальным, трансформирует реконструктивный подход, подобный исследовательский подход к проблемам художественной типологии можно обнаружить у К.Фосслера.</div>
+						</div>
+						<div class="rating-info">
+							<div class="ttl"><strong>Рейтинг: <span class="nr">420 NR</span></strong></div>
+							<div class="cnt">
+								Профиль заполнен на:
+								<div class="rating-view">
+									<strong>48%</strong>
+									<div style="width:48%;"></div>
+								</div>
+								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a>
+							</div>
+						</div>
+					</div>
+					<ul class="user-tabs clearfix">
+						<?php include($this -> _include('../tab_panel_profile.tpl.php')); ?>
+					</ul>
+					<!-- /user-tabs -->
+				</div>
+				<!-- /user-profile -->
+
+<? } ?>
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">					
 						<ul class="view-filter clearfix">
-							<li><strong>Последние альбомы<span></span></strong></li> <!-- <?=$this -> createUrl('Album','LastList');?> -->
-							<li><a href="<?=$this -> createUrl('Photo','TopList');?>">TOP Фотографии</a></li>
-							<li><a href="<?=$this -> createUrl('Album','TopList');?>">TOP Альбомов</a></li>
+						<?php if ($this -> left_panel !== true) { ?>
+							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
+						<? } ?>	
 						</ul>
 						<!-- /view-filter -->
 						<div class="photo-album-list">
@@ -77,37 +118,13 @@
 							<div class="title">
 								<h2>Фотоальбомы</h2>
 								<i title="Показать фильтр" class="filter-link icon show-filter-icon"></i>
-							</div>
-						<?php if ($this -> left_panel === true) { ?>
-							<!-- левый блок -->
-								<?php echo $this -> album_menu;?>
+							</div>				
+							<?php if ($this -> left_panel === true) { ?>					
+								<ul class="nav-list">
+									<?php echo $this -> album_menu;?>
+								</ul>
 								<?php echo $this -> control_panel;?>
-							<!-- /левый блок -->
-						<?php } ?>						
-							<ul class="nav-list">
-								<li><i class="arrow-icon"></i><a href="#">Авио</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Юмор</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Типографика</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Apple</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Дизайн</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Программирование</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Юмор</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Типографика</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Apple</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Дизайн</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Программирование</a></li>
-							</ul>
+							<?php } ?>								
 						</div>
 					</div>
 					<!-- /sidebar -->
