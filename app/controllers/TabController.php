@@ -178,7 +178,7 @@ class TabController{
 							'name' => 'Друзья <em>(112)</em>',
 							'title' => 'Друзья',
 							'selected' => $selected_friends,
-						 	'url' => '#'
+						 	'url' => $request -> createUrl('Messages', 'Friend')
 							);
 			$tabs[] = array(
 							'name' => 'Фотоальбом <em>(5)</em>',

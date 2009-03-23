@@ -2,23 +2,31 @@
 class MessagesView extends BaseSiteView{
 	protected $_dir = 'messages';
 
+	public function getCountFriendInGroups($user_id, $group_id) {
+		$friendModel = new FriendModel();
+		$aFirends = $friendModel->getFriendsInGroup($user_id, $group_id);
+		return count($aFirends);
+	}
+	
 	public function showFriendsInGroup($user_id, $group_id){
 	    $friendModel = new FriendModel();
 	    $aFirends = $friendModel->getFriendsInGroup($user_id, $group_id);
 	    $htmlStr = "";
-	    foreach ($aFirends as $friend){
-	        $htmlStr .= '
-	           <div style="padding-left: 23px;">
-	           <a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $friend['login']).'">'.$friend['login'].'</a>  
-	           <span class="personNotice">'.$friend['note'].'</span>  
-	           <span class="personActions">
-	               <form class="editForm" method="post" action="'.Project::getRequest() -> createUrl('Messages','Friend').'">
-	               <input type="hidden" value="changeFriend" name="messageAction" />
-	               <input type="hidden" value="'.$friend['id'].'" name="friend_table_id"/>
-	               <span id="micro">[ <a onclick="this.parentNode.parentNode.submit(); return false;" href="#">редактировать</a> ]</span>
-	               </form>
-	           </span>
-	           </div>';
+	    $counter = count($aFirends);
+	    $i = 1;
+	    foreach ($aFirends as $friend){   
+	        $htmlStr .= '<dd '.(($counter==$i)?'class="last"':'').'>
+							<a class="nm" href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $friend['login']).'">'.$friend['login'].'<img src="assets/i/temp/avatar.s.jpg" class="avatar" alt="" /></a>
+							<span class="memo">( <span>Заметка</span>: '.$friend['note'].' )</span>
+							<div class="act">
+	               				<form name="editForm" method="post" action="'.Project::getRequest() -> createUrl('Messages','Friend').'">
+	               					<input type="hidden" value="changeFriend" name="messageAction" />
+	               					<input type="hidden" value="'.$friend['id'].'" name="friend_table_id"/>
+	               					<a onclick="this.parentNode.submit(); return false;" href="#">редактировать</a>
+	               				</form>													
+							</div>
+						</dd>';	 
+	        $i++;       
 	    }
 	    return $htmlStr;
 	}

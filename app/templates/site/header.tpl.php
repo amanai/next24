@@ -59,7 +59,7 @@
 				<ul class="user-menu">
 					<li><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><span>Профиль</span></a> |</li>
 					<li><a href="<?php echo $this->createUrl('Messages', 'Mymessages', null, $this->current_user->login)?>"><span>Мои сообщения</span> <em class="alt">(<span>3</span>)</em></a> |</li>
-					<li><a href="#"><span>Друзья</span> <em>(35)</em></a> |</li>
+					<li><a href="<?php echo $this->createUrl('Messages', 'Friend'); ?>"><span>Друзья</span> <em>(35)</em></a> |</li>
 					<li><a href="<?php echo $this->createUrl('Album', 'List', null, $this->current_user->login)?>"><span>Фотоальбом</span> <em>(5)</em></a> |</li>
 					<li><a href="<?php echo $this->createUrl('Blog', 'PostList', null, $this->current_user->login)?>"><span>Блог</span> <em>(5)</em></a> |</li>
 					<li><a href="#"><span>Дневник</span> <em>(8)</em></a> |</li>
