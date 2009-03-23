@@ -380,6 +380,7 @@ class MessagesController extends SiteController{
 	    $this -> _view -> assign('aGroupMessagesCount', $aGroupMessagesCount);
 	    
 	    $aFriendGroups = $friendModel->getUserFriendGroups($user->id);
+	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,true,false,false,false,false,false,false,false,false));
 	    $this -> _view -> assign('aFriendGroups', $aFriendGroups);
 	    $this -> _view -> assign('user_id', $user->id);
 	    

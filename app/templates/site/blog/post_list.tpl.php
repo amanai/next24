@@ -1,5 +1,310 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 <!-- Главный блок, с вкладками (Контент) -->
+				<ul class="view-filter clearfix">
+					<li><strong>Шпаков Виктор<span></span></strong></li>
+					<li><a href="#">Настройки профиля</a></li>
+				</ul>
+				<!-- /view-filter -->
+
+				<div class="user-profile">
+					<div class="clearfix">
+						<dl class="main-info">
+							<dt><span class="user-status"><span class="online">online</span></span> <strong>Викторчик</strong>  / <span class="nick">madvic</span> /</dt>
+							<dd class="av"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></dd>
+							<dd>Украина, Киев</dd>
+							<dd>На сайте: <span class="date">12 дней</span></dd>
+							<dd>Настроение: <em>супер!</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+							<dd>Статус: <em>хочу есть и пить</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+						</dl>
+						<div class="about-info">
+							<div class="ttl"><strong>О себе</strong> <a href="#" class="script-link"><span class="t">изменить</span></a></div>
+							<div class="cnt">Художественное опосредование, как бы это ни казалось парадоксальным, трансформирует реконструктивный подход, подобный исследовательский подход к проблемам художественной типологии можно обнаружить у К.Фосслера.</div>
+						</div>
+						<div class="rating-info">
+							<div class="ttl"><strong>Рейтинг: <span class="nr">420 NR</span></strong></div>
+							<div class="cnt">
+								Профиль заполнен на:
+								<div class="rating-view">
+									<strong>48%</strong>
+									<div style="width:48%;"></div>
+								</div>
+								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a>
+							</div>
+						</div>
+					</div>
+					<ul class="user-tabs clearfix">
+						<?php include($this -> _include('../tab_panel_profile.tpl.php')); ?>
+					</ul>
+					<!-- /user-tabs -->
+				</div>
+				<!-- /user-profile -->
+
+				<div class="columns-page clearfix">
+					<div class="main"><div class="wrap">
+						<div class="title-with-arrow clearfix"><h2>Мои посты<span></span></h2></div>
+						<div class="display-filter clearfix">
+							<div class="number-filter">
+								показывать по: <strong>10</strong> | <a href="#">20</a> | <a href="#">30</a> ответов
+							</div>
+							<div class="type-filter">
+								отображать: <a href="#">списком</a> | <strong>сводкой</strong>
+							</div>
+						</div>
+						<!-- /display-filter -->
+						<div class="blog-post">
+							<h2>
+								<a href="#" title="Редактировать" class="func"><i class="icon edit-icon"></i></a>
+								<a href="#" title="Удалить" class="func"><i class="icon delete-icon"></i></a>
+								<a href="#" rel="bookmark">Реалити-шоу «Стартап за неделю». Первый отчет о полусутках работы</a>
+							</h2>
+							<div class="breadcrumbs">
+								▪ <a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » С рождеством!
+							</div>
+							<div class="post-content">
+								<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на 
+								пародию», поздравляющий нас с Рождеством. <a href="#">Mac или PC, господа</a>? :)</p>
+								<p>АПД: Видеоверсия для тех, у кого не пашет флэшевая, спасибо meako.</p>
+								<p>«Совершенный Ajax» — новый подход к построению web-приложений, при котором web-сервер не генерирует ни строчки HTML-кода 
+								и взаимодействует с внешним миром только посредством web-служб; а клиентский интерфейс реализуется только на основе 
+								клиентских HTML, CSS, JavaScript.</p>
+								<p>Статья состоит из двух частей. В первой части — более живой и провокационной я постараюсь заинтересовать проблемой, 
+								рассказать о технологии «Совершенный Ajax» и показать ее применение на примере нашего проекта «Система Интерактивного 
+								Тестирования Знаний “Синтез”» (который имеет ряд интересных особенностей, таких, как использование серверного JavaScript на 
+								платформе Mozilla Rhino, прототипно-ориентированная ORM и поддержка SPARQL — языка запросов к Semantic Web).</p>
+								<p>Вторая часть – более занудная будет содержать много технических деталей и выйдет в следующий раз.</p>
+								<p>По доброй традиции, награждаю плюсиками всех участников дискуссии, в том числе и конструктивных критиков, с чьим мнением я 
+								не согласен.</p>
+							</div>
+							<!-- /post-content -->
+							<div class="tag-list">
+								<i class="icon tags-list-icon"></i>
+								<ul>
+									<li><a href="#" rel="tag">apple</a>,</li>
+									<li><a href="#" rel="tag">mac</a>,</li>
+									<li><a href="#" rel="tag">pc</a></li>
+								</ul>
+							</div>
+							<!-- /tag-list -->
+							<div class="post-meta"><div class="bg"><div class="bg clearfix">
+								<div class="rate">
+									<span>рейтинг: <strong>4</strong></span>
+									голоса: <strong class="positive"><i class="icon positive-icon"></i>20</strong> <strong class="negative"><i class="icon negative-icon"></i>7</strong>
+								</div>
+								<ul>
+									<li class="it date">16 декабря 2008, 21:09</li>
+									<li class="it com">
+										<a href="#" class="with-icon-s"><i class="icon-s commets-icon"></i>8 ответов</a>
+									</li>
+								</ul>
+							</div></div></div>
+							<!-- /post-meta -->
+						</div>
+						<!-- /blog-post -->
+						<div class="blog-post">
+							<h2>
+								<a href="#" title="Редактировать" class="func"><i class="icon edit-icon"></i></a>
+								<a href="#" title="Удалить" class="func"><i class="icon delete-icon"></i></a>
+								<a href="#" rel="bookmark">Реалити-шоу «Стартап за неделю». Первый отчет о полусутках работы Реалити-шоу «Стартап за неделю». Первый отчет о полусутках работы</a>
+							</h2>
+							<div class="breadcrumbs">
+								▪ <a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » С рождеством!
+							</div>
+							<div class="post-content">
+								<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на 
+								пародию», поздравляющий нас с Рождеством. <a href="#">Mac или PC, господа</a>? :)</p>
+								<p>АПД: Видеоверсия для тех, у кого не пашет флэшевая, спасибо meako.</p>
+								<p>«Совершенный Ajax» — новый подход к построению web-приложений, при котором web-сервер не генерирует ни строчки HTML-кода 
+								и взаимодействует с внешним миром только посредством web-служб; а клиентский интерфейс реализуется только на основе 
+								клиентских HTML, CSS, JavaScript.</p>
+								<p>Статья состоит из двух частей. В первой части — более живой и провокационной я постараюсь заинтересовать проблемой, 
+								рассказать о технологии «Совершенный Ajax» и показать ее применение на примере нашего проекта «Система Интерактивного 
+								Тестирования Знаний “Синтез”» (который имеет ряд интересных особенностей, таких, как использование серверного JavaScript на 
+								платформе Mozilla Rhino, прототипно-ориентированная ORM и поддержка SPARQL — языка запросов к Semantic Web).</p>
+								<p>Вторая часть – более занудная будет содержать много технических деталей и выйдет в следующий раз.</p>
+								<p>По доброй традиции, награждаю плюсиками всех участников дискуссии, в том числе и конструктивных критиков, с чьим мнением я 
+								не согласен.</p>
+							</div>
+							<!-- /post-content -->
+							<div class="tag-list">
+								<i class="icon tags-list-icon"></i>
+								<ul>
+									<li><a href="#" rel="tag">apple</a>,</li>
+									<li><a href="#" rel="tag">mac</a>,</li>
+									<li><a href="#" rel="tag">pc</a></li>
+								</ul>
+							</div>
+							<!-- /tag-list -->
+							<div class="post-meta"><div class="bg"><div class="bg clearfix">
+								<div class="rate">
+									<span>рейтинг: <strong>4</strong></span>
+									голоса: <strong class="positive"><i class="icon positive-icon"></i>20</strong> <strong class="negative"><i class="icon negative-icon"></i>7</strong>
+								</div>
+								<ul>
+									<li class="it date">16 декабря 2008, 21:09</li>
+									<li class="it com">
+										<a href="#" class="with-icon-s"><i class="icon-s commets-icon"></i>8 ответов</a>
+									</li>
+								</ul>
+							</div></div></div>
+							<!-- /post-meta -->
+						</div>
+						<!-- /blog-post -->
+						<div class="blog-post">
+							<h2>
+								<a href="#" title="Редактировать" class="func"><i class="icon edit-icon"></i></a>
+								<a href="#" title="Удалить" class="func"><i class="icon delete-icon"></i></a>
+								<a href="#" rel="bookmark">Реалити-шоу «Стартап за неделю». Первый отчет о полусутках работы</a>
+							</h2>
+							<div class="breadcrumbs">
+								▪ <a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » С рождеством!
+							</div>
+							<div class="post-content">
+								<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на 
+								пародию», поздравляющий нас с Рождеством. <a href="#">Mac или PC, господа</a>? :)</p>
+								<p>АПД: Видеоверсия для тех, у кого не пашет флэшевая, спасибо meako.</p>
+								<p>«Совершенный Ajax» — новый подход к построению web-приложений, при котором web-сервер не генерирует ни строчки HTML-кода 
+								и взаимодействует с внешним миром только посредством web-служб; а клиентский интерфейс реализуется только на основе 
+								клиентских HTML, CSS, JavaScript.</p>
+								<p>Статья состоит из двух частей. В первой части — более живой и провокационной я постараюсь заинтересовать проблемой, 
+								рассказать о технологии «Совершенный Ajax» и показать ее применение на примере нашего проекта «Система Интерактивного 
+								Тестирования Знаний “Синтез”» (который имеет ряд интересных особенностей, таких, как использование серверного JavaScript на 
+								платформе Mozilla Rhino, прототипно-ориентированная ORM и поддержка SPARQL — языка запросов к Semantic Web).</p>
+								<p>Вторая часть – более занудная будет содержать много технических деталей и выйдет в следующий раз.</p>
+								<p>По доброй традиции, награждаю плюсиками всех участников дискуссии, в том числе и конструктивных критиков, с чьим мнением я 
+								не согласен.</p>
+							</div>
+							<!-- /post-content -->
+							<div class="tag-list">
+								<i class="icon tags-list-icon"></i>
+								<ul>
+									<li><a href="#" rel="tag">apple</a>,</li>
+									<li><a href="#" rel="tag">mac</a>,</li>
+									<li><a href="#" rel="tag">pc</a></li>
+								</ul>
+							</div>
+							<!-- /tag-list -->
+							<div class="post-meta"><div class="bg"><div class="bg clearfix">
+								<div class="rate">
+									<span>рейтинг: <strong>4</strong></span>
+									голоса: <strong class="positive"><i class="icon positive-icon"></i>20</strong> <strong class="negative"><i class="icon negative-icon"></i>7</strong>
+								</div>
+								<ul>
+									<li class="it date">16 декабря 2008, 21:09</li>
+									<li class="it com">
+										<a href="#" class="with-icon-s"><i class="icon-s commets-icon"></i>8 ответов</a>
+									</li>
+								</ul>
+							</div></div></div>
+							<!-- /post-meta -->
+						</div>
+						<!-- /blog-post -->
+						<div class="blog-post">
+							<h2>
+								<a href="#" title="Редактировать" class="func"><i class="icon edit-icon"></i></a>
+								<a href="#" title="Удалить" class="func"><i class="icon delete-icon"></i></a>
+								<a href="#" rel="bookmark">Реалити-шоу «Стартап за неделю». Первый отчет о полусутках работы</a>
+							</h2>
+							<div class="breadcrumbs">
+								▪ <a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » С рождеством!
+							</div>
+							<div class="post-content">
+								<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на 
+								пародию», поздравляющий нас с Рождеством. <a href="#">Mac или PC, господа</a>? :)</p>
+								<p>АПД: Видеоверсия для тех, у кого не пашет флэшевая, спасибо meako.</p>
+								<p>«Совершенный Ajax» — новый подход к построению web-приложений, при котором web-сервер не генерирует ни строчки HTML-кода 
+								и взаимодействует с внешним миром только посредством web-служб; а клиентский интерфейс реализуется только на основе 
+								клиентских HTML, CSS, JavaScript.</p>
+								<p>Статья состоит из двух частей. В первой части — более живой и провокационной я постараюсь заинтересовать проблемой, 
+								рассказать о технологии «Совершенный Ajax» и показать ее применение на примере нашего проекта «Система Интерактивного 
+								Тестирования Знаний “Синтез”» (который имеет ряд интересных особенностей, таких, как использование серверного JavaScript на 
+								платформе Mozilla Rhino, прототипно-ориентированная ORM и поддержка SPARQL — языка запросов к Semantic Web).</p>
+								<p>Вторая часть – более занудная будет содержать много технических деталей и выйдет в следующий раз.</p>
+								<p>По доброй традиции, награждаю плюсиками всех участников дискуссии, в том числе и конструктивных критиков, с чьим мнением я 
+								не согласен.</p>
+							</div>
+							<!-- /post-content -->
+							<div class="tag-list">
+								<i class="icon tags-list-icon"></i>
+								<ul>
+									<li><a href="#" rel="tag">apple</a>,</li>
+									<li><a href="#" rel="tag">mac</a>,</li>
+									<li><a href="#" rel="tag">pc</a></li>
+								</ul>
+							</div>
+							<!-- /tag-list -->
+							<div class="post-meta"><div class="bg"><div class="bg clearfix">
+								<div class="rate">
+									<span>рейтинг: <strong>4</strong></span>
+									голоса: <strong class="positive"><i class="icon positive-icon"></i>20</strong> <strong class="negative"><i class="icon negative-icon"></i>7</strong>
+								</div>
+								<ul>
+									<li class="it date">16 декабря 2008, 21:09</li>
+									<li class="it com">
+										<a href="#" class="with-icon-s"><i class="icon-s commets-icon"></i>8 ответов</a>
+									</li>
+								</ul>
+							</div></div></div>
+							<!-- /post-meta -->
+						</div>
+						<!-- /blog-post -->
+						<ul class="pages-list clearfix">
+							<li class="control"><span>« Назад</span> <a href="#">Вперед »</a></li>
+							<li><strong>1</strong></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#">6</a></li>
+							<li><a href="#">7</a></li>
+							<li>...</li>
+							<li><a href="#">34</a></li>
+						</ul>
+						<!-- /pages-list -->
+					</div></div>
+					<!-- /main -->
+					<div class="sidebar">
+						<div class="user-action">
+							<ul>
+								<li><a href="#"><i class="icon write-b-icon"></i>Написать в свой блог</a></li>
+								<li><a href="#"><i class="icon add-section-icon"></i>Добавить раздел</a></li>
+								<li><a href="#"><i class="icon settings-b-icon"></i>Настройки блога</a></li>
+							</ul>
+						</div>
+						<div class="navigation">
+							<div class="title">
+								<h2>Блоги</h2>
+								<i title="Показать фильтр" class="filter-link icon show-filter-icon"></i>
+							</div>
+							<ul class="nav-list">
+								<li><i class="arrow-icon"></i><a href="#" class="with-icon-s"><i class="icon-s write-s-icon"></i>Авио</a></li>
+								<li class="active"><i class="arrow-icon"></i><a href="#" class="with-icon-s"><i class="icon-s write-s-icon"></i>Internet</a>
+									<ul>
+										<?php require('blog_left_tree.tpl.php'); ?>
+										<li><a href="#" class="with-icon-s"><i class="icon-s write-s-icon"></i>AUDI</a> (8)</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- /sidebar -->
+				</div>
+				<!-- /columns-page -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="tab-page" id="modules-cpanel">
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 	<div class="tab-page tab-page-selected">
