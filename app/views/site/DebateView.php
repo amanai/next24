@@ -23,12 +23,13 @@ class DebateView extends BaseSiteView{
 	}
 	
 	public function showQuestionAvator(){
-	   echo '
+	/*   echo '
 	   <div class="debate_avator">
 	   <img src="'.$this -> image_url.'avatar/question.png" />
 	   </div>
 	   <br /><br />	 
-	   ';
+	   ';  */
+		echo '<img src="'.$this -> image_url.'avatar/question.png" alt="" />';
 	}
 	
 	public function showMessageboxForDebateUsers($userNumber = 0, $isHide = 0){
