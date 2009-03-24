@@ -51,7 +51,7 @@ class BookmarksModel extends BaseModel {
         bm.`creation_date`,
         bm.`views`,
         users.`login`,
-        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(bmt_pr.`name`, ' -><br />',bmt_ch.`name`)) as bookmark_category,
+        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(' ▪ <a href=\"".Project::getRequest() -> createUrl('Bookmarks', 'BookmarksList', null, Project::getUser() -> getDbUser() ->  login)."/',bm.`id`, '/\">', bmt_pr.`name`, '</a> » ',bmt_ch.`name`)) as bookmark_category,
         count(bm_com.`id`) as count_comments
     FROM bookmarks bm
     LEFT JOIN users
@@ -95,7 +95,7 @@ class BookmarksModel extends BaseModel {
         bm.`creation_date`,
         bm.`views`,
         users.`login`,
-        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(bmt_pr.`name`, ' -><br />',bmt_ch.`name`)) as bookmark_category,
+        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(' ▪ <a href=\"".Project::getRequest() -> createUrl('Bookmarks', 'BookmarksList', null, Project::getUser() -> getDbUser() ->  login)."/',bm.`id`, '/\">', bmt_pr.`name`, '</a> » ',bmt_ch.`name`)) as bookmark_category,
         count(bm_com.`id`) as count_comments
     FROM bookmarks bm
     LEFT JOIN users
@@ -123,7 +123,7 @@ class BookmarksModel extends BaseModel {
     SELECT 
       bmt_ch.`id`, 
       bmt_ch.`parent_id`, 
-      CONCAT( bmt_pr.`name`, ' -> ', bmt_ch.`name` ) name  
+      CONCAT( ' ▪ <a href=\"".Project::getRequest() -> createUrl('Bookmarks', 'BookmarksUser', null, Project::getUser() -> getDbUser() ->  login)."/',bmt_ch.`id`, '/\">', bmt_pr.`name`, '</a> » ', bmt_ch.`name` ) name  
     FROM `bookmarks_tree` bmt_ch LEFT JOIN `bookmarks_tree` bmt_pr
       ON bmt_ch.`parent_id` = bmt_pr.`id`  
     WHERE bmt_ch.`id` = ?d ";
@@ -149,7 +149,7 @@ class BookmarksModel extends BaseModel {
         bm.`creation_date`,
         bm.`views`,
         users.`login`,
-        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(bmt_pr.`name`, ' -> ',bmt_ch.`name`)) as bookmark_category
+        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(' ▪ <a href=\"".Project::getRequest() -> createUrl('Bookmarks', 'BookmarksList', null, Project::getUser() -> getDbUser() ->  login)."/',bm.`id`, '/\">', bmt_pr.`name`, '</a> » ',bmt_ch.`name`)) as bookmark_category
     FROM bookmarks bm
     LEFT JOIN users
       ON bm.`user_id` = users.`id`

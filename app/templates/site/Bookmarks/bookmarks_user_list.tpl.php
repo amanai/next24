@@ -1,11 +1,48 @@
 <!-- TEMPLATE: "Мои закладки" - закладки пользователя -->
 <?php include($this -> _include('../header.tpl.php')); ?>
 <?php $request = Project::getRequest(); ?>
+
+				<ul class="view-filter clearfix">
+					<li><strong>Шпаков Виктор<span></span></strong></li>
+					<li><a href="#">Настройки профиля</a></li>
+				</ul>
+				<!-- /view-filter -->
+
+				<div class="user-profile">
+					<div class="clearfix">
+						<dl class="main-info">
+							<dt><span class="user-status"><span class="online">online</span></span> <strong>Викторчик</strong>  / <span class="nick">madvic</span> /</dt>
+							<dd class="av"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></dd>
+							<dd>Украина, Киев</dd>
+							<dd>На сайте: <span class="date">12 дней</span></dd>
+							<dd>Настроение: <em>супер!</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+							<dd>Статус: <em>хочу есть и пить</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+						</dl>
+						<div class="about-info">
+							<div class="ttl"><strong>О себе</strong> <a href="#" class="script-link"><span class="t">изменить</span></a></div>
+							<div class="cnt">Художественное опосредование, как бы это ни казалось парадоксальным, трансформирует реконструктивный подход, подобный исследовательский подход к проблемам художественной типологии можно обнаружить у К.Фосслера.</div>
+						</div>
+						<div class="rating-info">
+							<div class="ttl"><strong>Рейтинг: <span class="nr">420 NR</span></strong></div>
+							<div class="cnt">
+								Профиль заполнен на:
+								<div class="rating-view">
+									<strong>48%</strong>
+									<div style="width:48%;"></div>
+								</div>
+								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a>
+							</div>
+						</div>
+					</div>
+					<ul class="user-tabs clearfix">
+						<?php include($this -> _include('../tab_panel_profile.tpl.php')); ?>
+					</ul>
+					<!-- /user-tabs -->
+				</div>
+				<!-- /user-profile -->
+				
 			<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
-						<ul class="view-filter clearfix">
-							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
-						</ul>
 						<!-- /view-filter -->
 						<div class="display-filter clearfix">
 							<div class="number-filter">
@@ -19,8 +56,7 @@
 								<dl>
 									<dt><a href="<?=$this->createUrl('Bookmarks', 'BookmarksView', array($item['id']))?>" title="<?=$item['title'].' ('.$item['url'].')';?>"><?=$item['title_cut'];?></a></dt>
 									<dd class="breadcrumbs">
-										<?php echo $this->category_row[$i]['name']; $i++;?>
-										▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
+										<?php echo $this->category_row[0]['name']; $i++;?>
 									</dd>
 									<dd class="auth">добавил: <img class="avatar" src="assets/i/temp/avatar.jpg" alt="" /><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s wuser-icon"></i><?=$item['login']; ?></a></dd>
 									<dd class="date"><?=date_format(new DateTime($item['creation_date']),'d.m.y H:i'); ?></dd>
@@ -39,8 +75,8 @@
 						<? } ?>	
 						</ul>
   						<!-- панель-строка открытой категории -->
-  						<?php if ((count($this->category_row) > 0) or ($this->show_imported_bookmarks == true)) { ?>
-          					<b>Закладки категории:</b> &nbsp;<?=$this->category_row[0]['name']; ?>
+  					  	<?php if ((count($this->category_row) > 0) or ($this->show_imported_bookmarks == true)) { ?>
+          		<!--		<b>Закладки категории:</b> &nbsp;<?=$this->category_row[0]['name']; ?>  -->
           				<?php if ($this->tag_name_selected !== null) { ?>
           					&nbsp;<b>(Тег:</b> <?=$this->tag_name_selected;?><b>)</b>
           				<? } ?>
@@ -65,13 +101,13 @@
 					</div></div>
 					<!-- /main -->
 					<div class="sidebar">
+						<?php include($this -> _include('panel_control.tpl.php')); ?>								
 						<div class="navigation">
 							<div class="title">
 								<h2>Категории</h2>
 								<i title="Показать фильтр" class="filter-link icon show-filter-icon"></i>
 							</div>
 							<?php include($this -> _include('panel_category.tpl.php')); ?>
-							<?php include($this -> _include('panel_control.tpl.php')); ?>
 						</div>
 					</div>
 					<!-- /sidebar -->

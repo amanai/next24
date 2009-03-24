@@ -63,7 +63,7 @@
 					<li><a href="<?php echo $this->createUrl('Album', 'List', null, $this->current_user->login)?>"><span>Фотоальбом</span> <em>(5)</em></a> |</li>
 					<li><a href="<?php echo $this->createUrl('Blog', 'PostList', null, $this->current_user->login)?>"><span>Блог</span> <em>(5)</em></a> |</li>
 					<li><a href="#"><span>Дневник</span> <em>(8)</em></a> |</li>
-					<li><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, $this->current_user->login);?>"><span>Закладки</span> <em>(39)</em></a> |</li>
+					<li><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksUser', null, $this->current_user->login);?>"><span>Закладки</span> <em>(39)</em></a> |</li>
 					<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, $this->current_user->login); ?>"><span>Ответы</span> <em>(3)</em></a> |</li>
 					<li><a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>"><span>Подписка</span> <em>(4)</em></a></li>
 				</ul>

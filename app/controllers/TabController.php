@@ -202,7 +202,7 @@ class TabController{
 							'name' => 'Закладки',
 							'title' => 'Закладки',
 							'selected' => $selected_bookmarks,
-						 	'url' => '#'
+						 	'url' => $request -> createUrl('Bookmarks', 'BookmarksUser', null, Project::getUser() -> getDbUser() ->  login)
 							);
 			$tabs[] = array(
 							'name' => 'Ответы',
@@ -492,12 +492,12 @@ class TabController{
             
       $user_id = (int)Project::getUser() -> getDbUser() -> id;
       if ($user_id > 0){
-        $tabs[] = array(
+   /*     $tabs[] = array(
               'name' => 'Мои закладки',
               'title' => 'Мои закладки',
               'selected' => $p_selected_tab_my_list_name,
                'url' => $request -> createUrl('Bookmarks', 'BookmarksUser', null, false)
-              );
+              ); */
       }
 
       if($p_selected_tab_add_bookmark === true) {

@@ -19,14 +19,15 @@
 								<dl>
 									<dt><a href="<?=$this->createUrl('Bookmarks', 'BookmarksView', array($item['id']))?>" title="<?=$item['title'].' ('.$item['url'].')';?>"><?=$item['title_cut'];?></a></dt>
 									<dd class="breadcrumbs">
-										<?php echo $this->category_row[$i]['name']; $i++;?>
-										▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
+										<?php echo $this->category_row[0]['name']; $i++;?>
+										<!--  ▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!	-->
 									</dd>
 									<dd class="auth">добавил: <img class="avatar" src="assets/i/temp/avatar.jpg" alt="" /><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s wuser-icon"></i><?=$item['login']; ?></a></dd>
 									<dd class="date"><?=date_format(new DateTime($item['creation_date']),'d.m.y H:i'); ?></dd>
 									<dd class="number-of">
-										<div>просмотры:  <strong><?=number_format($item['views'], 0, '',' '); ?></strong><br />
-											 комментарии: <strong><?=$item['count_comments']; ?></strong></div>
+										<div>просмотры:  <strong><?=number_format($item['views'], 0, '',' '); ?></strong>
+										<!--  комментарии: <strong><?=$item['count_comments']; ?></strong>	-->
+										</div>
 									</dd>
 								</dl>
 							</li>
@@ -34,7 +35,7 @@
 						</ul>
   						<!-- панель-строка открытой категории -->
   						<?php if (count($this->category_row) > 0) { ?>
-         					<b>Закладки категории:</b> &nbsp;<?=$this->category_row[0]['name']; ?>
+         			<!--  	<b>Закладки категории:</b> &nbsp;<?=$this->category_row[0]['name']; ?>	-->
           					<?php if ($this->tag_name_selected !== null) { ?>
           						&nbsp;<b>(Тег:</b> <?=$this->tag_name_selected;?><b>)</b>
           					<? } ?>

@@ -121,7 +121,8 @@ class BookmarksController extends SiteController {
     $this->_get_catalogs($data, $v_categoryID);
     $this->_getSelectedCategory($data, $v_categoryID);
     $this->_getSelectedTag($data, $v_tagID);
-    $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, true)); // Show tabs
+    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,true,false,false,false,false));
+   // $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, true)); // Show tabs
     $this->_view->Bookmarks_UserList($data);
     $this->_view->parse();
   }
@@ -171,7 +172,8 @@ class BookmarksController extends SiteController {
       }
       $data['bookmarks_category_list'] = $v_bm_category_model -> loadCategoryList();
       //$this->_BaseSiteData($data);
-      $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, true)); // Show tabs
+      $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,true,false,false,false,false));
+     // $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, true)); // Show tabs
       $this->_view->Bookmarks_Manage($data);
       $this->_view->parse();
       return;
@@ -204,7 +206,8 @@ class BookmarksController extends SiteController {
         //$data['question']['creation_date'] = date("Y-m-d H:i:s");
         //$this->_BaseSiteData($data);
         $this->_view->addFlashMessage(FM::ERROR, 'Поля " * " должны быть заполнены');
-        $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, true)); // Show tabs
+        $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,true,false,false,false,false));
+       // $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, true)); // Show tabs
         $this->_view->Bookmarks_Manage($data);
         $this->_view->parse();
         return;
@@ -296,7 +299,8 @@ class BookmarksController extends SiteController {
     $v_category_id = ($p_category_id !== null) ? (int)$p_category_id : (int)$v_request -> getKeyByNumber(0);
     $this->_get_catalogs($data, $v_category_id);
     $this->_getSelectedCategory($data, $v_category_id);
-    $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, true)); // Show tabs
+    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,true,false,false,false,false));
+    //$this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, true)); // Show tabs
     $this -> _view -> Bookmarks_CategoryEdit($data);
     $this -> _view -> parse();
   }
@@ -368,7 +372,8 @@ class BookmarksController extends SiteController {
     $data['is_show_message'] = ($p_is_message == true) ? true : false;
     $data['import_make_url'] = $v_request -> createUrl('Bookmarks', 'BookmarksImportMake');
     $data['max_file_upload_size'] = self::C_MAX_FILE_UPLOAD_SIZE;
-    $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, false, true)); // Show tabs
+    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,true,false,false,false,false));
+   // $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, false, true)); // Show tabs
     $this->_view->Bookmarks_Import($data);
     $this->_view->parse();
   }
@@ -467,7 +472,7 @@ class BookmarksController extends SiteController {
     }
     if ($p_category_childID == 'imported') {
       $data['category_row']['0']['id']   = -1;
-      $data['category_row']['0']['name'] = 'Импортированные';
+      $data['category_row']['0']['name'] = '▪ Импортированные';
     }
   }
   

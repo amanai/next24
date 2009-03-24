@@ -12,7 +12,6 @@
 								<? if (count($this->bookmark_row > 0)) { ?>
 									<?=$this->bookmark_row['bookmark_category']; ?>
 								<? } ?>	
-								▪ <a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » С рождеством!
 							</div>
 						</div>
 						<!-- /display-filter -->
