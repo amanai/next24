@@ -208,7 +208,7 @@ class TabController{
 							'name' => 'Ответы',
 							'title' => 'Ответы',
 							'selected' => $selected_question_answer,
-						 	'url' => '#'
+						 	'url' => $request -> createUrl('QuestionAnswer', 'UserQuestions', null, Project::getUser() -> getDbUser() ->  login)
 							);
 			$tabs[] = array(
 							'name' => 'Подписка',
@@ -567,7 +567,7 @@ class TabController{
                 ),                
             );
             
-            
+ /*           
       $user_id = (int)Project::getUser() -> getDbUser() -> id;
       if ($user_id > 0){
         $tabs[] = array(
@@ -582,7 +582,7 @@ class TabController{
               'title' => 'Задать вопрос',
               'selected' => $p_selected_tab_add_question,
                'url' => $request->createUrl('QuestionAnswer', 'ManagedQuestion',null,false)
-              );      
+              );     */ 
     return $tabs;
   }    
   

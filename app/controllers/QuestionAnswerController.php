@@ -30,6 +30,7 @@ class QuestionAnswerController extends SiteController {
 		$this->_list($data, 'UserQuestions', $request->getKeyByNumber(0), $request->getKeyByNumber(1), Project::getUser()->getDbUser()->id);
 		$this->BaseSiteData($data);
 		$data['action'] = 'UserQuestions';
+		$this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,true,false,false,false));
 		$this->_view->MyQuestionList($data);	
 		$this->_view->parse();
 	}
