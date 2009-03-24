@@ -1,5 +1,6 @@
 <!-- TEMPLATE: Панель "Управление соц.позициями" -->
-<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	<div class="block_title"><h2>Управление</h2></div>
-  <p><a href="<?php echo $this->createUrl('Social', 'SocialPosAdd');?>">Добавить позицию</a></p>
-</div></div></div></div>
+<div class="user-action"> 
+	<ul> 
+		<li><a href="<?php echo $this->createUrl('Social', 'SocialPosAdd');?>"><i class="icon cat-add-icon"></i>Добавить позицию</a></li>  
+	</ul> 
+</div>

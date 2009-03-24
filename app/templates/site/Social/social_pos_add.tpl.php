@@ -1,5 +1,13 @@
 <!-- TEMPLATE: Форма создания Соц.позиций, добавления комментариев, оценки -->
 <?php include($this -> _include('../header.tpl.php')); ?> 
+<?php $request = Project::getRequest(); ?>
+				<div class="columns-page clearfix">
+					<div class="main"><div class="wrap">
+						<div class="view-filter clearfix">
+							<ul class="clearfix">
+								<?php include($this -> _include('../tab_panel.tpl.php')); ?>
+							</ul>
+						</div>
 <script language="JavaScript" type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
 
 <script language="JavaScript" type="text/javascript">
@@ -54,9 +62,6 @@ function doChangeCat() {
 </script>
 
 		<div id="tabs">
-<?php $request = Project::getRequest(); ?>
-<?php include($this -> _include('../tab_panel.tpl.php')); ?>
-
 <!-- вывод контента в самой странице (TabPage) - содержимого -->
 <div class="tab-page tab-page-selected">
   
@@ -190,4 +195,12 @@ function doChangeCat() {
 <script language="JavaScript" type="text/javascript">
   doChangeCat()
 </script>
+					</div></div>
+					<!-- /main -->
+					<div class="sidebar">
+						<?php include($this -> _include('panel_control.tpl.php')); ?>				
+					</div>
+					<!-- /sidebar -->
+				</div>
+				<!-- /columns-page -->
 <?php include($this -> _include('../footer.tpl.php')); ?>
