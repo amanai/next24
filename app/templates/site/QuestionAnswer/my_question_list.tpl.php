@@ -46,7 +46,7 @@
 							<li class="clearfix">
 								<dl>
 									<dt><a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>"><?=$item['q_text']?></a>(<?=$item['login']?>)</dt>
-									<dd class="reply"><a href="#" class="with-icon-s"><i class="icon-s reply-icon"></i><?=$item['a_count']?> ответов</a></dd>
+									<dd class="reply"><a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>" class="with-icon-s"><i class="icon-s reply-icon"></i><?=$item['a_count']?> ответов</a></dd>
 									<dd class="date"><?=date_format(new DateTime($item['creation_date']),'Y.m.d H:i:s')?></dd>
 									<?php if($item['user_id'] == Project::getUser()->getDbUser()->id) { ?>
 										<dd class="action">

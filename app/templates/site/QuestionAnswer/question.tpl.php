@@ -1,29 +1,64 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
+				<ul class="view-filter clearfix">
+					<li><strong>Шпаков Виктор<span></span></strong></li>
+					<li><a href="#">Настройки профиля</a></li>
+				</ul>
+				<!-- /view-filter -->
 
-<script language="JavaScript" type="text/javascript" src="<?php echo $this -> js_url;?>tab.js"></script>
-
-		<div id="tabs">
-			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=Project::getRequest()->createUrl('QuestionAnswer','List')?>"><?=$this->tab_list_name?></a></div>
-			<?php if($this->current_user && $this->current_user->id > 0) { ?>
-				<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('QuestionAnswer', 'UserQuestions')?>" ><?=$this->tab_my_list_name?></a></div> 
-			<?php } ?>
-			<div class="tab" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="<?=$this->createUrl('QuestionAnswer','ManagedQuestion')?>" ><?=$this->tab_manage_question_name?></a></div>
-			<div class="tab tab-selected" onMouseOver="TabOver(this);" onMouseOut="TabOut(this);"><a href="#"><?=$this->question_tab?></a></div>
-			<div class="tab-page tab-page-selected">
-				<div class="block_ee1">
-					<div class="block_ee2">
-						<div class="block_ee3">
-							<div class="block_ee4">
-								<div class="block_title"><h2><a href="#"><?=$this->question['login']?></a></h2></div>
-								<?=$this->question['q_text']?>
+				<div class="user-profile">
+					<div class="clearfix">
+						<dl class="main-info">
+							<dt><span class="user-status"><span class="online">online</span></span> <strong>Викторчик</strong>  / <span class="nick">madvic</span> /</dt>
+							<dd class="av"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></dd>
+							<dd>Украина, Киев</dd>
+							<dd>На сайте: <span class="date">12 дней</span></dd>
+							<dd>Настроение: <em>супер!</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+							<dd>Статус: <em>хочу есть и пить</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+						</dl>
+						<div class="about-info">
+							<div class="ttl"><strong>О себе</strong> <a href="#" class="script-link"><span class="t">изменить</span></a></div>
+							<div class="cnt">Художественное опосредование, как бы это ни казалось парадоксальным, трансформирует реконструктивный подход, подобный исследовательский подход к проблемам художественной типологии можно обнаружить у К.Фосслера.</div>
+						</div>
+						<div class="rating-info">
+							<div class="ttl"><strong>Рейтинг: <span class="nr">420 NR</span></strong></div>
+							<div class="cnt">
+								Профиль заполнен на:
+								<div class="rating-view">
+									<strong>48%</strong>
+									<div style="width:48%;"></div>
+								</div>
+								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a>
 							</div>
 						</div>
 					</div>
-				</div>				
-			
-				<?=$this->comment_list?>
-			
-			</div>
-		</div>
-		
+					<ul class="user-tabs clearfix">
+						<?php include($this -> _include('../tab_panel_profile.tpl.php')); ?>
+					</ul>
+					<!-- /user-tabs -->
+				</div>
+				<!-- /user-profile -->
+
+				<div class="columns-page clearfix">
+					<div class="main"><div class="wrap">
+						<h2><a href="#"><?=$this->question['login']?></a></h2>
+						<?=$this->question['q_text']?>
+						<?=$this->comment_list?>
+					</div></div>
+					<?php include($this -> _include('tag_list.tpl.php')); ?>
+					<?=$this->question_list_pager?>
+					<!-- /main -->
+					<div class="sidebar">
+						<div class="user-action">
+							<ul>
+								<li><a href="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion')?>"><i class="icon macomm-icon"></i> Задать вопрос</a></li>
+								<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'UserQuestions', null, false); ?>"><i class="icon faq-icon"></i>Мои вопросы</a></li>
+								<li><a href="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion')?>"><i class="icon mcomm-icon"></i>Мои ответы</a></li>
+							</ul>
+						</div>
+						<?php $par['u_id']= $this->current_user->id ?>
+						<?php include($this -> _include('left_panel.tpl.php')); ?>
+					</div>
+					<!-- /sidebar -->
+				</div>
+				<!-- /columns-page -->
 <?php include($this -> _include('../footer.tpl.php')); ?>

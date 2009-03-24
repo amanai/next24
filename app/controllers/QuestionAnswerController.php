@@ -72,7 +72,8 @@ class QuestionAnswerController extends SiteController {
 																);
 
 //			if($question_model->user_id == Project::getUser()->getDbUser()->id) $data['managed'] = true;
-			$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(true, false, false, false, false));
+			$this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,true,false,false,false));
+			//$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(true, false, false, false, false));
 			$this->_view->ViewQuestion($data);
 			$this->_view->parse();
 		} else {
