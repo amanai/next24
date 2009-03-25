@@ -214,7 +214,7 @@ class TabController{
 							'name' => 'Подписка',
 							'title' => 'Подписка',
 							'selected' => $selected_subscribe,
-						 	'url' => $request -> createUrl('Subscribe', 'List')
+						 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
 							);
 			$tabs[] = array(
 							'name' => 'Мой счет',
@@ -336,6 +336,50 @@ class TabController{
 			
 			return $tabs;
 		}
+		
+
+		static public function getNewsProfileTabs(
+					$selected_myrss = false
+						
+		          ) {
+			$request = Project::getRequest();
+			if ($user_id){
+				$tabs[]= array(
+								'name' => 'Мои RSS-ленты',
+								'title' => 'Мои RSS-ленты',
+								'selected' => $selected_myrss,
+							 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
+								);
+			}
+			
+			if ($change_feed){
+				$tabs[]= array(
+								'name' => 'Изменение RSS-ленты',
+								'title' => 'Изменение RSS-ленты',
+								'selected' => true,
+							 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
+								);
+			}
+			
+			if ($isAdmin){
+			    $tabs[]= array(
+								'name' => "Управление RSS-лентами",
+								'title' => "Управление RSS-лентами",
+								'selected' => $isModerateFeeds,
+							 	'url' => $request -> createUrl('News', 'ModerateFeeds', null, false)
+								);
+			    $tabs[]= array(
+								'name' => "Управление деревом каталогов",
+								'title' => "Управление деревом каталогов",
+								'selected' => $isModerateNewsTree,
+							 	'url' => $request -> createUrl('News', 'ModerateNewsTree', null, false)
+								);
+			}
+			
+			return $tabs;
+		}
+				
+		
 		
 		
 		static public function getDebateTabs($isAdmin = false, $debate = false, $debate_rules = false, $debate_history = false ){

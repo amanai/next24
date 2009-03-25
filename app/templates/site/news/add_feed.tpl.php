@@ -1,87 +1,141 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 <!-- Главный блок, с вкладками (Контент) -->
-<div class="tab-page" id="modules-cpanel">
-	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
-	
-	<div class="tab-page tab-page-selected">
-	
-	<form name="frmFeeds" action="" method="POST" >
-	<input type="hidden" name="frmAction" value="<?php echo $this -> frmAction; ?>">
-	
-	<!-- Загрузка изображений -->
-	<div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-	    <?=$this -> flash_messages; ?>
-        
-	    <div class="block_ee1"><div class="block_ee2"><div class="block_ee3"><div class="block_ee4">
-        <div class="block_title"><h2><?php echo $this -> submitValue; ?> RSS-ленту</h2></div>
-        </div></div></div></div>
-		
-		<table width="10%" cellpadding="5">
-		<tr>
-			<td nowrap>Название RSS-ленты <span class="red">*</span>:</td>
-			<td><input type="text" name="feed_name" value="<?php echo $this -> feed_name; ?>" /><br />
-			     <span id="micro2">Будет отображаться в дереве лент.</span>
-			</td>
-		</tr>
-		<tr>
-			<td nowrap>URL RSS-ленты  <span class="red">*</span>:</td>
-			<td><input type="text" name="feed_url" value="<?php echo $this -> feed_url; ?>" /><br />
-			     <span id="micro2">Полный URL вашей RSS-ленты.</span>
-			</td>
-		</tr>
-<? if ($this->is_partner) { ?>
-		<tr>
-			<td nowrap>Код баннера:</td>
-			<td><textarea name="code" cols="45" rows="7"><?php echo $this -> code; ?></textarea><br />
-			     <span id="micro2">Можно будет заполнить позже или заменить.</span>
-			</td>
-		</tr>
-<? } ?>
-		<tr>
-			<td nowrap>Категория в ленте:</td>
-			<td><input type="text" name="category_tag" value="<?php echo $this -> category_tag; ?>" /><br />
-			     <span id="micro2">Если лента экспортирует новости одной категории, либо вы не хотите сопоставлять категории – оставьте это поле пустым.
-                        Если лента экспортирует новости разных категорий, то вам нужно провести сопоставление всех категорий в ленте с категориями на сайте. Для этого напишите в этом поле символическое название категории, так, как оно пишется в ленте, например «Авто». Одну ленту можно добавлять несколько раз с разными значениями этого поля – тогда все категории будут сопоставлены.
-                </span>
-			</td>
-		</tr>
-		<tr>
-			<td nowrap>Выберите категорию <span class="red">*</span>:</td>
-			<td>
-			    <ul class="checkbox_tree">
-                    <?php 
-                    $aLeafs = $this->getAllLeafs($this->news_list);
-                    $this->BuildTree_radio($aLeafs, $this->news_list, 0, $this->news_tree_id, false); echo $this->_htmlTree; 
-                    ?>
-                </ul>
-			</td>
-		</tr>
-		<?php if ($this->isChange && $this -> isAdmin){ ?>
-		<tr>
-			<td nowrap>Способ преобразования текста:</td>
-			<td>
-			    <select name="text_parse_type">
-        		    <option value=0 <?php if ($this->text_parse_type == 0) echo 'selected'; ?>> striptags
-        		    <option value=1 <?php if ($this->text_parse_type == 1) echo 'selected'; ?>> htmlspecialchars
-        		    <option value=2 <?php if ($this->text_parse_type == 2) echo 'selected'; ?>> ничего не менять, для доверенных сайтов
-        		</select>
-			</td>
-		</tr>
-		<?php } ?>	
-		<tr>
-			<td colspan="2" align="right">&nbsp;</td>
-		</tr>
-		<tr>
-			<td colspan="2" align="right"><input type="submit" value="<?php echo $this -> submitValue; ?>"> <input type="reset" value="Сброс"> <?php if ($this->isChange){ ?><input type="submit" name="deleteRss" value="Delete"><?php } ?></td>
-		</tr>
-		</table>
+				<ul class="view-filter clearfix">
+					<li><strong>Шпаков Виктор<span></span></strong></li>
+					<li><a href="#">Настройки профиля</a></li>
+				</ul>
+				<!-- /view-filter -->
 
-	</div></div></div></div>
-	<!-- /Загрузка изображений -->
-	</form>
-		
-	</div>
+				<div class="user-profile">
+					<div class="clearfix">
+						<dl class="main-info">
+							<dt><span class="user-status"><span class="online">online</span></span> <strong>Викторчик</strong>  / <span class="nick">madvic</span> /</dt>
+							<dd class="av"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></dd>
+							<dd>Украина, Киев</dd>
+							<dd>На сайте: <span class="date">12 дней</span></dd>
+							<dd>Настроение: <em>супер!</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+							<dd>Статус: <em>хочу есть и пить</em> <a href="#" class="script-link"><span class="t">изменить</span></a></dd>
+						</dl>
+						<div class="about-info">
+							<div class="ttl"><strong>О себе</strong> <a href="#" class="script-link"><span class="t">изменить</span></a></div>
+							<div class="cnt">Художественное опосредование, как бы это ни казалось парадоксальным, трансформирует реконструктивный подход, подобный исследовательский подход к проблемам художественной типологии можно обнаружить у К.Фосслера.</div>
+						</div>
+						<div class="rating-info">
+							<div class="ttl"><strong>Рейтинг: <span class="nr">420 NR</span></strong></div>
+							<div class="cnt">
+								Профиль заполнен на:
+								<div class="rating-view">
+									<strong>48%</strong>
+									<div style="width:48%;"></div>
+								</div>
+								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a>
+							</div>
+						</div>
+					</div>
+					<ul class="user-tabs clearfix">
+						<?php include($this -> _include('../tab_panel_profile.tpl.php')); ?>
+					</ul>
+					<!-- /user-tabs -->
+				</div>
+				<!-- /user-profile -->
 
-</div>
+
+				<div class="columns-page clearfix">
+					<div class="main"><div class="wrap">
+						<?=$this -> flash_messages; ?>
+						<h2 class="page-ttl"><?php echo $this -> submitValue; ?> RSS-ленту</h2>
+						<form class="main-form" action="#" method="post" name="frmFeeds">
+						<input type="hidden" name="frmAction" value="<?php echo $this -> frmAction; ?>">
+							<fieldset>
+								<ul class="clearfix">
+									<li class="field-it">
+										<div class="label"><label for="f1">Название RSS-ленты <em>*</em></label></div>
+										<div class="field f-mid">
+											<input type="text" id="f1" name="feed_name" value="<?php echo $this -> feed_name; ?>" />
+											<span class="field-help">Будет отображаться в дереве лент</span>
+										</div>
+									</li>
+									<li class="field-it">
+										<div class="label"><label for="f2">URL RSS-ленты <em>*</em></label></div>
+										<div class="field f-mid">
+											<input type="text" id="f2" name="feed_url" value="<?php echo $this -> feed_url; ?>" />
+											<span class="field-help">Полный URL вашей RSS-ленты</span>
+										</div>
+									</li>
+									<? if ($this->is_partner) { ?>
+									<li class="field-it">
+										<div class="label"><label for="f2">Код баннера:</label></div>
+										<div class="field f-mid">
+											<textarea name="code" cols="45" rows="7"><?php echo $this -> code; ?></textarea>
+											<span class="field-help">Можно будет заполнить позже или заменить</span>
+										</div>
+									</li>									
+									<? } ?>									
+									<li class="field-it">
+										<div class="label"><label for="f3">Категория в ленте</label></div>
+										<div class="field f-mid">
+											<input type="text" id="f3" name="category_tag" value="<?php echo $this -> category_tag; ?>" />
+										</div>
+									</li>
+									<li class="field-help"><div>Если лента экспортирует новости одной категории, либо вы не хотите сопоставлять категории – оставьте это поле пустым. Если лента экспортирует 
+новости разных категорий, то вам нужно провести сопоставление всех категорий в ленте с категориями на сайте. Для этого напишите в этом поле 
+символическое название категории, так, как оно пишется в ленте, например «Авто». Одну ленту можно добавлять несколько раз с разными 
+значениями этого поля – тогда все категории будут сопоставлены. </div></li>
+									<li class="field-it">
+										<div class="label">Выберите категорию <em>*</em></div>
+										<div class="field f-mid">
+											<select><option>Выберите категорию</option></select>
+										</div>
+										<div class="field f-mid">
+											<select><option>Выберите категорию 1</option></select>
+										</div>
+										<div class="field f-mid">
+											<select><option>Выберите категорию 2</option></select>
+										</div>
+			    						<ul class="checkbox_tree">
+                    						<?php 
+                    							$aLeafs = $this->getAllLeafs($this->news_list);
+                    							$this->BuildTree_radio($aLeafs, $this->news_list, 0, $this->news_tree_id, false); echo $this->_htmlTree; 
+                    						?>
+                						</ul>										
+									</li>
+									<?php if ($this->isChange && $this -> isAdmin){ ?>
+									<li class="field-it">
+										<div class="label">Способ преобразования текста: <em>*</em></div>
+										<div class="field f-mid">
+			    							<select name="text_parse_type">
+        		    							<option value=0 <?php if ($this->text_parse_type == 0) echo 'selected'; ?>> striptags
+        		    							<option value=1 <?php if ($this->text_parse_type == 1) echo 'selected'; ?>> htmlspecialchars
+        		    							<option value=2 <?php if ($this->text_parse_type == 2) echo 'selected'; ?>> ничего не менять, для доверенных сайтов
+        									</select>
+										</div>
+									</li>			
+									<?php } ?>										
+								</ul>
+								<div class="button big-button">
+									<input type="submit" value="<?php echo $this -> submitValue; ?>"> 
+									<input type="reset" value="Сброс">
+									<?php if ($this->isChange){ ?>
+										<input type="submit" name="deleteRss" value="Delete">
+									<?php } ?>									
+								</div>
+							</fieldset>
+						</form>
+					</div></div>
+					<!-- /main -->
+					<div class="sidebar">
+						<div class="user-action">
+							<ul>
+								<li><a href="<?=$this->createUrl('News', 'MyFeeds', null, false)?>"><i class="icon rss-icon"></i>Мои RSS-ленты</a></li>
+								<li><a href="<?=$this->createUrl('News', 'AddFeed', null, false)?>"><i class="icon rss-add-icon"></i>Добавить RSS-ленту</a></li>
+								<li><a href="<?=$this->createUrl('News', 'AddNewsTree', null, false)?>"><i class="icon cat-add-icon"></i>Добавить Каталог</a></li>
+								<li><a href="<?=$this->createUrl('News', 'ModerateFeeds', null, false)?>"><i class="icon rss-set-icon"></i>Настройка RSS-лент</a></li>
+								<li><a href="<?=$this->createUrl('News', 'ModerateNewsTree', null, false)?>"><i class="icon cat-set-icon"></i>Настройка Каталога</a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- /sidebar -->
+				</div>
+				<!-- /columns-page -->
 <!-- /Главный блок, с вкладками (Контент) -->
 <?php include($this -> _include('../footer.tpl.php')); ?>

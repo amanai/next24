@@ -104,10 +104,10 @@ class NewsView extends BaseSiteView{
             $isLeaf = false;
             $htmlImg = '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" /> ';
           }
-          if ($news['state']) {$isStrikeClass="not_strike";} else {$isStrikeClass="strike";}
+          if ($news['state']) {$isStrikeClass="not_strike"; $dodel='';} else {$isStrikeClass="strike"; $dodel='class="to-del"';}
           $user = $newsModel -> getUserById($news['user_id']);
           
-          $this->_htmlTree .= '
+ /*         $this->_htmlTree .= '
           <li >
             '.$htmlImg.'
             <label style="white-space: nowrap; "><span id="news_tree'.$news['id'].'" class="'.$isStrikeClass.'">'.$news['name'].'</span>
@@ -123,7 +123,24 @@ class NewsView extends BaseSiteView{
           $this->BuildTree_moderate($aLeafs, $aNews, $news['id']);
           $this->_htmlTree .= '
             </ul>
-          </li>';
+          </li>';  */		         
+          $this->_htmlTree .= '
+          <li '.$dodel.'>
+          		<dl class="clearfix">
+          			<dt><a href="#" class="with-icon-s '.$isStrikeClass.'" id="news_tree'.$news['id'].'"><i class="icon-s close-s-icon"></i>'.$news['name'].'</a></dt>
+					<dd class="act">
+						<a onclick=\'
+	        ajax('.AjaxRequest::getJsonParam("News", "ChangeState", array("id"=>$news['id'], "element"=>"news_tree", "attr"=>"strike", "text1"=>"strike", "text2"=>"not_strike" ), "POST").', true);
+	        \' href="javascript: void(0);" class="script-link"><span class="t">изменить статус</span></a>
+						<a href="'.$ChangeNewsTreeUrl.'/tree_id:'.$news['id'].'/deleteNewsTree:1/" class="delete-link">удалить</a>
+					</dd> 
+					<dd class="who">добавил <a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $user['login']).'">'.$user['login'].'</a></dd>	
+				</dl>									         			
+            <ul>';        
+         	 	$this->BuildTree_moderate($aLeafs, $aNews, $news['id']);
+          		$this->_htmlTree .= '
+            </ul>
+          </li>';          
           
        }
     }
@@ -153,7 +170,7 @@ class NewsView extends BaseSiteView{
                 if ($isSetAnchor) $sNewsTreeBreadCrumb .= '<a href="'.$newsUrl.'/filterNewsTree:'.$newsTree['id'].'">';
                 $sNewsTreeBreadCrumb .= $newsTree['name'];
                 if ($isSetAnchor) $sNewsTreeBreadCrumb .= '</a>';
-                $sNewsTreeBreadCrumb .= ' -> ';
+                $sNewsTreeBreadCrumb .= ' / ';
             }
             $sNewsTreeBreadCrumb = substr($sNewsTreeBreadCrumb, 0, -3);
         }else{

@@ -468,7 +468,9 @@ class NewsController extends SiteController{
 	    
 	    if ($user->user_type_id == 1 || $user->user_type_id == 4) $this-> _view -> assign('is_partner', 1); 
 	    $this-> _view -> assign('isAdmin', $isAdmin); 
-	    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, true)); // Show tabs
+	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,false,true,false,false));
+	    
+//	    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, true)); // Show tabs
 		
 		$aListNewsTreeFeeds = $newsModel->getNewsTreeFeedsByUserId($user->id, false, false, false);
 		$this-> _view -> assign('aListNewsTreeFeeds', $aListNewsTreeFeeds); //  News tree feeds for current user
