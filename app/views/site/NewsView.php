@@ -88,6 +88,41 @@ class NewsView extends BaseSiteView{
           
        }
     }
+
+	public function BuildTree_select($aLeafs, $aNews, $parentId = 0, $checkId = 0, $showAllRadioButtons = true){
+        if (!$checkId && is_array($aLeafs) && count($aLeafs)>0) $checkId = $aLeafs[0];
+	    $imgUrl = $this -> image_url;
+        foreach( $aNews as $id=>$news){
+          if($parentId!=$news['parent_id']) continue;
+          $newsUrl = Project::getRequest()->createUrl('News', 'News');
+          if (in_array($news['id'], $aLeafs)){
+            $isLeaf = true;
+            $htmlImg = '';
+          }else {
+            $isLeaf = false;
+            $htmlImg = '<img class="minus" height="11" width="11" alt="" src="'.$this -> image_url.'1x1.gif" /> ';
+          }
+          if ($isLeaf || $showAllRadioButtons){
+              $bChecked = ($news['id'] == $checkId)?'checked="yes"':'';
+              $htmlInputRadio = '<input type="radio" name="news_tree_id" value="'.$news['id'].'" '.$bChecked.' />';
+          }else $htmlInputRadio = "";
+          
+          if ($news['state']) {$s1=""; $s2="";} else {$s1="<s>"; $s2="</s>";}
+          
+          $this->_htmlTree .= '
+          <li >
+            '.$htmlImg.'
+            <label style="white-space: nowrap; ">'.$htmlInputRadio.' '.$s1.$news['name'].$s2.'</label>
+            <ul class="checkbox_tree">';
+          
+          $this->BuildTree_select($aLeafs, $aNews, $news['id'], $checkId, $showAllRadioButtons);
+          $this->_htmlTree .= '
+            </ul>
+          </li>';
+          
+       }
+    }    
+    
     
     /* build News Tree  for Admin moderation . Can EDIT and DELETE branches */
 	public function BuildTree_moderate($aLeafs, $aNews, $parentId = 0){
