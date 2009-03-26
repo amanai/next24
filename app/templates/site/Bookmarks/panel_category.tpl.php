@@ -13,7 +13,11 @@
 				<? if ($this->bookmarks_category_selectedID == $item['id']) { ?>
 					<li><?=$item['name']?></li>
 				<? } else { ?>	
-					<li><a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']))?>"><?=$item['name']?></a></li>
+					<?php if(($this->action=='BookmarksMostVisit') || ($this->action=='BookmarksView')) { ?>
+						<li><a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']))?>"><?=$item['name']?></a></li>					
+					<? } else { ?>
+						<li><a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']))?>"><?=$item['name']?></a></li>
+					<? } ?>
 				<? } ?>	
 			<? } ?>	
 			<? $v_count++; ?>
