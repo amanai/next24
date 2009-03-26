@@ -10,7 +10,7 @@
 	<? } ?>
 	<ul class="user-blog-view">
 	<? foreach($this->list_search_user as $key => $item) { ?>
-	<?php if($item['logged_time']) {
+	<?php if($item['time_online']) {
 			$online_offline = 'online-icon';
 	}
 	else {
@@ -34,10 +34,14 @@
             			Зарегистрирован : <?=date_format(new DateTime($item['registration_date']),'d.m.Y');?><br />
           			<? } ?>
 				</dd>
-				<dd><span>последний раз был на сайте:</span> <?=(int) date("m",$item['logged_time']); ?> минуту назад</dd>
+				<dd>
+					<?php if($item['time_online']) { ?>
+						<span>последний раз был на сайте:</span> <?=(int) date("m",time() - $item['time_online']); ?> минуты назад
+					<? } ?>
+				</dd>
 				<dd>
 					<ul>
-						<li><a href="<?php echo $this->createUrl('Blog', 'PostList', null, $item['login']); ?>">Блог пользователя</a> (15)</li>
+						<li><a href="<?php echo $this->createUrl('Blog', 'PostList', null, $item['login']); ?>">Блог пользователя</a> (<?=$item['cnt_blog']?>)</li>
 						<li><a href="<?php echo $this->createUrl('Album', 'List', null, $item['login']); ?>">Фото пользователя</a> (<?=$item['count_photos']; ?>)</li>
 					</ul>
 				</dd>
