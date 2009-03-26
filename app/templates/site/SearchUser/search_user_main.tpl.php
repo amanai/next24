@@ -67,7 +67,9 @@
   					<!-- /Выдача результата поиска -->					
 					<!-- /user-blog-view -->
 					  <!-- Pager - страничная листалка -->  
+					  <ul class="pages-list user-blog-view-pages clearfix">
     					<?=$this->search_user_list_pager; ?>
+    				  </ul>
   					<!-- /Pager - страничная листалка -->  
 				</div>
 				<!-- /friends-page -->

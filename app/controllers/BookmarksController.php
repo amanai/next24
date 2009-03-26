@@ -55,8 +55,9 @@ class BookmarksController extends SiteController {
   }
 
   // -- Action "Самые посещаемые" закладки. Критерий: 10 самых посещаемых
-	public function BookmarksMostVisitAction() {
+	public function BookmarksMostVisitAction() {		
 		$data = array();
+		$this->_get_catalogs($data, $v_categoryID);
 		//$this->_BaseSiteData($data);
 		$data['action'] = 'BookmarksMostVisit';
     $v_bookmarks_model = new BookmarksModel();
@@ -70,9 +71,9 @@ class BookmarksController extends SiteController {
   public function BookmarksViewAction() {
     $v_request = Project::getRequest();
     $data = array();
+    $this->_get_catalogs($data, $v_categoryID);
     //$this->_BaseSiteData($data);
     $data['action'] = 'BookmarksView';
-
     $v_id = (int)$v_request->getKeyByNumber(0);
     if ($v_id > 0) {
       $v_bookmarks_model = new BookmarksModel();

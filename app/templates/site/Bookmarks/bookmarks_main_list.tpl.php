@@ -19,7 +19,7 @@
 								<dl>
 									<dt><a href="<?=$this->createUrl('Bookmarks', 'BookmarksView', array($item['id']))?>" title="<?=$item['title'].' ('.$item['url'].')';?>"><?=$item['title_cut'];?></a></dt>
 									<dd class="breadcrumbs">
-										<?php echo $this->category_row[0]['name']; $i++;?>
+										<?php echo $item['bookmark_category']; $i++;?>
 										<!--  ▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!	-->
 									</dd>
 									<dd class="auth">добавил: <img class="avatar" src="assets/i/temp/avatar.jpg" alt="" /><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s wuser-icon"></i><?=$item['login']; ?></a></dd>
@@ -44,19 +44,9 @@
 						<?php include($this -> _include('list_tags.tpl.php')); ?>
 						<!-- /строка тегов -->
   						<!-- /панель-строка открытой категории -->						
-						<?=$this->bookmarks_list_pager; ?>
-			<!-- 		<ul class="pages-list clearfix">
-							<li class="control"><span>« Назад</span> <a href="#">Вперед »</a></li>
-							<li><strong>1</strong></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">6</a></li>
-							<li><a href="#">7</a></li>
-							<li>...</li>
-							<li><a href="#">34</a></li>
-						</ul>   -->
+				 		<ul class="pages-list clearfix">
+							<?=$this->bookmarks_list_pager; ?>
+						</ul>
 					</div></div>
 					<!-- /main -->
 					<div class="sidebar">

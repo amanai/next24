@@ -12,8 +12,10 @@
   			<!-- Выдача результата поиска -->
 				<?php include($this -> _include('list_users.tpl.php')); ?>
   			<!-- /Выдача результата поиска -->
-  			<!-- Pager - страничная листалка -->  
+  			<!-- Pager - страничная листалка -->
+  			<ul class="pages-list user-blog-view-pages clearfix">  
     			<?=$this->search_user_list_pager; ?>
+    		</ul>	
   			<!-- /Pager - страничная листалка -->  
   			</td>
  		</tr>

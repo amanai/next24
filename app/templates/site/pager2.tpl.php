@@ -1,6 +1,5 @@
 <!-- Листинг -->
 <?php if ($this->pages_number > 1) { ?>
-<ul class="pages-list user-blog-view-pages clearfix">
 	<li class="control">
 		<?php if ($this->current_page_number > 0) { ?>
 			<a href="<?php echo $this->createUrl($this->current_controller, $this->current_action, (is_array($this->pager_params)?array_merge($this->pager_params, array($this->current_page_number-1)):array($this->current_page_number-1)));?>" title="Предыдущая страница">« Назад</a>
@@ -40,7 +39,6 @@
 		<li><a href="<?php echo $this->createUrl($this->current_controller, $this->current_action, (is_array($this->pager_params)?array_merge($this->pager_params, array($this->pages_number-1)):array($this->pages_number-1)));?>"><?php echo ($this->pages_number);?></a></li>
 	<?php } ?>	
 	<? } ?>
-</ul>  
 <? } ?>
 <!--  
 	<div class="listing_div_c">
