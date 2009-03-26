@@ -1,7 +1,7 @@
 <?php
 class UserModel extends BaseModel{
     private $_sTmp;
-    
+    public $count_rows;
 		function __construct(){
 			parent::__construct('users');
 		}
@@ -127,6 +127,7 @@ class UserModel extends BaseModel{
         $v_left_join = ' LEFT JOIN `users_interests` ui ON ui.`user_id` = u.`id` ';
         $v_where    .= ' and ui.`interest_id` = '.(int)$p_id_interests_tag;
       }
+      if(Project::getUser()->getDbUser()->id) {
       $sql="
       SELECT 
           u.*,
@@ -135,7 +136,8 @@ class UserModel extends BaseModel{
           ct.`name` as city_name,
           IF(p.cnt is null, 0, p.cnt) as count_photos,
           IF(blg.cnt_blog is null, 0, blg.cnt_blog) cnt_blog,
-          IF(usr_onl.`last_update` is null, 0, usr_onl.`last_update`) time_online
+          IF(usr_onl.`last_update` is null, 0, usr_onl.`last_update`) time_online,
+          IF(msg.cnt_msg is null, 0, msg.cnt_msg) cnt_msg
         FROM `users` u
           LEFT JOIN `countries` cn ON u.`country_id` = cn.`id`
           LEFT JOIN `cities` ct ON u.`city_id` = ct.`id`
@@ -144,12 +146,59 @@ class UserModel extends BaseModel{
 						LEFT JOIN (SELECT `ub_tree_id`,count(*) AS cnt_blog FROM blog_post
 						GROUP BY `ub_tree_id`)
 					t2 ON t1.`id` = t2.`ub_tree_id`) blg ON blg.`user_id` = u.`id`
-		LEFT JOIN users_online usr_onl ON usr_onl.`user_id` = u.`id`			
+		LEFT JOIN users_online usr_onl ON usr_onl.`user_id` = u.`id`
+		LEFT JOIN (SELECT count(*) as cnt_msg,author_id FROM messages
+					WHERE recipient_id = ".Project::getUser()->getDbUser()->id."
+					AND is_read = 0
+					AND is_deleted = 0
+					GROUP BY author_id ) msg ON msg.author_id = u.`id`			
           ".$v_left_join."
         WHERE ".$v_where."
         ORDER BY u.`reputation` DESC, u.`registration_date`
         LIMIT ?d, ?d 
         ";
+      }
+      else {
+      $sql="
+      SELECT 
+          u.*,
+          YEAR(now())-YEAR(u.`birth_date`) as user_age,
+          cn.`name` as country_name,
+          ct.`name` as city_name,
+          IF(p.cnt is null, 0, p.cnt) as count_photos,
+          IF(blg.cnt_blog is null, 0, blg.cnt_blog) cnt_blog,
+          IF(usr_onl.`last_update` is null, 0, usr_onl.`last_update`) time_online,
+          0 as cnt_msg
+        FROM `users` u
+          LEFT JOIN `countries` cn ON u.`country_id` = cn.`id`
+          LEFT JOIN `cities` ct ON u.`city_id` = ct.`id`
+          LEFT JOIN (SELECT p2.`user_id`, count(*) as cnt FROM `photo` p2 GROUP BY p2.`user_id`) p ON u.`id` = p.`user_id`
+          LEFT JOIN (SELECT t1.`id`,t1.`user_id`,t2.cnt_blog FROM blog t1
+						LEFT JOIN (SELECT `ub_tree_id`,count(*) AS cnt_blog FROM blog_post
+						GROUP BY `ub_tree_id`)
+					t2 ON t1.`id` = t2.`ub_tree_id`) blg ON blg.`user_id` = u.`id`
+		LEFT JOIN users_online usr_onl ON usr_onl.`user_id` = u.`id`		
+          ".$v_left_join."
+        WHERE ".$v_where."
+        ORDER BY u.`reputation` DESC, u.`registration_date`
+        LIMIT ?d, ?d 
+        ";     	  	
+      }
+      $sql_count = "SELECT 
+          count(*) as cnt
+        FROM `users` u
+          LEFT JOIN `countries` cn ON u.`country_id` = cn.`id`
+          LEFT JOIN `cities` ct ON u.`city_id` = ct.`id`
+          LEFT JOIN (SELECT p2.`user_id`, count(*) as cnt FROM `photo` p2 GROUP BY p2.`user_id`) p ON u.`id` = p.`user_id`
+          LEFT JOIN (SELECT t1.`id`,t1.`user_id`,t2.cnt_blog FROM blog t1
+						LEFT JOIN (SELECT `ub_tree_id`,count(*) AS cnt_blog FROM blog_post
+						GROUP BY `ub_tree_id`)
+					t2 ON t1.`id` = t2.`ub_tree_id`) blg ON blg.`user_id` = u.`id`
+		LEFT JOIN users_online usr_onl ON usr_onl.`user_id` = u.`id`		
+          ".$v_left_join."        
+        WHERE ".$v_where."";
+      $result = Project::getDatabase()->selectCell($sql_count);
+      $this->count_rows = $result;
       $result = Project::getDatabase() -> 
           selectPage( $this -> _countRecords, 
                       $sql, 

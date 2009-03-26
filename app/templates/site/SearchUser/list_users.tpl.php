@@ -1,5 +1,5 @@
 <!-- TEMPLATE: Список пользоватетелей -->
-<?php $finded_user_num = count($this->list_search_user);?>
+<?php $finded_user_num = $this->counter_users;?>
 <?php if($finded_user_num == 0) { ?>
 	<h2>Ничего не найдено</h2>
 <?php } else { ?>	
@@ -48,7 +48,7 @@
 			</dl>
 			<ul class="links">
 				<li><a href="<?=$request->createUrl('Index','Index', null, $item['login']); ?>">Профиль пользователя</a></li>
-				<li><a href="<?=Project::getRequest() -> createUrl('Messages', 'CorrespondenceWith').'/corr_user_id:'.$item['id']; ?>" class="new-link">Переписка</a> (12)</li>
+				<li><a href="<?=Project::getRequest() -> createUrl('Messages', 'CorrespondenceWith').'/corr_user_id:'.$item['id']; ?>" class="new-link">Переписка</a> (<?=$item['cnt_msg']; ?>)</li>
 				<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage');?>">Написать сообщение</a></li>
 				<li><a href="<?php echo $this->createUrl('Messages', 'Friend'); ?>">Добавить в друзья</a></li>
 				<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage');?>/message_to:admin" class="spam-link">Пожаловаться на пользователя</a></li>

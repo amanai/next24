@@ -8,6 +8,7 @@ class SearchUserController extends SiteController {
   const C_MAX_TAGS_COUNT = 10; // -- Максимальное кол-во тегов для вкладки. Остальные усекаются.
   const C_MAX_TAG_LENGTH = 30; // -- Максимальная длина тега в символах
   const C_MAX_FILE_UPLOAD_SIZE = 10000000; // -- Макс. размер загружаемого файла ~ 10 Мб
+  protected $counter_users;
 
   function __construct($view_class = null) {
     if ($view_class === null) {
@@ -70,7 +71,8 @@ class SearchUserController extends SiteController {
     if ($v_session -> getKey('p_session_save', null) == true) {
       $this->_getData($data, 'SearchUserMain', $v_n_page, null);
     }
-		
+	$this-> _view -> assign('counter_users', $this->counter_users); 
+	
     $this-> _view -> assign('tab_list', TabController::getSearchUserTabs(true, false)); // Show tabs
 	  $this->_view->SearchUser_Main($data);
 		$this->_view->parse();
@@ -93,6 +95,7 @@ class SearchUserController extends SiteController {
       $this->_getData($data, 'SearchByInterest', $v_n_page, $v_id_interest);
     }
     $this-> _view -> assign('tab_list', TabController::getSearchUserTabs(false, true)); // Show tabs
+    $this-> _view -> assign('counter_users', $this->counter_users);
     $this->_view->Search_ByInterest($data);
 		$this->_view->parse();
 	}               
@@ -131,7 +134,7 @@ class SearchUserController extends SiteController {
             $data['p_search_login'],
             $data['p_search_with_photo'],
             $p_id_interest
-            );
+            );      
     $v_pager_view = new SitePagerView();
     // Формируем объект-постраничный вывод
     if ($p_id_interest == null) {
@@ -142,6 +145,7 @@ class SearchUserController extends SiteController {
       $data['search_user_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'SearchUser', $p_action, array($p_id_interest));
     }
     // class SitePagerView -> function show2(IDbPager $pager, $controller = null, $action = null, $params = array(), $user = null)
+    $this->counter_users = $v_model->count_rows;      
   }
   
   /**
