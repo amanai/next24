@@ -13,7 +13,13 @@
 				<? if ($this->social_category_selectedID == $item['id']) { ?>
 					<li><?=$item['name']?></li>
 				<? } else { ?>	
-					<li><a href="<?=$this->createUrl('Social', $this->action, array($item['id']))?>"><?=$item['name']?></a></li>
+					<?php if($v_count) { ?>
+					<?php if(($this->action=='SocialLastAddPos') || ($this->action=='SocialView')) { ?>
+						<li><a href="<?=$this->createUrl('Social', 'SocialMainList', array($item['id']))?>"><?=$item['name']?></a></li>
+					<? } else { ?>
+						<li><a href="<?=$this->createUrl('Social', $this->action, array($item['id']))?>"><?=$item['name']?></a></li>
+					<? } ?>	
+					<? } ?>
 				<? } ?>	
 			<? } ?>	
 			<? $v_count++; ?>

@@ -64,6 +64,7 @@ class SocialController extends SiteController {
   */
 	public function SocialLastAddPosAction() {
 		$data = array();
+		$this->_get_categories($data, $v_categoryID);
 		//$this->_BaseSiteData($data);
 		$data['action'] = 'SocialLastAddPos';
     $v_sc_model = new SocialModel();
@@ -78,6 +79,7 @@ class SocialController extends SiteController {
     $v_request = Project::getRequest();
     $v_current_userID = (int)Project::getUser() -> getDbUser() -> id;
     $data = array();
+    $this->_get_categories($data, $v_categoryID);
     //$this->_BaseSiteData($data);
     $data['action'] = 'SocialView';
 
