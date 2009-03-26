@@ -65,22 +65,10 @@
   					<!-- Выдача результата поиска -->
 						<?php include($this -> _include('list_users.tpl.php')); ?>
   					<!-- /Выдача результата поиска -->					
+					<!-- /user-blog-view -->
 					  <!-- Pager - страничная листалка -->  
     					<?=$this->search_user_list_pager; ?>
   					<!-- /Pager - страничная листалка -->  
-					<!-- /user-blog-view -->
-			<!--  	<ul class="pages-list user-blog-view-pages clearfix">
-						<li class="control"><span>« Назад</span> <a href="#">Вперед »</a></li>
-						<li><strong>1</strong></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#">6</a></li>
-						<li><a href="#">7</a></li>
-						<li>...</li>
-						<li><a href="#">34</a></li>
-					</ul>  -->
 				</div>
 				<!-- /friends-page -->
 <?php include($this -> _include('../footer.tpl.php')); ?>

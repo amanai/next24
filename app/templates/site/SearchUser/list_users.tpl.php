@@ -1,5 +1,5 @@
 <!-- TEMPLATE: Список пользоватетелей -->
-<?php $finded_user_num = count($this->list_search_user); ?>
+<?php $finded_user_num = count($this->list_search_user);?>
 <?php if($finded_user_num == 0) { ?>
 	<h2>Ничего не найдено</h2>
 <?php } else { ?>	
