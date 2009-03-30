@@ -26,20 +26,10 @@
 						<?php }?>
 					</ul>					
 					</div>
-					<?php echo $this -> album_list_pager; ?>
 						<!-- /photo-album-list -->
-			<!-- 		<ul class="pages-list clearfix">
-							<li class="control"><span>« Назад</span> <a href="#">Вперед »</a></li>
-							<li><strong>1</strong></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">6</a></li>
-							<li><a href="#">7</a></li>
-							<li>...</li>
-							<li><a href="#">34</a></li>
-						</ul>	-->
+						<ul class="pages-list clearfix">
+							<?php echo $this -> album_list_pager; ?>
+						</ul>
 					</div></div>
 					<!-- /main -->
 					<div class="sidebar">
@@ -55,28 +45,9 @@
 							<!-- /левый блок -->
 						<?php } ?>						
 							<ul class="nav-list">
-								<li><i class="arrow-icon"></i><a href="#">Авио</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Юмор</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Типографика</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Apple</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Дизайн</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Программирование</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Юмор</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Internet</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Linux для всех</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Стартапы</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Типографика</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Apple</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Дизайн</a></li>
-								<li><i class="arrow-icon"></i><a href="#">Программирование</a></li>
+							<?php foreach($this->photo_list as $key => $item){ ?>
+								<li><i class="arrow-icon"></i><a href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>"><?php echo $item['name'];?></a></li>
+							<? } ?>
 							</ul>
 						</div>
 					</div>

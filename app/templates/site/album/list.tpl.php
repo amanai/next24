@@ -97,20 +97,10 @@
 						</form>
 					<?php } ?>						
 					</div>
-					<?php echo $this -> album_list_pager; ?>
 						<!-- /photo-album-list -->
-			<!-- 		<ul class="pages-list clearfix">
-							<li class="control"><span>« Назад</span> <a href="#">Вперед »</a></li>
-							<li><strong>1</strong></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">6</a></li>
-							<li><a href="#">7</a></li>
-							<li>...</li>
-							<li><a href="#">34</a></li>
-						</ul>	-->
+			 			<ul class="pages-list clearfix">
+							<?php echo $this -> album_list_pager; ?>
+						</ul>
 					</div></div>
 					<!-- /main -->
 					<div class="sidebar">
