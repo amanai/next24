@@ -40,7 +40,6 @@
 										<label for="f5" class="label">Город</label>
 										<select id="f5">
 											<option>Россия</option>
-											<option>Россия</option>
 										</select>
 									</span>
 								</li>

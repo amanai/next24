@@ -7,8 +7,11 @@ class AlbumView extends BaseSiteView{
 			$info['list_pager_html'] = $pagerView -> show($info['list_pager'], $info['list_controller'], $info['list_action'], $info['list_user']);*/
 			if (!isset($info['left_panel'])){
 				$info['left_panel'] = true;
+				$this -> setTemplate(null, 'list_profile.tpl.php');
 			}
-			$this -> setTemplate(null, 'list.tpl.php');
+			else {
+				$this -> setTemplate(null, 'list.tpl.php');	
+			}
 			$this -> set($info);
 		}
 		
