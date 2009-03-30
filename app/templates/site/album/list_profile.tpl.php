@@ -2,11 +2,13 @@
 			<?php include($this -> _include('../profile_line.tpl.php')); ?>
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
+					<?php if ($this -> can_edit) { ?>
 						<h2 class="page-ttl"><a href="<?php echo $this->createUrl('Album', 'List');?>">Мои фотоальбомы</a> 
 						<!--  
 						<span class="spr">»</span> Альбом 1
 						-->
 						</h2>
+					<? } ?>	
 						<?php if ($this -> can_edit) { ?>
 							<form class="main-form" action="<?php echo $this -> createUrl('Album', 'ListSave'); ?>" method="post">
 						<?php } ?>						
