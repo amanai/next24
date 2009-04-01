@@ -74,7 +74,17 @@ class SearchUserController extends SiteController {
       $this->_getData($data, 'SearchUserMain', $v_n_page, null);
     }
 	$this-> _view -> assign('counter_users', $this->counter_users); 
-	
+	if($data['p_search_state']) {
+		$state_model = new StateModel();
+		$state_list = $state_model -> loadByCountry($data['p_search_counrty']);
+		$this-> _view -> assign('change_state_param',AjaxRequest::getJsonParam("SearchUser", "ChangeStates", array('#id#')));
+		$this-> _view -> assign('state_list',$state_list);
+	}
+	if($data['p_search_city']) {
+		$state_model = new CityModel();
+		$city_list = $state_model -> loadByState($data['p_search_state']);
+		$this-> _view -> assign('city_list',$city_list);				
+	}
     $this-> _view -> assign('tab_list', TabController::getSearchUserTabs(true, false)); // Show tabs
 	  $this->_view->SearchUser_Main($data);
 		$this->_view->parse();

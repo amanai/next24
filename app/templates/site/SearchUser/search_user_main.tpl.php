@@ -41,9 +41,31 @@
            									<? } ?>
 										</select>
 									</span>
-									<div id="state_div" style="margin-top:5px; margin-bottom:5px;">							
+									<div id="state_div" style="margin-top:5px; margin-bottom:5px;">	
+									<?php if ($this->state_list) { ?>
+										<span class="field">
+										<label for="f5st" class="label">Область/Штат</label>
+										<select name="select_search_state" id="f5st" onchange='changeList(<?=$this->change_state_param;?>, this);'>
+											<option value="0">не важно</option>
+											<?php foreach($this -> state_list as $item) { ?>
+												<option value="<?php echo $item['id'];?>" <?php if ((int)$this -> helper -> state === (int)$item['id']){ echo 'selected="selected"';}?>><?php echo $item['name'];?></option>
+											<?php } ?>
+										</select>										
+										</span>									
+									<?php } ?>						
 									</div>
-									<div id="city_div" style="margin-top:5px; margin-bottom:5px;">
+									<div id="city_div" style="margin-top:5px; margin-bottom:5px;">								
+									<?php if ($this->city_list) { ?>
+										<span class="field">
+											<label for="f5" class="label">Город</label>
+											<select name="select_search_city" id="f5">
+												<option value="0">не важно</option>
+												<?php foreach($this -> city_list as $item) { ?>
+													<option value="<?php echo $item['id'];?>" <?php if ((int)$this -> helper -> city === (int)$item['id']){ echo 'selected="selected';}?>><?php echo $item['name'];?></option>
+												<?php } ?>
+											</select>
+										</span>			
+									<?php } ?>									
 									</div>
 								</li>
 								<li>
