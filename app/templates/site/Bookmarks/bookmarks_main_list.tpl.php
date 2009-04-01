@@ -1,7 +1,7 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-<?php $request = Project::getRequest(); 
-$request_keys = $request->getKeys();
-$bpp = $request_keys['bpp']; ?>
+<?php $request = Project::getRequest();
+$v_session = Project::getSession(); 
+$bpp = $v_session->getKey('bpp'); ?>
 <!-- TEMPLATE: "Каталог закладок" - основная вкладка раздела закладки -->
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
@@ -12,7 +12,7 @@ $bpp = $request_keys['bpp']; ?>
 						<div class="display-filter clearfix">
 							<div class="number-filter">
 								показывать по: 
-							<?php if(!$bpp){ ?>
+							<?php if(!$bpp || $bpp == 10){ ?>
 									<strong>10</strong> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:20">20</a> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:30">30</a> закладок
 							<?php }elseif($bpp == 20) { ?>
 									<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>">10</a> | <strong>20</strong> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:30">30</a> закладок
