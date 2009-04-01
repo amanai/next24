@@ -28,20 +28,23 @@
 								</li>
 								<li>
 									<span class="field">
-										<label for="f4" class="label">Страна</label>
-										<select id="f4" name="select_search_counrty">
+									<?php 
+									//onchange="changeList(=AjaxRequest::getJsonParam("SearchUser", "ChangeCountry", array('#id#'));, this);"
+									//echo AjaxRequest::getJsonParam("SearchUser", "ChangeCountry", array('#id#'));
+									
+									?>
+										<label for="country" class="label">Страна</label>
+										<select id="country" name="select_search_counrty" onchange='changeList(<?=AjaxRequest::getJsonParam("SearchUser", "ChangeCountry", array('#id#'));?>, this);'>
              								<option value="0">не важно</option>
            									<? foreach($this->list_country as $key=>$val) { ?>
              									<option value="<?=$val['id'];?>" <? if ($this->p_search_counrty == $val['id']) echo 'selected="selected"';?>><?=$val['name'];?></option>
            									<? } ?>
 										</select>
 									</span>
-									<span class="field">
-										<label for="f5" class="label">Город</label>
-										<select id="f5">
-											<option>Россия</option>
-										</select>
-									</span>
+									<div id="state_div" style="margin-top:5px; margin-bottom:5px;">							
+									</div>
+									<div id="city_div" style="margin-top:5px; margin-bottom:5px;">
+									</div>
 								</li>
 								<li>
 									<span class="field">

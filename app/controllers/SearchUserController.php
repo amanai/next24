@@ -49,6 +49,8 @@ class SearchUserController extends SiteController {
     $data['p_search_counrty']    = $v_request->select_search_counrty;
     $data['p_search_login']      = $v_request->inp_search_login;
     $data['p_search_with_photo'] = $v_request->chk_search_with_photo;
+    $data['p_search_state'] = $v_request->select_search_state;
+    $data['p_search_city'] = $v_request->select_search_city;
     $v_country_model = new CountryModel();
     $data['list_country'] = $v_country_model->loadAll();
     if ($v_request->btn_search != null) {
@@ -131,6 +133,8 @@ class SearchUserController extends SiteController {
             $data['p_search_age_from'],
             $data['p_search_age_to'],
             $data['p_search_counrty'],
+            $data['p_search_state'],
+    		$data['p_search_city'],
             $data['p_search_login'],
             $data['p_search_with_photo'],
             $p_id_interest
@@ -162,6 +166,40 @@ class SearchUserController extends SiteController {
     return -1; // -- Выбираемая соц.позиция с несуществующим ID 
   }
   
+	public function ChangeCountryAction(){
+		$request = Project::getRequest();
+		$country_id = $request -> getKeyByNumber(0);
+		if($country_id) {
+			$info = array();
+			$state_model = new StateModel();
+			$info['state_list'] = $state_model -> loadByCountry($country_id);
+			$info['change_state_param'] = AjaxRequest::getJsonParam("SearchUser", "ChangeStates", array('#id#'));
+			$this -> _view -> ChangeCountry($info);
+			$this -> _view -> ajax();
+		}
+		else {
+			$response = Project::getAjaxResponse();	
+			$response -> block('state_div', true, '');	
+			$response -> block('city_div', true, '');
+			$this -> _view -> ajax();
+		}	
+	}  
+	public function ChangeStatesAction(){
+		$request = Project::getRequest();
+		$state_id = $request -> getKeyByNumber(0);
+		if($state_id) {
+			$info = array();
+			$state_model = new CityModel();
+			$info['city_list'] = $state_model -> loadByState($state_id);
+			$this -> _view -> ChangeState($info);
+			$this -> _view -> ajax();
+		}
+		else {
+			$response = Project::getAjaxResponse();	
+			$response -> block('city_div', true, '');
+			$this -> _view -> ajax();
+		}				
+	}	  
 }
 
 ?>

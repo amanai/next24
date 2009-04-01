@@ -112,7 +112,7 @@ class UserModel extends BaseModel{
     /**
     * Запрос основного поиска пользователей
     */
-    public function loadSearchUser($p_sex = null, $p_age_from = null, $p_age_to = null, $p_country = null, $p_login = null, $p_with_photo = null, $p_id_interests_tag = null){
+    public function loadSearchUser($p_sex = null, $p_age_from = null, $p_age_to = null, $p_country = null, $p_state = null, $p_city = null, $p_login = null, $p_with_photo = null, $p_id_interests_tag = null){
       $v_where = '1=1';
       $v_left_join = '';
       if ($p_sex !== null) { 
@@ -121,6 +121,8 @@ class UserModel extends BaseModel{
       if ((int)$p_age_from > 0)   $v_where .= ' and YEAR(now())-YEAR(u.`birth_date`) >= '.(int)$p_age_from;
       if ((int)$p_age_to   > 0)   $v_where .= ' and YEAR(now())-YEAR(u.`birth_date`) <= '.(int)$p_age_to;
       if ((int)$p_country  > 0)   $v_where .= ' and u.`country_id` = '.(int)$p_country;
+      if ((int)$p_state    > 0)   $v_where .= ' and u.`state_id` = '.(int)$p_state;
+      if ((int)$p_city     > 0)   $v_where .= ' and u.`city_id` = '.(int)$p_city;
       if ($p_login !== null)      $v_where .= ' and u.`login` like "%'.$p_login.'%"';
       if ($p_with_photo !== null) $v_where .= ' and p.cnt > 0';
       if ((int)$p_id_interests_tag > 0) {

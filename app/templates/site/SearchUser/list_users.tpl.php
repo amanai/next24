@@ -26,9 +26,9 @@
 				<dd class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>"><img class="avatar" src="<?=$this->image_url.'avatar/no90.jpg';?>" alt="" /></a></dd>
 				<dd>
 					<? if ($item['country_name'] != '') { echo $item['country_name'].','; } ?>
-					<?=$item['city_name'];?>
+					<?=$item['city_name'];?>, 
 					<? if ($item['user_age'] != '') { ?>
-            			,<?=$item['user_age'];?> лет<br />
+            			 <?=$item['user_age'];?> лет<br />
           			<? } ?>
           			<? if ($item['registration_date'] != '') { ?>
             			Зарегистрирован : <?=date_format(new DateTime($item['registration_date']),'d.m.Y');?><br />

@@ -40,7 +40,6 @@ function ajax(params, nblockui, start, end){
 				return false;
 			}
 		}
-		
 		if (start)
 			start();
 		else {
@@ -56,9 +55,7 @@ function ajax(params, nblockui, start, end){
 		}
 
 		p.success = handleResponse;
-		
 		$.ajax(p);
-		
 	}
 }
 
@@ -72,7 +69,6 @@ function handleResponse2(data) {
 }
 
 function handleResponse(msg){
-    
 	if (msg){
 		p = eval(msg);
 		if (p){
