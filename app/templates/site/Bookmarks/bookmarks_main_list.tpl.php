@@ -1,5 +1,12 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 <?php $request = Project::getRequest();
+$v_categoryID = $request->getKeyByNumber(0);
+if($v_categoryID) {
+	$add = '/'.$v_categoryID.'';
+}
+else {
+	$add = '';
+}
 $v_session = Project::getSession(); 
 $bpp = $v_session->getKey('bpp'); ?>
 <!-- TEMPLATE: "Каталог закладок" - основная вкладка раздела закладки -->
@@ -13,11 +20,11 @@ $bpp = $v_session->getKey('bpp'); ?>
 							<div class="number-filter">
 								показывать по: 
 							<?php if(!$bpp || $bpp == 10){ ?>
-									<strong>10</strong> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:20">20</a> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:30">30</a> закладок
+									<strong>10</strong> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false).$add; ?>/bpp:20">20</a> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false).$add; ?>/bpp:30">30</a> закладок
 							<?php }elseif($bpp == 20) { ?>
-									<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>">10</a> | <strong>20</strong> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:30">30</a> закладок
+									<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false).$add; ?>/bpp:10">10</a> | <strong>20</strong> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false).$add; ?>/bpp:30">30</a> закладок
 							<?php } elseif($bpp == 30) { ?>	
-									<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>">10</a> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:20">20</a> | <strong>30</strong> закладок
+									<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false).$add; ?>/bpp:10">10</a> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false).$add; ?>/bpp:20">20</a> | <strong>30</strong> закладок
 							<? } ?>
 							</div>
 						</div>

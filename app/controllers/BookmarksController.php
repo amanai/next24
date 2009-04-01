@@ -448,6 +448,7 @@ class BookmarksController extends SiteController {
 		}
 		else {
 			$v_list_per_page = 10;
+			$v_session->add('bpp',$v_list_per_page);	
 		}
   	}
   	else {

@@ -98,7 +98,6 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 		function getUsername(){
 			return $this -> _username;
 		}
-		
 		function setController($value){
 			$this -> _current_controller = $value;
 		}
