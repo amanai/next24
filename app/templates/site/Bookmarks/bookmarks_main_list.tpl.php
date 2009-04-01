@@ -48,6 +48,15 @@
   						<?php if (count($this->category_row) > 0) { ?>
          			<!--  	<b>Закладки категории:</b> &nbsp;<?=$this->category_row[0]['name']; ?>	-->
           					<?php if ($this->tag_name_selected !== null) { ?>
+          					<div class="tag-list">
+								<i class="icon tags-list-icon"></i>
+								<ul>
+									<li><a href="#" rel="tag">apple</a>,</li>
+									<li><a href="#" rel="tag">mac</a>,</li>
+									<li><a href="#" rel="tag">pc</a></li>
+								</ul>
+							</div>
+							<!-- /tag-list -->
           						&nbsp;<b>(Тег:</b> <?=$this->tag_name_selected;?><b>)</b>
           					<? } ?>
 						<?php } ?>

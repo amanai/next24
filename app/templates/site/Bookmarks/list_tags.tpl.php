@@ -1,10 +1,8 @@
 <!-- TEMPLATE: Строка тегов, соответствующих выбранной категории -->
 <?php if (count ($this->bookmarks_tags_list) > 0) { ?>
-<div class="block_ee1">
-	<div class="block_ee2">
-		<div class="block_ee3">
-			<div class="block_ee4">
-				<div style="margin: 0px 0px;">
+<div class="tag-list">
+	<i class="icon tags-list-icon"></i>
+		<ul>		
 						<?php 
               $v_request = Project::getRequest();
               $v_categoryID = $v_request->getKeyByNumber(0);
@@ -19,18 +17,17 @@
                   $v_size = 100 + ceil(75*($value['count_tag']-1)/$v_count_tag_max);
                 } else {
                   $v_size = 100;
+                  //style="font-size: '.$v_size.'%"
                 }
                 if ($value['tag_name'] != $this->tag_name_selected) {
-                  $tags_set[] = '<a style="font-size: '.$v_size.'%" href="'.$v_URL.'" title="'.$value['count_tag'].' раз(а)">'.$value['tag_name'].'</a>';
+                  $tags_set[] = '<li><a rel="tag" href="'.$v_URL.'" title="'.$value['count_tag'].' раз(а)">'.$value['tag_name'].'</a></li>';
                 } else {
-                  $tags_set[] = '<b style="font-size: '.$v_size.'%">'.$value['tag_name'].'</b>';
+                  $tags_set[] = '<li><b>'.$value['tag_name'].'</b></li>';
                 }
               }
               print implode(', ', $tags_set);
 						?>
-					</div>
-        </div>
-      </div>
-    </div>
-  </div>
+	</ul>
+</div>
+<!-- /tag-list -->						
 <?php } ?>
