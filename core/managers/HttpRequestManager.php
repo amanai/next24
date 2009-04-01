@@ -342,4 +342,155 @@ class HttpRequestManager extends ApplicationManager implements IManager, Iterato
 		}
 		
 }
+
+
+class MHttpRequest implements IManager, IteratorAggregate, Countable {
+	private $_get;
+	private $_post;
+	private $_request;
+	private $_real_request;
+	private $_files;
+	private $_request_method;
+	private $_current_controller;
+	private $_current_action;
+	private $_script_name;
+	
+	public function __construct(IConfigParameters $configuration = null) {
+		if (get_magic_quotes_gpc()) {
+			$this->stripVars($_GET);
+			$this->stripVars($_POST);
+			$this->stripVars($_COOKIE);
+			$this->stripVars($_REQUEST);
+		}
+		if($_FILES) {
+			foreach ($_FILES as $key => &$value) {
+				$value['name'] = basename($value['name']);	
+			}
+			$this->_files = $_FILES;
+		}
+		$this->_script_name = basename($_SERVER['SCRIPT_NAME']);
+		$this->_get = $_GET;
+		$this->_post = $_POST;
+		$this->_real_request = $_REQUEST;
+		$this->_request_method = $_SERVER['REQUEST_METHOD'];
+		if ($this->_request_method == 'GET'){
+			$this->_request = $_GET;
+		} elseif ($this->_request_method == 'POST'){
+			$this->_request = $_POST;
+		} else {
+			$this->_request = array();
+		}				
+	}
+	public function __toString() {
+		$result = "<table border=\"1\"><tr><td>Ключ</td><td>Значение</td></tr>";
+		foreach ($this->_request as $key => $value) {
+			$result .= "<tr><td>$key</td><td>$value</td></tr>";
+		}
+		$result .= "</table>";
+		return $result;
+	}
+	public function __get($param){
+		return $this -> getKey($param);
+	}
+	public function getIterator(){
+		return new ArrayIterator($this->_request);
+	}	
+	public function count(){
+		return count($this -> _request);
+	}
+	public function requestTime() {
+		return $_SERVER['REQUEST_TIME'];
+	}
+	public function queryString() {
+		return $_SERVER['QUERY_STRING'];
+	}
+	public function requestUri() {
+		return $_SERVER['REQUEST_URI'];
+	}
+	public function scriptName() {
+		return $this->_script_name;
+	}
+	public function get($get_var_name = false) {
+		if($get_var_name) {
+			if(key_exists($get_var_name,$this->_get)) return $this->_get[$get_var_name];
+			else return false;
+		}
+		else {
+			return $this->_get;	
+		}
+	}
+	public function post($post_var_name = false) {
+		if($post_var_name) {
+			if(key_exists($post_var_name,$this->_post)) return $this->_post[$post_var_name];
+			else return false;
+		}
+		else {
+			return $this->_post;
+		}
+	}
+	public function request($request_var_name = false) {
+		if($request_var_name) {
+			if(key_exists($request_var_name,$this->_request)) return $this->_request[$request_var_name];
+			else return false;
+		}
+		else {
+			return $this->_request;
+		}
+	}
+	public function requestReal() {
+		return $this->_real_request;
+	}
+	public function files($key = false) {
+		if($key) {
+			if(key_exists($key,$this->_files)) return $this->_files[$key];
+			else return false;
+		}
+		else {
+			return $this->_files;
+		}		
+	}
+	public function requestMethod() {
+		return $this->_request_method;
+	}
+	public function isSecure(){
+		return isset($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off');
+	}	
+	public function remoteIP() {
+		return $_SERVER['REMOTE_ADDR'];
+	}
+	public function remotePort() {
+		return (int) $_SERVER['REMOTE_PORT'];
+	}
+	public function httpAccept() {
+		$result = explode(',',$_SERVER['HTTP_ACCEPT']);
+		return $result;
+	}
+	public function httpAcceptLanguage() {
+		$result = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		foreach($result as $key => $value) {
+			if(($key+1)%2) unset($result[$key]);
+		}
+		sort($result);
+		return $result;
+	}
+	public function httpCacheControl() {
+		return $_SERVER['HTTP_CACHE_CONTROL'];
+	}
+	public function httpAcceptCharset() {
+		$result = explode(',',$_SERVER['HTTP_ACCEPT_CHARSET']);
+		return $result;		
+	}
+	private function getKey($key, $default = null){
+		return isset($this -> _request[$key])?$this -> _request[$key]:$default;
+	}	
+	private function stripVars(&$element) {
+		if (is_array($element)){
+			foreach($element as $key => $value){
+				self::stripVars($element[$key]);
+			}
+		} else {
+			$element = stripslashes($element);
+		}	
+	}		
+}
 ?>
