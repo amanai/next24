@@ -17,7 +17,7 @@
 		        }
 		        $avName = $userMessage['avatars_av_name'];
 		    }else {
-		        $avPath = 'no.png';
+		        $avPath = 'no90.jpg';
 		        $avName = 'no image';
 		    }
 		    if (!$userMessage['is_read']) $sIsRead = '<dd class="message-status unread-message-status"><div class="status-wrp"><span class="with-icon-s"><i class="icon-s mess-unread-icon"></i>Ваше последнее отправленное сообщение не прочтено</span></div></dd>';
