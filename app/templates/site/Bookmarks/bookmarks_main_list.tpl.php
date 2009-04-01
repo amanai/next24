@@ -1,5 +1,7 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-<?php $request = Project::getRequest(); ?>
+<?php $request = Project::getRequest(); 
+$request_keys = $request->getKeys();
+$bpp = $request_keys['bpp']; ?>
 <!-- TEMPLATE: "Каталог закладок" - основная вкладка раздела закладки -->
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
@@ -9,7 +11,14 @@
 						<!-- /view-filter -->
 						<div class="display-filter clearfix">
 							<div class="number-filter">
-								показывать по: <strong>10</strong> | <a href="#">20</a> | <a href="#">30</a> закладок
+								показывать по: 
+							<?php if(!$bpp){ ?>
+									<strong>10</strong> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:20">20</a> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:30">30</a> закладок
+							<?php }elseif($bpp == 20) { ?>
+									<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>">10</a> | <strong>20</strong> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:30">30</a> закладок
+							<?php } elseif($bpp == 30) { ?>	
+									<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>">10</a> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>/bpp:20">20</a> | <strong>30</strong> закладок
+							<? } ?>
 							</div>
 						</div>
 						<!-- /display-filter -->
@@ -33,7 +42,7 @@
 									<dd class="breadcrumbs">
 										<?php echo $item['bookmark_category']; $i++;?>
 									</dd>
-									<dd class="auth">добавил: <img class="avatar" src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width: 50px; height: 50px;" alt="" /><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$item['login']; ?></a></dd>
+									<dd class="auth">добавил: <a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>"><img class="avatar" src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width: 50px; height: 50px;" alt="" /></a><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$item['login']; ?></a></dd>
 									<dd class="date"><?=date_format(new DateTime($item['creation_date']),'j M Y, H:i'); ?></dd>
 									<dd class="number-of">
 										<div>просмотры:  <strong><?=number_format($item['views'], 0, '',' '); ?></strong>
@@ -48,15 +57,6 @@
   						<?php if (count($this->category_row) > 0) { ?>
          			<!--  	<b>Закладки категории:</b> &nbsp;<?=$this->category_row[0]['name']; ?>	-->
           					<?php if ($this->tag_name_selected !== null) { ?>
-          					<div class="tag-list">
-								<i class="icon tags-list-icon"></i>
-								<ul>
-									<li><a href="#" rel="tag">apple</a>,</li>
-									<li><a href="#" rel="tag">mac</a>,</li>
-									<li><a href="#" rel="tag">pc</a></li>
-								</ul>
-							</div>
-							<!-- /tag-list -->
           						&nbsp;<b>(Тег:</b> <?=$this->tag_name_selected;?><b>)</b>
           					<? } ?>
 						<?php } ?>

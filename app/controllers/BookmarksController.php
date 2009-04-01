@@ -437,7 +437,12 @@ class BookmarksController extends SiteController {
     $v_userID     = (int)$p_userID;
     $v_tagID      = (int)$p_tagID;
     $v_model      = new BookmarksModel();
-    $v_list_per_page = $this->getParam('bookmarks_per_page', 4);
+   	$v_request = Project::getRequest();
+	$request_keys = $v_request->getKeys();
+	$bookmarks_per_page = $request_keys['bpp'];
+	$v_list_per_page = $bookmarks_per_page; 
+	if(!$v_list_per_page) $v_list_per_page = 10;
+    //$v_list_per_page = $this->getParam('bookmarks_per_page', 4);
     $v_DbPager = new DbPager($v_n_page, $v_list_per_page);
     $v_model -> setPager($v_DbPager);
     $data['bookmarks_list'] = $v_model->loadBookmarksList($v_categoryID, $v_userID, $v_tagID, (boolean)$p_show_only_public);
