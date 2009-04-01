@@ -23,7 +23,7 @@
 		<li class="it clearfix">
 			<dl>
 				<dt><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s <?=$online_offline; ?>"></i><?=$item['first_name']; ?> <?=$item['last_name']; ?></a> [ <a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>"><?=$item['login']; ?></a> ]</dt>
-				<dd class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>"><img class="avatar" src="assets/i/temp/avatar.bb.jpg" alt="" /></a></dd>
+				<dd class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>"><img class="avatar" src="<?=$this->image_url.'avatar/no90.jpg';?>" alt="" /></a></dd>
 				<dd>
 					<? if ($item['country_name'] != '') { echo $item['country_name'].','; } ?>
 					<?=$item['city_name'];?>
