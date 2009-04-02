@@ -110,12 +110,26 @@ function doChangeCat() {
          				echo '<option value="'.$key.'">'.$value['full_name'].'</option>';
          			}?>   
          		</select> 
-         		<div id="type_place" style="display: none;">       		
-         			Место <input type="checkbox" name="type_place" value="1"  onclick="if(this.checked){getElementById('address').style.display='block';} else {getElementById('address').style.display='none';}" />
-         			<span id="address" style="display: none;">
-         				<b>Адрес :</b> <input type="text" value=""	name="address" />
-         			</span>   
-         		</div>	  		
+         		<div id="type_place" style="display: none;">      		
+         				Место <input type="checkbox" name="type_place" value="1"  onclick="if(this.checked){getElementById('address').style.display='block';} else {getElementById('address').style.display='none';}" />
+         			<div id="address" style="display: none;">	
+         				<span class="field">	
+         					<label for="country" class="label">Страна</label>
+							<select name="country" id="country" onChange='changeList(<?=$this->change_country_param;?>, this);' class="field">
+							<?php foreach($this -> country_list as $item) { ?>
+								<option value="<?php echo $item['id'];?>" <?php if ((int)$this -> helper -> country === (int)$item['id']){ echo 'selected="selected"';}?>><?php echo $item['name'];?></option>
+							<?php } ?>
+							</select> 
+						</span>	 
+						<div id="state_div">
+						</div>
+						<div id="city_div">			
+						</div>
+         				<span>
+         					<b>Адрес :</b> <input type="text" value=""	name="address" />
+         				</span> 
+         			</div>							
+				</div>											       			   		
          	</td>
          </tr>
          <tr id="id_div_vote1">

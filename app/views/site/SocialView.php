@@ -31,6 +31,10 @@ class SocialView extends BaseSiteView {
  // 	print '<pre>';
   //		print_r($this->_stack['product_places']);
   //	print '</pre>';	
+	$this->_js_files[]='jquery.js';
+	$this->_js_files[]='xpath.js';
+	$this->_js_files[]='blockUI.js';
+	$this->_js_files[]='ajax.js';  
     $this->setTemplate(null, 'social_pos_add.tpl.php');
     $this->set($data);
   }

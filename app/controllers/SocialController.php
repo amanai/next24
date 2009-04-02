@@ -189,6 +189,11 @@ class SocialController extends SiteController {
     //$this->_BaseSiteData($data);
     if ($v_request->btn_submit == null) {
       // -- Открытие формы для создания
+	  $country_model = new CountryModel;
+	  $country_list = $country_model -> loadAll();
+	  $change_country_param = AjaxRequest::getJsonParam("SearchUser", "ChangeCountry", array('#id#')); 
+	  $this->_view->assign('country_list',$country_list); 
+	  $this->_view->assign('change_country_param',$change_country_param);    
       $this->_view->__set('product_places',$v_sp_model->getProductPlaces());
       $this->_view->assign('tab_list', TabController::getSocialTabs(false, false, false, true)); // Show tabs
       $this->_view->Social_PosAdd($data);

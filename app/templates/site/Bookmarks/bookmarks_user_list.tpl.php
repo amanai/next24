@@ -56,7 +56,7 @@ $bpp = $v_session->getKey('bpp');  ?>
             						<?php } ?>										
 									
 									</dd>
-									<dd class="date"><?=date_format(new DateTime($item['creation_date']),'d.m.y H:i'); ?></dd>
+									<dd class="date"><?=date_format(new DateTime($item['creation_date']),'j M Y, H:i'); ?></dd>
 									<dd class="number-of">
 										<div>просмотры:  <strong><?=number_format($item['views'], 0, '',' '); ?></strong>
 								<!-- 	 <br />комментарии: <strong><?=$item['count_comments']; ?></strong></div>  -->
