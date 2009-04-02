@@ -130,6 +130,7 @@ class SocialController extends SiteController {
   // -- Action "Мои позиции" - соц.позиции активного пользователя
   public function SocialUserListAction() {
     $v_request = Project::getRequest();
+    $v_session = Project::getSession();
     $data = array();
     //$this->_BaseSiteData($data);
     $data['action'] = 'SocialUserList';
@@ -138,7 +139,21 @@ class SocialController extends SiteController {
     // где bookmarks_list/{id_категории}/{номер страницы}/
     $v_categoryID = $v_request->getKeyByNumber(0);
     $v_n_page     = $v_request->getKeyByNumber(1);
-    $this->_getData($data, 'SocialUserList', $v_categoryID, $v_n_page, $v_current_userID);
+    $v_sort_rating = null;
+    if ($v_request->inp_sort != null)  {
+      $v_sort_rating = strtoupper($v_request->inp_sort); 
+      $v_session -> add('social_sort_rating', $v_sort_rating);
+    } else {
+      $v_sort_rating = $v_session -> getKey('social_sort_rating', null);
+    }
+    $v_sort_type = null;
+	if ($v_request->type != null)  {
+      $v_sort_type = strtoupper($v_request->type); 
+      $v_session -> add('social_type_sort_rating', $v_sort_type);
+    } else {
+      $v_sort_type = $v_session -> getKey('social_type_sort_rating', null);
+    }       
+    $this->_getData($data, 'SocialUserList', $v_categoryID, $v_n_page, $v_current_userID, null, $v_sort_rating, $v_sort_type);
     $this->_get_categories($data, $v_categoryID);
     $this->_getSelectedCategory($data, $v_categoryID);
     $this->_view->assign('tab_list', TabController::getSocialTabs(false, false, true)); // Show tabs
