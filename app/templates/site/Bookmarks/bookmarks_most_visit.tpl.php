@@ -11,14 +11,15 @@ $bpp = $request_keys['bpp']; ?>
 						<!-- /view-filter -->
 					 	<div class="display-filter clearfix">
 							<div class="number-filter">
-								показывать по: 
+							&nbsp;
+					<!--  	показывать по: 
 							<?php if(!$bpp){ ?>
 									<strong>10</strong> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksMostVisit', null, false); ?>/bpp:20">20</a> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksMostVisit', null, false); ?>/bpp:30">30</a> закладок
 							<?php }elseif($bpp == 20) { ?>
 									<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksMostVisit', null, false); ?>">10</a> | <strong>20</strong> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksMostVisit', null, false); ?>/bpp:30">30</a> закладок
 							<?php } elseif($bpp == 30) { ?>	
 									<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksMostVisit', null, false); ?>">10</a> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksMostVisit', null, false); ?>/bpp:20">20</a> | <strong>30</strong> закладок
-							<? } ?>
+							<? } ?>	-->
 							</div>
 						</div>	 
 						<!-- /display-filter -->
