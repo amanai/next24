@@ -30,8 +30,13 @@ class BookmarksModel extends BaseModel {
     $v_show_only_public = (boolean)$p_show_only_public;
     $v_sql_where = " 1=1 ";
     $v_sql_tag   = '';
-    if ($v_categoryID > 0)   { $v_sql_where .= ' and bm.`bookmarks_tree_id`='.$v_categoryID; }
-    if ($v_categoryID == -1) { $v_sql_where .= ' and bm.`bookmarks_tree_id`=0'; }
+    if ($v_categoryID > 0)   { 
+    	$sql = "SELECT count(*) as cnt_cat FROM bookmarks_tree where parent_id = $v_categoryID";  
+		$res = Project::getDatabase()->selectCell($sql);
+		if($res) {$v_sql_where .= ' and bm.`bookmarks_tree_id` in (SELECT id FROM bookmarks_tree where parent_id = '.$v_categoryID.')';}    	
+    	else {$v_sql_where .= ' and bm.`bookmarks_tree_id`='.$v_categoryID; } 
+    }
+  	if ($v_categoryID == -1) { $v_sql_where .= ' and bm.`bookmarks_tree_id`=0'; }  
     if ($v_userID > 0)     { $v_sql_where .= " and bm.`user_id`=".$v_userID; }
     if ($v_tagID > 0)      { 
       $v_sql_tag = " RIGHT JOIN bookmarks_tags_links bm_tl ON bm.`id` = bm_tl.`bookmarks_id` "; 
@@ -51,7 +56,7 @@ class BookmarksModel extends BaseModel {
         bm.`creation_date`,
         bm.`views`,
         users.`login`,
-        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(' ▪ <a href=\"".Project::getRequest() -> createUrl('Bookmarks', 'BookmarksList', null, Project::getUser() -> getDbUser() ->  login)."/',bm.`id`, '/\">', bmt_pr.`name`, '</a> » ',bmt_ch.`name`)) as bookmark_category,
+        IF (bmt_pr.`name` is null, bmt_ch.`name`, CONCAT(' ▪ <a href=\"".Project::getRequest() -> createUrl('Bookmarks', 'BookmarksList', null, false)."/',bm.`id`, '/\">', bmt_pr.`name`, '</a> » ',bmt_ch.`name`)) as bookmark_category,
         count(bm_com.`id`) as count_comments
     FROM bookmarks bm
     LEFT JOIN users
@@ -67,7 +72,6 @@ class BookmarksModel extends BaseModel {
     ORDER BY bm.`creation_date` DESC
     LIMIT ?d, ?d  
     ";
-
     //$result = Project::getDatabase() -> select($sql, $v_userId);
 		$result = Project::getDatabase() -> 
         selectPage( $this -> _countRecords, 
