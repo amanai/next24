@@ -6,6 +6,8 @@
 				<li>
 					<?php if(($this->action=='SocialLastAddPos') || ($this->action=='SocialView')) { ?>
 						<a href="<?=$this->createUrl('Social', 'SocialMainList', array($item['id']))?>"><?=$item['name']?></a>
+					<? } elseif($this->action=='SocialPosAdd') { ?>
+						<a href="<?=$this->createUrl('Social', $this->action, array($item['id']))?>"><?=$item['name']?></a>						
 					<? } else { ?>
 						<a href="<?=$this->createUrl('Social', $this->action, array($item['id']))?>"><?=$item['name']?></a>
 					<? } ?>						
@@ -15,6 +17,8 @@
 				</li></ul class="nav-list">
 					<?php if(($this->action=='SocialLastAddPos') || ($this->action=='SocialView')) { ?>
 						<a href="<?=$this->createUrl('Social', 'SocialMainList', array($item['id']))?>"><?=$item['name']?></a>
+					<? } elseif($this->action=='SocialPosAdd') { ?>
+						<a href="<?=$this->createUrl('Social', $this->action, array($item['id']))?>"><?=$item['name']?></a>						
 					<? } else { ?>
 						<a href="<?=$this->createUrl('Social', $this->action, array($item['id']))?>"><?=$item['name']?></a>
 					<? } ?>						
@@ -26,6 +30,8 @@
 					<?php if($v_count) { ?>
 					<?php if(($this->action=='SocialLastAddPos') || ($this->action=='SocialView')) { ?>
 						<li><a href="<?=$this->createUrl('Social', 'SocialMainList', array($item['id']))?>"><?=$item['name']?></a></li>
+					<? } elseif($this->action=='SocialPosAdd') { ?>
+						<li><a href="<?=$this->createUrl('Social', 'SocialUserList', array($item['id']))?>"><?=$item['name']?></a></li>						
 					<? } else { ?>
 						<li><a href="<?=$this->createUrl('Social', $this->action, array($item['id']))?>"><?=$item['name']?></a></li>
 					<? } ?>	

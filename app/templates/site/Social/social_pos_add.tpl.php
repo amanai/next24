@@ -187,13 +187,12 @@ function doChangeCat() {
                    </select>
                 </td>
               </tr>
-            </table>
-              <tr id="id_div_vote2">
-                <td colspan="2" style="text-align: center;"><input type="submit" name="btn_submit" value="Создать"></td>
-              </tr>
-              
+            </table>           
           </td>
          </tr>
+         <tr id="id_div_vote2">
+         	<td colspan="2" style="text-align: center;"><input type="submit" name="btn_submit" value="Создать"></td>
+        </tr>          
         </table>  
         </form>
        </div>     
@@ -213,7 +212,14 @@ function doChangeCat() {
 					</div></div>
 					<!-- /main -->
 					<div class="sidebar">
-						<?php include($this -> _include('panel_control.tpl.php')); ?>				
+						<?php include($this -> _include('panel_control.tpl.php')); ?>	
+						<div class="navigation">
+							<div class="title">
+								<h2>Категории</h2>
+								<i title="Показать фильтр" class="filter-link icon show-filter-icon"></i>
+							</div>
+							<?php include($this -> _include('panel_category.tpl.php')); ?>
+						</div>									
 					</div>
 					<!-- /sidebar -->
 				</div>

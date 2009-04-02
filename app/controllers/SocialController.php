@@ -191,6 +191,7 @@ class SocialController extends SiteController {
       // -- Открытие формы для создания
 	  $country_model = new CountryModel;
 	  $country_list = $country_model -> loadAll();
+	  $this->_get_categories($data, $v_categoryID);
 	  $change_country_param = AjaxRequest::getJsonParam("SearchUser", "ChangeCountry", array('#id#')); 
 	  $this->_view->assign('country_list',$country_list); 
 	  $this->_view->assign('change_country_param',$change_country_param);    
