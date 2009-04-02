@@ -122,7 +122,19 @@
 									<li class="it ath">
 										<div class="dropdown">
 											<div class="d-head">
-												<a href="<?=$request->createUrl('Index','Index', null, $this->social_row[0]['login']); ;?>" class="with-icon-s"><i class="icon-s user-icon"></i><?=$this->social_row[0]['login']; ?></a><i class="arrow-icon vcard-icon"></i>
+											<?php 
+												$user = Project::getUser()->getDbUser()->getUserByLogin($this->social_row[0]['login']);
+												$avatar = Project::getUser()->getDbUser()->getUserAvatar($user['id']);
+												$avPath = $avatar['path'];
+												if(!$avPath || $avPath == 'no.png') $avPath = 'no50.jpg';
+												if($user['gender']) {
+													$class = 'user-icon';	
+												}
+												else {
+													$class = 'wuser-icon';
+												} 											
+											?>
+												<a href="<?=$request->createUrl('Index','Index', null, $this->social_row[0]['login']); ;?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$this->social_row[0]['login']; ?></a><i class="arrow-icon vcard-icon"></i>
 											</div>
 											<div class="d-body">
 												<ul>

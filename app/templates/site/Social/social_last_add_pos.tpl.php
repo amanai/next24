@@ -42,7 +42,13 @@
 									if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
 								?>									
 								<tr>
-									<td class="qv"><a href="<?=$this->createUrl('Social', 'SocialView', array($item['id']))?>" title="<?=$item['name'];?>"><?=$item['name'];?></a></td>
+									<td class="qv">
+										<a href="<?=$this->createUrl('Social', 'SocialView', array($item['id']))?>" title="<?=$item['name'];?>"><?=$item['name'];?></a>
+               							<?php if($item['id_product']) {?>
+               								<?php echo '('.$item['full_name'].')'; ?>
+               								<span style="cursor:pointer;cursor:hand;" onclick="Ycoord = <?=$item['Ycoord'];?>; Xcoord = <?=$item['Xcoord'];?>; window.open('http://next24.home/popup.html','map','toolbar=0,width=520,height=350,location=0,menubar=0,resizable=0,status=map'); return false;">посмотреть на карте</span>
+               							<?php }?>											
+									</td>
 									<td class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="avatar-link"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" alt="" class="avatar" style="width:25px; height: 25px;" /><span class="t"><?=$item['login']; ?></span></a></td>
 									<td class="an alt-an"><?=number_format($item['avg_rating'], 2, '.',' '); ?></td>
 									<td class="an"><?=$item['count_comments']; ?></td>

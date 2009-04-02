@@ -100,11 +100,17 @@ class SocialModel extends BaseModel {
         sp.`social_tree_id`,
         sp.`name`,
         sp.`creation_date`,
+        sp.`id_product`,
+        sp.`Xcoord`,
+        sp.`Ycoord`,
+        sp.`Zoom`,
+        prod.`full_name`,     
         users.`login`,
         IF (sct_pr.`name` is null, sct_ch.`name`, CONCAT(sct_pr.`name`, ' -> ',sct_ch.`name`)) as social_category,
         spc.avg_rating,
         count(sc_com.`id`) as count_comments
     FROM social_pos sp
+    LEFT JOIN `social_products_places` prod on sp.`id_product` = prod.`id` 
     LEFT JOIN users
       ON sp.`user_id` = users.`id`
     LEFT JOIN social_tree sct_ch
