@@ -9,7 +9,7 @@ $bpp = $request_keys['bpp']; ?>
 							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 						</ul>
 						<!-- /view-filter -->
-						<div class="display-filter clearfix">
+				<!-- 	<div class="display-filter clearfix">
 							<div class="number-filter">
 								показывать по: 
 							<?php if(!$bpp){ ?>
@@ -20,7 +20,7 @@ $bpp = $request_keys['bpp']; ?>
 									<a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksMostVisit', null, false); ?>">10</a> | <a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksMostVisit', null, false); ?>/bpp:20">20</a> | <strong>30</strong> закладок
 							<? } ?>
 							</div>
-						</div>
+						</div>	 -->
 						<!-- /display-filter -->
 						<ul class="question-preview-list question-abridged-preview-view bookmarks-preview-list">
 						<? foreach($this->bookmarks_list as $key => $item) { ?>

@@ -19,7 +19,7 @@
 						<!-- /view-filter -->
 						<div class="display-filter clearfix">
 							<div class="number-filter">
-								показывать по: <strong>10</strong> | <a href="#">20</a> | <a href="#">30</a> ответов
+								показывать по: <strong>10</strong> | <a href="#">20</a> | <a href="#">30</a> сервисов
 							</div>
 						</div>
 						<!-- /display-filter -->
@@ -35,9 +35,15 @@
 							</thead>
 							<tbody>
 								<? foreach($this->social_pos_list as $key => $item) { ?>
+								<?php 
+									$user = Project::getUser()->getDbUser()->getUserByLogin($item['login']);
+									$avatar = Project::getUser()->getDbUser()->getUserAvatar($user['id']);
+									$avPath = $avatar['path'];
+									if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
+								?>									
 								<tr>
 									<td class="qv"><a href="<?=$this->createUrl('Social', 'SocialView', array($item['id']))?>" title="<?=$item['name'];?>"><?=$item['name_cut'];?></a></td>
-									<td class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t"><?=$item['login']; ?></span></a></td>
+									<td class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="avatar-link"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" alt="" class="avatar" style="width:25px;height:25px;" /><span class="t"><?=$item['login']; ?></span></a></td>
 									<td class="an alt-an"><?=number_format($item['avg_rating'], 2, '.',' '); ?></td>
 									<td class="an"><?=$item['count_comments']; ?></td>
 									<td class="date"><?=date_format(new DateTime($item['creation_date']),'d.m.y H:i'); ?></td>								
