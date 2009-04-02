@@ -24,6 +24,7 @@ class SearchUserView extends BaseSiteView {
 			$response = Project::getAjaxResponse();
 			$this -> set($info);
 			$this -> setTemplate($this -> _dir, 'state_list.tpl.php');
+			$response -> block('city_div', true, '');
 			$response -> block('state_div', true, $this -> parse());
 			
 		/*	$info = array();

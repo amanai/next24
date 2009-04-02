@@ -452,7 +452,8 @@ class BookmarksController extends SiteController {
 		}
   	}
   	else {
-		$v_list_per_page = $v_session->getKey('bpp');
+  		if($v_session->getKey('bpp')) $v_list_per_page = $v_session->getKey('bpp');
+  		else $v_list_per_page = 10;
   	}	
     //$v_list_per_page = $this->getParam('bookmarks_per_page', 4);
     $v_DbPager = new DbPager($v_n_page, $v_list_per_page);
