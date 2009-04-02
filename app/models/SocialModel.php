@@ -163,7 +163,7 @@ class SocialModel extends BaseModel {
         IF (CHAR_LENGTH(sp.`name`)<=".self::C_MAX_LENGTH_NAME.", sp.`name`, CONCAT( LEFT(sp.`name`, ".self::C_MAX_LENGTH_NAME."), '...')) as name_cut,
         sp.`creation_date`,
         users.`login`,
-        IF (spt_pr.`name` is null, spt_ch.`name`, CONCAT(' ▪ <a href=\"".Project::getRequest() -> createUrl('Social', 'SocialMainList', null, Project::getUser() -> getDbUser() ->  login)."/',sp.`social_tree_id`,'\">',spt_pr.`name`, '</a> » ',spt_ch.`name`)) as social_category,
+        IF (spt_pr.`name` is null, spt_ch.`name`, CONCAT(' ▪ <a href=\"".Project::getRequest() -> createUrl('Social', 'SocialMainList', null, false)."/',spt_pr.`id`,'\">',spt_pr.`name`, '</a> » <a href=\"".Project::getRequest() -> createUrl('Social', 'SocialMainList', null, false)."/',sp.`social_tree_id`,'/\">',spt_ch.`name`,'</a> » ',sp.`name`)) as social_category,
         sc.`id` as criteria_id,
         sc.`name` as criteria_name,
         spcv.`votes_sum`,

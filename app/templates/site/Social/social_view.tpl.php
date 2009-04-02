@@ -62,44 +62,40 @@
 									<? $v_i = 1; ?>
 									<? if ($this->count_votes < 1) { ?>	
 								<form action="<?=$v_form_action;?>" method="post">
-           <? foreach($this->social_row as $key => $value) {?>
-             <td style="text-align: left; width: 200px;">
-               <?=$value['criteria_name'].' : ';?>
-               <select name="inp_select_<?=$v_i;?>" style="width: 40px;" id="vote<?=$v_i;?>">
-                 <option value="1">1</option>
-                 <option value="2">2</option>
-                 <option value="3">3</option>
-                 <option value="4">4</option>
-                 <option value="5" selected="">5</option>
-                 <option value="6">6</option>
-                 <option value="7">7</option>
-                 <option value="8">8</option>
-                 <option value="9">9</option>
-                 <option value="10">10</option>
-               </select>
-               <input type="hidden" name="inp_criteria_id_<?=$v_i;?>" value="<?=$value['criteria_id'];?>">
-             </td>
-             <? $v_i++; ?>
-           <? } ?>
 									<table>
 										<tbody>
-											<tr>
-												<th><label for="r1">Обслуживание</label></th>
-												<td><select id="r1"><option>1</option><option>2</option><option>3</option></select></td>
-												<th><label for="r2">Цена</label></th>
-												<td><select id="r2"><option>1</option><option>2</option><option>3</option></select></td>
-												<th><label for="r3">Качество</label></th>
-												<td><select id="r3"><option>1</option><option>2</option><option>3</option></select></td>
-											</tr>
-											<tr>
-												<th><label for="r4">Комфорт</label></th>
-												<td><select id="r4"><option>1</option><option>2</option><option>3</option></select></td>
-												<th><label for="r5">Новации</label></th>
-												<td><select id="r5"><option>1</option><option>2</option><option>3</option></select></td>
-												<td class="button" colspan="2"><input type="submit" value="Оценить" /></td>
-											</tr>
-										</tbody>
-									</table>
+           								<? foreach($this->social_row as $key => $value) {?>
+           								<? if(!$key%3) { ?>
+           									<tr>
+           								<? } ?>	
+           									<th>
+           										<label for="vote<?=$v_i;?>"><?=$value['criteria_name'];?></label>
+           									</th>
+             								<td>
+               									<select name="inp_select_<?=$v_i;?>" id="vote<?=$v_i;?>">
+                									<option value="1">1</option>
+                 									<option value="2">2</option>
+                 									<option value="3">3</option>
+                 									<option value="4">4</option>
+                 									<option value="5" selected="">5</option>
+                 									<option value="6">6</option>
+                 									<option value="7">7</option>
+                 									<option value="8">8</option>
+                 									<option value="9">9</option>
+                 									<option value="10">10</option>
+               									</select>
+               									<input type="hidden" name="inp_criteria_id_<?=$v_i;?>" value="<?=$value['criteria_id'];?>">
+             								</td>
+           								<? if(!$key%3) { ?>
+           									</tr>
+           								<? } ?>	             								
+             								<? $v_i++; ?>
+           								<? } ?>
+           								<tr>
+           									<td class="button" colspan="2"><input type="submit" name="inp_submit_vote" value="Оценить" /></td>
+           								</tr>
+           								</tbody>
+           							</table>	
 								</form>	
 								<? } else { ?>
 									Вы уже проголосовали.
@@ -137,7 +133,12 @@
 												</ul>
 											</div>
 										</div>
-										<span class="user-status"><span class="online">online</span><span class="nr">245 nr</span></span>
+										<?php 
+											$user = Project::getUser()->getDbUser()->getUserByLogin($this->social_row[0]['login']);
+											$online = Project::getUser()->getDbUser()->isUserOnline($user['id']);
+											
+										?>
+										<span class="user-status"><span class="online"><?=($online)?'online':'offline';?></span><span class="nr">245 nr</span></span>
 									</li>
 									<li class="it date"><?=date_format(new DateTime($this->social_row[0]['creation_date']),'d.m.y H:i'); ?></li>
 									<li class="it com">
