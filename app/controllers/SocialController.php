@@ -50,8 +50,15 @@ class SocialController extends SiteController {
     } else {
       $v_sort_rating = $v_session -> getKey('social_sort_rating', null);
     }
+    $v_sort_type = null;
+	if ($v_request->type != null)  {
+      $v_sort_type = strtoupper($v_request->type); 
+      $v_session -> add('social_type_sort_rating', $v_sort_type);
+    } else {
+      $v_sort_type = $v_session -> getKey('social_type_sort_rating', null);
+    }         
     $data['str_find'] = $v_str_find;
-		$this->_getData($data, 'SocialMainList', $v_categoryID, $v_n_page, 0, $v_str_find, $v_sort_rating);
+		$this->_getData($data, 'SocialMainList', $v_categoryID, $v_n_page, 0, $v_str_find, $v_sort_rating, $v_sort_type);
 	  $this->_get_categories($data, $v_categoryID);
 	  $this->_getSelectedCategory($data, $v_categoryID);
     $this->_view->assign('tab_list', TabController::getSocialTabs(true, false)); // Show tabs
@@ -297,7 +304,7 @@ class SocialController extends SiteController {
   /**
   * Формирование всех основных данных для HTML-форм
   */
-  protected function _getData( &$data, $p_action, $p_categoryID = null, $p_n_page = null, $p_userID = null, $p_str_find = null, $p_sort_rating =null) {
+  protected function _getData( &$data, $p_action, $p_categoryID = null, $p_n_page = null, $p_userID = null, $p_str_find = null, $p_sort_rating =null, $p_sort_type = null) {
     $v_categoryID = (int)$p_categoryID;
     $v_n_page     = (int)$p_n_page;
     $v_userID     = (int)$p_userID;
@@ -323,7 +330,7 @@ class SocialController extends SiteController {
    // $v_list_per_page = $this->getParam('social_pos_per_page', 4);
     $v_DbPager = new DbPager($v_n_page, $v_list_per_page);
     $v_model -> setPager($v_DbPager);
-    $data['social_pos_list'] = $v_model->loadSocialPosList($v_categoryID, $v_userID, $p_str_find, $p_sort_rating);
+    $data['social_pos_list'] = $v_model->loadSocialPosList($v_categoryID, $v_userID, $p_str_find, $p_sort_rating, $p_sort_type);
     $v_pager_view = new SitePagerView();
     // Формируем объект-постраничный вывод
     $data['social_pos_list_pager'] = $v_pager_view->show2($v_model->getPager(), 'Social', $p_action, array($v_categoryID));

@@ -16,11 +16,10 @@ class SocialModel extends BaseModel {
      $p_categoryID - ID категории
      $p_userID - ID пользователя (для "Каталог соц.позиций" $p_userID=null, "Мои соц.позиции" - $p_userID>0)
   */
-  public function loadSocialPosList($p_categoryID = null, $p_userID = null, $p_str_find = null, $p_sort_rating = null){
+  public function loadSocialPosList($p_categoryID = null, $p_userID = null, $p_str_find = null, $p_sort_rating = null, $p_sort_type = null){
     $v_categoryID = (int)$p_categoryID;
     $v_userID     = (int)$p_userID;
     $v_sql_where = " 1=1 ";
-    $v_sql_order = ' ORDER BY avg_rating DESC, sp.`creation_date` DESC ';
     if ($v_categoryID > 0)   { 
     	$sql = "SELECT count(*) as cnt_cat FROM social_tree where parent_id = $v_categoryID";  
 		$res = Project::getDatabase()->selectCell($sql);
@@ -30,8 +29,27 @@ class SocialModel extends BaseModel {
     if ($v_categoryID == -1) { $v_sql_where .= ' and sp.`social_tree_id`=0'; }
     if ($v_userID > 0)       { $v_sql_where .= ' and sp.`user_id`='.$v_userID; }
     if ($p_str_find != null ){ $v_sql_where .= ' and lower(sp.`name`) like lower("%'.$p_str_find.'%")'; }
-    if ($p_sort_rating == 'ASC' ) { $v_sql_order = ' ORDER BY avg_rating ASC '; }
-    if ($p_sort_rating == 'DESC' ) { $v_sql_order = ' ORDER BY avg_rating DESC '; }
+    if ($p_sort_type) {
+    	switch ($p_sort_type) {
+    		case 'AUTHOR':
+    			$v_sql_order = ' ORDER BY users.`login` ';
+    		break;
+    		case 'REIT':
+    			$v_sql_order = ' ORDER BY avg_rating ';
+    		break;
+    		case 'REPLY':
+    			$v_sql_order = ' ORDER BY count_comments ';
+    		break;
+    		case 'CREATE':	
+    			$v_sql_order = ' ORDER BY creation_date ';
+    		break;		 	
+    	}
+    	if ($p_sort_rating == 'ASC' ) { $v_sql_order .= ' ASC '; }
+    	if ($p_sort_rating == 'DESC' ) { $v_sql_order .= ' DESC '; }
+    }
+    else {
+    	$v_sql_order = ' ORDER BY avg_rating DESC, sp.`creation_date` DESC ';	
+    }
     $sql = "
     SELECT
         sp.`id`,
@@ -74,7 +92,7 @@ class SocialModel extends BaseModel {
     ".$v_sql_order."
     LIMIT ?d, ?d  
     ";
-
+	//echo $sql;
     //$result = Project::getDatabase() -> select($sql, $v_userId);
 		$result = Project::getDatabase() -> 
         selectPage( $this -> _countRecords, 

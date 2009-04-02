@@ -44,10 +44,10 @@
 							<thead>
 								<tr>
 									<th class="main-row">Название</th>
-									<th><a class="script-link" href="#"><span class="t">Автор</span></a></th>
-									<th><span><a class="script-link" href="<?php echo $this->createUrl('Social', 'SocialMainList').(($request->inp_sort=='asc')?'&inp_sort=desc':'&inp_sort=asc');?>"><span class="t">Рейтинг</span></a></span></th>
-									<th><span class="sort-by-this"><a class="script-link" href="#"><span class="t">Отзывы</span><i class="arrow-icon"></i></a></span></th>
-									<th><a class="script-link" href="#"><span class="t">Дата создания</span></a></th>
+									<th><a class="script-link" href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).((($request->inp_sort=='asc')&&($request->type=='author'))?'/inp_sort:desc/type:author':'/inp_sort:asc/type:author'); ?>"><span class="t">Автор</span></a></th>
+									<th><span><a class="script-link" href="<?php echo $this->createUrl('Social', 'SocialMainList').((($request->inp_sort=='asc')&&($request->type=='reit'))?'/inp_sort:desc/type:reit':'/inp_sort:asc/type:reit');?>"><span class="t">Рейтинг</span></a></span></th>
+									<th><span class="sort-by-this"><a class="script-link" href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).((($request->inp_sort=='asc')&&($request->type=='reply'))?'/inp_sort:desc/type:reply':'/inp_sort:asc/type:reply'); ?>"><span class="t">Отзывы</span><i class="arrow-icon"></i></a></span></th>
+									<th><a class="script-link" href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).((($request->inp_sort=='asc')&&($request->type=='create'))?'/inp_sort:desc/type:create':'/inp_sort:asc/type:create'); ?>"><span class="t">Дата создания</span></a></th>
 								</tr>
 							</thead>
 							<tbody>
