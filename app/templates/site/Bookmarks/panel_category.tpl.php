@@ -36,12 +36,3 @@
 		<? } ?>
 	<? } ?>		
 </ul>
-<? if ($this->show_imported_bookmarks == true) { ?>
-  <div class="block_title" style="margin-top: 5px;"><p style="text-indent: 12px;">
-  <? if ($this->category_row[0]['id'] == -1) { ?>
-    Импортированные
-  <? } else { ?>
-    <a href="<?php echo $this->createUrl('Bookmarks', $this->action, array('imported'));?>" >Импортированные</a>
-  <? } ?>
-  </p></div>
-<? } ?>
