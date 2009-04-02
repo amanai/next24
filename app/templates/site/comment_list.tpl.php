@@ -106,7 +106,7 @@ if ($this -> user_id && $this->allowComment){
 					</select>
 				</td>
 				<td class="select-field big-select-field">
-					<select id="mood_id" name="mood_id" onchange="commentMoodCheck();">
+					<select id="mood_id" name="mood_id" onchange="commentMoodCheck();" >
 			    		<option value="0"> [Введите текст настроения, или выберите имеющиеся] </option>
 						<?php
 							foreach ($this->user_moods as $mood){
@@ -114,12 +114,16 @@ if ($this -> user_id && $this->allowComment){
 							}
 						?>
 					</select>
-					<input type="text" id="mood_text" name="mood_text" maxlength="100" style="width: 200px;" />
 				</td>
 				<td class="input-field">
 					<input type="text" value="Авто, Гонки, Погонять" />
 				</td>
 				<td class="button-field"><input name="add_comment" type="submit" value="Комментировать" /></td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align: center;">
+					<input type="text" id="mood_text" name="mood_text" maxlength="100" style="width: 335px;" />
+				</td>
 			</tr>
 		</table>
 	</form>
