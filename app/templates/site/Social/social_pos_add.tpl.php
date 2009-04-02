@@ -116,6 +116,7 @@ function doChangeCat() {
          				<span class="field">	
          					<label for="country" class="label">Страна</label>
 							<select name="country" id="country" onChange='changeList(<?=$this->change_country_param;?>, this);' class="field">
+								<option value="0">не важно</option>
 							<?php foreach($this -> country_list as $item) { ?>
 								<option value="<?php echo $item['id'];?>" <?php if ((int)$this -> helper -> country === (int)$item['id']){ echo 'selected="selected"';}?>><?php echo $item['name'];?></option>
 							<?php } ?>
