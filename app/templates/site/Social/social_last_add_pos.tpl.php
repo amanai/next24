@@ -17,11 +17,11 @@
 							</ul>
 						</div>
 						<!-- /view-filter -->
-				<!--  	<div class="display-filter clearfix">
+					  	<div class="display-filter clearfix">
 							<div class="number-filter">
 								показывать по: <strong>10</strong> | <a href="#">20</a> | <a href="#">30</a> ответов
 							</div>
-						</div>	-->
+						</div>	
 						<!-- /display-filter -->
 						<table class="stat-table">
 							<thead>

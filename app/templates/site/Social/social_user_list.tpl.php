@@ -36,6 +36,12 @@
 							</thead>
 							<tbody>
 								<? foreach($this->social_pos_list as $key => $item) { ?>
+								<?php 
+									$user = Project::getUser()->getDbUser()->getUserByLogin($item['login']);
+									$avatar = Project::getUser()->getDbUser()->getUserAvatar($user['id']);
+									$avPath = $avatar['path'];
+									if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
+								?>									
 								<tr>
 									<td class="qv"><a href="<?=$this->createUrl('Social', 'SocialView', array($item['id']))?>" title="<?=$item['name'];?>"><?=$item['name_cut'];?></a>
                							<?php if($item['id_product']) {?>
@@ -43,7 +49,7 @@
                								<span style="cursor:pointer;cursor:hand;" onclick="Ycoord = <?=$item['Ycoord'];?>; Xcoord = <?=$item['Xcoord'];?>; window.open('http://next24.home/popup.html','map','toolbar=0,width=520,height=350,location=0,menubar=0,resizable=0,status=map'); return false;">посмотреть на карте</span>
                							<?php }?>																		
 									</td>
-									<td class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t"><?=$item['login']; ?></span></a></td>
+									<td class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="avatar-link"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" alt="" style="width:25px;height:25px;" class="avatar" /><span class="t"><?=$item['login']; ?></span></a></td>
 									<td class="an alt-an"><?=number_format($item['avg_rating'], 2, '.',' '); ?></td>
 									<td class="an"><?=$item['count_comments']; ?></td>
 									<td class="date"><?=date_format(new DateTime($item['creation_date']),'d.m.y H:i'); ?></td>
