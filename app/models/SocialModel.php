@@ -21,7 +21,12 @@ class SocialModel extends BaseModel {
     $v_userID     = (int)$p_userID;
     $v_sql_where = " 1=1 ";
     $v_sql_order = ' ORDER BY avg_rating DESC, sp.`creation_date` DESC ';
-    if ($v_categoryID > 0)   { $v_sql_where .= ' and sp.`social_tree_id`='.$v_categoryID; }
+    if ($v_categoryID > 0)   { 
+    	$sql = "SELECT count(*) as cnt_cat FROM social_tree where parent_id = $v_categoryID";  
+		$res = Project::getDatabase()->selectCell($sql);
+		if($res) {$v_sql_where .= ' and sp.`social_tree_id` in (SELECT id FROM social_tree where parent_id = '.$v_categoryID.')';}    	
+    	else {$v_sql_where .= ' and sp.`social_tree_id`='.$v_categoryID; }     	 
+    }
     if ($v_categoryID == -1) { $v_sql_where .= ' and sp.`social_tree_id`=0'; }
     if ($v_userID > 0)       { $v_sql_where .= ' and sp.`user_id`='.$v_userID; }
     if ($p_str_find != null ){ $v_sql_where .= ' and lower(sp.`name`) like lower("%'.$p_str_find.'%")'; }
