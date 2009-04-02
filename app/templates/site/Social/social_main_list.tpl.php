@@ -29,6 +29,7 @@
 						<!-- /view-filter -->
 						<div class="display-filter clearfix">
 							<div class="number-filter">
+							показывать по:
 							<?php if(!$spp || $spp == 10){ ?>
 									<strong>10</strong> | <a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).$add; ?>/spp:20">20</a> | <a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).$add; ?>/spp:30">30</a> сервисов
 							<?php }elseif($spp == 20) { ?>
