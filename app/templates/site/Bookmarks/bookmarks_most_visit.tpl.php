@@ -41,7 +41,10 @@ $bpp = $request_keys['bpp']; ?>
 								<dl>
 									<dt><a href="<?=$this->createUrl('Bookmarks', 'BookmarksView', array($item['id']))?>" title="<?=$item['title'].' ('.$item['url'].')';?>"><?=$item['title_cut'];?></a></dt>
 									<dd class="breadcrumbs">
-										<?=$item['bookmark_category']; ?> 
+										<?php 
+											if($item['bookmark_category'])echo $item['bookmark_category'];
+											else echo 'Импортированные';										
+										?>
 									</dd>
 									<dd class="auth">добавил: <a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>"><img class="avatar" src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width: 50px; height: 50px;" alt="" /></a><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s <?=$class;?>"></i><?=$item['login']; ?></a></dd>
 								 	<dd class="date"><?=date_format(new DateTime($item['creation_date']),'j M Y, H:i'); ?></dd>
