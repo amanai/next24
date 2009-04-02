@@ -302,7 +302,25 @@ class SocialController extends SiteController {
     $v_n_page     = (int)$p_n_page;
     $v_userID     = (int)$p_userID;
     $v_model      = new SocialModel();
-    $v_list_per_page = $this->getParam('social_pos_per_page', 4);
+   	$v_request = Project::getRequest();
+   	$v_session = Project::getSession(); 
+	$request_keys = $v_request->getKeys();
+	$socials_per_page = $request_keys['spp'];
+	if($socials_per_page) {
+		if(in_array($socials_per_page,array(10,20,30))) {
+			$v_session->add('spp',$socials_per_page);	
+			$v_list_per_page = $socials_per_page;
+		}
+		else {
+			$v_list_per_page = 10;
+			$v_session->add('spp',$v_list_per_page);	
+		}
+  	}
+  	else {
+  		if($v_session->getKey('spp')) $v_list_per_page = $v_session->getKey('spp');
+  		else $v_list_per_page = 10;
+  	}	    
+   // $v_list_per_page = $this->getParam('social_pos_per_page', 4);
     $v_DbPager = new DbPager($v_n_page, $v_list_per_page);
     $v_model -> setPager($v_DbPager);
     $data['social_pos_list'] = $v_model->loadSocialPosList($v_categoryID, $v_userID, $p_str_find, $p_sort_rating);

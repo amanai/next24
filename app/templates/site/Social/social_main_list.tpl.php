@@ -1,6 +1,16 @@
 <!-- TEMPLATE: "Каталог социальных позиций(разделов)" - основная вкладка раздела соц.позиции -->
 <?php include($this -> _include('../header.tpl.php')); ?>
-<?php $request = Project::getRequest(); ?>
+<?php $request = Project::getRequest(); 
+	$v_categoryID = $request->getKeyByNumber(0);
+	if($v_categoryID) {
+		$add = '/'.$v_categoryID.'';
+	}
+	else {
+		$add = '';
+	}
+	$v_session = Project::getSession(); 
+	$spp = $v_session->getKey('spp'); 
+?>
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
 						<div class="view-filter clearfix">
@@ -19,7 +29,13 @@
 						<!-- /view-filter -->
 						<div class="display-filter clearfix">
 							<div class="number-filter">
-								показывать по: <strong>10</strong> | <a href="#">20</a> | <a href="#">30</a> сервисов
+							<?php if(!$spp || $spp == 10){ ?>
+									<strong>10</strong> | <a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).$add; ?>/spp:20">20</a> | <a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).$add; ?>/spp:30">30</a> сервисов
+							<?php }elseif($spp == 20) { ?>
+									<a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).$add; ?>/spp:10">10</a> | <strong>20</strong> | <a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).$add; ?>/spp:30">30</a> сервисов
+							<?php } elseif($spp == 30) { ?>	
+									<a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).$add; ?>/spp:10">10</a> | <a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false).$add; ?>/spp:20">20</a> | <strong>30</strong> сервисов
+							<? } ?>							
 							</div>
 						</div>
 						<!-- /display-filter -->
