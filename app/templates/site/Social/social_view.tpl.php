@@ -57,7 +57,7 @@
 								<? $a=1; ?>
 								<?php $v_form_action = $this->createUrl('Social', 'SocialVoteAdd', array($this->social_row[0]['id'])); ?>
 								<? if ($this->count_comment == 0) { ?>
-									Для того, чтобы иметь возможность оценить позицию вам необходимо оставить хотя бы один комментарий к ней.
+									<div style="text-align:center;width:100%;padding-top:27px;">Для того, чтобы иметь возможность оценить позицию вам необходимо оставить хотя бы один комментарий к ней.</div>
 								<? } else { ?>
 									<? $v_i = 1; ?>
 									<? if ($this->count_votes < 1) { ?>	
@@ -98,7 +98,7 @@
            							</table>	
 								</form>	
 								<? } else { ?>
-									Вы уже проголосовали.
+									<div style="text-align:center;width:100%;padding-top:27px;">Вы уже проголосовали.</div>
            						<? } ?>
          					<? } ?>													
 								</div>
@@ -136,9 +136,9 @@
 										<?php 
 											$user = Project::getUser()->getDbUser()->getUserByLogin($this->social_row[0]['login']);
 											$online = Project::getUser()->getDbUser()->isUserOnline($user['id']);
-											
+											$nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($user['id']);				
 										?>
-										<span class="user-status"><span class="online"><?=($online)?'online':'offline';?></span><span class="nr">245 nr</span></span>
+										<span class="user-status"><span class="online"><?=($online)?'online':'offline';?></span><span class="nr"><?=$nr['rate'];?> nr</span></span>
 									</li>
 									<li class="it date"><?=date_format(new DateTime($this->social_row[0]['creation_date']),'d.m.y H:i'); ?></li>
 									<li class="it com">
