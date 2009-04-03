@@ -4,14 +4,14 @@
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
 						<div class="view-filter clearfix">
-							<form class="search-filter" name="frm_find" method="post" action="<?php echo $this->createUrl('Social', 'SocialMainList');?>">
+					<!--  	<form class="search-filter" name="frm_find" method="post" action="<?php echo $this->createUrl('Social', 'SocialMainList');?>">
 								<fieldset>
 									<label for="sf1">Поиск по имени:</label>
 									<input type="text" id="sf1" value="Введиите имя" size="45" name="inp_find" value="<?=$this->str_find; ?>" />
 									<input type="submit" name="btn_find" value="Ok" />
 								</fieldset>
 								<input type="hidden" name="inp_hide" value="find">
-							</form>
+							</form>		-->
 							<ul class="clearfix">
 								<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 							</ul>
@@ -108,14 +108,15 @@
 								
 							</div>
 							<!-- /post-content -->
-							<div class="tag-list">
-								<i class="icon tags-list-icon"></i>
+						  	<div class="tag-list">
+							<!--  <i class="icon tags-list-icon"></i>
 								<ul>
 									<li><a href="#" rel="tag">apple</a>,</li>
 									<li><a href="#" rel="tag">mac</a>,</li>
 									<li><a href="#" rel="tag">pc</a></li>
-								</ul>
-							</div>
+								</ul>	-->
+								&nbsp;
+							</div>	
 							<!-- /tag-list -->
 							<div class="post-meta"><div class="bg"><div class="bg clearfix">
 								<ul>
