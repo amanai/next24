@@ -221,9 +221,26 @@ class SocialController extends SiteController {
             if($v_request->type_prod) {
             	$v_model->id_product     = $v_request->id_product;		  	
             }            
-            if($v_request->type_place) {         
-           		$address = urlencode($v_request->address);
-                $Coords = file_get_contents('http://maps.google.com/maps/geo?q='.$address.'&output=csv&key=abcdefg');
+            if($v_request->type_place) {    
+            	$country_model = new CountryModel();
+            	$state_model = new StateModel();
+            	$city_model = new CityModel();
+            	
+            	$country = $country_model->getCountryNameById($v_request->country);
+            	if($country) $country.=', ';
+            	$state = $state_model->getStateNameById($v_request->select_social_state);
+            	if($state) $state.=', ';
+            	$city = $city_model->getCityNameById($v_request->select_social_city); 
+            	if($city) $city.=', ';   
+            	$street = $v_request->street;
+            	if($street) $street.=', ';
+            	$house = $v_request->house;
+            	if($house) $house.=', '; 
+           		$address = urlencode($country.$state.$city.$street.$house);
+           		//echo $address;
+                $Coords = file_get_contents('http://maps.google.com/maps/geo?q='.$address.'&output=csv&key=ABQIAAAAIMN2iaCMFuGQ7iw1w3khQhRJcbERdBxj2ey4tItiMN02nh3_tBSPZ_cpbhowAtSVcVvvdpej4XMW1Q');
+                //home ABQIAAAAIMN2iaCMFuGQ7iw1w3khQhR-v9yHoD50evrZ-pbO1wgn-sHpRBTCwGDBW1h8fK3f31phKFZTanuxDA
+                //site ABQIAAAAIMN2iaCMFuGQ7iw1w3khQhRJcbERdBxj2ey4tItiMN02nh3_tBSPZ_cpbhowAtSVcVvvdpej4XMW1Q
     			list($status,$Zoom,$Xcoord,$Ycoord) = split(',',$Coords);
 				if($status == 200) {
 					$v_model->Xcoord = $Xcoord;

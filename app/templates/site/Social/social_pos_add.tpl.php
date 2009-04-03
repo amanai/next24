@@ -104,14 +104,14 @@ function doChangeCat() {
          		<b>Тип позиции :</b>     		
          	</td>
          	<td style="text-align: left;">
-         		Продукт <input type="checkbox" name="type_prod" value="1" onclick="if(this.checked){getElementById('type_num').style.display='block'; getElementById('type_place').style.display='block';} else {getElementById('type_num').style.display='none'; getElementById('type_place').style.display='none'; getElementById('address').style.display='none';}" />
+         		Продукт <input type="checkbox" name="type_prod" value="1" onclick="if(this.checked){getElementById('type_num').style.display='block'; getElementById('type_place').style.display='block';} else {getElementById('type_num').style.display='none'; getElementById('type_place').style.display='none'; getElementById('address').style.display='none'; getElementById('chk_type_place').checked='';}" />
          		<select name=id_product id="type_num" style="display: none;">
          			<?php foreach($this->_stack['product_places'] as $key => $value) {
          				echo '<option value="'.$key.'">'.$value['full_name'].'</option>';
          			}?>   
          		</select> 
          		<div id="type_place" style="display: none;">      		
-         				Место <input type="checkbox" name="type_place" value="1"  onclick="if(this.checked){getElementById('address').style.display='block';} else {getElementById('address').style.display='none';}" />
+         				Место <input id="chk_type_place" type="checkbox" name="type_place" value="1"  onclick="if(this.checked){getElementById('address').style.display='block';} else {getElementById('address').style.display='none';}" />
          			<div id="address" style="display: none;">	
          				<span class="field">	
          					<label for="country" class="label">Страна</label>
@@ -126,8 +126,9 @@ function doChangeCat() {
 						</div>
 						<div id="city_div">			
 						</div>
-         				<span>
-         					<b>Адрес :</b> <input type="text" value=""	name="address" />
+         				<span id="street_house" style="display:none;">
+         					улица : <input type="text" value=""	name="street" /> 
+         					дом : <input type="text" value="" name="house" style="width:25px;"/>
          				</span> 
          			</div>							
 				</div>											       			   		
