@@ -155,7 +155,8 @@
 									</li>
 									<li class="it date"><?=date_format(new DateTime($this->social_row[0]['creation_date']),'d.m.y H:i'); ?></li>
 									<li class="it com">
-										<a href="#" class="with-icon-s"><i class="icon-s commets-icon"></i>23</a>
+										<?php $comment_num = count($this->comment_list); ?>
+										<a href="#" class="with-icon-s"><i class="icon-s commets-icon"></i><?=$comment_num; ?></a>
 									</li>
 								</ul>
 							</div></div></div>

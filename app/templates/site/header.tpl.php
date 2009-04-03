@@ -34,9 +34,14 @@
 				<!-- /site-info -->
 
 				<div class="user-bar clearfix">
+				<?php 
+				//	$v_session = Project::getSession();
+				//	print '<pre>!!!!!!!!!!!!!!';
+				//		 print_r($v_session -> getKey('logged', false));
+				//	print '</pre>';	 				
+				?>
 				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
 				<?php 
-	
 					$nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($this->current_user->id);				
 				?>
 					<ul>
@@ -86,7 +91,7 @@
 					<li <? if($currentController=='Blog') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Blog', 'PostList', null, false); ?>"><i class="icon blogs-icon"></i>Блоги</a></li>
 					<li <? if($currentController=='Social') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false); ?>"><i class="icon social-icon"></i>Социальные сервисы</a></li>
 					<li <? if($currentController=='Bookmarks') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>"><i class="icon bookmarks-icon"></i>Закладки</a></li>
-					<li <? if($currentController=='SearchUser') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('SearchUser','SearchUserMain'); ?>"><i class="icon friends-icon"></i>Найти знакомых</a></li>
+					<li <? if($currentController=='SearchUser') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('SearchUser','SearchUserMain',null,false); ?>"><i class="icon friends-icon"></i>Найти знакомых</a></li>
 				</ul>
 				<!-- /menu -->
 
