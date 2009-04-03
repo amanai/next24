@@ -22,7 +22,7 @@
 							<p class="bookmark-meta">добавил: <a href="<?=$request->createUrl('Index','Index', null, $this->bookmark_row['login']);?>"><?=$this->bookmark_row['login']; ?></a>, <span class="date"><?=date_format(new DateTime($this->bookmark_row['creation_date']),'d.m.y H:i'); ?></span></p>
 							<div class="bookmark-info">
 								<div class="bookmark-screen">
-									<img src="assets/i/temp/mail.jpg" alt="" />
+									<img src="http://thumbnailspro.com/thumb.php?url=<?=$this->bookmark_row['url'];?>&s=290&full=213" alt="" />
 								</div>
 								<a href="<?=$this->bookmark_row['url'];?>" title="<?=$this->bookmark_row['url'];?>" target="_blank"><?=$this->bookmark_row['url_cut'];?></a>
 							</div>

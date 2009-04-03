@@ -64,7 +64,6 @@ function doChangeCat() {
 		<div id="tabs">
 <!-- вывод контента в самой странице (TabPage) - содержимого -->
 <div class="tab-page tab-page-selected">
-  
 <!-- Вывод строки закладки -->
    <div class="block_ee1">
     <div class="block_ee2">
