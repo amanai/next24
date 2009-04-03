@@ -38,6 +38,26 @@ class SocialView extends BaseSiteView {
     $this->setTemplate(null, 'social_pos_add.tpl.php');
     $this->set($data);
   }
+	public function ChangeCountry($info){
+			$response = Project::getAjaxResponse();
+			$this -> set($info);
+			$this -> setTemplate($this -> _dir, 'state_list.tpl.php');
+			$response -> block('city_div', true, '');
+			$response -> block('state_div', true, $this -> parse());
+			
+		/*	$info = array();
+			$info['city_list'] = array();
+			$this -> set($info);
+			$this -> setTemplate($this -> _dir, 'city_list.tpl.php');
+			$response -> block('city_div', true, $this -> parse()); */
+		}
+		
+	public function ChangeState($info){
+			$response = Project::getAjaxResponse();
+			$this -> set($info);
+			$this -> setTemplate($this -> _dir, 'city_list.tpl.php');
+			$response -> block('city_div', true, $this -> parse());
+		}    
 }
 
 ?>

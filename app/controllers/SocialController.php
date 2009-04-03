@@ -192,7 +192,7 @@ class SocialController extends SiteController {
 	  $country_model = new CountryModel;
 	  $country_list = $country_model -> loadAll();
 	  $this->_get_categories($data, $v_categoryID);
-	  $change_country_param = AjaxRequest::getJsonParam("SearchUser", "ChangeCountry", array('#id#')); 
+	  $change_country_param = AjaxRequest::getJsonParam("Social", "ChangeCountry", array('#id#')); 
 	  $this->_view->assign('country_list',$country_list); 
 	  $this->_view->assign('change_country_param',$change_country_param);    
       $this->_view->__set('product_places',$v_sp_model->getProductPlaces());
@@ -403,6 +403,41 @@ class SocialController extends SiteController {
       $v_sc_model->save();
     }
   }
+ 
+	public function ChangeCountryAction(){
+		$request = Project::getRequest();
+		$country_id = $request -> getKeyByNumber(0);
+		if($country_id) {
+			$info = array();
+			$state_model = new StateModel();
+			$info['state_list'] = $state_model -> loadByCountry($country_id);
+			$info['change_state_param'] = AjaxRequest::getJsonParam("Social", "ChangeStates", array('#id#'));
+			$this -> _view -> ChangeCountry($info);
+			$this -> _view -> ajax();
+		}
+		else {
+			$response = Project::getAjaxResponse();	
+			$response -> block('state_div', true, '');	
+			$response -> block('city_div', true, '');
+			$this -> _view -> ajax();
+		}	
+	}  
+	public function ChangeStatesAction(){
+		$request = Project::getRequest();
+		$state_id = $request -> getKeyByNumber(0);
+		if($state_id) {
+			$info = array();
+			$state_model = new CityModel();
+			$info['city_list'] = $state_model -> loadByState($state_id);
+			$this -> _view -> ChangeState($info);
+			$this -> _view -> ajax();
+		}
+		else {
+			$response = Project::getAjaxResponse();	
+			$response -> block('city_div', true, '');
+			$this -> _view -> ajax();
+		}				
+	}	    
     
 }
 
