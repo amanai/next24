@@ -7,7 +7,7 @@
 					<?php if(($this->action=='BookmarksMostVisit') || ($this->action=='BookmarksView')) { ?>
 						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']),false)?>"><?=$item['name']?></a>				
 					<? } else { ?>
-						<a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']),false)?>"><?=$item['name']?></a>
+						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksUser', array($item['id']),false)?>"><?=$item['name']?></a>
 					<? } ?>							
 					<ul class="nav-list">										
 			<? } ?>
@@ -16,7 +16,7 @@
 					<?php if(($this->action=='BookmarksMostVisit') || ($this->action=='BookmarksView')) { ?>
 						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']),false)?>"><?=$item['name']?></a>				
 					<? } else { ?>
-						<a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']),false)?>"><?=$item['name']?></a>
+						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksUser', array($item['id']),false)?>"><?=$item['name']?></a>
 					<? } ?>				
 				<ul></li>	
 			<? } else { ?>
@@ -27,7 +27,7 @@
 						<?php if(($this->action=='BookmarksMostVisit') || ($this->action=='BookmarksView')) { ?>
 							<li><a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']),false)?>"><?=$item['name']?></a></li>					
 						<? } else { ?>
-							<li><a href="<?=$this->createUrl('Bookmarks', $this->action, array($item['id']),false)?>"><?=$item['name']?></a></li>
+							<li><a href="<?=$this->createUrl('Bookmarks', 'BookmarksUser', array($item['id']),false)?>"><?=$item['name']?></a></li>
 						<? } ?>
 					<? } ?>	
 				<? } ?>	

@@ -373,6 +373,7 @@ class BookmarksController extends SiteController {
     $data['is_show_message'] = ($p_is_message == true) ? true : false;
     $data['import_make_url'] = $v_request -> createUrl('Bookmarks', 'BookmarksImportMake');
     $data['max_file_upload_size'] = self::C_MAX_FILE_UPLOAD_SIZE;
+    $this->_get_catalogs($data, $v_categoryID);
     $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,true,false,false,false,false));
    // $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, false, true)); // Show tabs
     $this->_view->Bookmarks_Import($data);
