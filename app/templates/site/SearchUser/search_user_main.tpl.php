@@ -31,7 +31,9 @@
 									<?php 
 									//onchange="changeList(=AjaxRequest::getJsonParam("SearchUser", "ChangeCountry", array('#id#'));, this);"
 									//echo AjaxRequest::getJsonParam("SearchUser", "ChangeCountry", array('#id#'));
-									
+									//print '<pre>';
+									//	print_r(AjaxRequest::getParam());
+									//print '</pre>';	
 									?>
 										<label for="country" class="label">Страна</label>
 										<select id="country" name="select_search_counrty" onchange='changeList(<?=AjaxRequest::getJsonParam("SearchUser", "ChangeCountry", array('#id#'));?>, this);'>

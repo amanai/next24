@@ -1,20 +1,20 @@
 <?php
-
 class AppJson{
 		static public function decode($str){
 			if (extension_loaded('JSON')){
 				return json_decode($str);
 			} else {
-				return TJSON::decode($str);
+				$temp = new TJSON();
+				return $temp->decode($str);				
 			}
 		}
-		
 		static public function encode($param){
 			if (extension_loaded('JSON')){
 				return json_encode($param);
 			} else {
-				return TJSON::encode($param);
-			}
+				$temp = new TJSON();
+				return $temp->encode($param);
+			} 
 		}
 }
 /**
@@ -286,7 +286,6 @@ class TJSON
                 * parameter is only accessible using ECMAScript's
                 * bracket notation.
                 */
-
                 // treat as a JSON object
                 if (is_array($var) && count($var) && (array_keys($var) !== range(0, sizeof($var) - 1))) {
                     return '{' .
@@ -311,7 +310,6 @@ class TJSON
                 return '';
         }
     }
-
    /**
     * encodes an arbitrary variable into JSON format, alias for encode()
     * @see JSON::encode()
@@ -338,7 +336,7 @@ class TJSON
     * @return   string  JSON-formatted name-value pair, like '"name":value'
     * @access   private
     */
-    protected function name_value($name, $value)
+    public function name_value($name, $value)
     {
         return $this->encode(strval($name)) . ':' . $this->encode($value);
     }
