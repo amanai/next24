@@ -339,7 +339,7 @@
 			$userModel = new UserModel();
 			$info['user_avatar'] = $userModel->getFullAvatarById($post_model -> avatar_id);
 			$info['add_comment_url'] = $request -> createUrl('Blog', 'SaveComment', array($post_id, $post_page_number, $page_number));
-			
+			$this -> _view -> assign('post_user_id',$request_user_id);
 			$this -> _view -> CommentList($info);
 			$this -> _view -> parse();
 		}

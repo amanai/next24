@@ -16,9 +16,6 @@
 	else {
 			$online_offline = 'offline-icon';
 	}	
-//	print '<pre>';
-//		print_r($item);
-//	print '</pre>';	
 	?>
 		<li class="it clearfix">
 			<dl>
