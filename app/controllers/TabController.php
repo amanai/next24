@@ -25,7 +25,36 @@ class TabController{
 							);
 			return $tabs;
 		}
-		
+		static public function getPublicBlogTabs($selected_list = false,$seleted_pop_list = false,$selected_week_list = false,$selected_tags = false) {
+			$request = Project::getRequest();
+			$tabs = array(
+							0 => array(
+									'name' => 'Последние посты',
+									'title' => 'Последние посты',
+									'selected' => $selected_list,
+								 	'url' => $request -> createUrl('Blog', 'PublicList', null, false)
+									),
+							1 => array(
+									'name' => 'Популярные посты',
+									'title' => 'Популярные посты',
+									'selected' => $seleted_pop_list,
+								 	'url' => $request -> createUrl('Blog', 'PublicPopList', null, false)
+									),
+							2 => array(
+									'name' => 'TOP 100 за неделю',
+									'title' => 'TOP 100 за неделю',
+									'selected' => $selected_week_list,
+								 	'url' => $request -> createUrl('Blog', 'PublicTopWeekList', null, false)
+									),
+							3 => array(
+									'name' => '<i class="icon tags-icon"></i>Тэги',
+									'title' => 'Тэги',
+									'selected' => $selected_tags,
+								 	'url' => $request -> createUrl('Blog', 'PublicTagsList', null, false)
+									),									
+							);
+			return $tabs;			
+		}
 /*		function getOwnTabs($selected_profile = false, $selected_album = false, $selected_diary = false, $selected_arch_diary = false, 
 		                    $friends = false, $pm = false, $blog = false, $societies = false, $subscribe = false, $messages = false, $correspondent_user_id = 0){
 			$request = Project::getRequest();

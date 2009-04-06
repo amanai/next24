@@ -41,7 +41,30 @@
 			$info['branch_list'] = $tree_model -> getBranchList($blog_model -> id, $user_id);
 			$info['blog_info']['title'] = $blog_model->title;
 		}
-		
+		function PublicListAction() {
+			$request = Project::getRequest();
+			$this -> _view -> assign('tab_list', TabController::getPublicBlogTabs(true, false, false, false));
+			$this -> _view -> PublicPostList();
+			$this -> _view -> parse();			
+		}
+		function PublicPopListAction() {
+			$request = Project::getRequest();
+			$this -> _view -> assign('tab_list', TabController::getPublicBlogTabs(false, true, false, false));
+			$this -> _view -> PublicPostList();
+			$this -> _view -> parse();			
+		}	
+		function PublicTopWeekListAction() {
+			$request = Project::getRequest();
+			$this -> _view -> assign('tab_list', TabController::getPublicBlogTabs(false, false, true, false));
+			$this -> _view -> PublicPostList();
+			$this -> _view -> parse();			
+		}	
+		function PublicTagsListAction() {
+			$request = Project::getRequest();
+			$this -> _view -> assign('tab_list', TabController::getPublicBlogTabs(false, false, false, true));
+			$this -> _view -> PublicPostList();
+			$this -> _view -> parse();			
+		}						
 		function PostListAction(){
 			$request = Project::getRequest();
 			$request_user_id = (int)Project::getUser() -> getShowedUser() -> id;

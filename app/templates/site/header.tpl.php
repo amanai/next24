@@ -88,7 +88,7 @@
 					<li <? if($currentController=='Article') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Article', 'List', null, false); ?>"><i class="icon articles-icon"></i>Статьи</a></li>
 					<li <? if($currentController=='Album') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Album', 'LastList', null, false); ?>"><i class="icon foto-icon"></i>Фото</a></li>
 					<li <? if($currentController=='QuestionAnswer') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false); ?>"><i class="icon answers-icon"></i>Ответы</a></li>
-					<li <? if($currentController=='Blog') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Blog', 'PostList', null, false); ?>"><i class="icon blogs-icon"></i>Блоги</a></li>
+					<li <? if($currentController=='Blog') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Blog', 'PublicList', null, false); ?>"><i class="icon blogs-icon"></i>Блоги</a></li>
 					<li <? if($currentController=='Social') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false); ?>"><i class="icon social-icon"></i>Социальные сервисы</a></li>
 					<li <? if($currentController=='Bookmarks') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>"><i class="icon bookmarks-icon"></i>Закладки</a></li>
 					<li <? if($currentController=='SearchUser') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('SearchUser','SearchUserMain',null,false); ?>"><i class="icon friends-icon"></i>Найти знакомых</a></li>

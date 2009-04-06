@@ -45,6 +45,10 @@ class BlogView extends BaseSiteView{
 			$this -> setTemplate($this -> _dir, 'branch_edit.tpl.php');
 			$this -> set($info);
 		}
+		function PublicPostList() {
+			$this -> setTemplate($this -> _dir, 'public_posts.tpl.php');
+			//$this -> set($info);			
+		}
 		
 }
 ?>
