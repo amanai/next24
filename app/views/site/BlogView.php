@@ -49,6 +49,18 @@ class BlogView extends BaseSiteView{
 			$this -> setTemplate($this -> _dir, 'public_posts.tpl.php');
 			//$this -> set($info);			
 		}
+		function PublicPopList() {
+			$this -> setTemplate($this -> _dir, 'public_pop_list.tpl.php');
+			//$this -> set($info);			
+		}
+		function PublicTopWeekList() {
+			$this -> setTemplate($this -> _dir, 'public_top_week_list.tpl.php');
+			//$this -> set($info);			
+		}
+		function PublicTagsList() {
+			$this -> setTemplate($this -> _dir, 'public_tags_list.tpl.php');
+			//$this -> set($info);			
+		}								
 		
 }
 ?>

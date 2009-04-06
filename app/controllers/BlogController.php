@@ -50,19 +50,19 @@
 		function PublicPopListAction() {
 			$request = Project::getRequest();
 			$this -> _view -> assign('tab_list', TabController::getPublicBlogTabs(false, true, false, false));
-			$this -> _view -> PublicPostList();
+			$this -> _view -> PublicPopList();
 			$this -> _view -> parse();			
 		}	
 		function PublicTopWeekListAction() {
 			$request = Project::getRequest();
 			$this -> _view -> assign('tab_list', TabController::getPublicBlogTabs(false, false, true, false));
-			$this -> _view -> PublicPostList();
+			$this -> _view -> PublicTopWeekList();
 			$this -> _view -> parse();			
 		}	
 		function PublicTagsListAction() {
 			$request = Project::getRequest();
 			$this -> _view -> assign('tab_list', TabController::getPublicBlogTabs(false, false, false, true));
-			$this -> _view -> PublicPostList();
+			$this -> _view -> PublicTagsList();
 			$this -> _view -> parse();			
 		}						
 		function PostListAction(){
