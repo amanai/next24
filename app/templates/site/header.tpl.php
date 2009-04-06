@@ -68,7 +68,7 @@
 				<ul class="user-menu">
 					<li><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><span>Профиль</span></a> |</li>
 					<li><a href="<?php echo $this->createUrl('Messages', 'Mymessages', null, $this->current_user->login)?>"><span>Мои сообщения</span> <em class="alt">(<span>3</span>)</em></a> |</li>
-					<li><a href="<?php echo $this->createUrl('Messages', 'Friend'); ?>"><span>Друзья</span> <em>(35)</em></a> |</li>
+					<li><a href="<?php echo $this->createUrl('Messages', 'Friend',null, $this->current_user->login); ?>"><span>Друзья</span> <em>(35)</em></a> |</li>
 					<li><a href="<?php echo $this->createUrl('Album', 'List', null, $this->current_user->login)?>"><span>Фотоальбом</span> <em>(5)</em></a> |</li>
 					<li><a href="<?php echo $this->createUrl('Blog', 'PostList', null, $this->current_user->login)?>"><span>Блог</span> <em>(5)</em></a> |</li>
 					<li><a href="#"><span>Дневник</span> <em>(8)</em></a> |</li>
@@ -82,7 +82,7 @@
 				<?php $currentController = $request->getCurrentControllerName(); ?>
 				<ul class="menu clearfix">
 					<li class="no-text <? if($currentController=='Index') {echo 'active';}?>"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Рабочий стол"><i class="icon desktop-icon"></i></a></li>
-					<li class="no-text"><a href="#" title="Моя страница"><i class="icon home-icon"></i></a></li>
+					<li class="no-text <? if($currentController=='User') {echo 'active';}?>" ><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>" title="Моя страница"><i class="icon home-icon"></i></a></li>
 					<li <? if($currentController=='News') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('News', 'News', null, false).'/view:news_all/'; ?>"><i class="icon news-icon"></i>Новости</a></li>
 					<li class="alt <? if($currentController=='Debate') {echo 'active';}?>"><a href="<?php echo $this->createUrl('Debate', 'DebateHistory', null, false); ?>"><i class="icon debate-icon"></i>Дебаты</a></li>
 					<li <? if($currentController=='Article') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Article', 'List', null, false); ?>"><i class="icon articles-icon"></i>Статьи</a></li>
