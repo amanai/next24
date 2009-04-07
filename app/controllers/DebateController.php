@@ -405,9 +405,9 @@ if($user->id) {
 		// END PAGER
 	    $aDebateHistory = $debateModel->getDebateHistory($page_settings, "start_time DESC");
    	    $this-> _view -> assign('aDebateHistory', $aDebateHistory); 
-
-   	    $this-> _view -> assign('tab_list', TabController::getDebateTabs($isAdmin, false, false, true)); // Show tabs
-	    
+		if($user->id) {
+   	    	$this-> _view -> assign('tab_list', TabController::getDebateTabs($isAdmin, false, false, true)); // Show tabs
+		}
 	    $this -> _view -> HistoryPage();
 	    $this -> _view -> parse();
 	}
