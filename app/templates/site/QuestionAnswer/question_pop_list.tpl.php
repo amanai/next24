@@ -27,8 +27,19 @@
 										<td class="label-field">
 											<label for="f2">Tэги</label>
 										</td>
+										<?php $i = 0;
+											foreach ($this->question_tag_list as $v) {
+												if($i) {
+													$q_list .= ', '.$v['name'];
+												}
+												else {
+													$q_list .= $v['name'];
+												}	
+												$i++;
+											}
+										?>	
 										<td class="input-field">
-											<input id="f2" type="text" value="<?=$this->question_tag_list?>" name="tags" />
+											<input id="f2" type="text" value="<?=$q_list; ?>" name="tags" />										
 										</td>
 										<td class="button-field"><input type="submit" value="Спросить" /></td>
 									</tr>
