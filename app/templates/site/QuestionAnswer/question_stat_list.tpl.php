@@ -58,9 +58,9 @@
 							<thead>
 								<tr>
 									<th class="main-row">Вопросы</th>
-									<th><a class="script-link" href="#"><span class="t">Кто спрашивает</span></a></th>
-									<th><span class="sort-by-this"><a class="script-link" href="#"><span class="t">Ответы</span><i class="arrow-icon"></i></a></span></th>
-									<th><a class="script-link" href="#"><span class="t">Дата создания</span></a></th>
+									<th><a class="script-link" href="<?php echo $this->createUrl('QuestionAnswer', 'ListStat', null, false).((($request->inp_sort=='asc')&&($request->type=='author'))?'/inp_sort:desc/type:author':'/inp_sort:asc/type:author'); ?>"><span class="t">Кто спрашивает</span></a></th>
+									<th><span class="sort-by-this"><a class="script-link" href="<?php echo $this->createUrl('QuestionAnswer', 'ListStat', null, false).((($request->inp_sort=='asc')&&($request->type=='answer'))?'/inp_sort:desc/type:answer':'/inp_sort:asc/type:answer'); ?>"><span class="t">Ответы</span><i class="arrow-icon"></i></a></span></th>
+									<th><a class="script-link" href="<?php echo $this->createUrl('QuestionAnswer', 'ListStat', null, false).((($request->inp_sort=='asc')&&($request->type=='create'))?'/inp_sort:desc/type:create':'/inp_sort:asc/type:create'); ?>"><span class="t">Дата создания</span></a></th>
 								</tr>
 							</thead>
 							<tbody>

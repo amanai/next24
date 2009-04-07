@@ -40,12 +40,28 @@ class QuestionAnswerController extends SiteController {
 	}
 	public function ListStatAction() {
 		$request = Project::getRequest();
+		$v_request = $request;
+		$v_session = Project::getSession(); 
 		$data = array();
-		
+    	$v_sort = null;
+   	 	if ($v_request->inp_sort != null)  {
+      		$v_sort = strtoupper($v_request->inp_sort); 
+      		$v_session -> add('question_sort', $v_sort);
+    	} else {
+      		$v_sort = $v_session -> getKey('question_sort', null);
+    	}
+    	$v_sort_type = null;
+		if ($v_request->type != null)  {
+      	$v_sort_type = strtoupper($v_request->type); 
+      	$v_session -> add('question_type_sort', $v_sort_type);
+    	} else {
+      	$v_sort_type = $v_session -> getKey('question_type_sort', null);
+    	}  		
+    	
 		$question_cat_model = new QuestionCatModel();
 		$data['question_cat'] = $question_cat_model->loadAll();
 		
-		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1));
+		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1),null,null,$v_sort_type,$v_sort);
 		$this->BaseSiteData($data);
 		$data['action'] = 'List';
 		$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(false, false, true));
@@ -64,7 +80,7 @@ class QuestionAnswerController extends SiteController {
 		$this->_view->parse();
 	}
 	
-	protected function _list(&$data, $action, $catId = null, $tagId = null, $userId = null, $order = null) {
+	protected function _list(&$data, $action, $catId = null, $tagId = null, $userId = null, $order = null, $sort_type = null, $sort = null) {
 		$param = Project::getRequest()->getKeys();
 		array_shift($param);
 		$question_model = new QuestionModel();
@@ -94,7 +110,7 @@ class QuestionAnswerController extends SiteController {
 		//$pager = new DbPager($request->pn, 20); //TODO: pageSize
 		$pager = new DbPager($request->pn, $v_list_per_page);
 		$question_model->setPager($pager);		
-		$data['question_list'] = $question_model->loadWhere($catId, $tagId, $userId, $order);
+		$data['question_list'] = $question_model->loadWhere($catId, $tagId, $userId, $order, $sort_type, $sort);
 		$data['question_cat_list'] = $question_cat_model->loadAll();
 		$pager_view = new SitePagerView();
 		$data['question_list_pager'] = $pager_view->show2($question_model->getPager(), 'QuestionAnswer', $action, $param);
