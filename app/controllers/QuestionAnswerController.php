@@ -19,11 +19,40 @@ class QuestionAnswerController extends SiteController {
 		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1));
 		$this->BaseSiteData($data);
 		$data['action'] = 'List';
-		$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(true, false, false, false, false));
+		$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(true, false, false));
 		$this->_view->QuestionList($data);
 		$this->_view->parse();
 	}
-	
+
+	public function ListPopAction() {
+		$request = Project::getRequest();
+		$data = array();
+		
+		$question_cat_model = new QuestionCatModel();
+		$data['question_cat'] = $question_cat_model->loadAll();
+		
+		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1),null,1);
+		$this->BaseSiteData($data);
+		$data['action'] = 'List';
+		$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(false, true, false));
+		$this->_view->QuestionPopList($data);
+		$this->_view->parse();
+	}
+	public function ListStatAction() {
+		$request = Project::getRequest();
+		$data = array();
+		
+		$question_cat_model = new QuestionCatModel();
+		$data['question_cat'] = $question_cat_model->loadAll();
+		
+		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1));
+		$this->BaseSiteData($data);
+		$data['action'] = 'List';
+		$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(false, false, true));
+		$this->_view->QuestionStatList($data);
+		$this->_view->parse();
+	}	
+		
 	public function UserQuestionsAction() {
 		$request = Project::getRequest();
 		$data = array();
@@ -35,7 +64,7 @@ class QuestionAnswerController extends SiteController {
 		$this->_view->parse();
 	}
 	
-	protected function _list(&$data, $action, $catId = null, $tagId = null, $userId = null) {
+	protected function _list(&$data, $action, $catId = null, $tagId = null, $userId = null, $order = null) {
 		$param = Project::getRequest()->getKeys();
 		array_shift($param);
 		$question_model = new QuestionModel();
@@ -46,7 +75,7 @@ class QuestionAnswerController extends SiteController {
 		}
 		$pager = new DbPager($request->pn, 20); //TODO: pageSize
 		$question_model->setPager($pager);		
-		$data['question_list'] = $question_model->loadWhere($catId, $tagId, $userId);
+		$data['question_list'] = $question_model->loadWhere($catId, $tagId, $userId, $order);
 		$data['question_cat_list'] = $question_cat_model->loadAll();
 		$pager_view = new SitePagerView();
 		$data['question_list_pager'] = $pager_view->show2($question_model->getPager(), 'QuestionAnswer', $action, $param);

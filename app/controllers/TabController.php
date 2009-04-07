@@ -614,9 +614,7 @@ class TabController{
   static public function getQuestionAnswerTabs(
     $p_selected_tab_list_name = false, 
     $p_selected_tab_most_visit = false, 
-    $p_selected_tab_stats = false,
-    $p_selected_tab_my_list_name = false,
-    $p_selected_tab_add_question = false
+    $p_selected_tab_stats = false
     ) {
     $request = Project::getRequest();
     $tabs = array(
@@ -630,13 +628,13 @@ class TabController{
                 'name' => 'Популярные вопросы',
                 'title' => 'Популярные вопросы',
                 'selected' => $p_selected_tab_most_visit,
-                 'url' => $request->createUrl('QuestionAnswer','List', null, false)
+                 'url' => $request->createUrl('QuestionAnswer','ListPop', null, false)
                 ),
             2 => array(
                 'name' => 'Подробная статистика',
                 'title' => 'Подробная статистика',
                 'selected' => $p_selected_tab_stats,
-                 'url' => $request->createUrl('QuestionAnswer','List', null, false)
+                 'url' => $request->createUrl('QuestionAnswer','ListStat', null, false)
                 ),                
             );
             

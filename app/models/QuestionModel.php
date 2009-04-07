@@ -6,7 +6,7 @@ class QuestionModel extends BaseModel {
 		parent::__construct('questions');
 	}
 	
-	public function loadWhere($catId = null, $tagId = null, $userId = null) {
+	public function loadWhere($catId = null, $tagId = null, $userId = null,	$order = null) {
 		$catId = (int)$catId;
 		$tagId = (int)$tagId;
 		$userId = (int)$userId;		
@@ -39,7 +39,12 @@ class QuestionModel extends BaseModel {
 					 		}
 					 	}
 					 }
-					 $sql.=" ORDER BY questions.`creation_date` DESC LIMIT ?d, ?d";
+					 if($order) {
+					 	$sql.=" ORDER BY questions.`a_count` DESC LIMIT ?d, ?d";	
+					 }
+					 else {
+					 	$sql.=" ORDER BY questions.`creation_date` DESC LIMIT ?d, ?d";
+					 }	
 				//die($sql);
 		$this->checkPager();
 		$params = array();

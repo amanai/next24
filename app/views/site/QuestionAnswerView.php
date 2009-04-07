@@ -7,7 +7,14 @@ class QuestionAnswerView extends BaseSiteView {
 		$this->setTemplate(null, 'question_list.tpl.php');
 		$this->set($data);
 	}
-	
+	public function QuestionPopList($data) {
+		$this->setTemplate(null, 'question_pop_list.tpl.php');
+		$this->set($data);		
+	}
+	public function QuestionStatList($data) {
+		$this->setTemplate(null, 'question_stat_list.tpl.php');
+		$this->set($data);			
+	}
 	public function ViewQuestion($data) {
 	    $this->_js_files[] = 'jquery.js';
 		$this->setTemplate(null, 'question.tpl.php');
