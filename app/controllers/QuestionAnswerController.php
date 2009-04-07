@@ -31,7 +31,7 @@ class QuestionAnswerController extends SiteController {
 		$question_cat_model = new QuestionCatModel();
 		$data['question_cat'] = $question_cat_model->loadAll();
 		
-		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1),null,1);
+		$this->_list($data, 'List', $request->getKeyByNumber(0), $request->getKeyByNumber(1),null," ORDER BY questions.`a_count` DESC LIMIT ?d, ?d ");
 		$this->BaseSiteData($data);
 		$data['action'] = 'List';
 		$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(false, true, false));

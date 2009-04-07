@@ -40,7 +40,7 @@ class QuestionModel extends BaseModel {
 					 	}
 					 }
 					 if($order) {
-					 	$sql.=" ORDER BY questions.`a_count` DESC LIMIT ?d, ?d";	
+					 	$sql.= $order;	
 					 }
 					 else {
 					 	$sql.=" ORDER BY questions.`creation_date` DESC LIMIT ?d, ?d";

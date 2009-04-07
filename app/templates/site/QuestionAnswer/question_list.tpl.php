@@ -1,7 +1,6 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-
-				<div class="columns-page clearfix">
-					<div class="main"><div class="wrap">
+			<div class="columns-page clearfix"> 
+					<div class="main"><div class="wrap"> 
 						<?php if($this->current_user && $this->current_user->id > 0) { ?>
 						<div class="content-header">
 							<h1>Задать вопрос<i class="icon ask-icon"></i></h1>
@@ -33,48 +32,59 @@
 							</form>
 						</div>
 						<? }?>
-						<!-- /content-header -->
-						<ul class="view-filter clearfix">
+						<!-- /content-header --> 
+						<ul class="view-filter clearfix"> 
 							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
-						</ul>
-						<!-- /view-filter -->
-						<div class="display-filter clearfix">
-							<div class="number-filter">
+						</ul> 
+						<!-- /view-filter --> 
+						<div class="display-filter clearfix"> 
+							<div class="number-filter"> 
 								показывать по: <strong>10</strong> | <a href="#">20</a> | <a href="#">30</a> ответов
-							</div>
-						</div>
-						<!-- /display-filter -->
-						<table class="stat-table">
-							<thead>
-								<tr>
-									<th class="main-row">Вопросы</th>
-									<th><a class="script-link" href="#"><span class="t">Кто спрашивает</span></a></th>
-									<th><span class="sort-by-this"><a class="script-link" href="#"><span class="t">Ответы</span><i class="arrow-icon"></i></a></span></th>
-									<th><a class="script-link" href="#"><span class="t">Дата создания</span></a></th>
-								</tr>
-							</thead>
-							<tbody>
+							</div> 
+						</div> 
+						<!-- /display-filter --> 
+						<ul class="question-preview-list question-abridged-preview-view"> 
 							<?php foreach($this->question_list as $key => $item) { ?>
-								<tr>
-									<td class="qv">
-										<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>"><?=$item['q_text']?></a>
-									</td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t"><?=$item['login']?></span></a></td>
-									<td class="an"><?=$item['a_count']?></td>
-									<td class="date"><?=date_format(new DateTime($item['creation_date']),'Y.m.d H:i:s')?></td>
-								</tr>
+							<?php 
+								$user = Project::getUser()->getDbUser()->getUserByLogin($item['login']);
+								$avatar = Project::getUser()->getDbUser()->getUserAvatar($user['id']);
+								$avPath = $avatar['path'];
+								if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
+								if($user['gender']) {
+									$class = 'user-icon';	
+								}
+								else {
+									$class = 'wuser-icon';
+								} 								
+							?>	
+							<li class="clearfix"> 
+								<dl> 
+									<dt><a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>"><?=$item['q_text']?></a></dt> 
+									<dd class="auth">спросил: <a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$item['login'];?></a><img class="avatar" src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width:50px;height:50px;" alt="" /><i class="arrow-icon bid-arrow-icon"></i></dd> 
+									<dd class="reply">
+									<?php if($item['a_count']) { ?>
+										<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>" class="with-icon-s"><i class="icon-s reply-icon"></i><?=$item['a_count']; ?> ответов</a>
+									<? } else { ?>
+										<span class="with-icon-s">
+											<i class="icon-s reply-icon"></i>
+											нет ответов
+										</span>									
+									<? } ?>
+									</dd> 
+									<dd class="date"><?=date_format(new DateTime($item['creation_date']),'Y.m.d H:i:s')?></dd> 
+								</dl> 
+							</li> 														
 							<?php } ?>							
-							</tbody>
-						</table>
-						<ul class="pages-list clearfix">
+						</ul> 
+						<ul class="pages-list clearfix"> 
 							<?=$this->question_list_pager?>
 						</ul> 
-					</div></div>
-					<!-- /main -->
-					<div class="sidebar">
+					</div></div> 
+					<!-- /main --> 
+					<div class="sidebar"> 
 						<?php include($this -> _include('left_panel.tpl.php')); ?>
-					</div>
-					<!-- /sidebar -->
-				</div>
-				<!-- /columns-page -->
+					</div> 
+					<!-- /sidebar --> 
+				</div> 
+				<!-- /columns-page --> 
 <?php include($this -> _include('../footer.tpl.php')); ?>

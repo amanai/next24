@@ -53,78 +53,22 @@
 								</tr>
 							</thead>
 							<tbody>
+							<?php foreach($this->question_list as $key => $item) { ?>
+							<?php 
+								$user = Project::getUser()->getDbUser()->getUserByLogin($item['login']);
+								$avatar = Project::getUser()->getDbUser()->getUserAvatar($user['id']);
+								$avPath = $avatar['path'];
+								if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
+							?>								
 								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось? При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
+									<td class="qv">
+										<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>"><?=$item['q_text']?></a>
+									</td>
+									<td class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="avatar-link"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width:25px;height:25px;" alt="" class="avatar" /><span class="t"><?=$item['login'];?></span></a></td>
+									<td class="an"><?=$item['a_count']?></td>
+									<td class="date"><?=date_format(new DateTime($item['creation_date']),'Y.m.d H:i:s')?></td>
 								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
-								<tr>
-									<td class="qv"><a href="#">При открывании сайтов,бывает так что сначало открывается сайт BEGUN,а при повторном открывается нормально,Что случилось?</a></td>
-									<td class="av"><a href="#" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">Викторчик</span></a></td>
-									<td class="an">154</td>
-									<td class="date">20 января 2009, 18:53</td>
-								</tr>
+							<?php } ?>								
 							</tbody>
 						</table>
 						<ul class="pages-list clearfix">
