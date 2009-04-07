@@ -137,6 +137,11 @@ class CSession extends CBaseManager implements IManager {
 	
 	function clear($varname) 
 	{
+		$_SESSION = array();
+		$session_name = session_name();
+		if(isset($_COOKIE[$session_name])) {
+			unset($_COOKIE[$session_name]);
+		}			
 		$sql = "DELETE from " . $this->session_vars_table . " WHERE name='" . $varname . "' AND session='" . $this->getSessionID() . "'";
 		Mysql::query($sql);
 		unset($this->variables[$varname]);
@@ -153,6 +158,11 @@ class CSession extends CBaseManager implements IManager {
 		if (isset($_COOKIE[session_name()])) {
   			setcookie(session_name(), '', 1, '/');
 		}
+		$_SESSION = array();
+		$session_name = session_name();
+		if(isset($_COOKIE[$session_name])) {
+			unset($_COOKIE[$session_name]);
+		}		
 		return true;
 	}		
 	

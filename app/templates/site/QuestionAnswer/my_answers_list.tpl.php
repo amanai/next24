@@ -27,9 +27,9 @@
 							</li> 											
 						<?php } ?>						
 						</ul> 
-					</div></div> 
 					<?php include($this -> _include('tag_list.tpl.php')); ?>
-					<?=$this->question_list_pager?>					
+					<?=$this->question_list_pager?>							
+					</div></div> 				
 					<!-- /main --> 
 					<div class="sidebar"> 
 						<div class="user-action">

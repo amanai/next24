@@ -231,19 +231,19 @@ class TabController{
 							'name' => 'Закладки',
 							'title' => 'Закладки',
 							'selected' => $selected_bookmarks,
-						 	'url' => $request -> createUrl('Bookmarks', 'BookmarksUser', null, Project::getUser() -> getDbUser() ->  login)
+						 	'url' => $request -> createUrl('Bookmarks', 'BookmarksUser')
 							);
 			$tabs[] = array(
 							'name' => 'Ответы',
 							'title' => 'Ответы',
 							'selected' => $selected_question_answer,
-						 	'url' => $request -> createUrl('QuestionAnswer', 'UserQuestions', null, Project::getUser() -> getDbUser() ->  login)
+						 	'url' => $request -> createUrl('QuestionAnswer', 'UserQuestions')
 							);
 			$tabs[] = array(
 							'name' => 'Подписка',
 							'title' => 'Подписка',
 							'selected' => $selected_subscribe,
-						 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
+						 	'url' => $request -> createUrl('News', 'MyFeeds') //, null, Project::getUser() -> getDbUser() ->  login
 							);
 			$tabs[] = array(
 							'name' => 'Мой счет',

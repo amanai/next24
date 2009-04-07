@@ -131,7 +131,9 @@ class QuestionAnswerController extends SiteController {
 	public function ViewQuestionAction() { 
 		$request = Project::getRequest();
 		$this->BaseSiteData($data);
-		$id = (int)$request->getKeyByNumber(0);
+		$id = (int)$request->getKeyByNumber(0);	
+		$question_cat_model = new QuestionCatModel();
+		$data['question_cat_list'] = $question_cat_model->loadAll();
 		if($id > 0) {
 			$question_model = new QuestionModel();
 			$data['question'] = $question_model->loadQuestion($id);

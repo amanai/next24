@@ -81,11 +81,11 @@
 							?>	
 							<li class="clearfix"> 
 								<dl> 
-									<dt><a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>"><?=$item['q_text']?></a></dt> 
+									<dt><a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']),$this->current_user->login)?>"><?=$item['q_text']?></a></dt> 
 									<dd class="auth">спросил: <a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$item['login'];?></a><img class="avatar" src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width:50px;height:50px;" alt="" /><i class="arrow-icon bid-arrow-icon"></i></dd> 
 									<dd class="reply">
 									<?php if($item['a_count']) { ?>
-										<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>" class="with-icon-s"><i class="icon-s reply-icon"></i><?=$item['a_count']; ?> ответов</a>
+										<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']),$this->current_user->login)?>" class="with-icon-s"><i class="icon-s reply-icon"></i><?=$item['a_count']; ?> ответов</a>
 									<? } else { ?>
 										<span class="with-icon-s">
 											<i class="icon-s reply-icon"></i>
