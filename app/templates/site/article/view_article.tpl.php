@@ -24,9 +24,10 @@
 							<img src="<?=$this -> image_url; ?>folder.png" width="15" height="12" id="ico1"/> Категория: <a href="<?=$this->createUrl('Article', 'List', array($this->category['id']))?>"><?=$this->category['name']?></a>
 							<img src="<?=$this -> image_url; ?>time.png" width="16" height="16" /> <?=$this->article['creation_date']?>
 						</div>
-						
-						<?=$this->pager_view?>
-					
+						<ul class="pages-list clearfix">
+							<?=$this->pager_view?>
+						</ul>
+						<!-- /pages-list -->											
 					</td>
 				</tr>
 			</table>
@@ -41,19 +42,6 @@
 			     */
 			}
 			?>	
-						<ul class="pages-list clearfix">
-							<li class="control"><span>« Назад</span> <a href="#">Вперед »</a></li>
-							<li><strong>1</strong></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">6</a></li>
-							<li><a href="#">7</a></li>
-							<li>...</li>
-							<li><a href="#">34</a></li>
-						</ul>
-						<!-- /pages-list -->
 					</div></div>
 					<!-- /main -->
 					<div class="sidebar">

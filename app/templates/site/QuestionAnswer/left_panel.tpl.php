@@ -7,7 +7,11 @@
 	<?php if(!$this->action) { ?>
 		<?php foreach($this->question_cat_list as $item){ ?>
 			<li><a href="<?=$this->createUrl('QuestionAnswer', 'UserQuestions', array($item['id'])) ?>"><?=$item['name']?></a></li>
-		<?php } ?>		
+		<?php } ?>	
+	<?php } elseif($this->action='List') { ?>	
+		<?php foreach($this->question_cat_list as $item){ ?>
+			<li><a href="<?=$this->createUrl('QuestionAnswer', 'List', array($item['id'])) ?>"><?=$item['name']?></a></li>
+		<?php } ?>			
 	<?php } else { ?>
 		<?php foreach($this->question_cat_list as $item){ ?>
 			<li><a href="<?=$this->createUrl('QuestionAnswer', 'UserQuestions', array($item['id'])) ?>"><?=$item['name']?></a></li>

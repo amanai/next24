@@ -73,7 +73,9 @@
 		</li>	
 <? } ?>
 </ul>
-<? echo $this -> comment_list_pager;?>
+<ul class="pages-list clearfix">
+	<? echo $this -> comment_list_pager;?>
+</ul>
 
 <?php 
 // Add Comment
