@@ -13,7 +13,8 @@ class DebateController extends SiteController{
 	    $debateModel = new DebateModel();
 	    $request = Project::getRequest();
 	    $user = Project::getUser()->getDbUser();
-	    if (!$user->id) $user->id = 0;
+//	    if (!$user->id) $user->id = 0;
+if($user->id) {
 	    $isAdmin = ($user->user_type_id == 1)?true:false;
 	    $this-> _view -> assign('isAdmin', $isAdmin);
 	    $this-> _view -> assign('user_id', $user->id);
@@ -362,6 +363,10 @@ class DebateController extends SiteController{
 		}
 		
 		$this -> _view -> parse();
+		}
+		else {
+			Project::getResponse()->redirect($v_request->createUrl('Debate', 'DebateHistory'));
+		}
 	}
 	
 	

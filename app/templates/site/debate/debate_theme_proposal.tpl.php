@@ -53,12 +53,8 @@
 							</table>
 							
 							<ul class="short-pages-list">
-								<li><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><strong>3</strong></li>
-								<li><a href="#">4</a></li>
+								<?php echo $this->debate_pager;  ?>
 							</ul>
-							<?php //echo $this->debate_pager;  ?>
 						</div></div>
 						<!-- /d-content -->
 						<div class="member-info l-side">
