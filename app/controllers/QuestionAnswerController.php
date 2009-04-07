@@ -80,6 +80,17 @@ class QuestionAnswerController extends SiteController {
 		$this->_view->parse();
 	}
 	
+	public function UserQuestionsAnswersAction() {
+		$request = Project::getRequest();
+		$data = array();
+		$this->_list($data, 'UserQuestions', $request->getKeyByNumber(0), $request->getKeyByNumber(1), Project::getUser()->getDbUser()->id);
+		$this->BaseSiteData($data);
+		$data['action'] = 'UserQuestions';
+		$this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,true,false,false,false));
+		$this->_view->MyAnswersList($data);	
+		$this->_view->parse();
+	}
+	
 	protected function _list(&$data, $action, $catId = null, $tagId = null, $userId = null, $order = null, $sort_type = null, $sort = null) {
 		$param = Project::getRequest()->getKeys();
 		array_shift($param);

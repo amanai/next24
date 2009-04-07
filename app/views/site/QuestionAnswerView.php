@@ -31,7 +31,10 @@ class QuestionAnswerView extends BaseSiteView {
 		$this->setTemplate(null, "my_question_list.tpl.php");
 		$this->set($data);
 	}
-	
+	public function MyAnswersList($data) {
+		$this->setTemplate(null, "my_answers_list.tpl.php");
+		$this->set($data);		
+	}
 	
 	
 }

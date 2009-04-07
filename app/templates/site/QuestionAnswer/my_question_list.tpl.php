@@ -31,7 +31,7 @@
 							<ul>
 								<li><a href="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion')?>"><i class="icon macomm-icon"></i> Задать вопрос</a></li>
 								<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'UserQuestions', null, false); ?>"><i class="icon faq-icon"></i>Мои вопросы</a></li>
-								<li><a href="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion')?>"><i class="icon mcomm-icon"></i>Мои ответы</a></li>
+								<li><a href="<?=$this->createUrl('QuestionAnswer', 'UserQuestionsAnswers')?>"><i class="icon mcomm-icon"></i>Мои ответы</a></li>
 							</ul>
 						</div>
 						<?php $par['u_id']= $this->current_user->id ?>
