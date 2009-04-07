@@ -73,7 +73,26 @@ class QuestionAnswerController extends SiteController {
 			$tag_model = new QuestionTagModel();
 			$data['question_tag_list'] = $tag_model->loadTags($catId);
 		}
-		$pager = new DbPager($request->pn, 20); //TODO: pageSize
+   		$v_request = Project::getRequest();
+   		$v_session = Project::getSession(); 
+		$request_keys = $v_request->getKeys();
+		$questions_per_page = $request_keys['qpp'];
+		if($questions_per_page) {
+			if(in_array($questions_per_page,array(10,20,30))) {
+				$v_session->add('qpp',$questions_per_page);	
+				$v_list_per_page = $questions_per_page;
+			}
+			else {
+				$v_list_per_page = 10;
+				$v_session->add('qpp',$v_list_per_page);	
+			}
+  		}
+  		else {
+  			if($v_session->getKey('qpp')) $v_list_per_page = $v_session->getKey('qpp');
+  			else $v_list_per_page = 10;
+  		}			
+		//$pager = new DbPager($request->pn, 20); //TODO: pageSize
+		$pager = new DbPager($request->pn, $v_list_per_page);
 		$question_model->setPager($pager);		
 		$data['question_list'] = $question_model->loadWhere($catId, $tagId, $userId, $order);
 		$data['question_cat_list'] = $question_cat_model->loadAll();

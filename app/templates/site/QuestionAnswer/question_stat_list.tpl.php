@@ -1,4 +1,8 @@
-<?php include($this -> _include('../header.tpl.php')); ?>				
+<?php include($this -> _include('../header.tpl.php')); ?>	
+<?php 
+	$v_session = Project::getSession(); 
+	$qpp = $v_session->getKey('qpp');
+?>			
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
 					<?php if($this->current_user && $this->current_user->id > 0) { ?>
@@ -39,7 +43,14 @@
 						<!-- /view-filter -->
 						<div class="display-filter clearfix">
 							<div class="number-filter">
-								показывать по: <strong>10</strong> | <a href="#">20</a> | <a href="#">30</a> ответов
+								показывать по: 
+							<?php if(!$qpp || $qpp == 10){ ?>
+									<strong>10</strong> | <a href="<?php echo $this->createUrl('QuestionAnswer', 'ListStat', null, false); ?>/qpp:20">20</a> | <a href="<?php echo $this->createUrl('QuestionAnswer', 'ListStat', null, false); ?>/qpp:30">30</a> ответов
+							<?php }elseif($qpp == 20) { ?>
+									<a href="<?php echo $this->createUrl('QuestionAnswer', 'ListStat', null, false); ?>/qpp:10">10</a> | <strong>20</strong> | <a href="<?php echo $this->createUrl('QuestionAnswer', 'ListStat', null, false); ?>/qpp:30">30</a> ответов
+							<?php } elseif($qpp == 30) { ?>	
+									<a href="<?php echo $this->createUrl('QuestionAnswer', 'ListStat', null, false); ?>/qpp:10">10</a> | <a href="<?php echo $this->createUrl('QuestionAnswer', 'ListStat', null, false); ?>/qpp:20">20</a> | <strong>30</strong> ответов
+							<? } ?>							
 							</div>
 						</div>
 						<!-- /display-filter -->
