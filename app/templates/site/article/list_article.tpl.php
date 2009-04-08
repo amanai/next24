@@ -7,6 +7,20 @@
 						<!-- /view-filter -->
 						<!-- /breadcrumbs -->
 						<?foreach ($this->article_list as $key => $item):?>
+	<?php 
+		$user = Project::getUser()->getDbUser()->getUserByLogin($item['login']);
+		$avatar = Project::getUser()->getDbUser()->getUserAvatar($user['id']);
+		$avPath = $avatar['path'];
+		if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
+		if($user['gender']) {
+			$class = 'user-icon';	
+		}
+		else {
+			$class = 'wuser-icon';
+		} 
+		$is_oline = Project::getUser()->getDbUser()->isUserOnline($user['id']);
+		$nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($user['id']);
+	?>							
 						<div class="blog-post">
 							<h2><a href="<?=$this->createUrl('Article', 'ArticleView', array($item['id']))?>" rel="bookmark"><?=$item['title']?></a></h2>
 							<div class="breadcrumbs">
@@ -14,9 +28,9 @@
 								▪ <a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » С рождеством!
 							</div>
 							<div class="post-content">
-								<p>Каждый из нас выбрал по одной из своих самых потенциальных идей стартапов, подготовили простенькие презентации по брифу 
-(идея, бизнес-модель, рынок, конкуренты, инвестиции), который мы используем на СтартапПоинте и рассказали о своей идее в 
-формате elevator pitch. После обсуждениея каждой идеи определились на одной. Идея нам понравилась и продолжили ...</p>
+								<p>
+									<?=$item['title'];?>
+								</p>
 								<div class="more"><a href="<?=$this->createUrl('Article', 'ArticleView', array($item['id']))?>">читать дальше</a> &rarr;</div>
 							</div>
 							<!-- /post-content -->
@@ -39,7 +53,7 @@
 									<li class="it ath">
 										<div class="dropdown dropdown-active">
 											<div class="d-head">
-												<a href="#" class="with-icon-s"><i class="icon-s wuser-icon"></i><?=$item['login']?></a><i class="arrow-icon bid-arrow-icon"></i>
+												<a href="<?php echo $this->createUrl('User', 'Profile', null, $item['login'])?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$item['login']?></a><i class="arrow-icon bid-arrow-icon"></i>
 											</div>
 											<div class="d-body">
 												<ul>
@@ -50,7 +64,7 @@
 												</ul>
 											</div>
 										</div>
-										<span class="user-status"><span class="online">online</span><span class="nr">245 nr</span></span>
+										<span class="user-status"><span class="online"><?php if($is_oline) {echo 'online';} else {echo 'offline'; }?></span><span class="nr"><?=($nr['rate'])?$nr['rate']:0;?> nr</span></span>
 									</li>
 									<li class="it date"><?=$item['creation_date']?></li>
 									<li class="it com">
@@ -64,7 +78,7 @@
 						</div>
 						<!-- /blog-post -->						
 						<?endforeach;?>						
-						<ul class="pages-list clearfix">
+			<!--  		<ul class="pages-list clearfix">
 							<li class="control"><span>« Назад</span> <a href="#">Вперед »</a></li>
 							<li><strong>1</strong></li>
 							<li><a href="#">2</a></li>
@@ -75,7 +89,7 @@
 							<li><a href="#">7</a></li>
 							<li>...</li>
 							<li><a href="#">34</a></li>
-						</ul>
+						</ul>		-->
 						<!-- /pages-list -->
 					</div></div>
 					<!-- /main -->

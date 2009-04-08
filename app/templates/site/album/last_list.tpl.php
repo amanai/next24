@@ -1,5 +1,4 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">					
 						<ul class="view-filter clearfix">

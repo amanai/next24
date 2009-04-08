@@ -42,13 +42,14 @@
 				?>
 				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
 				<?php 
-					$nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($this->current_user->id);				
+					$nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($this->current_user->id);
+					$user = Project::getUser()->getDbUser()->getUserById($this->current_user->id);				
 				?>
 					<ul>
 						<li class="user-link"><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><img style="width: 28px; height: 25px;" src="assets/i/temp/user.png" alt="<?php echo $this->current_user->login;?>" /><?php echo $this->current_user->login;?></a></li>
 						<li class="updates-link"><i class="icon updates-icon"></i><a href="#" class="script-link"><span class="t">Обновления (30)</span><i class="arrow-icon"></i></a></li>
 						<li class="actions-link"><i class="icon actions-icon"></i><a href="#" class="script-link"><span class="t">Действия</span><i class="arrow-icon"></i></a></li>
-						<li class="rating-link"><i class="icon rating-icon"></i><a href="#"><?=$nr['rate']; ?> nr</a> <span class="sep">|</span> <a href="#" class="alt"><?=$nr['nm']; ?> nm</a></li>
+						<li class="rating-link"><i class="icon rating-icon"></i><a href="#"><?=$nr['rate']; ?> nr</a> <span class="sep">|</span> <a href="#" class="alt"><?=$user['nextmoney']; ?> nm</a></li>
 						<li class="login-link">
 							<span class="settings-link"><i class="icon settings-icon"></i><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>">Настройки</a></span>
 							<span class="logout-link"><a href="<?php echo $this->createUrl('User', 'Logout')?>">Выход</a></span>

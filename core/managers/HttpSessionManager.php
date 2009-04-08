@@ -53,11 +53,11 @@ class HttpSessionManager extends ApplicationManager implements IManager, Countab
 		 */
 		public function destoy(){
 			if($this -> _started) {
-			$_SESSION = array();
-			$session_name = session_name();
-			if(isset($_COOKIE[$session_name])) {
-				unset($_COOKIE[$session_name]);
-			}
+		//	$_SESSION = array();
+		//	$session_name = session_name();
+		//	if(isset($_COOKIE[$session_name])) {
+		//		unset($_COOKIE[$session_name]);
+		//	}
 			session_destroy();
 				$this -> _started=false;
 			}

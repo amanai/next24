@@ -1,12 +1,5 @@
-<div class="block_ee1">
-	<div class="block_ee2">
-		<div class="block_ee3">
-			<div class="block_ee4">
-				<div class="block_title"><h2>Управление</h2></div>
-				
-				<a href="<?=$this->createUrl('Article', 'AddSubject')?>">Предложить тему</a>
-				
-			</div>
-		</div>
-	</div>
+<div class="user-action"> 
+	<ul> 
+		<li><a href="<?=$this->createUrl('Article', 'AddSubject')?>"><i class="icon rss-add-icon"></i>Предложить тему</a></li>
+	</ul> 
 </div>
