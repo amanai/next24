@@ -312,6 +312,17 @@ class ArticleController extends SiteController {
 		$request = Project::getRequest();
 		$data = array();
 		$this->BaseSiteData();
+
+		$article_model = new ArticleModel();
+		if(count($article_model->loadByParentId(0, array(ARTICLE_COMPETITION_STATUS::NEW_ARTICLE), Project::getUser()->getDbUser()->id)) >= 5) {
+			$data['message'] = "Нельзя добавить больше 5 тем за конкурс";
+			$data['active'] = false;
+		} else {
+			$data['active'] = true;
+	//		$n = Node::by_key('', 'articles_tree');
+	//		$data['tree'] = $n->getBranch();
+		}		
+		
 		$data['tab_list'] = TabController::getMainArticleTabs(false, false, true);
 		if(ARTICLE_COMPETITION_STATUS::getCompetitionStage() == ARTICLE_COMPETITION_STATUS::COMPETITION_START){
 			$status = array(ARTICLE_COMPETITION_STATUS::NEW_ARTICLE);

@@ -24,7 +24,7 @@
 			</div>
 		</td> 
 		<td class="av"><a href="<?php echo $this->createUrl('User', 'Profile', null, $item['login'])?>" class="avatar-link"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width:25px;height:25px;" alt="" class="avatar" /><span class="t"><?=$item['login']?></span></a></td> 
-		<td class="an"><?=$item['rate_status'];?></td> 
+		<td class="an"><?=$item['votes'];?></td> 
 		<td class="date"><?=$item['creation_date']?></td> 
 		<td>
 			<? if($this->can_vote && $item['user_id'] != Project::getUser()->getDbUser()->id) {
