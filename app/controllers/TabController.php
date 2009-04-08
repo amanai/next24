@@ -274,7 +274,9 @@ class TabController{
 								 	'url' => $request -> createUrl('News', 'News', null, false).'/view:news_all/'
 									)
 										
-							);
+							);				
+			$user_id = Project::getUser() -> getDbUser() -> id;
+			if($user_id) {				
 				$tabs[]= array(
 								'name' => 'Только подписанные',
 								'title' => 'Только подписанные',
@@ -286,14 +288,17 @@ class TabController{
 								'title' => 'Избранные (254)',
 								'selected' => $selected_myrss,
 							 	'url' => $request -> createUrl('News', 'News', null, false).'/view:news_stared/'
-								);																
+								);	
+			}						
+#####												
 /*				$tabs[]= array(
 								'name' => 'Мои RSS-ленты',
 								'title' => 'Мои RSS-ленты',
 								'selected' => $selected_myrss,
 							 	'url' => $request -> createUrl('News', 'MyFeeds', null, false)
 								);		*/					
-
+######
+/*
 			if ($user_id){
 				$tabs[]= array(
 								'name' => 'Мои RSS-ленты',
@@ -329,7 +334,7 @@ class TabController{
 							 	'url' => $request -> createUrl('News', 'AddNewsTree', null, false)
 								);
 			}
-			
+			*/
 			if ($one_news){
 				$tabs[]= array(
 								'name' => $aNews['title'],
@@ -347,7 +352,7 @@ class TabController{
 							 	'url' => $request -> createUrl('News', 'News', null, false)
 								);
 			}
-			
+/*			
 			if ($isAdmin){
 			    $tabs[]= array(
 								'name' => "Управление RSS-лентами",
@@ -362,7 +367,7 @@ class TabController{
 							 	'url' => $request -> createUrl('News', 'ModerateNewsTree', null, false)
 								);
 			}
-			
+*/			
 			return $tabs;
 		}
 		
