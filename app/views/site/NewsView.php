@@ -476,7 +476,6 @@ class NewsView extends BaseSiteView{
      */
     
     function NewsPage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'news_tree.js';
@@ -485,14 +484,12 @@ class NewsView extends BaseSiteView{
 	}
     
     function AddFeedPage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
 	   $this -> setTemplate(null, 'add_feed.tpl.php');
 	}
 	
 	function ModerateNewsTreePage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'news_tree.js';
@@ -501,7 +498,6 @@ class NewsView extends BaseSiteView{
 	}
 	
 	function ModerateFeedsPage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'news_tree.js';
@@ -510,14 +506,12 @@ class NewsView extends BaseSiteView{
 	}
 	
 	function AddNewsTreePage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
 	   $this -> setTemplate(null, 'add_news_tree.tpl.php');
 	}
 	
 	function MyFeedPage(){
-	   $this->_js_files[] = 'jquery.js';
 	   $this->_js_files[]='blockUI.js';
 	   $this->_js_files[]='ajax.js';
 	   $this->_js_files[] = 'news_tree.js';

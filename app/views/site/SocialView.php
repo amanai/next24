@@ -23,7 +23,6 @@ class SocialView extends BaseSiteView {
     $this->set($data);
   }
   public function Social_View($data) {
-      $this->_js_files[] = 'jquery.js';
     $this->setTemplate(null, 'social_view.tpl.php');
     $this->set($data);
   }
@@ -31,7 +30,6 @@ class SocialView extends BaseSiteView {
  // 	print '<pre>';
   //		print_r($this->_stack['product_places']);
   //	print '</pre>';	
-	$this->_js_files[]='jquery.js';
 	$this->_js_files[]='xpath.js';
 	$this->_js_files[]='blockUI.js';
 	$this->_js_files[]='ajax.js';  

@@ -9,7 +9,6 @@ class BlogView extends BaseSiteView{
 		}
 		
 		function CommentList($info){
-		    $this->_js_files[] = 'jquery.js';
 			$this -> setTemplate($this -> _dir, 'post_comments.tpl.php');
 			$this -> set($info);
 		}

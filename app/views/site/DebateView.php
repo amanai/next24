@@ -174,7 +174,6 @@ class DebateView extends BaseSiteView{
      */
     // etap 1
     function DebateThemeProposalPage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
@@ -184,7 +183,6 @@ class DebateView extends BaseSiteView{
 	
 	// etap 2
 	function DebateVoteThemePage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
@@ -194,7 +192,6 @@ class DebateView extends BaseSiteView{
 	
 	// etap 3
 	function DebateChooseSecondUserPage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
@@ -204,7 +201,6 @@ class DebateView extends BaseSiteView{
 	
 	// etap 4
 	function DebateChooseHelpersPage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
@@ -214,7 +210,6 @@ class DebateView extends BaseSiteView{
 	
 	// etap 5
 	function DebateGetStakesPage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
@@ -224,7 +219,6 @@ class DebateView extends BaseSiteView{
 	
 	// etap 6
 	function DebatePage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
@@ -234,7 +228,6 @@ class DebateView extends BaseSiteView{
 	
 	// etap 7
 	function ResultsPage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';

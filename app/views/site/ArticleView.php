@@ -3,7 +3,7 @@
 class ArticleView extends BaseSiteView {
 	protected $_dir = 'article';
 	
-	public function ArticleList($data) {
+	public function ArticleList($data) {			
 		$this->setTemplate(null, 'list_article.tpl.php');
 		$this->set($data);
 	}
@@ -38,7 +38,6 @@ class ArticleView extends BaseSiteView {
 	}
 */	
 	public function ViewArticle($data) {
-	    $this->_js_files[] = 'jquery.js';
 		$this->setTemplate(null, 'view_article.tpl.php');
 		$this->set($data);
 	}

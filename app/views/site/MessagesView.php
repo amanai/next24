@@ -37,7 +37,6 @@ class MessagesView extends BaseSiteView{
      */
 	
     function MyMessagesPage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'messages.js';
@@ -45,7 +44,6 @@ class MessagesView extends BaseSiteView{
 	}
 	
     function SendMessagePage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'messages.js';
@@ -53,7 +51,6 @@ class MessagesView extends BaseSiteView{
 	}
 	
     function CorrespondenceWithPage(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'messages.js';

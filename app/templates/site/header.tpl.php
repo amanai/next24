@@ -49,8 +49,36 @@
 				?>
 					<ul>
 						<li class="user-link"><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><img style="width: 28px; height: 25px;" src="assets/i/temp/user.png" alt="<?php echo $this->current_user->login;?>" /><?php echo $this->current_user->login;?></a></li>
-						<li class="updates-link"><i class="icon updates-icon"></i><a href="#" class="script-link"><span class="t">Обновления (30)</span><i class="arrow-icon"></i></a></li>
-						<li class="actions-link"><i class="icon actions-icon"></i><a href="#" class="script-link"><span class="t">Действия</span><i class="arrow-icon"></i></a></li>
+						<li class="updates-link"> 			
+							<div class="dropdown"> 
+								<div class="d-head"> 
+									<i class="icon updates-icon"></i><a href="#" class="script-link"><span class="t">Обновления (30)</span><i class="arrow-icon"></i></a> 
+								</div> 
+								<div class="d-body"> 
+									<ul> 
+										<li><a href="<?php echo $this->createUrl('Messages', 'Friend',null, $this->current_user->login); ?>">Друзья</a> (2)</li> 
+										<li><a href="<?php echo $this->createUrl('Album', 'List', null, $this->current_user->login)?>">Фото</a> (3)</li> 
+										<li><a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>">Подписка</a> (20)</li> 
+										<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'UserQuestions', null, $this->current_user->login); ?>">Ответы</a> (5)</li> 
+									</ul> 
+								</div> 
+							</div> 
+						</li> 
+						<li class="actions-link"> 						
+							<div class="dropdown"> 
+								<div class="d-head"> 
+									<i class="icon actions-icon"></i><a href="#" class="script-link"><span class="t">Действия</span><i class="arrow-icon"></i></a> 
+								</div> 
+								<div class="d-body"> 
+									<ul> 
+										<li><a href="#" class="with-icon-s"><i class="icon add-blog-s-icon"></i>Добавить запись в дневник</a></li> 
+										<li><a href="#" class="with-icon-s"><i class="icon add-blog-alt-s-icon"></i>Добавить запись в блог</a></li> 
+										<li><a href="#" class="with-icon-s"><i class="icon add-foto-s-icon"></i>Добавить фотографию</a></li> 
+										<li><a href="#" class="with-icon-s"><i class="icon settings-icon"></i>Настроить действия</a></li> 
+									</ul> 
+								</div> 
+							</div> 
+						</li> 						
 						<li class="rating-link"><i class="icon rating-icon"></i><a href="#"><?=$nr['rate']; ?> nr</a> <span class="sep">|</span> <a href="#" class="alt"><?=$user['nextmoney']; ?> nm</a></li>
 						<li class="login-link">
 							<span class="settings-link"><i class="icon settings-icon"></i><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>">Настройки</a></span>

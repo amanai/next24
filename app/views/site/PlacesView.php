@@ -12,7 +12,6 @@ class PlacesView extends BaseSiteView{
 								'geo_place'=>array('geo_subtype')
 								);
 			parent::__construct();
-		    $this->_js_files[] = 'jquery.js';
 		    $this->_js_files[]='blockUI.js';
 		    $this->_js_files[]='ajax.js';
 		    $this->_js_files[] = 'places.js';

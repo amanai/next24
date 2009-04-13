@@ -13,7 +13,6 @@ class BookmarksView extends BaseSiteView {
 		$this->set($data);
 	}
 	public function Bookmarks_View($data){
-	    $this->_js_files[]='jquery.js';
 		$this->setTemplate(null, 'bookmarks_view.tpl.php');
 		$this->set($data);
 	}
@@ -37,7 +36,6 @@ class BookmarksView extends BaseSiteView {
   }
   
   public function CategoryForm() {
-  	$this->_js_files[]='jquery.js';
   	$this->setTemplate(null, 'category_form.tpl.php');
   }
   

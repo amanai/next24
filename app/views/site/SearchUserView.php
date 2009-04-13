@@ -6,7 +6,6 @@ class SearchUserView extends BaseSiteView {
 
   // -- Поиск знакомых - Основная вкладка
 	public function SearchUser_Main($data) {
-		$this->_js_files[]='jquery.js';
 		$this->_js_files[]='xpath.js';
 		$this->_js_files[]='blockUI.js';
 		$this->_js_files[]='ajax.js';

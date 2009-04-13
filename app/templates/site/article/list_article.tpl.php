@@ -51,16 +51,16 @@
 								</div>
 								<ul>
 									<li class="it ath">
-										<div class="dropdown dropdown-active">
+										<div class="dropdown">
 											<div class="d-head">
 												<a href="<?php echo $this->createUrl('User', 'Profile', null, $item['login'])?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$item['login']?></a><i class="arrow-icon bid-arrow-icon"></i>
 											</div>
 											<div class="d-body">
 												<ul>
-													<li><a href="#">Профиль пользователя</a></li>
-													<li><a href="#">Добавить в друзья</a></li>
-													<li><a href="#">Написать сообщение</a></li>
-													<li><a href="#">Послать подарок</a></li>
+													<li><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>">Профиль пользователя</a></li> 
+													<li><a href="<?php echo $this->createUrl('Messages', 'Friend',null,$this->current_user->login); ?>">Добавить в друзья</a></li> 
+													<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage',null,$this->current_user->login);?>">Написать сообщение</a></li> 
+													<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage',null,$this->current_user->login);?>">Послать подарок</a></li> 
 												</ul>
 											</div>
 										</div>

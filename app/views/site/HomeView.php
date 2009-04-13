@@ -219,7 +219,6 @@ class HomeView extends BaseSiteView{
     
     // PAGE
 	function Home(){
-	    $this->_js_files[] = 'jquery.js';
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[] = 'jquery-ui.js';
 	    $this->_js_files[]='ajax.js';

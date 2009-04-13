@@ -48,7 +48,6 @@ class GTDView extends BaseSiteView{
 		return $result;
 	}	
 	public function GTDOutput() {
-		$this->_js_files[] = 'jquery.js';
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
 		$this->setTemplate(null, 'gtd.tpl.php');
@@ -57,7 +56,6 @@ class GTDView extends BaseSiteView{
 	public function GTDOutputFolders($CategoryName,$category_id) {
 		$this->category_id = $category_id;
 		$this->CategoryName = $CategoryName;
-		$this->_js_files[] = 'jquery.js';
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
 		$this->setTemplate(null, 'gtdfolders.tpl.php');
@@ -70,7 +68,6 @@ class GTDView extends BaseSiteView{
 		$this->FolderName = $FolderName;
 		echo $this->folder_id;
 		
-		$this->_js_files[] = 'jquery.js';
 	    $this->_js_files[] = 'news_tree.js';
 	    $this->_css_files[] = 'news_tree.css';
 		$this->setTemplate(null, 'gtdfiles.tpl.php');		

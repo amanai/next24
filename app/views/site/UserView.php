@@ -4,7 +4,6 @@ class UserView extends BaseSiteView{
 		
 		
 		function Profile(){
-			$this->_js_files[]='jquery.js';
 			$this->_js_files[]='relations.js';
 			
 			$request = Project::getRequest();
@@ -50,7 +49,6 @@ class UserView extends BaseSiteView{
 		
 		function RegistrationForm(){
 			$this->_css_files[]='registration.css';
-			$this->_js_files[]='jquery.js';
 			$this->_js_files[]='xpath.js';
 			$this->_js_files[]='blockUI.js';
 			$this->_js_files[]='ajax.js';
@@ -99,7 +97,6 @@ class UserView extends BaseSiteView{
 		
 		
 		function ProfileEdit(){
-			$this->_js_files[]='jquery.js';
 			$this->_css_files[]='registration.css';
 			
 			$this->helper = $this->user;
@@ -121,14 +118,12 @@ class UserView extends BaseSiteView{
 		}
 		
 		function AvatarEdit(){
-			$this->_js_files[]='jquery.js';
 			$this->_css_files[]='registration.css';
 			
 			$this -> setTemplate(null, 'avatar_edit.tpl.php');
 		}
 		
 		function MoodPage(){
-			$this->_js_files[]='jquery.js';
 			$this->_css_files[]='registration.css';
 			
 			$this -> setTemplate(null, 'mood.tpl.php');
