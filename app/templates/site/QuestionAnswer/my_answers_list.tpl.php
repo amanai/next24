@@ -16,25 +16,42 @@
 								else {
 									$class = 'wuser-icon';
 								} 								
-							?>							
-							<li class="clearfix"> 
+							?>
+							<li class="it clearfix"> 
 								<dl> 
 									<dt><a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>"><?=$item['q_text']?></a></dt> 
-									<dd class="auth">спросил: <img class="avatar" src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width:50px;height:50px;" alt="" /><a href="<?php echo $this->createUrl('User', 'Profile', null, $item['login'])?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$item['login'];?></a><i class="arrow-icon bid-arrow-icon"></i></dd> 
-									<dd class="reply"><a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>" class="with-icon-s"><i class="icon-s reply-icon"></i><?=$item['a_count']?> ответов</a> <a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>" class="my">Мой ответ</a></dd> 
+									<dd class="auth"> 
+										<span class="as">спросил:</span> <img class="avatar" src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width:50px;height:50px;" alt="" /> 
+										<div class="dropdown"> 
+											<div class="d-head"> 
+												<a href="<?php echo $this->createUrl('User', 'Profile', null, $item['login'])?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$item['login'];?></a><i class="arrow-icon bid-arrow-icon"></i> 
+											</div> 
+											<div class="d-body"> 
+												<ul> 
+													<li><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>">Профиль пользователя</a></li> 
+													<li><a href="<?php echo $this->createUrl('Messages', 'Friend',null,$this->current_user->login); ?>">Добавить в друзья</a></li> 
+													<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage',null,$this->current_user->login);?>">Написать сообщение</a></li> 
+													<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage',null,$this->current_user->login);?>">Послать подарок</a></li> 
+												</ul> 
+											</div> 
+										</div> 
+									</dd> 
+									<dd class="reply"><a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>" class="with-icon-s"><i class="icon-s reply-icon"></i><?=$item['a_count']?>  ответов</a> <a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']))?>" class="my">Мой ответ</a></dd> 
 									<dd class="date"><?=date_format(new DateTime($item['creation_date']),'Y.m.d H:i:s')?></dd> 
 								</dl> 
-							</li> 											
-						<?php } ?>						
-						</ul> 
-					<?php include($this -> _include('tag_list.tpl.php')); ?>
-					<?=$this->question_list_pager?>							
-					</div></div> 				
+							</li> 																		
+							<?php } ?>														
+						</ul>
+						<?php include($this -> _include('tag_list.tpl.php')); ?>
+						<ul class="pages-list clearfix"> 
+							<?=$this->question_list_pager;?>
+						</ul> 						 
+					</div></div> 
 					<!-- /main --> 
 					<div class="sidebar"> 
 						<div class="user-action">
 							<ul>
-								<li><a href="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion')?>"><i class="icon macomm-icon"></i> Задать вопрос</a></li>
+								<li><a href="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion', null, $this->current_user->login)?>"><i class="icon macomm-icon"></i> Задать вопрос</a></li>
 								<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'UserQuestions', null, $this->current_user->login); ?>"><i class="icon faq-icon"></i>Мои вопросы</a></li>
 								<li><a href="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion',null, $this->current_user->login)?>"><i class="icon mcomm-icon"></i>Мои ответы</a></li>
 							</ul>

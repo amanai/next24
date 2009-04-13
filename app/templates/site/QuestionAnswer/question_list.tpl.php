@@ -3,7 +3,7 @@
 	$v_session = Project::getSession(); 
 	$qpp = $v_session->getKey('qpp');
 ?>	
-			<div class="columns-page clearfix"> 
+				<div class="columns-page clearfix"> 
 					<div class="main"><div class="wrap"> 
 						<?php if($this->current_user && $this->current_user->id > 0) { ?>
 						<div class="content-header">
@@ -78,29 +78,44 @@
 								else {
 									$class = 'wuser-icon';
 								} 								
-							?>	
-							<li class="clearfix"> 
+							?>
+							<li class="it clearfix"> 
 								<dl> 
 									<dt><a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']),$this->current_user->login)?>"><?=$item['q_text']?></a></dt> 
-									<dd class="auth">спросил: <a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$item['login'];?></a><img class="avatar" src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width:50px;height:50px;" alt="" /><i class="arrow-icon bid-arrow-icon"></i></dd> 
+									<dd class="auth"> 
+										<span class="as">спросил:</span> <img class="avatar" src="<?=$this->image_url.'avatar/'.$avPath;?>" style="width:50px;height:50px;" alt="" /> 
+										<div class="dropdown"> 
+											<div class="d-head"> 
+												<a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s <?=$class; ?>"></i><?=$item['login'];?></a><i class="arrow-icon bid-arrow-icon"></i> 
+											</div> 
+											<div class="d-body"> 
+												<ul> 
+													<li><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>">Профиль пользователя</a></li> 
+													<li><a href="<?php echo $this->createUrl('Messages', 'Friend',null,$this->current_user->login); ?>">Добавить в друзья</a></li> 
+													<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage',null,$this->current_user->login);?>">Написать сообщение</a></li> 
+													<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage',null,$this->current_user->login);?>">Послать подарок</a></li> 
+												</ul> 
+											</div> 
+										</div> 
+									</dd> 
 									<dd class="reply">
-									<?php if($item['a_count']) { ?>
-										<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']),$this->current_user->login)?>" class="with-icon-s"><i class="icon-s reply-icon"></i><?=$item['a_count']; ?> ответов</a>
-									<? } else { ?>
-										<span class="with-icon-s">
-											<i class="icon-s reply-icon"></i>
-											нет ответов
-										</span>									
-									<? } ?>
+										<?php if($item['a_count']) { ?>
+											<a href="<?=$this->createUrl('QuestionAnswer', 'ViewQuestion', array($item['id']),$this->current_user->login)?>" class="with-icon-s"><i class="icon-s reply-icon"></i><?=$item['a_count']; ?> ответов</a>
+										<? } else { ?>
+											<span class="with-icon-s">
+												<i class="icon-s reply-icon"></i>
+												нет ответов
+											</span>									
+										<? } ?>									
 									</dd> 
 									<dd class="date"><?=date_format(new DateTime($item['creation_date']),'Y.m.d H:i:s')?></dd> 
 								</dl> 
-							</li> 														
-							<?php } ?>							
-						</ul> 
+							</li> 								
+							<?php } ?>															
+						</ul>
 						<ul class="pages-list clearfix"> 
 							<?=$this->question_list_pager?>
-						</ul> 
+						</ul> 						 
 					</div></div> 
 					<!-- /main --> 
 					<div class="sidebar"> 

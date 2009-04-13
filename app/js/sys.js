@@ -113,5 +113,5 @@ function showChangeComment(elemId){
             elem.removeClass("showen");
             elem.addClass("hidden");
         }
-    }
+    }  
 }

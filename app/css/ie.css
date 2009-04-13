@@ -4,6 +4,9 @@
 * html body {
 	background:url(about:blank) fixed;
 	}
+	
+
+	
 .clearfix {
 	display: inline-block;
 	position:relative;
@@ -59,12 +62,13 @@ a .icon,
 .user-profile,
 .edit-box .users .user-it,
 * html .leave-comment,
-.groups-list dd{zoom:1;}
+.groups-list dd,
+.site-features li{zoom:1;}
 
 .blog-post .number-of{top:6px;}
 
 * html .content-preview-list .expanded-view{height:86px;}
-* html .question-abridged-preview-view li{height:50px;}
+* html .question-abridged-preview-view .it{height:50px;}
 * html .question-user-list li{height:auto;}
 .pages span{
 	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=60);
@@ -82,6 +86,7 @@ a .icon,
 * html .post-meta .bg{overflow-y:hidden;}
 * html .post-meta .bg .dropdown{position:relative;}
 * html .debate-page .member-info{overflow-x:hidden;}
+
 
 * html .member-info .controll{width:120px;margin:0 0 0 -16px;}
 .member-info .avatar a:hover {zoom:1;}
@@ -173,3 +178,4 @@ a .icon,
 .comment-form textarea{width:99.4%;}
 
 .nav-list li li input{margin:-2px 4px -2px 0;}
+

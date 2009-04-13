@@ -45,10 +45,10 @@
 			</dl>
 			<ul class="links">
 				<li><a href="<?=$request->createUrl('Index','Index', null, $item['login']); ?>">Профиль пользователя</a></li>
-				<li><a href="<?=Project::getRequest() -> createUrl('Messages', 'CorrespondenceWith').'/corr_user_id:'.$item['id']; ?>" class="new-link">Переписка</a> (<?=$item['cnt_msg']; ?>)</li>
-				<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage');?>">Написать сообщение</a></li>
-				<li><a href="<?php echo $this->createUrl('Messages', 'Friend'); ?>">Добавить в друзья</a></li>
-				<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage');?>/message_to:admin" class="spam-link">Пожаловаться на пользователя</a></li>
+				<li><a href="<?=Project::getRequest() -> createUrl('Messages', 'CorrespondenceWith',null,$this->current_user->login).'/corr_user_id:'.$item['id']; ?>" class="new-link">Переписка</a> (<?=$item['cnt_msg']; ?>)</li>
+				<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage',null,$this->current_user->login);?>">Написать сообщение</a></li>
+				<li><a href="<?php echo $this->createUrl('Messages', 'Friend',null,$this->current_user->login); ?>">Добавить в друзья</a></li>
+				<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage',null,$this->current_user->login);?>/message_to:admin" class="spam-link">Пожаловаться на пользователя</a></li>
 			</ul>
 		</li>
 	<? } ?>					
