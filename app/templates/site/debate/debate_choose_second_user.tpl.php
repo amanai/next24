@@ -62,7 +62,8 @@
 														<input type="text" name="stake_amount" id="stake_amount" /> nm
 													</div> 
 													<div class="button-field"> 
-														<button name="doStake" id="doStakeBtn" onclick="doStakeSecondUser();">Поставить</button> 
+														<input type="button" name="doStake" id="doStakeBtn" onclick="doStakeSecondUser();" value="Сделать ставку" />
+													<!--	<button name="doStake" id="doStakeBtn" onclick="doStakeSecondUser();">Поставить</button> 	-->
 													</div> 
 												</fieldset>
 												</form> 

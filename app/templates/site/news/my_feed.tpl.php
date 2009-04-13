@@ -5,9 +5,9 @@
 
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
-						<ul class="view-filter clearfix">
+			<!--  			<ul class="view-filter clearfix">
 							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
-						</ul>
+						</ul>	-->
 						<!-- /view-filter -->
 						<div class="display-filter clearfix">
 							<div class="number-filter">

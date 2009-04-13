@@ -1,4 +1,95 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
+				<div class="debate-page"> 
+					<ul class="view-filter clearfix"> 
+						<?php include($this -> _include('../tab_panel.tpl.php')); ?>
+					</ul> 
+					<!-- /view-filter --> 
+					<div class="d-head"> 
+						<input type="hidden" name="currEtap" id="currEtap" value="ChooseHelpers" />
+						<input type="hidden" name="refreshNow" id="refreshNow" value="0" />					
+						<div class="title clearfix"> 
+							<div class="stage">Этап <strong>4</strong> из 7. Выбор помошников</div> 
+							<?php $this->showTimer(); ?>
+							<div class="time">Осталось <span>30</span> мин. <span>24</span> сек.</div> 
+						</div> 
+						<?php 
+							if ($this->isDebateUser){ 
+   							 echo '<p>Вам необходимо выбрать себе 2-х помощников. Если вы не выберите себе помощников в течении отведенного времени, то они будут 
+							Назначены вам автоматически из числа изъявивших желание пользователей.</p>';
+							}else{
+    							echo '<p>Если вы хотите стать помощников одного из участников дебатов нажмите на кнопку «Я хочу быть помощником» с желаемым участником.
+								<span class="alert">ВНИМАНИЕ. Перед тем, как нажимать на кнопку обязательно ознакомьтесь с обязанностями помощников.</span></p>';
+							}
+						?>						
+					</div> 
+					<!-- /d-head --> 
+					<h1><span>Тема дебатов:</span> <?php echo $this->debateNow['theme']; ?></h1> 
+					<div class="d-wrap clearfix"> 
+						<div class="d-content"><div class="inn"> 
+							<ul class="helpers"> 
+								<li><a href="#"><i class="big-icon helpers-icon"></i>Я хочу стать помошником <strong>madvic</strong></a></li> 
+								<li><a href="#"><i class="big-icon helpers-icon"></i>Я хочу стать помошником <strong>fedor</strong></a></li> 
+							</ul> 
+							<!-- /bid --> 
+						</div></div> 
+						<!-- /d-content --> 
+						<div class="member-info l-side"> 
+							<div class="avatar">
+								<a href="<?=$this->createUrl('User', 'Profile', null, $this->debateUser1['login']);?>">
+									<?php $this->showUserAvator($this->user1_avatar, $this -> image_url); ?>
+									<span class="member-name"><?=$this->debateUser1['login']; ?></span>
+								</a>
+							</div> 
+							<ul class="controll clearfix"> 
+								<li><a href="#" title="Написать сообщение"><i class="icon mail-icon"></i></a></li> 
+								<li><a href="#" title="Статьи"><i class="icon mbook-icon"></i></a></li> 
+								<li><a href="#" title="Добавить"><i class="icon adduser-icon"></i></a></li> 
+								<li><a href="#" title="Комментарии"><i class="icon mcomm-icon"></i></a></li> 
+							</ul> 
+							<dl id="helpersList1"> 
+							<?php 
+	   							if ($this->helper1_1){
+	       							echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_1['login']).'">'.$this->helper1_1['login'].'</a></p>'; 
+	   							}else echo '<p>&nbsp;</p>';
+	   							if ($this->helper1_2){
+	       							echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_2['login']).'">'.$this->helper1_2['login'].'</a></p>'; 
+	   							}else echo '<p>&nbsp;</p>';
+	   						?>
+								<dt>Помощники</dt> 
+								<dd><a href="#">fedor</a></dd> 
+								<dd>?</dd> 
+							</dl> 
+						</div> 
+						<div class="member-info r-side"> 
+							<div class="avatar"><a href="#"><img src="assets/i/temp/avatar.b.jpg" alt="" /><span class="member-name">fedor</span></a></div> 
+							<ul class="controll clearfix"> 
+								<li><a href="#" title="Написать сообщение"><i class="icon mail-icon"></i></a></li> 
+								<li><a href="#" title="Статьи"><i class="icon mbook-icon"></i></a></li> 
+								<li><a href="#" title="Добавить"><i class="icon adduser-icon"></i></a></li> 
+								<li><a href="#" title="Комментарии"><i class="icon mcomm-icon"></i></a></li> 
+							</ul> 
+							<dl> 
+								<dt>Помощники</dt> 
+								<dd><a href="#">madvic</a></dd> 
+								<dd>?</dd> 
+							</dl> 
+						</div> 
+					</div> 
+					<!-- /d-wrap --> 
+					
+					
+				</div> 
+				<!-- /debate-page --> 
+ 
+
+
+
+
+
+
+
+
+
 <!-- Главный блок, с вкладками (Контент) -->
 <div class="tab-page" id="modules-cpanel">
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>

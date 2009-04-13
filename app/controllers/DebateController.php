@@ -365,6 +365,7 @@ if($user->id) {
 		$this -> _view -> parse();
 		}
 		else {
+			$v_request = Project::getRequest();
 			Project::getResponse()->redirect($v_request->createUrl('Debate', 'DebateHistory'));
 		}
 	}

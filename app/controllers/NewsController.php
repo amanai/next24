@@ -169,7 +169,8 @@ class NewsController extends SiteController{
 	    $user = Project::getUser()->getDbUser();
 	    $isAdmin = ($user->user_type_id == 1)?true:false;
 	    $this -> _view -> clearFlashMessages();
-	    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false, false, false, array(), false, false, false, true)); // Show tabs
+	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,false,true,false,false));
+	//    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false, false, false, array(), false, false, false, true)); // Show tabs
 	    
 	    if ($request->deleted == "no") $this -> _view -> addFlashMessage(FM::ERROR  , "Поле нельзя удалить, возможно у него есть связи с другими таблицами");
 	    
@@ -187,7 +188,8 @@ class NewsController extends SiteController{
 	    $user = Project::getUser()->getDbUser();
 	    $isAdmin = ($user->user_type_id == 1)?true:false;
 	    $this -> _view -> clearFlashMessages();
-	    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false, false, false, array(), false, false, true)); // Show tabs
+	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,false,true,false,false));
+	   // $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false, false, false, array(), false, false, true)); // Show tabs
 	    
 	    $this-> _view -> assign('isAdmin', $isAdmin); 
 	    $sqlWhere = " WHERE 1=1 ";
@@ -294,7 +296,8 @@ class NewsController extends SiteController{
     	        }
     	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'ChangeNewsTree')."/tree_id:".$news_tree_id."/");
     	    }
-	        $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, true)); // Show tabs
+    	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,false,true,false,false));
+	   //     $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, true)); // Show tabs
 	        $this-> _view -> assign('frmAction', 'change'); 
 	        $this-> _view -> assign('submitValue', 'Изменить'); 
 	        $this-> _view -> assign('news_tree_id', $news_tree_id); 
@@ -358,8 +361,8 @@ class NewsController extends SiteController{
     	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'MyFeeds'));
 	        }
 	    }
-	    
-	    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, true)); // Show tabs
+	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,false,true,false,false));
+//	    $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, true)); // Show tabs
 	    $this-> _view -> assign('frmAction', 'add'); 
 	    $this-> _view -> assign('submitValue', 'Добавить'); 
 	    $this-> _view -> assign('feed_name', $request->feed_name); 
@@ -437,7 +440,8 @@ class NewsController extends SiteController{
         	        Project::getResponse()->redirect(Project::getRequest()->createUrl('News', 'ChangeFeed')."/change_feed/news_tree_feeds_id:".$news_tree_feeds_id."/");
     	        }
     	    }
-	        $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false,  false,  false, array(), false, false, false, false, true)); // Show tabs
+    	    $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,false,true,false,false));
+	//        $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false,  false,  false, array(), false, false, false, false, true)); // Show tabs
 	        $this-> _view -> assign('frmAction', 'change'); 
 	        $this-> _view -> assign('submitValue', 'Изменить'); 
 	        $this-> _view -> assign('feed_name', $newsTreeFeed['feeds_name']); 

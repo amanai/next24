@@ -1,5 +1,110 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-
+				<div class="debate-page"> 
+					<ul class="view-filter clearfix"> 
+						<li><strong>Активные дебаты<span></span></strong></li> 
+						<li><a href="#">Завершенные дебаты</a></li> 
+						<li class="alt"><a href="#">Победители</a></li> 
+					</ul> 
+					<!-- /view-filter --> 
+					<div class="d-head"> 
+						<div class="title clearfix"> 
+							<div class="stage">Этап <strong>5</strong> из 7. Идет выбор второго участника дебатов</div> 
+							<div class="time">Осталось <span>30</span> мин. <span>24</span> сек.</div> 
+						</div> 
+						<p>Вы можете предложить свою тему для дебатов. Если ваша тема победит, при последующем голосовании вы станете учасником дебатов.</p> 
+						<p><span class="alert">ВНИМАНИЕ!</span> Если вы уверены, что сможете учавствовать в дебатах, то не стоит отправлять тему на конкурс. Прочитайте сначала <a href="#">правила дебатов</a></p> 
+					</div> 
+					<!-- /d-head --> 
+					<h1><span>Тема дебатов:</span> Есть ли жизнь на марсе?</h1> 
+					<div class="d-wrap clearfix"> 
+						<div class="d-content"><div class="inn"> 
+							<div class="bid"> 
+								<table> 
+									<tr class="current"> 
+										<th>Текущая ставка:</th> 
+										<td class="vl"> 
+											<span class="nm">20 nm</span> <span class="from">( <a href="#">petrovich</a> )</span> 
+										</td> 
+									</tr> 
+									<tr class="current last"> 
+										<th>Всего ставок:</th> 
+										<td class="vl"> 
+											<span class="count">422</span> 
+										</td> 
+									</tr> 
+									<tr class="place first"> 
+										<th> 
+											У вас на счету:
+										</th> 
+										<td class="vl"> 
+											<span class="nm no-nm">15 nm</span> 
+											<span class="alert">У вас не достаточно средств на счету. <a href="#">Пополнить</a></span> 
+										</td> 
+									</tr> 
+									<tr class="place last"> 
+										<th> 
+											Сделать ставку:
+										</th> 
+										<td class="vl"> 
+											<form action="#" method="post"><fieldset> 
+												<div class="input-field"><input type="text" value="15" /> nm</div> 
+												<div class="button-field"> 
+													<button class="vote-button">Поставить на <strong>madvic</strong></button> 
+													<button class="vote-button">Поставить на <strong>fedor</strong></button> 
+												</div> 
+											</fieldset></form> 
+										</td> 
+									</tr> 
+								</table> 
+							</div> 
+							<!-- /bid --> 
+						</div></div> 
+						<!-- /d-content --> 
+						<div class="member-info l-side"> 
+							<div class="avatar"><a href="#"><img src="assets/i/temp/avatar.b.jpg" alt="" /><span class="member-name">madvic</span></a></div> 
+							<div class="member-status"><span class="no">не готов</span></div> 
+							<ul class="controll clearfix"> 
+								<li><a href="#" title="Написать сообщение"><i class="icon mail-icon"></i></a></li> 
+								<li><a href="#" title="Статьи"><i class="icon mbook-icon"></i></a></li> 
+								<li><a href="#" title="Добавить"><i class="icon adduser-icon"></i></a></li> 
+								<li><a href="#" title="Комментарии"><i class="icon mcomm-icon"></i></a></li> 
+							</ul> 
+							<dl> 
+								<dt>Помощники</dt> 
+								<dd><a href="#">fedor</a></dd> 
+								<dd><a href="#">madvic</a></dd> 
+							</dl> 
+						</div> 
+						<div class="member-info r-side"> 
+							<div class="avatar"><a href="#"><img src="assets/i/temp/avatar.b.jpg" alt="" /><span class="member-name">fedor</span></a></div> 
+							<div class="member-status"><span class="ok">готов</span></div> 
+							<ul class="controll clearfix"> 
+								<li><a href="#" title="Написать сообщение"><i class="icon mail-icon"></i></a></li> 
+								<li><a href="#" title="Статьи"><i class="icon mbook-icon"></i></a></li> 
+								<li><a href="#" title="Добавить"><i class="icon adduser-icon"></i></a></li> 
+								<li><a href="#" title="Комментарии"><i class="icon mcomm-icon"></i></a></li> 
+							</ul> 
+							<dl> 
+								<dt>Помощники</dt> 
+								<dd><a href="#">madvic</a></dd> 
+								<dd><a href="#">fedor</a></dd> 
+							</dl> 
+						</div> 
+					</div> 
+					<!-- /d-wrap --> 
+					
+					
+				</div> 
+				<!-- /debate-page --> 
+				
+				
+				
+				
+				
+				
+				
+				
+				
 <!-- Главный блок, с вкладками (Контент) -->
 <div class="tab-page" id="modules-cpanel">
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>

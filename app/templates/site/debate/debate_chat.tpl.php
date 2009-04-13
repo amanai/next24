@@ -1,4 +1,211 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
+			<div class="debate-page"> 
+					<ul class="view-filter clearfix"> 
+						<li><strong>Активные дебаты<span></span></strong></li> 
+						<li><a href="#">Завершенные дебаты</a></li> 
+						<li class="alt"><a href="#">Победители</a></li> 
+					</ul> 
+					<!-- /view-filter --> 
+					<div class="d-head"> 
+						<div class="title clearfix"> 
+							<div class="stage">Этап <strong>6</strong> из 7. Идет выбор второго участника дебатов</div> 
+							<div class="time">Осталось <span>30</span> мин. <span>24</span> сек.</div> 
+						</div> 
+						<p>Вы можете предложить свою тему для дебатов. Если ваша тема победит, при последующем голосовании вы станете учасником дебатов.</p> 
+						<p><span class="alert">ВНИМАНИЕ!</span> Если вы уверены, что сможете учавствовать в дебатах, то не стоит отправлять тему на конкурс. Прочитайте сначала <a href="#">правила дебатов</a></p> 
+					</div> 
+					<!-- /d-head --> 
+					<h1><span>Тема дебатов:</span> Есть ли жизнь на марсе?</h1> 
+					<div class="d-wrap clearfix"> 
+						<div class="d-content"> 
+							<div class="inn chat"> 
+								<div class="chat-entry main-chat"> 
+									<ul> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix my-mess"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+									</ul> 
+								</div> 
+								<!-- /chat-entry --> 
+								<h2>Чат пользоваелей</h2> 
+								<div class="chat-entry"> 
+									<ul> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix my-mess"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+									</ul> 
+									<form action="#" method="post"> 
+										<fieldset> 
+											<table> 
+												<tr> 
+													<td class="input-field"><input type="text" value="Наклацайте название темы, котрую вы хотите предложить в этом поле" /></td> 
+													<td class="input-button"><input type="submit" value="Сказать" /></td> 
+												</tr> 
+											</table> 
+										</fieldset> 
+									</form> 
+								</div> 
+								<!-- /chat-entry --> 
+								<h2>Чат с помошниками</h2> 
+								<div class="chat-entry"> 
+									<ul> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix my-mess"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+										<li class="clearfix"> 
+											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
+											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
+										</li> 
+									</ul> 
+									<form action="#" method="post"> 
+										<fieldset> 
+											<table> 
+												<tr> 
+													<td class="input-field"><input type="text" value="Наклацайте название темы, котрую вы хотите предложить в этом поле" /></td> 
+													<td class="input-button"><input type="submit" value="Сказать" /></td> 
+												</tr> 
+											</table> 
+										</fieldset> 
+									</form> 
+								</div> 
+								<!-- /chat-entry --> 
+							</div> 
+						</div> 
+						<!-- /d-content --> 
+						<div class="member-info l-side"> 
+							<div class="avatar"><a href="#"><img src="assets/i/temp/avatar.b.jpg" alt="" /><span class="member-name">madvic<i class="arrow-icon write-icon"></i></span></a></div> 
+							<ul class="controll clearfix"> 
+								<li><a href="#" title="Написать сообщение"><i class="icon mail-icon"></i></a></li> 
+								<li><a href="#" title="Статьи"><i class="icon mbook-icon"></i></a></li> 
+								<li><a href="#" title="Добавить"><i class="icon adduser-icon"></i></a></li> 
+								<li><a href="#" title="Комментарии"><i class="icon mcomm-icon"></i></a></li> 
+							</ul> 
+							<dl> 
+								<dt>Помощники</dt> 
+								<dd><a href="#">fedor</a> <span>помощь</span></dd> 
+								<dd><a href="#">madvic</a> <span>помощь</span></dd> 
+							</dl> 
+							<a class="vote" href="#">Голосовать за <strong>madvic</strong></a> 
+						</div> 
+						<div class="member-info r-side"> 
+							<div class="avatar"><a href="#"><img src="assets/i/temp/avatar.b.jpg" alt="" /><span class="member-name">fedor</span></a></div> 
+							<ul class="controll clearfix"> 
+								<li><a href="#" title="Написать сообщение"><i class="icon mail-icon"></i></a></li> 
+								<li><a href="#" title="Статьи"><i class="icon mbook-icon"></i></a></li> 
+								<li><a href="#" title="Добавить"><i class="icon adduser-icon"></i></a></li> 
+								<li><a href="#" title="Комментарии"><i class="icon mcomm-icon"></i></a></li> 
+							</ul> 
+							<dl> 
+								<dt>Помощники</dt> 
+								<dd><a href="#">madvic</a></dd> 
+								<dd><a href="#">fedor</a></dd> 
+							</dl> 
+							<a class="vote" href="#">Голосовать за <strong>fedor</strong></a> 
+						</div> 
+					</div> 
+					<!-- /d-wrap --> 
+					
+					
+				</div> 
+				<!-- /debate-page --> 
+				
+				
+				
 <!-- Главный блок, с вкладками (Контент) -->
 <div class="tab-page" id="modules-cpanel">
 	<?php include($this -> _include('../tab_panel.tpl.php')); ?>
