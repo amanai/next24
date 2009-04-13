@@ -18,11 +18,13 @@
 		<div class="bone">
 
 			<div class="head">
-
-				<p class="logo"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Главная страница"><img src="/app/images/logo.png" alt="Next24" /></a></p>
-
+					<p class="logo"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Главная страница"><img src="/app/images/logo.png" alt="Next24" /></a></p>
 				<div class="site-info clearfix">
+				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
 					<p>Новое на портале: <a href="#">Появился раздел Дебаты</a>.</p>
+				<? } else { ?>	
+					<p>Портал NEXT24 приветствует вас! <a href="#" onclick="getElementById('main_unreg_popup').style.display='block';">Узнать о всех возможностях портала</a>.</p>
+				<? } ?>	
 					<ul>
 						<li class="alt"><a href="#">Тур по сайту</a> |</li>
 						<li><a href="#">О проекте</a> |</li>
