@@ -32,7 +32,7 @@ class NewsView extends BaseSiteView{
           <li >
             '.$htmlImg.'
             <label><a href="'.$newsUrl.'/filterNewsTree:'.$news['id'].'">'.$news['name'].'</a></label>
-            <ul class="checkbox_tree">';
+            <ul class="nav-list">';
           
           
           foreach ($aFeeds as $feed){
@@ -79,7 +79,7 @@ class NewsView extends BaseSiteView{
           <li >
             '.$htmlImg.'
             <label style="white-space: nowrap; ">'.$htmlInputRadio.' '.$s1.$news['name'].$s2.'</label>
-            <ul class="checkbox_tree">';
+            <ul class="nav-list">';
           
           $this->BuildTree_radio($aLeafs, $aNews, $news['id'], $checkId, $showAllRadioButtons);
           $this->_htmlTree .= '
@@ -113,7 +113,7 @@ class NewsView extends BaseSiteView{
           <li >
             '.$htmlImg.'
             <label style="white-space: nowrap; ">'.$htmlInputRadio.' '.$s1.$news['name'].$s2.'</label>
-            <ul class="checkbox_tree">';
+            <ul class="nav-list">';
           
           $this->BuildTree_select($aLeafs, $aNews, $news['id'], $checkId, $showAllRadioButtons);
           $this->_htmlTree .= '
@@ -153,7 +153,7 @@ class NewsView extends BaseSiteView{
 	        \' href="javascript: void(0);">Изменить статус</a> <a href="'.$ChangeNewsTreeUrl.'/tree_id:'.$news['id'].'/deleteNewsTree:1/">Удалить</a>';
           $this->_htmlTree .= '   
             </label>
-            <ul class="checkbox_tree">';
+            <ul class="nav-list">';
           
           $this->BuildTree_moderate($aLeafs, $aNews, $news['id']);
           $this->_htmlTree .= '

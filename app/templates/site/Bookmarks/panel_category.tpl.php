@@ -4,6 +4,7 @@
 		<? foreach($this->bookmarks_category_list as $key => $item){ ?>
 			<? if ($v_count==0) { ?>			
 				<li>
+					<i class="arrow-icon"></i>
 					<?php if(($this->action=='BookmarksMostVisit') || ($this->action=='BookmarksView') || ($this->action=='BookmarksList')) { ?>
 						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']),false)?>"><?=$item['name']?></a>				
 					<? } else { ?>
@@ -12,13 +13,15 @@
 					<ul class="nav-list">										
 			<? } ?>
 			<? if (($item['level_item']==0) && $v_count) { ?>
-				</li></ul class="nav-list">
+				</ul>
+				<li>
+					<i class="arrow-icon"></i>
 					<?php if(($this->action=='BookmarksMostVisit') || ($this->action=='BookmarksView') || ($this->action=='BookmarksList')) { ?>
 						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']),false)?>"><?=$item['name']?></a>				
 					<? } else { ?>
 						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksUser', array($item['id']),false)?>"><?=$item['name']?></a>
 					<? } ?>				
-				<ul></li>	
+				<ul class="nav-list">	
 			<? } else { ?>
 				<? if (($this->bookmarks_category_selectedID == $item['id']) && $v_count) { ?>
 					<li><?=$item['name']?></li>

@@ -4,6 +4,7 @@
 		<? foreach($this->social_category_list as $key => $item) { ?>
 			<? if ($v_count==0) { ?>			
 				<li>
+					<i class="arrow-icon"></i>
 					<?php if(($this->action=='SocialLastAddPos') || ($this->action=='SocialView')) { ?>
 						<a href="<?=$this->createUrl('Social', 'SocialMainList', array($item['id']))?>"><?=$item['name']?></a>
 					<? } elseif($this->action=='SocialPosAdd') { ?>
@@ -14,7 +15,9 @@
 					<ul class="nav-list">										
 			<? } ?>
 			<? if (($item['level_item']==0) && $v_count) { ?>
-				</li></ul class="nav-list">
+				</ul>
+				<li>
+					<i class="arrow-icon"></i>
 					<?php if(($this->action=='SocialLastAddPos') || ($this->action=='SocialView')) { ?>
 						<a href="<?=$this->createUrl('Social', 'SocialMainList', array($item['id']))?>"><?=$item['name']?></a>
 					<? } elseif($this->action=='SocialPosAdd') { ?>
@@ -22,7 +25,7 @@
 					<? } else { ?>
 						<a href="<?=$this->createUrl('Social', $this->action, array($item['id']))?>"><?=$item['name']?></a>
 					<? } ?>						
-				<ul></li>	
+				<ul class="nav-list">	
 			<? } else { ?>
 				<? if ($this->social_category_selectedID == $item['id'] && $v_count) { ?>
 					<li><?=$item['name']?></li>
