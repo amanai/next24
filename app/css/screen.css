@@ -2235,7 +2235,7 @@ blockquote blockquote .quote{color:#979373;}
 .question-user-list .action{position:absolute;top:5px;left:0;}
 
 
-.bookmarks-preview-list li{position:relative;}
+.bookmarks-preview-list li{position:relative;padding-left:70px;}
 .bookmarks-preview-list dl{padding-right:130px;}
 .bookmarks-preview-list dd{float:none;}
 .bookmarks-preview-list .breadcrumbs{
