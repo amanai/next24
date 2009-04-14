@@ -15,7 +15,7 @@ class MessagesView extends BaseSiteView{
 	    $counter = count($aFirends);
 	    $i = 1;
 	    foreach ($aFirends as $friend){   
-	        $htmlStr .= '<dd '.(($counter==$i)?'class="last"':'').'>
+	        $htmlStr .= '<dd class="friend-list-dd '.(($counter==$i)?'last':'').'">
 							<a class="nm" href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $friend['login']).'">'.$friend['login'].'<img src="assets/i/temp/avatar.s.jpg" class="avatar" alt="" /></a>
 							<span class="memo">( <span>Заметка</span>: '.$friend['note'].' )</span>
 							<div class="act">

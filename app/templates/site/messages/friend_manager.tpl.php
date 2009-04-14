@@ -32,14 +32,14 @@
 							</form>						
 							<!-- /groups-control -->						
 							<dl class="groups-list">
-								<dt><i class="icon folder-b-icon"></i><a href="#">Общая</a> (<?=$this->getCountFriendInGroups($this->user_id, 0)?>)</dt>
+								<dt><i class="icon folder-b-icon"></i><a href="#" class="frind-list-dropdown">Общая</a> (<?=$this->getCountFriendInGroups($this->user_id, 0)?>)</dt>
 								<?=$this->showFriendsInGroup($this->user_id, 0); ?>
 							</dl>						
 							<?php foreach ($this->aFriendGroups as $friendGroup){ ?>					   			   
 								<dl class="groups-list">
 									<dt>
 										<i class="icon folder-b-icon"></i>
-										<a href="#"><?=$friendGroup['name'] ?></a> (<?=$this->getCountFriendInGroups($this->user_id, $friendGroup['id'])?>)
+										<a href="#" class="frind-list-dropdown"><?=$friendGroup['name'] ?></a> (<?=$this->getCountFriendInGroups($this->user_id, $friendGroup['id'])?>)
 										<?php echo '<form class="editForm" name="e_form_'.$friendGroup['id'].'" method="post" action="'.Project::getRequest() -> createUrl('Messages', 'Friend').'">
             					   			<input type="hidden" value="'.$friendGroup['id'].'" name="group_id" />
             					   			<input type="hidden" value="changeGroup" name="messageAction" />
