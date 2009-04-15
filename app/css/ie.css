@@ -5,7 +5,6 @@
 	background:url(about:blank) fixed;
 	}
 	
-
 	
 .clearfix {
 	display: inline-block;
@@ -179,3 +178,17 @@ a .icon,
 
 .nav-list li li input{margin:-2px 4px -2px 0;}
 
+* html .widgets-tabs .tabs .dropdown{
+	margin-right:-11px;
+	}
+* html .widget-header .controll .dropdown{
+	left:-6px;
+	margin-left:0;
+	margin-right:-9px;
+	margin-bottom:-12px;
+	}
+* html .widget-tabs{
+	overflow-x:hidden !important;
+	overflow-y:visible !important;
+	}
+	

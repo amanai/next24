@@ -9,7 +9,6 @@
 		<script type="text/javascript" src="<?=$this->getBothCJ($this -> _js_files,'js');?>"></script>
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
-		<link type="text/css" rel="stylesheet" href="/app/css/screen.css"  media="screen" />
 		<!--[if lte IE 7]><link type="text/css" rel="stylesheet" href="/app/css/ie.css"  media="screen" /><![endif]-->
 		<!--[if lte IE 6]><script language="javascript" type="text/javascript" src="/app/css/minmax.js"></script><![endif]-->
 	</head>

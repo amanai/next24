@@ -43,6 +43,5 @@
 			<div class="popup-shadow"></div> 
 			 <!--[if lte IE 6.5]><iframe></iframe><![endif]--> 
 		</div> 		
-
 	</body>
 </html>
