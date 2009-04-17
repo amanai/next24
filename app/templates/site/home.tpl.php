@@ -43,10 +43,9 @@
 					</div>	
 					<!-- /widgets-tabs --> 
 					<div class="widget-columns clearfix"> 
-						<div class="column"> 
-							<div class="widget"> 
- 
-								<div class="widget-header clearfix"> 
+						<div class="column widget-place"> 
+							<div class="widget movable" id="news"> 
+								<div class="widget-header clearfix" style="cursor:move;"> 
 									<h2><a href="<?php echo $this->createUrl('News', 'News', null, false); ?>"><i class="icon news-icon"></i>Новости</a> <em>(645)</em></h2> 
 									<ul class="controll"> 
 										<li><span title="Свернуть"><i class="icon widget-сollapse-icon"></i></span></li> 
@@ -111,9 +110,9 @@
 							<!-- /widget --> 
 						</div> 
 						<!-- /column --> 
-						<div class="column"> 
-							<div class="widget"> 
-								<div class="widget-header clearfix"> 
+						<div class="column widget-place"> 
+							<div class="widget movable" id="photo"> 
+								<div class="widget-header clearfix" style="cursor:move;"> 
 									<h2><a href="<?php echo $this->createUrl('Album', 'LastList', null, false); ?>"><span class="icon foto-icon"></span>Фото</a></h2> 
 									<ul class="controll"> 
  
@@ -151,8 +150,8 @@
 								<!-- /widget-content --> 
 							</div> 
 							<!-- /widget --> 
-							<div class="widget"> 
-								<div class="widget-header clearfix"> 
+							<div class="widget movable" id="question"> 
+								<div class="widget-header clearfix" style="cursor:move;"> 
 									<h2><a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false); ?>"><i class="icon answers-icon"></i>Вопрос-ответ</a></h2> 
  
 									<ul class="controll"> 
@@ -179,9 +178,9 @@
 							<!-- /widget --> 
 						</div> 
 						<!-- /column --> 
-						<div class="column alt-column"> 
-							<div class="widget"> 
-								<div class="widget-header clearfix"> 
+						<div class="column alt-column widget-place"> 
+							<div class="widget movable" id="articles"> 
+								<div class="widget-header clearfix" style="cursor:move;"> 
 									<h2><a href="<?php echo $this->createUrl('Article', 'List', null, false); ?>"><i class="icon articles-icon"></i>Статьи</a> <em>(124)</em></h2> 
  
 									<ul class="controll"> 
