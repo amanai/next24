@@ -20,28 +20,29 @@
 		<!--[if lte IE 7]><link type="text/css" rel="stylesheet" href="/app/css/ie.css"  media="screen" /><![endif]-->
 		<!--[if lte IE 6]><script language="javascript" type="text/javascript" src="/app/css/minmax.js"></script><![endif]-->
 	</head>
-	<body id="main">
-
-		<div class="bone">
-
-			<div class="head">
-					<p class="logo"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Главная страница"><img src="/app/images/logo.png" alt="Next24" /></a></p>
-				<div class="site-info clearfix">
+ 
+		<div class="bone"> 
+ 
+			<div class="head"> 
+ 
+				<p class="logo"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Главная страница"><img src="/app/images/logo.png" alt="Next24" /></a></p>
+ 
+				<div class="site-info clearfix"> 
 				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
 					<p>Новое на портале: <a href="#">Появился раздел Дебаты</a>.</p>
 				<? } else { ?>	
 					<p>Портал NEXT24 приветствует вас! <a href="#" onclick="getElementById('main_unreg_popup').style.display='block';">Узнать о всех возможностях портала</a>.</p>
 				<? } ?>	
-					<ul>
-						<li class="alt"><a href="#">Тур по сайту</a> |</li>
-						<li><a href="#">О проекте</a> |</li>
-						<li><a href="#">Сервисы</a> |</li>
-						<li><a href="#">Обратная связь</a> |</li>
-						<li><a href="#">Реклама</a></li>
-					</ul>
-				</div>
-				<!-- /site-info -->
-
+					<ul> 
+						<li class="alt"><a href="#">Тур по сайту</a> |</li> 
+						<li><a href="#">О проекте</a> |</li> 
+						<li><a href="#">Сервисы</a> |</li> 
+						<li><a href="#">Обратная связь</a> |</li> 
+						<li><a href="#">Реклама</a></li> 
+					</ul> 
+				</div> 
+				<!-- /site-info --> 
+ 
 				<div class="user-bar clearfix">
 				<?php 
 				//	$v_session = Project::getSession();
@@ -53,45 +54,48 @@
 				<?php 
 					$nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($this->current_user->id);
 					$user = Project::getUser()->getDbUser()->getUserById($this->current_user->id);				
-				?>
-					<ul>
+				?>				 
+					<ul> 
 						<li class="user-link"><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><img style="width: 28px; height: 25px;" src="assets/i/temp/user.png" alt="<?php echo $this->current_user->login;?>" /><?php echo $this->current_user->login;?></a></li>
-						<li class="updates-link"> 			
-							<div class="dropdown"> 
-								<div class="d-head"> 
-									<i class="icon updates-icon"></i><a href="#" class="script-link"><span class="t">Обновления (30)</span><i class="arrow-icon"></i></a> 
-								</div> 
-								<div class="d-body"> 
-									<ul> 
-										<li><a href="<?php echo $this->createUrl('Messages', 'Friend',null, $this->current_user->login); ?>">Друзья</a> (2)</li> 
-										<li><a href="<?php echo $this->createUrl('Album', 'List', null, $this->current_user->login)?>">Фото</a> (3)</li> 
-										<li><a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>">Подписка</a> (20)</li> 
-										<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'UserQuestions', null, $this->current_user->login); ?>">Ответы</a> (5)</li> 
-									</ul> 
-								</div> 
-							</div> 
+						<li class="updates-link"> 
+							
+										<div class="dropdown dropdown-active"> 
+											<div class="d-head"> 
+												<i class="icon updates-icon"></i><a href="#" class="script-link"><span class="t">Обновления (30)</span><i class="arrow-icon"></i></a> 
+											</div> 
+											<div class="d-body"> 
+												<ul> 
+													<li><a href="<?php echo $this->createUrl('Messages', 'Friend',null, $this->current_user->login); ?>">Друзья</a> (2)</li> 
+													<li><a href="<?php echo $this->createUrl('Album', 'List', null, $this->current_user->login)?>">Фото</a> (3)</li> 
+													<li><a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>">Подписка</a> (20)</li> 
+													<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'UserQuestions', null, $this->current_user->login); ?>">Ответы</a> (5)</li> 
+												</ul> 
+											</div> 
+										</div> 
 						</li> 
-						<li class="actions-link"> 						
-							<div class="dropdown"> 
-								<div class="d-head"> 
-									<i class="icon actions-icon"></i><a href="#" class="script-link"><span class="t">Действия</span><i class="arrow-icon"></i></a> 
-								</div> 
-								<div class="d-body"> 
-									<ul> 
-										<li><a href="#" class="with-icon-s"><i class="icon add-blog-s-icon"></i>Добавить запись в дневник</a></li> 
-										<li><a href="#" class="with-icon-s"><i class="icon add-blog-alt-s-icon"></i>Добавить запись в блог</a></li> 
-										<li><a href="#" class="with-icon-s"><i class="icon add-foto-s-icon"></i>Добавить фотографию</a></li> 
-										<li><a href="#" class="with-icon-s"><i class="icon settings-icon"></i>Настроить действия</a></li> 
-									</ul> 
-								</div> 
-							</div> 
-						</li> 						
+						<li class="actions-link"> 
+							
+										<div class="dropdown dropdown-active"> 
+											<div class="d-head"> 
+												<i class="icon actions-icon"></i><a href="#" class="script-link"><span class="t">Действия</span><i class="arrow-icon"></i></a> 
+											</div> 
+											<div class="d-body"> 
+												<ul> 
+													<li><a href="#" class="with-icon-s"><i class="icon add-blog-s-icon"></i>Добавить запись в дневник</a></li> 
+													<li><a href="#" class="with-icon-s"><i class="icon add-blog-alt-s-icon"></i>Добавить запись в блог</a></li> 
+													<li><a href="#" class="with-icon-s"><i class="icon add-foto-s-icon"></i>Добавить фотографию</a></li> 
+													<li><a href="#" class="with-icon-s"><i class="icon settings-icon"></i>Настроить действия</a></li> 
+												</ul> 
+											</div> 
+										</div> 
+ 
+						</li> 
 						<li class="rating-link"><i class="icon rating-icon"></i><a href="#"><?=$nr['rate']; ?> nr</a> <span class="sep">|</span> <a href="#" class="alt"><?=$user['nextmoney']; ?> nm</a></li>
-						<li class="login-link">
+						<li class="login-link"> 
 							<span class="settings-link"><i class="icon settings-icon"></i><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>">Настройки</a></span>
 							<span class="logout-link"><a href="<?php echo $this->createUrl('User', 'Logout')?>">Выход</a></span>
-						</li>
-					</ul>					
+						</li> 
+					</ul>
 				<?php } else { ?>
 					<ul>
 						<li class="not-login-link">
@@ -99,9 +103,10 @@
 							| <span class="register-link"><a href="<?php echo $this->createUrl('User', 'Registration', null, false)?>">Регистрация</a></span>
 						</li>
 					</ul>				
-				<? } ?>	
-				</div>
-				<!-- /user-bar -->
+				<? } ?>						 
+				</div> 
+				<!-- /user-bar --> 
+ 
 				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
 				<ul class="user-menu">
 					<li><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><span>Профиль</span></a> |</li>
@@ -116,6 +121,7 @@
 				</ul>
 				<!-- /user-menu -->
 				<? } ?>
+ 
 				<?php $request = Project::getRequest(); ?>
 				<?php $currentController = $request->getCurrentControllerName(); ?>
 				<ul class="menu clearfix">
@@ -136,8 +142,8 @@
 					<li <? if($currentController=='SearchUser') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('SearchUser','SearchUserMain',null,false); ?>"><i class="icon friends-icon"></i>Найти знакомых</a></li>
 				</ul>
 				<!-- /menu -->
-
-			</div>
-			<!-- /head -->
-
-			<div class="middle">		
+ 
+			</div> 
+			<!-- /head --> 
+ 
+			<div class="middle"> 
