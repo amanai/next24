@@ -6,10 +6,10 @@
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />		
 		<link href="<?=$this->getBothCJ($this -> _css_files,'css');?>" type="text/css" rel="StyleSheet"/>
-		<script type="text/javascript" src="http://next24.home/app/js/jquery.min.js"></script>
-		<script type="text/javascript" src="http://next24.home/app/js/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="http://next24.home/app/js/jquery.easywidgets.min.js"></script>
-		<script type="text/javascript" src="http://next24.home/app/js/dropdown.js"></script>
+		<script type="text/javascript" src="http://next24.ru/app/js/jquery.min.js"></script>
+		<script type="text/javascript" src="http://next24.ru/app/js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="http://next24.ru/app/js/jquery.easywidgets.min.js"></script>
+		<script type="text/javascript" src="http://next24.ru/app/js/dropdown.js"></script>
 		<?php $request = Project::getRequest(); ?>
 		<?php $currentController = $request->getCurrentControllerName(); ?>
 		<? if ($currentController!='Index') {?>
@@ -59,7 +59,7 @@
 						<li class="user-link"><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><img style="width: 28px; height: 25px;" src="assets/i/temp/user.png" alt="<?php echo $this->current_user->login;?>" /><?php echo $this->current_user->login;?></a></li>
 						<li class="updates-link"> 
 							
-										<div class="dropdown dropdown-active"> 
+										<div class="dropdown"> 
 											<div class="d-head"> 
 												<i class="icon updates-icon"></i><a href="#" class="script-link"><span class="t">Обновления (30)</span><i class="arrow-icon"></i></a> 
 											</div> 
@@ -75,7 +75,7 @@
 						</li> 
 						<li class="actions-link"> 
 							
-										<div class="dropdown dropdown-active"> 
+										<div class="dropdown"> 
 											<div class="d-head"> 
 												<i class="icon actions-icon"></i><a href="#" class="script-link"><span class="t">Действия</span><i class="arrow-icon"></i></a> 
 											</div> 
