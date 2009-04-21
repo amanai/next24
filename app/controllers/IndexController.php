@@ -42,7 +42,12 @@
 			if ($needToSave) $userModel->saveUserTabsMap($user->id, $tabs_map['selected_tabs']);
 			}
 			$this -> _view -> assign('desktops', $desktops);
-			$this -> _view -> Home();
+			if(!isset($request_keys['d'])) {
+				$this -> _view -> Home();
+			}
+			else {
+				$this -> _view -> HomeBlank();	
+			}
 			$this -> _view -> parse();
 		}
 		

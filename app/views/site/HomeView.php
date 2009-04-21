@@ -220,12 +220,20 @@ class HomeView extends BaseSiteView{
     // PAGE
 	function Home(){
 	    $this->_js_files[]='blockUI.js';
-	    $this->_js_files[] = 'jquery-ui.js';
+	  //  $this->_js_files[] = 'jquery-ui.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[]='tabs_main.js';
 	    $this->_css_files[] = 'tabs_main.css';
 		$this -> setTemplate(null, 'home.tpl.php');
 	}
+	function HomeBlank(){
+	    $this->_js_files[]='blockUI.js';
+	  //  $this->_js_files[] = 'jquery-ui.js';
+	    $this->_js_files[]='ajax.js';
+	    $this->_js_files[]='tabs_main.js';
+	    $this->_css_files[] = 'tabs_main.css';
+		$this -> setTemplate(null, 'home_blank.tpl.php');
+	}	
 	// END PAGE
 	
 	
