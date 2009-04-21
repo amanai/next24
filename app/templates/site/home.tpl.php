@@ -2,10 +2,16 @@
 				<div class="widget-page clearfix"> 
 					<div class="widgets-tabs"> 
 						<ul class="tabs clearfix"> 
-							<li class="active"> 							
+						<?php 
+							$v_request = Project::getRequest();
+    						$v_session = Project::getSession();
+    						$request_keys = $v_request->getKeys();	
+    						if(isset($request_keys['d'])) $d = $request_keys['d'];				
+						?>
+							<li <?if(!isset($d)) echo 'class="active"';?>> 							
 										<div class="dropdown dropdown-noactive"> 
 											<div class="d-head"> 
-												<span class="with-drop"><a href="#">моя вкладка</a></span><i class="arrow-icon down-arrow"></i> 
+												<span class="with-drop"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>">моя вкладка</a></span><i class="arrow-icon down-arrow"></i> 
 											</div> 
 											<div class="d-body"> 
 												<ul> 
@@ -15,13 +21,16 @@
 											</div> 
 										</div> 
 							</li> 
-							<li><a href="#">бугага</a></li> 
-							<li><a href="#">Apple</a></li> 
-							<li class="add"><a href="#" title="Добавить"><i class="icon add-tab-icon"></i>+</a></li> 
+							<?php if($this->desktops) { ?>
+							<?php foreach ($this->desktops as $key => $value) {?>
+							<li <?if(isset($d) && ($key==$d)) echo 'class="active"';?>><a href="<?php echo $this->createUrl('Index', 'Index', array('d' => $key), false); ?>"><?=$value;?></a></li>
+							<? } ?>
+							<? } ?>
+							<li class="add"><a href="<?php echo $this->createUrl('Index', 'addDesktop', null, false); ?>" title="Добавить"><i class="icon add-tab-icon"></i>+</a></li> 
 						</ul> 
 						<ul class="sub-tabs clearfix"> 
 							<li><a href="#"><i class="icon add-widget-icon"></i>Добавить виджет</a></li> 
-							<li><a href="#"><i class="icon update-icon"></i>обновить все виджеты</a></li> 
+							 
 							<li> 
 										<div class="dropdown dropdown-noactive"> 
 											<div class="d-head"> 
@@ -44,7 +53,6 @@
 									<h2><a href="<?php echo $this->createUrl('News', 'News', null, false); ?>"><i class="icon news-icon"></i>Новости</a> <em>(645)</em></h2> 
 									<ul class="controll"> 
 										<li><span title="Свернуть"><i class="icon widget-сollapse-icon"></i></span></li> 
-										<li><span title="Обновить"><i class="icon widget-refresh-icon"></i></span></li> 
 										<li><span title="Добавить"><i class="icon widget-add-icon"></i></span></li> 
 										<li> 
 											
@@ -112,7 +120,6 @@
 									<ul class="controll"> 
  
 										<li><span title="Свернуть"><i class="icon widget-сollapse-icon"></i></span></li> 
-										<li><span title="Обновить"><i class="icon widget-refresh-icon"></i></span></li> 
 										<li><span title="Добавить"><i class="icon widget-add-icon"></i></span></li> 
 										<li> 
 											<div class="dropdown"> 
@@ -151,9 +158,24 @@
  
 									<ul class="controll"> 
 										<li><span title="Свернуть"><i class="icon widget-сollapse-icon"></i></span></li> 
-										<li><span title="Обновить"><i class="icon widget-refresh-icon"></i></span></li> 
 										<li><span title="Добавить"><i class="icon widget-add-icon"></i></span></li> 
-										<li><span title="Настройки"><i class="icon widget-settings-icon"></i></span></li> 
+										<li> 
+											
+											<div class="dropdown"> 
+												<div class="d-head"> 
+													<span title="Настройки"><i class="icon widget-settings-icon"></i></span> 
+												</div> 
+												<div class="d-body"> 
+													<ul> 
+														<li><a href="#">Добавить запись в дневник</a></li> 
+														<li><a href="#">Добавить запись в блог</a></li> 
+														<li><a href="#">Добавить фотографию</a></li> 
+														<li><a href="#">Настроить действия</a></li> 
+													</ul> 
+												</div> 
+											</div> 
+										
+										</li> 
 										<li class="alt"><span title="Удалить"><i class="icon widget-delete-icon"></i></span></li> 
 									</ul> 
 								</div> 
@@ -180,9 +202,24 @@
  
 									<ul class="controll"> 
 										<li><span title="Свернуть"><i class="icon widget-сollapse-icon"></i></span></li> 
-										<li><span title="Обновить"><i class="icon widget-refresh-icon"></i></span></li> 
 										<li><span title="Добавить"><i class="icon widget-add-icon"></i></span></li> 
-										<li><span title="Настройки"><i class="icon widget-settings-icon"></i></span></li> 
+										<li> 
+											
+											<div class="dropdown"> 
+												<div class="d-head"> 
+													<span title="Настройки"><i class="icon widget-settings-icon"></i></span> 
+												</div> 
+												<div class="d-body"> 
+													<ul> 
+														<li><a href="#">Добавить запись в дневник</a></li> 
+														<li><a href="#">Добавить запись в блог</a></li> 
+														<li><a href="#">Добавить фотографию</a></li> 
+														<li><a href="#">Настроить действия</a></li> 
+													</ul> 
+												</div> 
+											</div> 
+										
+										</li> 
 										<li class="alt"><span title="Удалить"><i class="icon widget-delete-icon"></i></span></li> 
 									</ul> 
 								</div> 
@@ -190,7 +227,21 @@
  
 								<div class="widget-tabs"> 
 									<ul class="clearfix"> 
-										<li class="active"><strong>Все новости<i class="arrow-icon"></i></strong></li> 
+										<li class="active"> 
+											<div class="dropdown"> 
+												<div class="d-head"> 
+													<strong>Все новости<i class="arrow-icon"></i></strong> 
+												</div> 
+												<div class="d-body"> 
+													<ul> 
+														<li><a href="#">Добавить запись в дневник</a></li> 
+														<li><a href="#">Добавить запись в блог</a></li> 
+														<li><a href="#">Добавить фотографию</a></li> 
+														<li><a href="#">Настроить действия</a></li> 
+													</ul> 
+												</div> 
+											</div> 
+										</li> 
 										<li><a href="#">Спорт</a></li> 
 										<li><a href="#">Бизнес</a></li> 
 										<li><a href="#">Недвижимость</a></li> 

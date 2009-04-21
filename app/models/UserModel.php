@@ -683,6 +683,27 @@ class UserModel extends BaseModel{
 		$this -> bind($result);
 		return $this->id;
 	}
+	public function addDesktop($desktops) {
+		$db = Project::getDatabase();
+		$id_user = Project::getUser() -> getDbUser()->id;
+		$sql = "SELECT destops FROM user_desktops WHERE user_id = $id_user";
+		$result = $db->selectRow($sql);
+		if($result['destops']) {
+			$sql = "UPDATE user_desktops SET destops = '$desktops' WHERE user_id = $id_user";		
+		}
+		else {
+			$sql = "INSERT INTO user_desktops (user_id,destops) VALUES ($id_user,'$desktops')";
+		}	
+		//echo $sql;
+		$db->query($sql);
+	}
+	public function getDesktops() {
+		$db = Project::getDatabase();
+		$id_user = Project::getUser() -> getDbUser()->id;
+		$sql = "SELECT destops FROM user_desktops WHERE user_id = $id_user";
+		$result = $db->selectRow($sql);
+		return $result['destops'];		
+	}
 }
 
 

@@ -16,11 +16,15 @@
 		
 		public function IndexAction(){	
 			//$this -> BaseSiteData();	
+			$v_request = Project::getRequest();
+    		$v_session = Project::getSession();
+    		$request_keys = $v_request->getKeys();			
 			$userModel = new UserModel();
 			$user = Project::getUser() -> getDbUser();
 			$tabs_map = $this->tabs_map;
 			$needToSave = false;
-			
+			$desktops = unserialize($userModel->getDesktops());
+			if(!$request_keys['d']) {
 			if ($user->id){
 			    $tabs_map['selected_tabs'] = unserialize($user->tabs_map);
 			    if (!$tabs_map['selected_tabs']){
@@ -36,7 +40,8 @@
 			$this -> _view -> assign('tabs_map', $tabs_map);
 			$this -> _view -> assign('user_id', $user->id);
 			if ($needToSave) $userModel->saveUserTabsMap($user->id, $tabs_map['selected_tabs']);
-			
+			}
+			$this -> _view -> assign('desktops', $desktops);
 			$this -> _view -> Home();
 			$this -> _view -> parse();
 		}
@@ -72,6 +77,17 @@
     	    $this -> _view -> returnTabs($message);
             $this -> _view -> ajax();
 		}
-		
+		public function addDesktopAction() {
+			$v_request = Project::getRequest();
+    		$v_session = Project::getSession();
+    		$request_keys = $v_request->getKeys();			
+			$userModel = new UserModel();
+			$desktops = unserialize($userModel->getDesktops());
+			//$desktops[] = $v_request['tab_name'];
+			$desktops[] = 'Новая вкладка';
+			$desktops = serialize($desktops);
+			$userModel->addDesktop($desktops);
+			Project::getResponse() -> redirect(Project::getRequest() -> createUrl("Index", "Index"));
+		}				
 	}
 ?>

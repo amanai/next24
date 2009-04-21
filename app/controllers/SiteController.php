@@ -74,6 +74,5 @@
 		
 		public function UserTypeAction(){
 		}
-
 	}
 ?>

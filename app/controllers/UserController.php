@@ -750,6 +750,5 @@
 			
 			Project::getResponse() -> redirect(Project::getRequest() -> createUrl("User", "Profile"));
 		}
-		
 	}
 ?>
