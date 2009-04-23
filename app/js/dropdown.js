@@ -318,4 +318,176 @@ if($("div.widget")) {
 		$.fn.HideEasyWidget(id);
 	}); 	
 } 	
+if($("ul.nav-outsourse")) {
+	$("i.arrow-icon").click(function () {
+		if($(this).siblings("ul.nav-outsourse").is(":hidden")) {
+			$(this).siblings("ul.nav-outsourse").slideDown("slow");
+		}
+		else {
+			$(this).siblings("ul.nav-outsourse").slideUp("slow");
+		}
+	}); 
+}  
+
+	  $.fn.EasyWidgets.defaults = {
+  behaviour : {
+  dragDelay : 100,
+
+    dragRevert : 100,
+
+    dragOpacity : 0.8,
+
+    useCookies : true
+  },
+
+  effects : {
+
+    effectDuration : 500,
+
+    widgetShow : 'none',
+    widgetHide : 'none',
+    widgetClose : 'slide',
+    widgetExtend : 'none',
+    widgetCollapse : 'none',
+    widgetOpenEdit : 'none',
+    widgetCloseEdit : 'none',
+    widgetCancelEdit : 'none'
+  },
+
+  cookies : {
+
+    path : '',
+
+    domain : '',
+
+    expires : 90,
+
+    secure : false,
+
+    closeName : 'ew-close',
+
+    disableName : 'ew-disable',
+
+    positionName : 'ew-position',
+
+    collapseName : 'ew-collapse'
+  },
+
+  options : {
+
+    movable : 'movable',
+
+    editable : 'editable',
+
+    collapse : 'collapse',
+
+    removable : 'removable',
+
+    collapsable : 'collapsable',
+
+    closeConfirm : 'closeconfirm'
+  },
+
+  callbacks : {
+    onAdd : null,
+
+    onEdit : null,
+
+    onShow : null,
+
+    onHide : null,
+
+    onClose : null,
+
+    onEnable : null,
+
+    onExtend : null,
+
+    onDisable : null,
+
+    onDragStop : null,
+
+    onCollapse : null,
+
+    onAddQuery : null,
+
+    onEditQuery : null,
+
+    onShowQuery : null,
+
+    onHideQuery : null,
+
+    onCloseQuery : null,
+
+    onCancelEdit : null,
+
+    onEnableQuery : null,
+
+    onExtendQuery : null,
+
+    onDisableQuery : null,
+
+    onCollapseQuery : null,
+
+    onCancelEditQuery : null,
+
+    onChangePositions : null,
+
+    onRefreshPositions : null
+  },
+
+  selectors : {
+
+    container : 'div',
+
+    widget : '.widget',
+
+    places : '.widget-place',
+
+    header : '.widget-header',
+
+    widgetMenu : '.widget-menu',
+
+    editbox : '.widget-editbox',
+
+    content : '.widget-content',
+
+    closeEdit : '.widget-close-editbox',
+
+    editLink : '.widget-editlink',
+
+    closeLink : '.widget-closelink',
+
+    placeHolder : 'widget-placeholder',
+
+    collapseLink : '.widget-collapselink'
+  },
+
+
+  i18n : {
+
+    editText : 'Edit',
+
+    closeText : 'Close',
+
+    extendText : 'Extend',
+
+    collapseText : 'Collapse',
+
+    cancelEditText : 'Cancel',
+
+    editTitle : 'Edit this widget',
+
+    closeTitle : 'Close this widget',
+
+    confirmMsg : 'Remove this widget?',
+
+    cancelEditTitle : 'Cancel edition',
+
+    extendTitle : 'Extend this widget',
+
+    collapseTitle : 'Collapse this widget'
+  }
+};
+	  $.fn.ShowEasyWidget(id);
 });	

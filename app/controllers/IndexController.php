@@ -83,6 +83,7 @@
             $this -> _view -> ajax();
 		}
 		public function addDesktopAction() {
+			//echo '!!!!!!!!!!!!!';
 			$v_request = Project::getRequest();
     		$v_session = Project::getSession();
     		$request_keys = $v_request->getKeys();			
@@ -93,6 +94,6 @@
 			$desktops = serialize($desktops);
 			$userModel->addDesktop($desktops);
 			Project::getResponse() -> redirect(Project::getRequest() -> createUrl("Index", "Index"));
-		}				
+		}	
 	}
 ?>
