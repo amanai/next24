@@ -3,6 +3,28 @@
 
 			<div class="footer">
 				<p class="copyright">© <span class="next24">NEXT<span>24</span></span> 2008</p>
+				<script type="text/javascript">
+					var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+					document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+				</script>
+				<script type="text/javascript">
+					try {
+						var pageTracker = _gat._getTracker("UA-8560199-1");
+						pageTracker._trackPageview();
+					} catch(err) {}
+				</script>	
+				<!--LiveInternet counter-->
+				<script type="text/javascript"><!--
+					document.write("<a href='http://www.liveinternet.ru/click' "+
+					"target=_blank><img src='http://counter.yadro.ru/hit?t45.6;r"+
+					escape(document.referrer)+((typeof(screen)=="undefined")?"":
+					";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+					screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+					";"+Math.random()+
+					"' alt='' title='LiveInternet' "+
+					"border='0' width='31' height='31'><\/a>")
+				//--></script>
+				<!--/LiveInternet-->											
 			</div>
 			<!-- /footer -->
 

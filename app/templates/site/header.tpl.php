@@ -9,7 +9,7 @@
 		<script type="text/javascript" src="http://next24.ru/app/js/jquery.min.js"></script>
 		<script type="text/javascript" src="http://next24.ru/app/js/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="http://next24.ru/app/js/jquery.easywidgets.min.js"></script>
-		<script type="text/javascript" src="http://next24.ru/app/js/dropdown.js"></script>
+		<script type="text/javascript" src="http://next24.home/app/js/dropdown.js"></script>
 		<?php $request = Project::getRequest(); ?>
 		<?php $currentController = $request->getCurrentControllerName(); ?>
 		<? if ($currentController!='Index') {?>

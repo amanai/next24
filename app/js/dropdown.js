@@ -40,14 +40,31 @@ if($("a.frind-list-dropdown")) {
 		}
 	}); 	
 }
-
 if($("div.widget")) {
-	
+	$("i.add-widget-icon").parent("a").click(function () {
+	 if($("#news").css('display')=='none') {
+		$("#news").css('display','block');
+		return 0;
+	 }
+	 if($("#photo").css('display')=='none') {
+			$("#photo").css('display','block');
+			return 0;
+	 }
+	 if($("#question").css('display')=='none') {
+			$("#question").css('display','block');
+			return 0;
+	 }	
+	 if($("#articles").css('display')=='none') {
+			$("#articles").css('display','block');
+			return 0;
+	 }		 
+}); 		
 /*	$("div.widget").resizable({ 
 			maxWidth: $("div.widget").parent().width()-12, 
 			minWidth: 265, 
 			minHeight: 30
 	}); */
+	
 	$("i.widget-сollapse-icon").parent("span").click(function () {
 		if($(this).parent().parent().parent().siblings("div.widget-content").is(':hidden')) {
 			$(this).parent().parent().parent().siblings("div.widget-content").slideDown("slow");			
@@ -57,6 +74,7 @@ if($("div.widget")) {
 			$(this).parent().parent().parent().siblings("div.widget-content").slideUp("slow");
 		} 
 	}); 
+	
 	$("i.widget-add-icon").parent("span").click(function () {
 		$(this).parent().parent().parent().siblings("div.widget-tabs").children().append('<li><a href="#">Новая вкладка</a></li>');
 	}); 	
@@ -313,9 +331,11 @@ if($("div.widget")) {
 	  }; */
 
 	$.fn.EasyWidgets();
+	
 	$("i.widget-delete-icon").parent("span").click(function () {
 		var id = $(this).parent().parent().parent().parent().attr('id');
 		$.fn.HideEasyWidget(id);
-	}); 	
+	}); 
+	
 } 	
 });	
