@@ -7,7 +7,7 @@
 	</div>
 
 <?php 
-if ($this->user_profile['id']!=$this->current_user->id&&$this->current_user->id){ 
+if ($this->user_profile['id']!=$this->current_user->id && $this->current_user->id){ 
 ?>
 
 					<div class="block_title"><h2>Ваше отношение к <?=$this->user_profile['login'];?></h2></div>

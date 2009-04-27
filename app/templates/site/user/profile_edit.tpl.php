@@ -220,17 +220,19 @@
 						</form> 
 					</div></div> 
 					<!-- /main --> 
+					<?php  if ($this->user_profile['id']==$this->current_user->id){ ?>
 					<div class="sidebar"> 
 						<div class="user-action"> 
 							<ul> 
-								<li><i class="icon prof-ed-icon"></i>Редктировать профиль</li> 
-								<li><a href="#"><i class="icon avatar-ed-icon"></i>Редактировать аватары</a></li> 
-								<li><a href="#"><i class="icon mood-ed-icon"></i>Фразы настроения</a></li> 
-								<li><a href="#"><i class="icon place-ed-icon"></i>Места работы, учебы</a></li> 
+								<li><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>"><i class="icon prof-ed-icon"></i>Редктировать профиль</a></li> 
+								<li><a href="<?php echo $this -> createUrl('User', 'AvatarEdit');?>"><i class="icon avatar-ed-icon"></i>Редактировать аватары</a></li> 
+								<li><a href="<?php echo $this -> createUrl('User', 'Mood');?>"><i class="icon mood-ed-icon"></i>Фразы настроения</a></li> 
+								<li><a href="<?php echo $this -> createUrl('Places', 'Index');?>"><i class="icon place-ed-icon"></i>Места работы, учебы</a></li> 
 							</ul> 
 						</div> 
 					</div> 
 					<!-- /sidebar --> 
+					<?php } ?>
 				</div> 
 				<!-- /columns-page --> 
 				
