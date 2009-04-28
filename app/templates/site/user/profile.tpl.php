@@ -239,29 +239,24 @@
 					<!-- /main -->
 					<div class="sidebar">
 						<div class="navigation">
+						<?php 
+					//	print '<pre>';
+					//		print_r($this->last_4_albums);
+					//	print '</pre>';	
+						?>
 							<div class="title alt-title"><h2>Фотоальбомы</h2></div>
 							<ul class="short-list photo-short-list">
+							<?php if(is_array($this->last_4_albums)) { ?>
+							<?php foreach ($this->last_4_albums as $value) {?>
 								<li>
 									<dl class="clearfix">
-										<dt><a href="#"><img src="assets/i/temp/foto.s.jpg" alt="" /></a></dt>
-										<dd><a href="#">Мой Альбом</a></dd>
-										<dd>12 фото</dd>
+										<dt><a href="<?php echo $this -> createUrl('Photo','Album').'/'.$value['album_id'].'/';?>"><img src="<?=$this->last_4_albums['thumbnail'];?>" alt="" /></a></dt>
+										<dd><a href="<?php echo $this -> createUrl('Photo','Album').'/'.$value['album_id'].'/';?>"><?=$value['name'];?></a></dd>
+										<dd><?=$value['pht_cnt'];?> фото</dd>
 									</dl>
-								</li>
-								<li>
-									<dl class="clearfix">
-										<dt><a href="#"><img src="assets/i/temp/foto.s.jpg" alt="" /></a></dt>
-										<dd><a href="#">Мой Альбом</a></dd>
-										<dd>12 фото</dd>
-									</dl>
-								</li>
-								<li>
-									<dl class="clearfix">
-										<dt><a href="#"><img src="assets/i/temp/foto.s.jpg" alt="" /></a></dt>
-										<dd><a href="#">Мой Альбом</a></dd>
-									  	<dd>12 фото</dd>
-									</dl>
-								</li>
+								</li>							
+							<? } ?>
+							<? } ?>
 								<li class="view-more"><a href="<?php echo $this -> createUrl('Album','List');?>">Все альбомы</a> <!-- (5) --></li>
 							</ul>
 						</div>

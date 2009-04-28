@@ -500,7 +500,11 @@
 			$this -> _view -> assign('in_friend_list_model', $friend_model -> getInFriends($user -> id));
 			$this -> _view -> assign('user_profile', $user -> data());
 			//$this -> _view -> assign('user_interests', $ui_model -> getInterests($user -> id));
-			
+			$last_4_albums = $userModel->get4LastAlbums();
+			foreach ($last_4_albums as &$value) {
+				$value['thumbnail'] = $this->checkFile(Project::getUser()->getDbUser()->login, $value['thumbnail'], $thumb_file = true);
+			}
+			$this->_view->assign('last_4_albums',$last_4_albums);
 			$this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
 			$this -> _view -> Profile();
 			$this -> _view -> parse();
@@ -752,5 +756,53 @@
 			
 			Project::getResponse() -> redirect(Project::getRequest() -> createUrl("User", "Profile"));
 		}
+
+		
+		
+		public function checkFile($login, $fname, $thumb_file = false){		
+			$ret = false;
+			if (strlen($login) > 0){
+				$dir = USER_UPLOAD_DIR . DIRECTORY_SEPARATOR . $login;
+				$err = false;
+				$ok = $this->checkDir($dir);
+				if ($ok === true){
+					$album = $dir . DIRECTORY_SEPARATOR . 'album';
+					$ok = $this->checkDir($album);
+				}
+				if ($ok === true){
+					$images = $album . DIRECTORY_SEPARATOR . 'images';
+					$ok = $this->checkDir($images);
+				}
+				
+				if (($ok === true) && ($thumb_file === true)){
+					$thumbs = $album . DIRECTORY_SEPARATOR . 'thumbs';
+					$ok = $this->checkDir($thumbs);
+				}
+				if ($ok === true){
+					if ($thumb_file === true){
+						$f = $thumbs . DIRECTORY_SEPARATOR . $fname;
+					} else {
+						$f = $images . DIRECTORY_SEPARATOR . $fname;
+					}
+					if (file_exists($f) && is_file($f)){
+						$ret = Project::getRequest() -> getHost() . 'users/'.$login.'/album/'. ( ($thumb_file === true) ? 'thumbs' : 'images' ) . '/' . $fname;
+					}
+				}
+			}
+			return $ret;
+		}
+
+		public function checkDir($dir){
+			clearstatcache();
+			if (!file_exists($dir) || !is_dir($dir)){
+				if (mkdir($dir)){
+					chmod($dir, 0777);
+					return true;
+				} else {
+					return false;
+				}
+			}
+			return true;
+		}		
 	}
 ?>

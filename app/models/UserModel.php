@@ -704,9 +704,16 @@ class UserModel extends BaseModel{
 		$result = $db->selectRow($sql);
 		return $result['destops'];		
 	}
+	public function get4LastAlbums() {
+		$db = Project::getDatabase();
+		$id_user = Project::getUser() -> getDbUser()->id;
+		$sql = "SELECT t1.id as album_id, t1.name,IF(t2.pht_cnt is NULL,0,t2.pht_cnt) as pht_cnt ,t3.thumbnail FROM album t1
+				LEFT JOIN (SELECT count(*) as pht_cnt,album_id FROM photo GROUP BY album_id) t2 ON t1.id = t2.album_id 
+				LEFT JOIN photo t3 ON t1.thumbnail_id = t3.id
+				WHERE t1.user_id = $id_user AND t1.is_onmain = 1
+				ORDER BY t1.creation_date ASC LIMIT 0,4;"; 
+		$result = $db->select($sql);
+		return $result;		
+	}
 }
-
-
-
-
 ?>
