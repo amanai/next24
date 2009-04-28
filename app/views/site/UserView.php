@@ -114,6 +114,9 @@ class UserView extends BaseSiteView{
 			$this -> helper -> state = $this->helper->state_id;
 			
 			$this -> assign('edit', true);
+			$this->_js_files[]='xpath.js';
+			$this->_js_files[]='blockUI.js';
+			$this->_js_files[]='ajax.js';			
 			$this -> setTemplate(null, 'profile_edit.tpl.php');
 		}
 		
