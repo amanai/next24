@@ -50,57 +50,51 @@
 						<div class="profile-info">
 							<div class="info-title">
 								<div class="more-act">[ <a href="<?php echo $this -> createUrl('Messages', 'Friend');?>">все друзья</a> ]</div>
-								<i class="arrow-icon up-arrow"></i><strong>Друзья</strong> (112)
+								<i class="arrow-icon up-arrow"></i><strong>Друзья</strong> <!--  (112)	 -->
 							</div>
 							<!-- /info-title -->
-							<div class="info-entry">
-								<? if ($this->friend_list) { ?>
-									<?=$this -> friend_list; ?>
-								<? } ?>
-								<? if ($this->in_friend_list) { ?>
-									<?=$this -> in_friend_list; ?>
-								<? } ?>								
+							<div class="info-entry">						
 								<ul class="friends-profile-view clearfix">
+								<? if (is_array($this->friend_list_model)) { ?>
+								<?php foreach ($this->friend_list_model as $value) { ?>
+								<?php $loop_user = Project::getUser()->getDbUser()->getUserById($value); 
+									  $avatar = Project::getUser()->getDbUser()->getUserAvatar($value);
+									$avPath = $avatar['path'];
+									if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
+								?>
 									<li>
-										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
-										<a href="#" class="nm">Андрей Шевченко</a>
-										<span class="where">Украина, Киев</span>
-									</li>
+										<span class="av"><a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" alt="" style="width:25px;height:25px;" /></a></span>
+										<a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>" class="nm"><?=$loop_user['first_name']; ?> <?=$loop_user['last_name']; ?></a>
+										<span class="where"><?=$loop_user['country']?$loop_user['country'].' , ':''; ?><?=$loop_user['city'] ?></span>
+									</li>							
+								<?php } ?>
+								<? } ?>	
+								</ul>
+							</div>
+							<!-- /info-entry -->
+						</div>					
+						<div class="profile-info">
+							<div class="info-title">
+								<div class="more-act">[ <a href="<?php echo $this -> createUrl('Messages', 'Friend');?>">все друзья</a> ]</div>
+								<i class="arrow-icon up-arrow"></i><strong>В друзьях</strong> <!--  (112)	 -->
+							</div>
+							<!-- /info-title -->
+							<div class="info-entry">							
+								<ul class="friends-profile-view clearfix">
+								<? if (is_array($this->in_friend_list_model)) { ?>
+								<?php foreach ($this->in_friend_list_model as $value) { ?>
+								<?php $loop_user = Project::getUser()->getDbUser()->getUserById($value['user_id']); 
+									  $avatar = Project::getUser()->getDbUser()->getUserAvatar($value['user_id']);
+									  $avPath = $avatar['path'];
+									  if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
+								?>
 									<li>
-										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
-										<a href="#" class="nm">Антонина Степановна</a>
-										<span class="where">Великобритания, Лондон</span>
-									</li>
-									<li>
-										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
-										<a href="#" class="nm">Андрей Шевченко</a>
-										<span class="where">Украина, Киев</span>
-									</li>
-									<li>
-										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
-										<a href="#" class="nm">Андрей Шевченко</a>
-										<span class="where">Украина, Киев</span>
-									</li>
-									<li>
-										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
-										<a href="#" class="nm">Андрей Шевченко</a>
-										<span class="where">Украина, Киев</span>
-									</li>
-									<li>
-										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
-										<a href="#" class="nm">Андрей Шевченко</a>
-										<span class="where">Украина, Киев</span>
-									</li>
-									<li>
-										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
-										<a href="#" class="nm">Андрей Шевченко</a>
-										<span class="where">Украина, Киев</span>
-									</li>
-									<li>
-										<span class="av"><a href="#"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></a></span>
-										<a href="#" class="nm">Андрей Шевченко</a>
-										<span class="where">Украина, Киев</span>
-									</li>
+										<span class="av"><a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" alt="" style="width:25px;height:25px;" /></a></span>
+										<a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>" class="nm"><?=$loop_user['first_name']; ?> <?=$loop_user['last_name']; ?></a>
+										<span class="where"><?=$loop_user['country']?$loop_user['country'].' , ':''; ?><?=$loop_user['city'] ?></span>
+									</li>							
+								<?php } ?>
+								<? } ?>									
 								</ul>
 							</div>
 							<!-- /info-entry -->
@@ -108,7 +102,7 @@
 						<!-- /profile-info -->
 						<div class="profile-info">
 							<div class="info-title">
-								<i class="arrow-icon up-arrow"></i><strong>Лента событий в подписке</strong> (112)
+								<i class="arrow-icon up-arrow"></i><strong>Лента событий в подписке</strong> <!-- (112) -->
 							</div>
 							<!-- /info-title -->
 							<div class="info-entry">
@@ -127,7 +121,7 @@
 						<!-- /profile-info -->
 						<div class="profile-info">
 							<div class="info-title">
-								<div class="more-act">[ <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">изменить</a> ]</div>
+								<div class="more-act"><?php  if ($this->user_profile['id']==$this->current_user->id){ ?>[ <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">изменить</a> ] <? } ?></div>
 								<i class="arrow-icon up-arrow"></i><strong>Личная информация</strong>
 							</div>
 							<!-- /info-title -->
@@ -265,10 +259,10 @@
 									<dl class="clearfix">
 										<dt><a href="#"><img src="assets/i/temp/foto.s.jpg" alt="" /></a></dt>
 										<dd><a href="#">Мой Альбом</a></dd>
-										<dd>12 фото</dd>
+									  	<dd>12 фото</dd>
 									</dl>
 								</li>
-								<li class="view-more"><a href="<?php echo $this -> createUrl('Album','List');?>">Все альбомы</a> (5)</li>
+								<li class="view-more"><a href="<?php echo $this -> createUrl('Album','List');?>">Все альбомы</a> <!-- (5) --></li>
 							</ul>
 						</div>
 			  			<div class="navigation">
@@ -294,7 +288,7 @@
 									<span class="date">18 декабря 2008, 19:46</span>
 									<a href="#">Трехмерные танки на Flash!</a>
 								</li>
-								<li class="view-more"><a href="<?php echo $this -> createUrl('Blog','PostList');?>">Все сообщения в блоге</a> (15)</li>
+								<li class="view-more"><a href="<?php echo $this -> createUrl('Blog','PostList');?>">Все сообщения в блоге</a> <!-- (15) --></li>
 							</ul>
 						</div>
 			<!--			<div class="navigation">

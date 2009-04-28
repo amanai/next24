@@ -30,7 +30,7 @@ class FriendModel extends BaseModel{
 		
 		function getInFriends($user_id){
 			$sql = "SELECT " .
-												" u.login as login " .
+												" u.id as user_id, u.login as login " .
 											" FROM friend as f " .
 											" INNER JOIN users u ON u.id=f.user_id " .
 											" WHERE " .

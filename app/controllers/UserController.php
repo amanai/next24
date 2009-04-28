@@ -494,8 +494,10 @@
 			$this -> _view -> assign('his_relation', $relation->getRelation($user->id, $this->_view->current_user->id));
 			
 			$this -> _view -> assign('user_default_avatar', $userModel->getUserAvatar($user->id));
+			$this -> _view -> assign('friend_list_model', $friend_model -> getFriends($user -> id));	
 			$this -> _view -> assign('friend_list', $friend_model -> getFriends($user -> id));
 			$this -> _view -> assign('in_friend_list', $friend_model -> getInFriends($user -> id));
+			$this -> _view -> assign('in_friend_list_model', $friend_model -> getInFriends($user -> id));
 			$this -> _view -> assign('user_profile', $user -> data());
 			//$this -> _view -> assign('user_interests', $ui_model -> getInterests($user -> id));
 			
