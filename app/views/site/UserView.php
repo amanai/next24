@@ -112,7 +112,13 @@ class UserView extends BaseSiteView{
 			$this -> helper -> country = $this->helper->country_id;
 			$this -> helper -> city = $this->helper->city_id;
 			$this -> helper -> state = $this->helper->state_id;
-			
+			// Имя пользователя
+			$tmp=array();
+			if ($this->user_profile['last_name']) $tmp[]=$this->user_profile['last_name'];
+			if ($this->user_profile['first_name']) $tmp[]=$this->user_profile['first_name'];
+			if ($this->user_profile['middle_name']) $tmp[]=$this->user_profile['middle_name'];
+			$this->user_name = $tmp?implode(' ', $tmp):false;
+						
 			$this -> assign('edit', true);
 			$this->_js_files[]='xpath.js';
 			$this->_js_files[]='blockUI.js';
@@ -121,12 +127,26 @@ class UserView extends BaseSiteView{
 		}
 		
 		function AvatarEdit(){
+			// Имя пользователя
+			$tmp=array();
+			if ($this->user_profile['last_name']) $tmp[]=$this->user_profile['last_name'];
+			if ($this->user_profile['first_name']) $tmp[]=$this->user_profile['first_name'];
+			if ($this->user_profile['middle_name']) $tmp[]=$this->user_profile['middle_name'];
+			$this->user_name = $tmp?implode(' ', $tmp):false;
+						
 			$this->_css_files[]='registration.css';
 			
 			$this -> setTemplate(null, 'avatar_edit.tpl.php');
 		}
 		
 		function MoodPage(){
+			// Имя пользователя
+			$tmp=array();
+			if ($this->user_profile['last_name']) $tmp[]=$this->user_profile['last_name'];
+			if ($this->user_profile['first_name']) $tmp[]=$this->user_profile['first_name'];
+			if ($this->user_profile['middle_name']) $tmp[]=$this->user_profile['middle_name'];
+			$this->user_name = $tmp?implode(' ', $tmp):false;
+						
 			$this->_css_files[]='registration.css';
 			
 			$this -> setTemplate(null, 'mood.tpl.php');

@@ -1,7 +1,7 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 <!-- Главный блок, с вкладками (Контент) -->
 				<ul class="view-filter clearfix"> 
-					<li><a href="#">Шпаков Виктор</a></li> 
+					<li><a href="<?php echo $this -> createUrl('User', 'Profile');?>"><?=$this->user_name;?></a></li>
 					<li><strong>Настройки профиля<span></span></strong></li> 
 				</ul> 
 				<!-- /view-filter --> 
