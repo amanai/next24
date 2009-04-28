@@ -1,7 +1,9 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 				<ul class="view-filter clearfix">
 					<li><strong><?=$this->user_name;?><span></span></strong></li>
+					<?php  if ($this->user_profile['id']==$this->current_user->id){ ?>
 					<li><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">Настройки профиля</a></li>
+					<? } ?>
 				</ul>
 				<!-- /view-filter -->
 
@@ -47,7 +49,7 @@
 					<div class="main"><div class="wrap">
 						<div class="profile-info">
 							<div class="info-title">
-								<div class="more-act">[ <a href="#">все друзья</a> ]</div>
+								<div class="more-act">[ <a href="<?php echo $this -> createUrl('Messages', 'Friend');?>">все друзья</a> ]</div>
 								<i class="arrow-icon up-arrow"></i><strong>Друзья</strong> (112)
 							</div>
 							<!-- /info-title -->
@@ -125,7 +127,7 @@
 						<!-- /profile-info -->
 						<div class="profile-info">
 							<div class="info-title">
-								<div class="more-act">[ <a href="<?php echo $this -> createUrl('Places', 'Index');?>">изменить</a> ]</div>
+								<div class="more-act">[ <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">изменить</a> ]</div>
 								<i class="arrow-icon up-arrow"></i><strong>Личная информация</strong>
 							</div>
 							<!-- /info-title -->
@@ -241,10 +243,10 @@
 										<dd>12 фото</dd>
 									</dl>
 								</li>
-								<li class="view-more"><a href="#">Все альбомы</a> (5)</li>
+								<li class="view-more"><a href="<?php echo $this -> createUrl('Album','List');?>">Все альбомы</a> (5)</li>
 							</ul>
 						</div>
-						<div class="navigation">
+			  			<div class="navigation">
 							<div class="title alt-title"><h2>В блоге</h2></div>
 							<ul class="short-list text-short-list">
 								<li>
@@ -267,10 +269,10 @@
 									<span class="date">18 декабря 2008, 19:46</span>
 									<a href="#">Трехмерные танки на Flash!</a>
 								</li>
-								<li class="view-more"><a href="#">Все сообщения в блоге</a> (15)</li>
+								<li class="view-more"><a href="<?php echo $this -> createUrl('Blog','PostList');?>">Все сообщения в блоге</a> (15)</li>
 							</ul>
 						</div>
-						<div class="navigation">
+			<!--			<div class="navigation">
 							<div class="title alt-title"><h2>В дневниках</h2></div>
 							<ul class="short-list text-short-list">
 								<li>
@@ -294,8 +296,8 @@
 									<a href="#">Трехмерные танки на Flash!</a>
 								</li>
 								<li class="view-more"><a href="#">Вся лента в дневнике</a> (354)</li>
-							</ul>
-							<?php include($this -> _include('control_panel.tpl.php')); ?>
+							</ul>  -->
+							<?php //include($this -> _include('control_panel.tpl.php')); ?>
 						</div>
 					</div>
 					<!-- /sidebar -->
