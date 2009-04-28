@@ -204,13 +204,13 @@ class TabController{
 							);
 			
 			$tabs[] = array(
-							'name' => 'Друзья <em>(112)</em>',
+							'name' => 'Друзья', //<em>(112)</em>
 							'title' => 'Друзья',
 							'selected' => $selected_friends,
 						 	'url' => $request -> createUrl('Messages', 'Friend')
 							);
 			$tabs[] = array(
-							'name' => 'Фотоальбом <em>(5)</em>',
+							'name' => 'Фотоальбом',  //<em>(5)</em>
 							'title' => 'Фотоальбом',
 							'selected' => $selected_album,
 						 	'url' => $request -> createUrl('Album', 'List')
@@ -252,7 +252,7 @@ class TabController{
 						 	'url' => '#'
 							);		
 			$tabs[] = array(
-							'name' => 'Мои сообщения<em class="alt">(<span>3</span>)</em>',
+							'name' => 'Мои сообщения', //<em class="alt">(<span>3</span>)</em>
 							'title' => 'Мои сообщения',
 							'selected' => $selected_my_messages,
 						 	'url' => $request -> createUrl('Messages', 'Mymessages')
@@ -284,8 +284,8 @@ class TabController{
 							 	'url' => $request -> createUrl('News', 'News', null, false).'/view:news_subscribe/'
 								);	
 				$tabs[]= array(
-								'name' => 'Избранные (254)',
-								'title' => 'Избранные (254)',
+								'name' => 'Избранные',  //(254)
+								'title' => 'Избранные', //(254)
 								'selected' => $selected_myrss,
 							 	'url' => $request -> createUrl('News', 'News', null, false).'/view:news_stared/'
 								);	

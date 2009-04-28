@@ -110,14 +110,14 @@
 				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
 				<ul class="user-menu">
 					<li><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><span>Профиль</span></a> |</li>
-					<li><a href="<?php echo $this->createUrl('Messages', 'Mymessages', null, $this->current_user->login)?>"><span>Мои сообщения</span> <em class="alt">(<span>3</span>)</em></a> |</li>
-					<li><a href="<?php echo $this->createUrl('Messages', 'Friend',null, $this->current_user->login); ?>"><span>Друзья</span> <em>(35)</em></a> |</li>
-					<li><a href="<?php echo $this->createUrl('Album', 'List', null, $this->current_user->login)?>"><span>Фотоальбом</span> <em>(5)</em></a> |</li>
-					<li><a href="<?php echo $this->createUrl('Blog', 'PostList', null, $this->current_user->login)?>"><span>Блог</span> <em>(5)</em></a> |</li>
-					<li><a href="#"><span>Дневник</span> <em>(8)</em></a> |</li>
-					<li><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksUser', null, $this->current_user->login);?>"><span>Закладки</span> <em>(39)</em></a> |</li>
-					<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'UserQuestions', null, $this->current_user->login); ?>"><span>Ответы</span> <em>(3)</em></a> |</li>
-					<li><a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>"><span>Подписка</span> <em>(4)</em></a></li>
+					<li><a href="<?php echo $this->createUrl('Messages', 'Mymessages', null, $this->current_user->login)?>"><span>Мои сообщения</span> <!--  <em class="alt">(<span>3</span>)</em>--></a> |</li>
+					<li><a href="<?php echo $this->createUrl('Messages', 'Friend',null, $this->current_user->login); ?>"><span>Друзья</span> <!--<em>(35)</em>--></a> |</li>
+					<li><a href="<?php echo $this->createUrl('Album', 'List', null, $this->current_user->login)?>"><span>Фотоальбом</span> <!--<em>(5)</em>--></a> |</li>
+					<li><a href="<?php echo $this->createUrl('Blog', 'PostList', null, $this->current_user->login)?>"><span>Блог</span> <!--<em>(5)</em>--></a> |</li>
+					<li><a href="#"><span>Дневник</span> <!--<em>(8)</em>--></a> |</li>
+					<li><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksUser', null, $this->current_user->login);?>"><span>Закладки</span> <!--<em>(39)</em>--></a> |</li>
+					<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'UserQuestions', null, $this->current_user->login); ?>"><span>Ответы</span> <!--<em>(3)</em>--></a> |</li>
+					<li><a href="<?php echo $this->createUrl('Subscribe', 'List', null, $this->current_user->login)?>"><span>Подписка</span> <!--<em>(4)</em>--></a></li>
 				</ul>
 				<!-- /user-menu -->
 				<? } ?>
