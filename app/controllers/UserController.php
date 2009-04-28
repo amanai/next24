@@ -505,6 +505,7 @@
 				$value['thumbnail'] = $this->checkFile(Project::getUser()->getDbUser()->login, $value['thumbnail'], $thumb_file = true);
 			}
 			$this->_view->assign('last_4_albums',$last_4_albums);
+			$this->_view->assign('last_4_blog_posts',$userModel->get4LastBlogPosts());
 			$this -> _view -> assign('tab_list', TabController::getOwnTabs(true));
 			$this -> _view -> Profile();
 			$this -> _view -> parse();

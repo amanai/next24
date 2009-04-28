@@ -715,5 +715,20 @@ class UserModel extends BaseModel{
 		$result = $db->select($sql);
 		return $result;		
 	}
+	public function get4LastBlogPosts() {
+		$db = Project::getDatabase();
+		$id_user = Project::getUser() -> getDbUser()->id;		
+		$sql = "SELECT blog_post.*, count(blog_comment.id) as comments_count, 
+				blog.user_id as user_id, bc_tag.name as tag_name, 
+				bs.id as subscribe_id FROM blog_post 
+				LEFT JOIN blog_comment ON blog_comment.blog_id = blog_post.id 
+				LEFT JOIN ub_tree ubt ON ubt.id = blog_post.ub_tree_id 
+				INNER JOIN blog ON blog.id = ubt.blog_id 
+				LEFT JOIN blog_subscribe bs ON bs.user_id=1 AND bs.ub_tree_id=ubt.id 
+				LEFT JOIN bc_tag ON bc_tag.id=blog_post.bc_tag_id WHERE blog.user_id = $id_user 
+				AND ((blog.user_id=1) OR ( blog_post.access <> 0 )) GROUP BY blog_post.id";
+		$result = $db->select($sql);
+		return $result;			
+	}
 }
 ?>

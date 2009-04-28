@@ -26,7 +26,7 @@ class BlogPostModel extends BaseModel{
 					//" AND ( (blog_post.access=".ACCESS::ALL.") OR (?d AND blog_post.access=".ACCESS::FRIEND.") OR (blog.user_id=?d) OR (?d AND ubt.access=".ACCESS::SUBSCRIBE.") )" .
 					" ((blog.user_id=".(int)$user_id.") OR ( blog_post.access <> ".ACCESS::MYSELF." )) " .
 					" GROUP BY blog_post.id " .
-					" LIMIT ?d, ?d";
+					" LIMIT ?d, ?d";	
 
 			$result = Project::getDatabase() -> selectPage($this -> _countRecords, $sql, 
 																					$this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize() // limit params

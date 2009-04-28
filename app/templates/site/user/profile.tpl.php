@@ -239,11 +239,6 @@
 					<!-- /main -->
 					<div class="sidebar">
 						<div class="navigation">
-						<?php 
-					//	print '<pre>';
-					//		print_r($this->last_4_albums);
-					//	print '</pre>';	
-						?>
 							<div class="title alt-title"><h2>Фотоальбомы</h2></div>
 							<ul class="short-list photo-short-list">
 							<?php if(is_array($this->last_4_albums)) { ?>
@@ -263,26 +258,14 @@
 			  			<div class="navigation">
 							<div class="title alt-title"><h2>В блоге</h2></div>
 							<ul class="short-list text-short-list">
+							<?php if(is_array($this->last_4_blog_posts)) {?>
+							<?php foreach ($this->last_4_blog_posts as $value) { ?>
 								<li>
-									<span class="date">18 декабря 2008, 19:46</span>
-									<a href="#">Трехмерные танки на Flash!</a>
-								</li>
-								<li>
-									<span class="date">18 декабря 2008, 19:46</span>
-									<a href="#">Трехмерные танки на Flash!</a>
-								</li>
-								<li>
-									<span class="date">18 декабря 2008, 19:46</span>
-									<a href="#">Трехмерные танки на Flash!</a>
-								</li>
-								<li>
-									<span class="date">18 декабря 2008, 19:46</span>
-									<a href="#">Трехмерные танки на Flash!</a>
-								</li>
-								<li>
-									<span class="date">18 декабря 2008, 19:46</span>
-									<a href="#">Трехмерные танки на Flash!</a>
-								</li>
+									<span class="date"><?=$value['creation_date'];?></span>
+									<a href="<?php echo $this -> createUrl('Blog','Comments').'/'.$value['id'].'/0/0/';?>"><?=$value['title'];?></a>
+								</li>							
+							<? } ?>
+							<? } ?>
 								<li class="view-more"><a href="<?php echo $this -> createUrl('Blog','PostList');?>">Все сообщения в блоге</a> <!-- (15) --></li>
 							</ul>
 						</div>
