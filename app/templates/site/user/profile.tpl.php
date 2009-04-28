@@ -134,39 +134,57 @@
 							<div class="info-entry">
 								<dl class="personal-info clearfix">
 									<dt>Логин:</dt>
-									<dd><strong>madvic</strong></dd>
+									<dd><strong><?=$this->user_profile['login']; ?></strong></dd>
+								<? if ($this->user_profile['last_name']) { ?>	
 									<dt>Фамилия:</dt>
-									<dd>Шпаков</dd>
+									<dd><?=$this->user_profile['last_name']; ?></dd>
+								<? } ?>
+								<?php if ($this->user_profile['first_name']) { ?>	
 									<dt>Имя:</dt>
-									<dd>Виктор</dd>
+									<dd><?=$this->user_profile['first_name']; ?></dd>
+								<? } ?>
+								<?php if ($this->user_profile['middle_name']) { ?>	
 									<dt>Отчество:</dt>
-									<dd>Батькович</dd>
+									<dd><?=$this->user_profile['middle_name']; ?></dd>
+								<? } ?>	
 								<? if ($this->user_name) { ?>
 									<dt>Псевдоним:</dt>
 									<dd><?=$this->user_name;?></dd>
 								<? } ?>	
+								<?php if ($this->user_profile['birth_date']) { ?>
 									<dt>Дата рождения:</dt>
 									<dd><?=$this->user_profile['birth_date'];?></dd>
+								<? } ?>	
+								<?php if ($this->user_profile['registration_date']) { ?>
 									<dt>Дата регистрации</dt>
 									<dd><?=$this->user_profile['registration_date'];?></dd>
+								<? } ?>	
 								<? if ($this->user_location) { ?>	
 									<dt>Страна:</dt>
 									<dd><?=$this->user_location;?></dd>
+								<? } ?>
+								<? if ($this->user_profile['city']) { ?>	
 									<dt>Город:</dt>
-									<dd><?=$this->user_location;?></dd>
-								<? } ?>	
+									<dd><?=$this->user_profile['city']; ?></dd>	
+								<? }?>
+								<?php if ($this->user_profile['gender']) { ?>	
 									<dt>Пол:</dt>
 									<dd><?=$this->user_profile['gender']?'мужской':'женский';?></dd>
+								<? } ?>	
 								<? if ($this->user_profile['marital_status']) { ?>	
 									<dt>Семейное положение:</dt>	
 									<dd><?=$this->user_profile['marital_status'];?></dd>
 								<? } ?>	
+								<?php if($this->user_profile['icq']) {?>
 									<dt>icq:</dt>
-									<dd><a href="#">712121</a></dd>
+									<dd><a href="#"><?=$this->user_profile['icq']; ?></a></dd>
+								<? } ?>	
 									<dt>skype:</dt>
 									<dd><a href="#">viktor200000</a></dd>
+								<?php if($this->user_profile['website']) { ?>	
 									<dt>Сайт:</dt>
-									<dd><a href="#">www.madvic.ru</a></dd>
+									<dd><a href="<?=$this->user_profile['website']; ?>"><?=$this->user_profile['website']; ?></a></dd>
+								<? } ?>	
 								<? if ($this->user_profile['phone']) { ?>	
 									<dt>Телефон:</dt>
 									<dd><?=$this->user_profile['phone'];?></dd>
@@ -190,13 +208,20 @@
 								<? if ($this->user_profile['musicians']) { ?>
 									<dt>Любымые музыканты:</dt>
 									<dd><?=$this->user_profile['musicians'];?></dd>
-								<? } ?>																													
+								<? } ?>	
+								<?php 
+							//	print '<pre>';
+							//		print_r($this->user_profile);
+							//	print '</pre>';	
+								?>	
+								<?php if ($this->user_profile['email']) { ?>																											
 									<dt>Адрес e-mail:</dt>
-									<dd><a href="#">madcros@gmail.com</a></dd>
+									<dd><a href="mailto:<?=$this->user_profile['email']; ?>"><?=$this->user_profile['email']; ?></a></dd>
+								<? } ?>	
 								<?if ($this->places) { ?>
 									<dt>Места учебы, работы, отдыха, службы</dt>
 									<dd>
-										<table cellpadding="10">
+										<table>
 										<? foreach ($this->places as $place) { ?>
 											<tr>
 												<td><?=$place['date_start'];?>&nbsp;&mdash;&nbsp;<?=$place['date_end'];?> гг.</td>		
