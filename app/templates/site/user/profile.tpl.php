@@ -107,78 +107,6 @@
 					<div class="main"><div class="wrap">
 						<div class="profile-info">
 							<div class="info-title">
-								<div class="more-act">[ <a href="<?php echo $this -> createUrl('Messages', 'Friend');?>">все друзья</a> ]</div>
-								<i class="arrow-icon up-arrow"></i><strong>Друзья</strong> <!--  (112)	 -->
-							</div>
-							<!-- /info-title -->
-							<div class="info-entry">						
-								<ul class="friends-profile-view clearfix">
-								<? if (is_array($this->friend_list_model)) { ?>
-								<?php foreach ($this->friend_list_model as $value) { ?>
-								<?php $loop_user = Project::getUser()->getDbUser()->getUserById($value); 
-									  $avatar = Project::getUser()->getDbUser()->getUserAvatar($value);
-									$avPath = $avatar['path'];
-									if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
-								?>
-									<li>
-										<span class="av"><a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" alt="" style="width:25px;height:25px;" /></a></span>
-										<a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>" class="nm"><?=$loop_user['first_name']; ?> <?=$loop_user['last_name']; ?></a>
-										<span class="where"><?=$loop_user['country']?$loop_user['country'].' , ':''; ?><?=$loop_user['city'] ?></span>
-									</li>							
-								<?php } ?>
-								<? } ?>	
-								</ul>
-							</div>
-							<!-- /info-entry -->
-						</div>					
-						<div class="profile-info">
-							<div class="info-title">
-								<div class="more-act">[ <a href="<?php echo $this -> createUrl('Messages', 'Friend');?>">все друзья</a> ]</div>
-								<i class="arrow-icon up-arrow"></i><strong>В друзьях</strong> <!--  (112)	 -->
-							</div>
-							<!-- /info-title -->
-							<div class="info-entry">							
-								<ul class="friends-profile-view clearfix">
-								<? if (is_array($this->in_friend_list_model)) { ?>
-								<?php foreach ($this->in_friend_list_model as $value) { ?>
-								<?php $loop_user = Project::getUser()->getDbUser()->getUserById($value['user_id']); 
-									  $avatar = Project::getUser()->getDbUser()->getUserAvatar($value['user_id']);
-									  $avPath = $avatar['path'];
-									  if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
-								?>
-									<li>
-										<span class="av"><a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" alt="" style="width:25px;height:25px;" /></a></span>
-										<a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>" class="nm"><?=$loop_user['first_name']; ?> <?=$loop_user['last_name']; ?></a>
-										<span class="where"><?=$loop_user['country']?$loop_user['country'].' , ':''; ?><?=$loop_user['city'] ?></span>
-									</li>							
-								<?php } ?>
-								<? } ?>									
-								</ul>
-							</div>
-							<!-- /info-entry -->
-						</div>
-						<!-- /profile-info -->
-						<div class="profile-info">
-							<div class="info-title">
-								<i class="arrow-icon up-arrow"></i><strong>Лента событий в подписке</strong> <!-- (112) -->
-							</div>
-							<!-- /info-title -->
-							<div class="info-entry">
-								<ul class="event-list">
-									<li><a href="#">Андрей Шевченко</a> и <a href="#">Викторчик</a> теперь друзья</li>
-									<li><a href="#">Ярослав Мудрый</a> добавил <a class="srv-link">комментарий</a> к своей личной <a class="srv-link">фотографии</a></li>
-									<li><a href="#">Андрей Шевченко</a> и <a href="#">Викторчик</a> теперь друзья</li>
-									<li><a href="#">Ярослав Мудрый</a> добавил <a class="srv-link">комментарий</a> к своей личной <a class="srv-link">фотографии</a></li>
-									<li><a href="#">Андрей Шевченко</a> и <a href="#">Викторчик</a> теперь друзья</li>
-									<li><a href="#">Ярослав Мудрый</a> добавил <a class="srv-link">комментарий</a> к своей личной <a class="srv-link">фотографии</a></li>
-									<li class="view-more last"><a href="#">Вся лента событий в подписке</a> (1145)</li>
-								</ul>
-							</div>
-							<!-- /info-entry -->
-						</div>
-						<!-- /profile-info -->
-						<div class="profile-info">
-							<div class="info-title">
 								<div class="more-act"><?php  if ($this->user_profile['id']==$this->current_user->id){ ?>[ <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">изменить</a> ] <? } ?></div>
 								<i class="arrow-icon up-arrow"></i><strong>Личная информация</strong>
 							</div>
@@ -284,6 +212,78 @@
 									</dd>
 								<? } ?>											
 								</dl>
+							</div>
+							<!-- /info-entry -->
+						</div>
+						<!-- /profile-info -->					
+						<div class="profile-info">
+							<div class="info-title">
+								<div class="more-act">[ <a href="<?php echo $this -> createUrl('Messages', 'Friend');?>">все друзья</a> ]</div>
+								<i class="arrow-icon up-arrow"></i><strong>Друзья</strong> <!--  (112)	 -->
+							</div>
+							<!-- /info-title -->
+							<div class="info-entry">						
+								<ul class="friends-profile-view clearfix">
+								<? if (is_array($this->friend_list_model)) { ?>
+								<?php foreach ($this->friend_list_model as $value) { ?>
+								<?php $loop_user = Project::getUser()->getDbUser()->getUserById($value); 
+									  $avatar = Project::getUser()->getDbUser()->getUserAvatar($value);
+									$avPath = $avatar['path'];
+									if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
+								?>
+									<li>
+										<span class="av"><a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" alt="" style="width:25px;height:25px;" /></a></span>
+										<a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>" class="nm"><?=$loop_user['first_name']; ?> <?=$loop_user['last_name']; ?></a>
+										<span class="where"><?=$loop_user['country']?$loop_user['country'].' , ':''; ?><?=$loop_user['city'] ?></span>
+									</li>							
+								<?php } ?>
+								<? } ?>	
+								</ul>
+							</div>
+							<!-- /info-entry -->
+						</div>					
+						<div class="profile-info">
+							<div class="info-title">
+								<div class="more-act">[ <a href="<?php echo $this -> createUrl('Messages', 'Friend');?>">все друзья</a> ]</div>
+								<i class="arrow-icon up-arrow"></i><strong>В друзьях</strong> <!--  (112)	 -->
+							</div>
+							<!-- /info-title -->
+							<div class="info-entry">							
+								<ul class="friends-profile-view clearfix">
+								<? if (is_array($this->in_friend_list_model)) { ?>
+								<?php foreach ($this->in_friend_list_model as $value) { ?>
+								<?php $loop_user = Project::getUser()->getDbUser()->getUserById($value['user_id']); 
+									  $avatar = Project::getUser()->getDbUser()->getUserAvatar($value['user_id']);
+									  $avPath = $avatar['path'];
+									  if(!$avPath || $avPath == 'no.png') $avPath = 'no25.jpg';
+								?>
+									<li>
+										<span class="av"><a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>"><img src="<?=$this->image_url.'avatar/'.$avPath;?>" alt="" style="width:25px;height:25px;" /></a></span>
+										<a href="<?php echo $this->createUrl('User','Profile',null,$loop_user['login']);?>" class="nm"><?=$loop_user['first_name']; ?> <?=$loop_user['last_name']; ?></a>
+										<span class="where"><?=$loop_user['country']?$loop_user['country'].' , ':''; ?><?=$loop_user['city'] ?></span>
+									</li>							
+								<?php } ?>
+								<? } ?>									
+								</ul>
+							</div>
+							<!-- /info-entry -->
+						</div>
+						<!-- /profile-info -->
+						<div class="profile-info">
+							<div class="info-title">
+								<i class="arrow-icon up-arrow"></i><strong>Лента событий в подписке</strong> <!-- (112) -->
+							</div>
+							<!-- /info-title -->
+							<div class="info-entry">
+								<ul class="event-list">
+									<li><a href="#">Андрей Шевченко</a> и <a href="#">Викторчик</a> теперь друзья</li>
+									<li><a href="#">Ярослав Мудрый</a> добавил <a class="srv-link">комментарий</a> к своей личной <a class="srv-link">фотографии</a></li>
+									<li><a href="#">Андрей Шевченко</a> и <a href="#">Викторчик</a> теперь друзья</li>
+									<li><a href="#">Ярослав Мудрый</a> добавил <a class="srv-link">комментарий</a> к своей личной <a class="srv-link">фотографии</a></li>
+									<li><a href="#">Андрей Шевченко</a> и <a href="#">Викторчик</a> теперь друзья</li>
+									<li><a href="#">Ярослав Мудрый</a> добавил <a class="srv-link">комментарий</a> к своей личной <a class="srv-link">фотографии</a></li>
+									<li class="view-more last"><a href="#">Вся лента событий в подписке</a> (1145)</li>
+								</ul>
 							</div>
 							<!-- /info-entry -->
 						</div>
