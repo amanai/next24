@@ -183,7 +183,7 @@ class MessagesController extends SiteController{
 	    $this -> _view -> assign('mess_header', $mess_header);
 	    $this -> _view -> assign('m_text', $m_text);
 	    $this -> _view -> assign('recipient_name', $recipient_name);
-	    $this -> _view -> assign('user_friends', $friendModel->getFriends($user->id));
+	    $this -> _view -> assign('user_friends', $friendModel->getFriendsAll($user->id));
 	    
 	    $aGroupMessagesCount['all']=
 	           array("new"=>$messagesModel->getCountMessagesToUser($user->id, -1, 1, 0),

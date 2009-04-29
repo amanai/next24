@@ -1,7 +1,10 @@
 <? if ($this->showed_user_profile['id'] == $this->current_user->id) {?>
 <?php $user = Project::getUser()->getDbUser()->getUserById($this->current_user->id); ?>
 				<ul class="view-filter clearfix">
-					<li><strong><?=implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));?><span></span></strong></li>
+					<li><strong>
+					<?$name_usr = implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));
+					if(!trim($name_usr)) echo 'Нет имени';
+					else echo $name_usr;?><span></span></strong></li>
 					<li><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">Настройки профиля</a></li>
 				</ul>
 				<!-- /view-filter -->
@@ -9,13 +12,18 @@
 					<div class="clearfix">
 						<dl class="main-info">
 							<?php $online = Project::getUser()->getDbUser()->isUserOnline($this->current_user->id); ?>
-							<dt><span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> <strong><?=implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));?></strong>  / <span class="nick"><?=$user['login'];?></span> /</dt>
+							<dt><span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> <strong>
+							<?	if(!trim($name_usr)) echo 'Нет имени';
+								else echo $name_usr;?></strong>  / <span class="nick"><?=$user['login'];?></span> /</dt>
 							<?php 
 							$userModel = new UserModel();
-							$user_default_avatar = $userModel->getUserAvatar($this->current_user->id);
+							$user_default_avatar = $userModel->getUserAvatar($this->current_user->id);							
 							?>
-							<?php $avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path']; ?>
-							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>" /></dd>
+							<?php $avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path']; 
+	    						if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no90.jpg';
+	    						else $avator_path = $this->image_url.'avatar/'.$avator_path;								
+							?>
+							<dd class="av"><img alt="<?php echo $user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd>
 							<dd>Украина, Киев</dd>
 							<dd>На сайте: <span class="date">12 дней</span></dd>
 							<dd>Настроение: <em>супер!</em> <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a></dd>
