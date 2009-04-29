@@ -1,13 +1,11 @@
-
 function ShowHideComplaint(complaintId){
-    if($("#"+complaintId).hasClass('complaintArbitration')){
-        $("#"+complaintId).removeClass('complaintArbitration');
-    }else{
-        $("#"+complaintId).addClass('complaintArbitration');
-    }
-    
+	if($("#"+complaintId).css('display')=='none') {
+		$("#"+complaintId).css('display','block');
+	}
+	else {
+		$("#"+complaintId).css('display','none');
+	}
 }
-
 function sendArbitration(item_id, user_login){
     var complaint_text = "";
     complaint_text += $("#complaint"+item_id).val();

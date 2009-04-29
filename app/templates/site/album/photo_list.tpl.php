@@ -59,7 +59,7 @@
 											</ul>											
 											<?php } elseif ($this -> user_id) { ?>
 												<a href="javascript: void(0);" onclick="ShowHideComplaint('complaintArbitration<?php echo $item['id'];?>');">пожаловаться</a>
-												<div class="complaintArbitration" id="complaintArbitration<?php echo $item['id'];?>">
+												<div id="complaintArbitration<?php echo $item['id'];?>" style="display: none;">
                 									<label><input type="radio" name="complaint<?php echo $item['id'];?>" id="complaint<?php echo $item['id'];?>" value="На фото никого не видно. " /><font  class="complaintText">На фото никого не видно</font></label><br/>
                 									<label><input type="radio" name="complaint<?php echo $item['id'];?>" id="complaint<?php echo $item['id'];?>" value="Чужое фото. " /><font  class="complaintText">Чужое фото</font></label><br/>
                 									<label><input type="radio" name="complaint<?php echo $item['id'];?>" id="complaint<?php echo $item['id'];?>" value="Фото из другой тематики. " /><font  class="complaintText">Фото из другой тематики</font></label><br/>
