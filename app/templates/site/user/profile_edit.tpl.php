@@ -19,7 +19,7 @@
 						<div class="about-info"> 
 							<div class="ttl"><strong>О себе</strong></div> 
 							<div class="cnt"> 
-								<textarea cols="20" rows="3">Художественное опосредование, как бы это ни казалось парадоксальным, трансформирует реконструктивный подход, подобный исследовательский подход к проблемам художественной типологии можно обнаружить у К.Фосслера.</textarea> 
+								<textarea cols="20" rows="3"><?php echo $this -> helper -> about;?></textarea> 
 								<input type="submit" value="OK" /> 
 							</div> 
 						</div> 
