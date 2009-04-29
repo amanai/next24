@@ -179,7 +179,7 @@
 					$album_model -> is_onmain = $onmain;
 					$album_model -> creation_date = date("Y-m-d H:i:s");
 					$album_model -> save();
-					Project::getResponse() -> redirect($request -> createUrl('Album', 'CreateForm'));
+					Project::getResponse() -> redirect($request -> createUrl('Album', 'CreateForm').'/create_album:success');
 				} else {
 					$info = array();
 					$info['album_name'] = $name;
@@ -199,6 +199,10 @@
 		 * Форма создания нового альбома
 		 */
 		public function CreateFormAction($info = array()){
+			$request = Project::getRequest();
+			if($request->create_album=='success') {
+				$this -> _view -> addFlashMessage(FM::INFO, "Альбом создан, можете еще создать альбомы.");
+			}
 			$this -> BaseSiteData();
 			$this -> BaseAlbumData($info, 0);
 			$this -> _view -> CreateForm($info);
