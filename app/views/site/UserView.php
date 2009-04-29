@@ -118,7 +118,14 @@ class UserView extends BaseSiteView{
 			if ($this->user_profile['first_name']) $tmp[]=$this->user_profile['first_name'];
 			if ($this->user_profile['middle_name']) $tmp[]=$this->user_profile['middle_name'];
 			$this->user_name = $tmp?implode(' ', $tmp):false;
-						
+			
+			// Местоположение
+			$tmp=array();
+			if ($this->user_profile['country']) $tmp[]=$this->user_profile['country'];
+			if ($this->user_profile['state']) $tmp[]=$this->user_profile['state'];
+			if ($this->user_profile['city']) $tmp[]=$this->user_profile['city'];
+			$this->user_location = $tmp?implode(' ', $tmp):false;
+									
 			$this -> assign('edit', true);
 			$this->_js_files[]='xpath.js';
 			$this->_js_files[]='blockUI.js';
@@ -133,7 +140,15 @@ class UserView extends BaseSiteView{
 			if ($this->user_profile['first_name']) $tmp[]=$this->user_profile['first_name'];
 			if ($this->user_profile['middle_name']) $tmp[]=$this->user_profile['middle_name'];
 			$this->user_name = $tmp?implode(' ', $tmp):false;
-						
+
+			// Местоположение
+			$tmp=array();
+			if ($this->user_profile['country']) $tmp[]=$this->user_profile['country'];
+			if ($this->user_profile['state']) $tmp[]=$this->user_profile['state'];
+			if ($this->user_profile['city']) $tmp[]=$this->user_profile['city'];
+			$this->user_location = $tmp?implode(' ', $tmp):false;
+
+			
 			$this->_css_files[]='registration.css';
 			
 			$this -> setTemplate(null, 'avatar_edit.tpl.php');
@@ -146,6 +161,13 @@ class UserView extends BaseSiteView{
 			if ($this->user_profile['first_name']) $tmp[]=$this->user_profile['first_name'];
 			if ($this->user_profile['middle_name']) $tmp[]=$this->user_profile['middle_name'];
 			$this->user_name = $tmp?implode(' ', $tmp):false;
+
+			// Местоположение
+			$tmp=array();
+			if ($this->user_profile['country']) $tmp[]=$this->user_profile['country'];
+			if ($this->user_profile['state']) $tmp[]=$this->user_profile['state'];
+			if ($this->user_profile['city']) $tmp[]=$this->user_profile['city'];
+			$this->user_location = $tmp?implode(' ', $tmp):false;
 						
 			$this->_css_files[]='registration.css';
 			

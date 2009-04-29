@@ -1,7 +1,9 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 <?php  if ($this->user_profile['id']==$this->current_user->id){ ?>
 				<ul class="view-filter clearfix">
-					<li><strong><?=$this->user_name;?><span></span></strong></li>
+					<li><strong><?
+					if(!trim($this->user_name)) echo 'Нет имени';
+					else echo $this->user_name;?><span></span></strong></li>
 					<?php  if ($this->user_profile['id']==$this->current_user->id){ ?>
 					<li><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">Настройки профиля</a></li>
 					<? } ?>
@@ -11,9 +13,14 @@
 					<div class="clearfix">
 						<dl class="main-info">
 							<?php $online = Project::getUser()->getDbUser()->isUserOnline($this->user_profile['id']); ?>
-							<dt><span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> <strong><?=$this->user_name;?></strong>  / <span class="nick"><?=$this->user_profile['login'];?></span> /</dt>
-							<?php $avator_path = ($this->user_default_avatar['sys_av_id'])?$this->user_default_avatar['sys_path']:$this->user_default_avatar['path']; ?>
-							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>" /></dd>
+							<dt><span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> <strong>
+							<?if(!trim($this->user_name)) echo 'Нет имени';
+								else echo $this->user_name;?></strong>  / <span class="nick"><?=$this->user_profile['login'];?></span> /</dt>
+							<?php $avator_path = ($this->user_default_avatar['sys_av_id'])?$this->user_default_avatar['sys_path']:$this->user_default_avatar['path']; 
+	    						if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no90.jpg';
+	    						else $avator_path = $this->image_url.'avatar/'.$avator_path;							
+							?>
+							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd>
 							<dd><?=$this->user_location;?></dd>
 							<dd>На сайте: <span class="date">12 дней</span></dd>
 							<dd>Настроение: <em>супер!</em> <?php  if ($this->user_profile['id']==$this->current_user->id){ ?><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a><? } ?></dd>

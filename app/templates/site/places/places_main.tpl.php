@@ -1,7 +1,10 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 <?php $user = Project::getUser()->getDbUser()->getUserById($this->current_user->id); ?>
 			<ul class="view-filter clearfix"> 
-					<li><a href="<?php echo $this -> createUrl('User', 'Profile');?>"><?=implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));?></a></li> 
+					<li><a href="<?php echo $this -> createUrl('User', 'Profile');?>">
+					<? $name_usr = implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));
+					if(!trim($name_usr)) echo 'Нет имени';
+					else echo $name_usr;?></a></li> 
 					<li><strong>Настройки профиля<span></span></strong></li> 
 				</ul> 
 				<!-- /view-filter --> 
@@ -9,10 +12,19 @@
 				<div class="user-profile"> 
 					<div class="clearfix"> 
 						<dl class="main-info"> 
-							<dt><span class="user-status"><span class="online">online</span></span> <strong><?=implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));?></strong>  / <span class="nick"><?=$this->current_user->login; ?></span> /</dt> 
-							<?php $avator_path = ($this->user_default_avatar['sys_av_id'])?$this->user_default_avatar['sys_path']:$this->user_default_avatar['path']; ?>
-							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>" /></dd> 
-							<dd>Украина, Киев</dd> 
+							<dt><span class="user-status"><span class="online">online</span></span> <strong>
+							<?if(!trim($name_usr)) echo 'Нет имени';
+								else echo $name_usr;?></strong>  / <span class="nick"><?=$this->current_user->login; ?></span> /</dt> 
+							<?php $avator_path = ($this->user_default_avatar['sys_av_id'])?$this->user_default_avatar['sys_path']:$this->user_default_avatar['path']; 
+	    						if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no90.jpg';
+	    						else $avator_path = $this->image_url.'avatar/'.$avator_path;								
+							?>
+							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd> 
+							<dd><?			$tmp=array();
+			if ($user['country']) $tmp[]=$user['country'];
+			if ($user['state']) $tmp[]=$user['state'];
+			if ($user['city']) $tmp[]=$user['city'];
+			$user_location = $tmp?implode(' ', $tmp):false; echo $user_location;?></dd> 
 							<dd>На сайте: <span class="date">12 дней</span></dd> 
 							<dd>Статус: <input type="text" value="Улетел на багамы" size="26" /><input type="submit" value="OK" /></dd> 
 							<dd>Настроение: <input type="text" value="Отличное" size="20" /><input type="submit" value="OK" /></dd> 

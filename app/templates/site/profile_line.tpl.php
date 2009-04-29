@@ -47,18 +47,27 @@
 <?php $user = Project::getUser()->getDbUser()->getUserById($this->showed_user_profile['id']); ?>
 				<div class="user-title"> 
 				<?php $online = Project::getUser()->getDbUser()->isUserOnline($this->showed_user_profile['id']); ?>
-					<h1><?=implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));?></h1> <span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> 
+					<h1><?
+					
+					$name_usr = implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));
+					if(!trim($name_usr)) echo 'Нет имени';
+					else echo $name_usr;?></h1> <span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> 
 				</div> 
 				<div class="user-profile"> 
 					<div class="clearfix"> 
 						<dl class="main-info"> 
-							<dt> <strong><?=implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));?></strong>  / <span class="nick"><?=$user['login']; ?></span> /</dt>
+							<dt> <strong><? 
+								if(!trim($name_usr)) echo 'Нет имени';
+								else echo $name_usr;?></strong>  / <span class="nick"><?=$user['login']; ?></span> /</dt>
 							<?php 
 							$userModel = new UserModel();
 							$user_default_avatar = $userModel->getUserAvatar($this->showed_user_profile['id']);
 							?>
-							<?php $avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path']; ?>
-							<dd class="av"><img alt="<?php echo $user_default_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>" /></dd> 
+							<?php $avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path']; 
+	    					if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no90.jpg';
+	    					else $avator_path = $this->image_url.'avatar/'.$avator_path;													
+							?>
+							<dd class="av"><img alt="<?php echo $user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd> 
 							<dd>Украина, Киев</dd> 
 							<dd>На сайте: <span class="date">12 дней</span></dd> 
 							<dd>Настроение: <em>супер!</em></dd> 
