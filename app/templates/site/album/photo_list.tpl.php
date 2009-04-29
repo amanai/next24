@@ -1,15 +1,17 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 <?php include($this -> _include('../profile_line.tpl.php')); ?>
+<?php $user = Project::getUser()->getDbUser()->getUserById($this->showed_user_profile['id']); ?>
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
-						<?php if ($this -> can_edit) { ?>
-							<h2 class="page-ttl"><a href="#">Мои фотоальбомы</a> <span class="spr">»</span> Альбом 1</h2>
-						<? } ?>	
+						<h2 class="page-ttl"><a href="#">Фотоальбомы <?$name_usr = implode(' ',array($user['first_name'],$user['middle_name']));
+					if(!trim($name_usr)) echo 'Нет имени';
+					else echo $name_usr;?></a> <span class="spr">»</span> <?=$this->current_album_name;?></h2>
 						<?php if ($this -> can_edit) { ?>
 							<form class="main-form" action="<?php echo $this -> createUrl('Photo', 'Save'); ?>" method="post">
 						<?php } ?>						
 							<fieldset>
 								<div class="item-edit-list">
+								<?php if(count($this->photo_list)) { ?>
 									<ul class="clearfix">
 									<?php foreach($this->photo_list as $key => $item){ ?>
 										<li class="it">
@@ -55,7 +57,6 @@
 													<input id="del-1" type="checkbox" name="photo_del[<?php echo $item['id'];?>]" /><label for="del-1" class="delete-link">Удалить</label>
 												</li>
 											</ul>											
-											<?php // } ?>
 											<?php } elseif ($this -> user_id) { ?>
 												<a href="javascript: void(0);" onclick="ShowHideComplaint('complaintArbitration<?php echo $item['id'];?>');">пожаловаться</a>
 												<div class="complaintArbitration" id="complaintArbitration<?php echo $item['id'];?>">
@@ -69,12 +70,15 @@
 										</li>
 									<? } ?>	
 									</ul>
+									<? } else { ?>
+										&nbsp;
+									<? } ?>
 								</div>
 								<?php if ($this -> can_edit && count($this->photo_list)) { ?>
 										<div class="button"><input type="submit" value="Сохранить" /></div>
 								<?php } ?>
 							</fieldset>
-							<?php if ($this -> can_edit && count($this->photo_list)) { ?>
+							<?php if ($this -> can_edit) { ?>
 									</form>
 							<?php } ?>							
 						</form>

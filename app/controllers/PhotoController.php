@@ -290,6 +290,7 @@ require_once(dirname(__FILE__). DIRECTORY_SEPARATOR . 'AlbumController.php');
 			$info['list_action'] = 'Album';
 			$info['list_user'] = null;
 			$info['user_id'] = $user_id;
+			$this->_view->assign('current_album_name', $album_model->name);
 			$this -> _view -> PhotoList($info);
 			$this -> _view -> parse();
 		}
