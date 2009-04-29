@@ -7,6 +7,7 @@
 						<?php if ($this->pageAction == 'main'){ ?>
 							<h2 class="page-ttl">Управление группами</h2>
 							<form class="groups-control clearfix" action="<?php echo Project::getRequest() -> createUrl('Messages', 'Friend'); ?>" method="post">
+							<input type="hidden" value="addGroupFriend" name="messageAction" />
 								<fieldset class="add-group"><div>
 									<label for="f1">Добавить новую группу</label>
 									<table><tr>

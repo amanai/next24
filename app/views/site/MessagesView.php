@@ -14,9 +14,14 @@ class MessagesView extends BaseSiteView{
 	    $htmlStr = "";
 	    $counter = count($aFirends);
 	    $i = 1;
+		$userModel = new UserModel();    
 	    foreach ($aFirends as $friend){   
+	    	$user_default_avatar = $userModel->getUserAvatar($friend['id']);
+	    	$avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path'];	
+	    	if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no25.jpg';
+	    	else $avator_path = $this->image_url.'avatar/'.$avator_path;
 	        $htmlStr .= '<dd class="friend-list-dd '.(($counter==$i)?'last':'').'">
-							<a class="nm" href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $friend['login']).'">'.$friend['login'].'<img src="assets/i/temp/avatar.s.jpg" class="avatar" alt="" /></a>
+							<a class="nm" href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $friend['login']).'">'.$friend['login'].'<img src="'.$avator_path.'" class="avatar" alt="'.$user_default_avatar['av_name'].'" /></a>
 							<span class="memo">( <span>Заметка</span>: '.$friend['note'].' )</span>
 							<div class="act">
 	               				<form name="editForm" method="post" action="'.Project::getRequest() -> createUrl('Messages','Friend').'">

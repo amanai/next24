@@ -1,6 +1,6 @@
 <div class="user-action">
 	<ul>
-		<li><i class="icon mail-b-icon"></i>Личная почта (<span class="of-all-count"><?=$this->aGroupMessagesCount['all']['new']; ?></span> / <?=($this->aGroupMessagesCount['all']['read']+$this->aGroupMessagesCount['all']['new']); ?>)</li>   <!--  <?php echo $this -> createUrl('Messages', 'Mymessages');?>  -->
+		<li><a href="<?php echo $this -> createUrl('Messages', 'Mymessages');?>"><i class="icon mail-b-icon"></i>Личная почта</a> (<span class="of-all-count"><?=$this->aGroupMessagesCount['all']['new']; ?></span> / <?=($this->aGroupMessagesCount['all']['read']+$this->aGroupMessagesCount['all']['new']); ?>)</li>
 		<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage');?>"><i class="icon write-b-icon"></i>Написать сообщение</a></li>
 		<li><a href="<?php echo $this -> createUrl('Messages', 'SendMessage');?>/message_to:admin"><i class="icon admin-mail-b-icon"></i>Письмо администрации</a></li>
 		<li><a href="<?php echo $this -> createUrl('Messages', 'Friend');?>"><i class="icon settings-b-icon"></i>Управление друзьями</a></li>

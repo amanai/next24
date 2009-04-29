@@ -1,4 +1,5 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
+<?php  if ($this->user_profile['id']==$this->current_user->id){ ?>
 				<ul class="view-filter clearfix">
 					<li><strong><?=$this->user_name;?><span></span></strong></li>
 					<?php  if ($this->user_profile['id']==$this->current_user->id){ ?>
@@ -44,6 +45,56 @@
 					<!-- /user-tabs -->
 				</div>
 				<!-- /user-profile -->
+<? } else { ?>
+				<div class="user-title"> 
+					<?php $online = Project::getUser()->getDbUser()->isUserOnline($this->user_profile['id']); ?>
+					<h1><?=$this->user_name;?></h1> <span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> 
+				</div> 
+				<div class="user-profile"> 
+					<div class="clearfix"> 
+						<dl class="main-info"> 
+							<dt> <strong><?=$this->user_name;?></strong>  / <span class="nick"><?=$this->user_profile['login']; ?></span> /</dt>
+							<?php $avator_path = ($this->user_default_avatar['sys_av_id'])?$this->user_default_avatar['sys_path']:$this->user_default_avatar['path']; ?>
+							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>" /></dd> 
+							<dd><?=$this->user_location;?></dd> 
+							<dd>На сайте: <span class="date">12 дней</span></dd> 
+							<dd>Настроение: <em>супер!</em></dd> 
+							<dd>Статус: <em>хочу есть и пить</em></dd> 
+						</dl> 
+						<div class="about-info"> 
+							<div class="ttl"><strong>О себе</strong></div> 
+							<div class="cnt"><?=$this->user_profile['about']; ?></div> 
+						</div> 
+						<div class="rating-info"> 
+							<div class="ttl"><strong>Рейтинг: <span class="nr"><? $nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($this->user_profile['id']); echo $nr['rate']; ?> NR</span></strong></div> 
+							<div class="rating-vote"> 
+								<a href="#" class="vote-up"><strong>+</strong></a> 
+								<a href="#" class="vote-down"><strong><span>&ndash;</span></strong></a> 
+							</div> 
+						</div> 
+					</div> 
+					<div class="relationship"> 
+						<p>Отношение пользователя к вам: <strong>Прикольный чуваг - респектус! Обращайся если что.</strong></p> 
+						<p>Ваше отношение к пользователю: <strong class="no">Не указано!</strong> <a href="#">Указать свое отношение</a></p> 
+					</div> 
+					<!-- /relationship --> 
+					<div class="user-sub-menu"><div class="bg"><div class="bg"> 
+						<ul> 
+							<li><a href="<?php echo $this -> createUrl('Messages','SendMessage',null,$this->current_user->id);?>">Написать сообщение</a> |</li> 
+							<li><a href="<?php echo $this -> createUrl('Messages','Friend',null,$this->current_user->id);?>">+ Добавить к себе в друзья</a> |</li> 
+							<li><a href="#">Подписаться на изменения</a> |</li> 
+							<li><a href="#">Отправить подарок</a> |</li> 
+							<li><a href="#" class="spam-link">Игнорировать</a></li> 
+						</ul> 
+					</div></div></div> 
+					<!-- /relationship --> 
+					<ul class="user-tabs clearfix"> 
+						<?php include($this -> _include('../tab_panel_profile.tpl.php')); ?>
+					</ul> 
+					<!-- /user-tabs --> 
+				</div> 
+				<!-- /user-profile --> 
+<? } ?>				
 
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">

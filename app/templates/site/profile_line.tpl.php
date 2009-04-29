@@ -47,7 +47,7 @@
 <?php $user = Project::getUser()->getDbUser()->getUserById($this->showed_user_profile['id']); ?>
 				<div class="user-title"> 
 				<?php $online = Project::getUser()->getDbUser()->isUserOnline($this->showed_user_profile['id']); ?>
-					<h1>Андрей Шевченко</h1> <span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> 
+					<h1><?=implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));?></h1> <span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> 
 				</div> 
 				<div class="user-profile"> 
 					<div class="clearfix"> 
@@ -58,7 +58,7 @@
 							$user_default_avatar = $userModel->getUserAvatar($this->showed_user_profile['id']);
 							?>
 							<?php $avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path']; ?>
-							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>" /></dd> 
+							<dd class="av"><img alt="<?php echo $user_default_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>" /></dd> 
 							<dd>Украина, Киев</dd> 
 							<dd>На сайте: <span class="date">12 дней</span></dd> 
 							<dd>Настроение: <em>супер!</em></dd> 
@@ -83,8 +83,8 @@
 					<!-- /relationship --> 
 					<div class="user-sub-menu"><div class="bg"><div class="bg"> 
 						<ul> 
-							<li><a href="#">Написать сообщение</a> |</li> 
-							<li><a href="#">+ Добавить к себе в друзья</a> |</li> 
+							<li><a href="<?php echo $this -> createUrl('Messages','SendMessage',null,$this->current_user->id);?>">Написать сообщение</a> |</li> 
+							<li><a href="<?php echo $this -> createUrl('Messages','Friend',null,$this->current_user->id);?>">+ Добавить к себе в друзья</a> |</li> 
 							<li><a href="#">Подписаться на изменения</a> |</li> 
 							<li><a href="#">Отправить подарок</a> |</li> 
 							<li><a href="#" class="spam-link">Игнорировать</a></li> 

@@ -305,6 +305,7 @@ class MessagesController extends SiteController{
 	               $group_name = $request->group_name;
 	               if (!$friendModel->isDublicateGroup($user->id, htmlspecialchars($group_name))){
 	                   $friendModel->changeOneValue('friend_group', $group_id, 'name', htmlspecialchars($group_name));
+	                   Project::getResponse()->redirect(Project::getRequest()->createUrl('Messages', 'Friend'));
 	               }else{
 	                   $this -> _view -> addFlashMessage(FM::ERROR, "Группа с таким именем уже существует");
 	               }
@@ -348,7 +349,7 @@ class MessagesController extends SiteController{
                    $friendModel->addFriendGroup($user->id, $request->group_name, null);
 	               Project::getResponse()->redirect(Project::getRequest()->createUrl('Messages', 'Friend'));
                }else{
-                   $this -> _view -> addFlashMessage(FM::ERROR, "Группа с таким именем уже существует");
+                   $this -> _view -> addFlashMessage(null, "Группа с таким именем уже существует");
                }
 	            
 	        }elseif ($request->add_friend){
