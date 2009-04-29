@@ -6,11 +6,11 @@
 					<? } ?>
 				</ul>
 				<!-- /view-filter -->
-
 				<div class="user-profile">
 					<div class="clearfix">
 						<dl class="main-info">
-							<dt><span class="user-status"><span class="online">online</span></span> <strong><?=$this->user_name;?></strong>  / <span class="nick"><?=$this->user_profile['login'];?></span> /</dt>
+							<?php $online = Project::getUser()->getDbUser()->isUserOnline($this->user_profile['id']); ?>
+							<dt><span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> <strong><?=$this->user_name;?></strong>  / <span class="nick"><?=$this->user_profile['login'];?></span> /</dt>
 							<?php $avator_path = ($this->user_default_avatar['sys_av_id'])?$this->user_default_avatar['sys_path']:$this->user_default_avatar['path']; ?>
 							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>" /></dd>
 							<dd><?=$this->user_location;?></dd>
@@ -27,12 +27,12 @@
 							</div>	
 						</div>
 						<div class="rating-info">
-							<div class="ttl"><strong>Рейтинг: <span class="nr">420 NR</span></strong></div>
+							<div class="ttl"><strong>Рейтинг: <span class="nr"><? $nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($this->user_profile['id']); echo $nr['rate']; ?> NR</span></strong></div>
 							<div class="cnt">
 								Профиль заполнен на:
 								<div class="rating-view">
-									<strong>48%</strong>
-									<div style="width:48%;"></div>
+									<strong><?=$this->user_profile['rate']*10; ?>%</strong>
+									<div style="width:<?=$this->user_profile['rate']*10; ?>%;"></div>
 								</div>
 								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a>
 							</div>
@@ -203,11 +203,6 @@
 									<dt>Любымые музыканты:</dt>
 									<dd><?=$this->user_profile['musicians'];?></dd>
 								<? } ?>	
-								<?php 
-							//	print '<pre>';
-							//		print_r($this->user_profile);
-							//	print '</pre>';	
-								?>	
 								<?php if ($this->user_profile['email']) { ?>																											
 									<dt>Адрес e-mail:</dt>
 									<dd><a href="mailto:<?=$this->user_profile['email']; ?>"><?=$this->user_profile['email']; ?></a></dd>

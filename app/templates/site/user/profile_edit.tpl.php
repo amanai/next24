@@ -1,16 +1,17 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
+<?php $user = Project::getUser()->getDbUser()->getUserById($this->current_user->id); ?>
 				<ul class="view-filter clearfix"> 
 					<li><a href="<?php echo $this -> createUrl('User', 'Profile');?>"><?=$this->user_name;?></a></li> 
 					<li><strong>Настройки профиля<span></span></strong></li> 
 				</ul> 
 				<!-- /view-filter --> 
- 
 				<div class="user-profile"> 
 					<div class="clearfix"> 
 						<dl class="main-info"> 
-							<dt><span class="user-status"><span class="online">online</span></span> <strong>Викторчик</strong>  / <span class="nick">madvic</span> /</dt> 
-							<dd class="av"><img src="assets/i/temp/avatar.bbb.jpg" alt="" /></dd> 
-							<dd>Украина, Киев</dd> 
+							<dt><span class="user-status"><span class="online">online</span></span> <strong><?=$this->user_name;?></strong>  / <span class="nick"><?=$this->user_profile['login'];?></span> /</dt> 
+							<?php $avator_path = ($this->user_default_avatar['sys_av_id'])?$this->user_default_avatar['sys_path']:$this->user_default_avatar['path']; ?>
+							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avator_path;?>" /></dd>
+							<dd><?=$this->user_location;?></dd> 
 							<dd>На сайте: <span class="date">12 дней</span></dd> 
 							<dd>Статус: <input type="text" value="Улетел на багамы" size="26" /><input type="submit" value="OK" /></dd> 
 							<dd>Настроение: <input type="text" value="Отличное" size="20" /><input type="submit" value="OK" /></dd> 
@@ -23,12 +24,12 @@
 							</div> 
 						</div> 
 						<div class="rating-info"> 
-							<div class="ttl"><strong>Рейтинг: <span class="nr">420 NR</span></strong></div> 
+							<div class="ttl"><strong>Рейтинг: <span class="nr"><? $nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($this->current_user->id); echo $nr['rate']; ?> NR</span></strong></div> 
 							<div class="cnt"> 
 								Профиль заполнен на:
 								<div class="rating-view"> 
-									<strong>48%</strong> 
-									<div style="width:48%;"></div> 
+									<strong><?=$user['rate']*10;?>%</strong> 
+									<div style="width:<?=$user['rate']*10;?>%;"></div> 
 								</div> 
 								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a> 
 							</div> 
