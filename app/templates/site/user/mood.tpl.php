@@ -19,7 +19,7 @@
 							<dd>Настроение: <input type="text" value="Отличное" size="20" /><input type="submit" value="OK" /></dd> 
 						</dl> 
 						<div class="about-info"> 
-							<div class="ttl"><strong>О себе</strong> <a href="#" class="script-link"><span class="t">изменить</span></a></div> 
+							<div class="ttl"><strong>О себе</strong></div> 
 							<div class="cnt"> 
 								<textarea cols="20" rows="3">Художественное опосредование, как бы это ни казалось парадоксальным, трансформирует реконструктивный подход, подобный исследовательский подход к проблемам художественной типологии можно обнаружить у К.Фосслера.</textarea> 
 								<input type="submit" value="OK" /> 
