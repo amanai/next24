@@ -5,6 +5,7 @@
 					<div class="main"><div class="wrap">
 						<h2 class="page-ttl">Написать Сообщение</h2>
 						<form class="write-message" method="post" action="">
+						<?=$this -> flash_messages; ?>
 						<input type="hidden" value="new_message" name="message_action" />
 							<table>
 								<tbody>

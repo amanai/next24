@@ -53,10 +53,15 @@
 				<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
 				<?php 
 					$nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($this->current_user->id);
-					$user = Project::getUser()->getDbUser()->getUserById($this->current_user->id);				
+					$user = Project::getUser()->getDbUser()->getUserById($this->current_user->id);
+					$userModel = new UserModel();
+					$user_default_avatar = $userModel->getUserAvatar($this->current_user->id);
+					$avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path']; 
+	    			if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no25.jpg';
+	    			else $avator_path = $this->image_url.'avatar/'.$avator_path;																					
 				?>				 
 					<ul> 
-						<li class="user-link"><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><img style="width: 28px; height: 25px;" src="assets/i/temp/user.png" alt="<?php echo $this->current_user->login;?>" /><?php echo $this->current_user->login;?></a></li>
+						<li class="user-link"><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>"><img style="width: 28px; height: 25px;" src="<?=$avator_path; ?>" alt="<?php echo $this->current_user->login;?>" /><?php echo $this->current_user->login;?></a></li>
 						<li class="updates-link"> 
 							
 										<div class="dropdown"> 
