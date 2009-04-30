@@ -130,6 +130,23 @@
 				<?php $request = Project::getRequest(); ?>
 				<?php $currentController = $request->getCurrentControllerName(); ?>
 				<ul class="menu clearfix">
+				<?php if($this->showed_user_profile['id']) { ?>
+					<li class="no-text"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Рабочий стол"><i class="icon desktop-icon"></i></a></li>
+					<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
+						<li class="no-text active" ><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>" title="Моя страница"><i class="icon home-icon"></i></a></li>
+					<? } else { ?>
+						<li class="no-text active" ><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Моя страница"><i class="icon home-icon"></i></a></li>	
+					<? } ?>	
+					<li><a href="<?php echo $this->createUrl('News', 'News', null, false).'/view:news_all/'; ?>"><i class="icon news-icon"></i>Новости</a></li>
+					<li class="alt"><a href="<?php echo $this->createUrl('Debate', 'Debate', null, false); ?>"><i class="icon debate-icon"></i>Дебаты</a></li>
+					<li><a href="<?php echo $this->createUrl('Article', 'List', null, false); ?>"><i class="icon articles-icon"></i>Статьи</a></li>
+					<li><a href="<?php echo $this->createUrl('Album', 'LastList', null, false); ?>"><i class="icon foto-icon"></i>Фото</a></li>
+					<li><a href="<?php echo $this->createUrl('QuestionAnswer', 'List', null, false); ?>"><i class="icon answers-icon"></i>Ответы</a></li>
+					<li><a href="<?php echo $this->createUrl('Blog', 'PublicList', null, false); ?>"><i class="icon blogs-icon"></i>Блоги</a></li>
+					<li><a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false); ?>"><i class="icon social-icon"></i>Социальные сервисы</a></li>
+					<li><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>"><i class="icon bookmarks-icon"></i>Закладки</a></li>
+					<li><a href="<?php echo $this->createUrl('SearchUser','SearchUserMain',null,false); ?>"><i class="icon friends-icon"></i>Найти знакомых</a></li>				
+				<? } else { ?>
 					<li class="no-text <? if($currentController=='Index') {echo 'active';}?>"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>" title="Рабочий стол"><i class="icon desktop-icon"></i></a></li>
 					<?php if($this->current_user && ((int)$this->current_user->id > 0)) {?>
 						<li class="no-text <? if($currentController=='User') {echo 'active';}?>" ><a href="<?php echo $this->createUrl('User', 'Profile', null, $this->current_user->login)?>" title="Моя страница"><i class="icon home-icon"></i></a></li>
@@ -145,6 +162,7 @@
 					<li <? if($currentController=='Social') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Social', 'SocialMainList', null, false); ?>"><i class="icon social-icon"></i>Социальные сервисы</a></li>
 					<li <? if($currentController=='Bookmarks') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('Bookmarks', 'BookmarksList', null, false); ?>"><i class="icon bookmarks-icon"></i>Закладки</a></li>
 					<li <? if($currentController=='SearchUser') {echo 'class="active"';}?>><a href="<?php echo $this->createUrl('SearchUser','SearchUserMain',null,false); ?>"><i class="icon friends-icon"></i>Найти знакомых</a></li>
+				<? } ?>	
 				</ul>
 				<!-- /menu -->
  
