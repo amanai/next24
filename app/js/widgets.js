@@ -24,7 +24,7 @@ if($("div.widget")) {
 			minHeight: 30
 	}); */
 	
-	$("i.widget-ñollapse-icon").parent("span").click(function () {
+	$("i.widget-Ñollapse-icon").parent("span").click(function () {
 		if($(this).parent().parent().parent().siblings("div.widget-content").is(':hidden')) {
 			$(this).parent().parent().parent().siblings("div.widget-content").slideDown("slow");			
 		}
@@ -35,7 +35,7 @@ if($("div.widget")) {
 	}); 
 	
 	$("i.widget-add-icon").parent("span").click(function () {
-		$(this).parent().parent().parent().siblings("div.widget-tabs").children().append('<li><a href="#">Íîâàÿ âêëàäêà</a></li>');
+		$(this).parent().parent().parent().siblings("div.widget-tabs").children().append('<li><a href="#">ĞĞ¾Ğ²Ğ°Ñ ĞºĞ°Ñ‚ĞµĞ³Ğ¾Ñ€Ğ¸Ñ</a></li>');
 	}); 	
 
 	  /**

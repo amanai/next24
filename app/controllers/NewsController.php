@@ -157,7 +157,24 @@ class NewsController extends SiteController{
 		
 		$aNewsSubscribe = $newsModel -> getNewsSubscribeByUserId($user->id);
 		$this-> _view -> assign('aNewsSubscribe', $aNewsSubscribe); // all NewsSubscribe
-		
+		switch ($request->view){ // View type
+	/*        case 'full': // full news list
+	           $_SESSION['newsViewType'] = 'full';
+	           break;
+	        case 'report': // report news list
+	           $_SESSION['newsViewType'] = 'report';
+	           break;
+	         */  
+	        case 'news_all': // no filter, all news
+	           $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, true, false, false, false, false, $tabsNews)); // Show tabs
+	           break;
+	        case 'news_subscribe': // filter, only subscribe news
+	           $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, true, false, false, $tabsNews)); // Show tabs
+	           break;
+	        case 'news_stared': // filter, only news star
+	           $this-> _view -> assign('tab_list', TabController::getNewsTabs($user->id, $isAdmin, false, false, false, false, false, $tabsNews, false,false,false,false,false,true)); // Show tabs
+	           break;           
+	    }		
 		$this -> _view -> NewsPage();
 		$this -> _view -> parse();
 	}	

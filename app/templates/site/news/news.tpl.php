@@ -56,9 +56,8 @@
 										</h3>
 										<div class="breadcrumbs">
 											<?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($this->news['news_tree_id'], true); ?>
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
 										</div>
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a>
+										<!-- <a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a> -->
 										<p>
 											<?php echo $this->news['news_full_text'];?>
 										</p>
@@ -67,7 +66,7 @@
 		          						<?php if ($this->news['code']){
 		               						echo '<div class="news_banner">'.$this->news['code'].'</div>';
 		           						} ?>										
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div>
+										<!-- <div class="more"><a href="#">читать дальше</a> &rarr;</div>  -->
 									</div>
 								</div>
 							</div>
@@ -156,11 +155,11 @@
     	   					
 	       					<div class="section">
     							<div class="title clearfix">
-    					 			<h2><a href="#"><?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false);  if ($this->shownow  != "allnews"){ ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?></a></h2>
-    					 			<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#"><?php echo $newsCount; ?> новостей</a> в этом разделе</p>
+    					 			<h2><a href="#"><?php $tmp = $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false); echo substr($tmp,0,strpos($tmp,'»'));?></a></h2>  <!-- <?php if ($this->shownow  != "allnews"){ ?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?> -->
+    					 			<p><!-- <a href="#">157 категорий</a> <span class="spr">|</span>--> <a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>"><?php echo $newsCount; ?> новостей</a> в этом разделе</p>
     							</div>
     							<div class="holder clearfix">    				
-    				 	 			<?php 
+    				 	 			<?php
     		          					echo $this->ShowNewsListPreviewByNewsTreeIdNova($newsTree['id'], $this->newsViewType, $this->user_id, $this->nShowRows, $this->page_settings, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
     		         	 				if ($this->shownow == "allnews"){
     			      	 					echo $this->news_tree_pager; 

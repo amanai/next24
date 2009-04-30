@@ -263,7 +263,7 @@ class TabController{
 		static public function getNewsTabs(
 		          $user_id, $isAdmin = false, $selected_news = false, $selected_addfeed = false, $selected_myrss = false, 
 		          $selected_addnewstree = false, $one_news = false, $aNews = array(),  $all_news=false,  $all_news_title="",
-		          $isModerateFeeds = false, $isModerateNewsTree = false, $change_feed = false
+		          $isModerateFeeds = false, $isModerateNewsTree = false, $change_feed = false, $favorite = false
 		          ) {
 			$request = Project::getRequest();
 			$tabs = array(
@@ -286,7 +286,7 @@ class TabController{
 				$tabs[]= array(
 								'name' => 'Избранные',  //(254)
 								'title' => 'Избранные', //(254)
-								'selected' => $selected_myrss,
+								'selected' => $favorite,
 							 	'url' => $request -> createUrl('News', 'News', null, false).'/view:news_stared/'
 								);	
 			}						

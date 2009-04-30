@@ -205,7 +205,7 @@ class NewsView extends BaseSiteView{
                 if ($isSetAnchor) $sNewsTreeBreadCrumb .= '<a href="'.$newsUrl.'/filterNewsTree:'.$newsTree['id'].'">';
                 $sNewsTreeBreadCrumb .= $newsTree['name'];
                 if ($isSetAnchor) $sNewsTreeBreadCrumb .= '</a>';
-                $sNewsTreeBreadCrumb .= ' / ';
+                $sNewsTreeBreadCrumb .= ' » ';
             }
             $sNewsTreeBreadCrumb = substr($sNewsTreeBreadCrumb, 0, -3);
         }else{
@@ -340,7 +340,9 @@ class NewsView extends BaseSiteView{
         $newsUrl = Project::getRequest()->createUrl('News', 'News');
         $imgUrl = $this -> image_url;
         $countNews = count($aNews);
-
+		//print '<pre>';
+		///	print_r($aNews);
+		//print '</pre>';	
      //   $htmlNewsListPreview = '<table>';
         if ($newsViewType == 'report'){ // report news list
         	if ($countNews > 0){
@@ -373,14 +375,19 @@ class NewsView extends BaseSiteView{
         	$htmlNewsListPreview .= '</ul>';
         	if ($countNews > 0){
         		$news = array_shift($aNews);
+        	//	print '<pre>';
+        	//		print_r($news);
+        	//	print '</pre>';	
         		$htmlNewsListPreview .= '<div class="full-view">';
         			$htmlNewsListPreview .= '<h3><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">'.$news['news_title'].'</a><i class="star-icon empty-star"></i></h3>';
         			$htmlNewsListPreview .= '<div class="breadcrumbs">
-												▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
+        										▪ '.$this->ShowNewsTreeBreadCrumbByNewsTreeId($news['news_tree_id']).'
 											</div>';
-        			$htmlNewsListPreview .= '<a href="'.$newsUrl.'/news_id:'.$news['news_id'].'"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a>';
+        		//	$htmlNewsListPreview .= '<a href="'.$newsUrl.'/news_id:'.$news['news_id'].'"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a>';
         			$htmlNewsListPreview .= '<p>'.$news['news_short_text'].' ... </p>';
-        			$htmlNewsListPreview .= '<div class="more"><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">читать дальше</a> &rarr;</div>';
+        			if($countNews > 1) {
+        				$htmlNewsListPreview .= '<div class="more"><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">читать дальше</a> &rarr;</div>';
+        			}	
         		$htmlNewsListPreview .= '</div>';	
         	}	
         }else{ // full news list
