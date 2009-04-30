@@ -23,9 +23,9 @@
 							<div class="section">
 								<div class="title clearfix">
 									<h2>								
-										<a href="#">Авто</a>
+										<a href="#"><?php $tmp = $this->ShowNewsTreeBreadCrumbByNewsTreeId($this->news['news_tree_id'], true); echo substr($tmp,0,strpos($tmp,'»'));?></a>
 									</h2>
-									<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#">2567 новостей</a> в этом разделе</p>
+								<!-- 	<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#">2567 новостей</a> в этом разделе</p> -->
 								</div>
 								<div class="holder clearfix">
 									<ul class="short-view">
