@@ -246,6 +246,12 @@ class NewsView extends BaseSiteView{
         $aNews = $newsModel -> getNewsByNewsTreeFeedsId($news_tree_feeds_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, $page_settings, true, true, true);
         return $this -> ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows, $user_id);
     }
+    public function ShowNewsListPreviewByNewsTreeFeedsIdNova($news_tree_feeds_id, $newsViewType, $user_id = 0, $nShowRows=4, $page_settings, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false){
+        $newsModel = new NewsModel();
+        
+        $aNews = $newsModel -> getNewsByNewsTreeFeedsId($news_tree_feeds_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, $page_settings, true, true, true);
+        return $this -> ShowNewsListPreviewViewNova( $newsViewType, $aNews, $nShowRows, $user_id);
+    }    
     
     public function ShowNewsListPreviewByNewsTreeId($news_tree_id, $newsViewType, $user_id = 0, $nShowRows=4, $page_settings, $isOnlySubscribeNewsTree = false, $isOnlyFavoriteNews = false){
         $newsModel = new NewsModel();

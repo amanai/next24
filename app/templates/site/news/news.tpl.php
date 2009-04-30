@@ -96,12 +96,12 @@
 	                   				$isShowSomeNews=true;
 	       					?>
 							<div class="section">
-							<?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, false); if ($this->shownow != "allnews"){?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTreeFeeds:".$this->filterNewsTreeFeeds; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?>
+					<!-- 		<?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, false); if ($this->shownow != "allnews"){?> (<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTreeFeeds:".$this->filterNewsTreeFeeds; ?>">все новости [<?php echo $newsCount; ?>]</a>)<?php } ?> -->
 								<div class="title clearfix">
-									<h2><a href="#"><?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, false); ?></a></h2>
+									<h2><a href="#"><?php $tmp = $this->ShowNewsTreeBreadCrumbByNewsTreeFeedsId($this->filterNewsTreeFeeds, true); echo substr($tmp,0,strpos($tmp,'»')); echo '( '.substr($tmp,2+(-1)*(strlen($tmp)-strpos($tmp,'->'))).' )';?></a></h2>
 									<p>
-										<a href="#">157 категорий</a> 
-										<span class="spr">|</span> 
+									<!-- <a href="#">157 категорий</a> 
+										<span class="spr">|</span>  -->
 											<?php if ($this->shownow != "allnews"){?> 
 												<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTreeFeeds:".$this->filterNewsTreeFeeds; ?>">
 													<?php echo $newsCount; ?> 
@@ -113,29 +113,11 @@
 								</div>
 								<div class="holder clearfix">
     				   			<?php 
-    		           				echo $this->ShowNewsListPreviewByNewsTreeFeedsId($this->filterNewsTreeFeeds, $this->newsViewType, $this->user_id, $this->nShowRows, $this->page_settings, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
+    		           				echo $this->ShowNewsListPreviewByNewsTreeFeedsIdNova($this->filterNewsTreeFeeds, $this->newsViewType, $this->user_id, $this->nShowRows, $this->page_settings, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
     		           				if ($this->shownow == "allnews"){
     			         				echo $this->news_tree_pager; 
     			       				}
     			       			?>								
-									<ul class="short-view">
-								<!--  	<li><a href="#"><i class="icon this-icon"></i>Противники повышения пошлин на иномарки устроили акции в Москве ...</a><i class="star-icon full-star"></i></li>
-										<li><a href="#"><i class="icon this-icon"></i>Поставщик двигателей для GP2 Series оказался на грани банкротства</a><i class="star-icon empty-star"></i></li>
-										<li><a href="#"><i class="icon this-icon"></i>Организаторы опубликовали календари чемпионатов FIA GT и FIA GT3</a><i class="star-icon empty-star"></i></li>
-										<li><a href="#"><i class="icon this-icon"></i>Компания Mercedes-Benz отметила выпуск 1,5-миллионного E-Class</a><i class="star-icon empty-star"></i></li>
-										<li><a href="#"><i class="icon this-icon"></i>Супер AUDI 6.0 D Q7</a></li>
-								-->
-										<li></li>		
-									</ul>
-									<div class="full-view">
-										<h3><a href="#">Если вы уверены, что сможете учавствовать в дебатах, то не стоит отправлять тему на конкурс.</a><i class="star-icon empty-star"></i></h3>
-										<div class="breadcrumbs">
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
-										</div>
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a>
-										<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на ... </p>
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div>
-									</div>
 								</div>
 							</div>
 							<!-- /section -->		
@@ -173,8 +155,6 @@
 								<div class="title clearfix">
 									<h2><a href="#"><?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false); ?></a></h2>
 									<p>
-										<a href="#">157 категорий</a> 
-										<span class="spr">|</span> 
 										<?php if ($this->shownow  != "allnews"){ ?> 
 											<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>">
 												<?php echo $newsCount; ?> 
