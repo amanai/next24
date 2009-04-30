@@ -16,7 +16,8 @@
 		<li><a href="javascript: void(0);" onclick="ShowMessages(0, 0, '. Общая');">Общая</a> <span class="all-inf" id="total_mes0">( <span class="of-all-count"><?=$this->aGroupMessagesCount[0]['new']; ?></span> / <?=($this->aGroupMessagesCount[0]['read']+$this->aGroupMessagesCount[0]['new']); ?> )</span></li>
     <?php foreach ($this->aFriendGroups as $friendGroup){ ?>	
 		<li><a href="javascript: void(0);" onclick="ShowMessages(0, <?php echo $friendGroup['id'].", '. ".$friendGroup['name']."'"; ?>);"><?=$friendGroup['name'];?></a> <span class="all-inf" id="total_mes<?php echo $friendGroup['id'];?>">( <span class="of-all-count"><?=$this->aGroupMessagesCount[$friendGroup['id']]['new']; ?></span> / <?=$this->aGroupMessagesCount[$friendGroup['id']]['read']; ?> )</span></li>
-	<?php } ?>		
+	<?php } ?>	
+	<!--  	<li><a href="javascript: void(0);" onclick="ShowAllMessages(0, 0, '. Общая');">Все</a>  <span class="all-inf" id="total_mes<?php echo $friendGroup['id'];?>">( <span class="of-all-count"><?=$this->aGroupMessagesCount[$friendGroup['id']]['new']; ?></span> / <?=$this->aGroupMessagesCount[$friendGroup['id']]['read']; ?> )</span></li>	 -->
 	</ul>
 </div>
 <?php } ?>

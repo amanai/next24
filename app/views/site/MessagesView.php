@@ -96,7 +96,7 @@ class MessagesView extends BaseSiteView{
 		    }
 		    if (!$userMessage['is_read']) $sIsRead = '<dd class="message-status unread-message-status"><div class="status-wrp"><span class="with-icon-s"><i class="icon-s mess-unread-icon"></i>Ваше последнее отправленное сообщение не прочтено</span></div></dd>';
 		    else $sIsRead = '';
-		    $htmlMess = '<li class="it clearfix">
+		    $htmlMess .= '<li class="it clearfix">
 					<dl>
 						<dt><a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $userMessage['author_login']).'" class="with-icon-s"><i class="icon-s online-icon"></i>'.$userMessage['author_login'].'</a> [ <a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $userMessage['author_login']).'">'.$userMessage['author_login'].'</a> ]</dt>
 						<dd class="av"><a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $userMessage['author_login']).'"><img class="avatar" src="'.$this->image_url.'avatar/'.$avPath.'" alt="'.$avName.'" /></a></dd>
@@ -122,7 +122,53 @@ class MessagesView extends BaseSiteView{
 		$response -> block('myMessagePager', true, $message['myMessagePager']);
 		
 	}
+
 	
+	function returnAllFolderMessages($message){
+		$response = Project::getAjaxResponse();
+		$htmlMess = ""; $i = 1;
+		//foreach ($message['aMessages'] as $userMessage){
+		foreach ($message as $userMessage){
+		    if ($i/2 == 1){$i = 1;} else {$i++;}
+		    if ($userMessage['avatars_id']){
+		        if ($userMessage['sys_av_id']){
+		            $avPath = $userMessage['sys_av_path'];
+		        }else{
+		            $avPath = $userMessage['avatars_path'];
+		        }
+		        $avName = $userMessage['avatars_av_name'];
+		    }else {
+		        $avPath = 'no90.jpg';
+		        $avName = 'no image';
+		    }
+		    if (!$userMessage['is_read']) $sIsRead = '<dd class="message-status unread-message-status"><div class="status-wrp"><span class="with-icon-s"><i class="icon-s mess-unread-icon"></i>Ваше последнее отправленное сообщение не прочтено</span></div></dd>';
+		    else $sIsRead = '';
+		    $htmlMess .= '<li class="it clearfix">
+					<dl>
+						<dt><a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $userMessage['author_login']).'" class="with-icon-s"><i class="icon-s online-icon"></i>'.$userMessage['author_login'].'</a> [ <a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $userMessage['author_login']).'">'.$userMessage['author_login'].'</a> ]</dt>
+						<dd class="av"><a href="'.Project::getRequest() -> createUrl('User', 'Profile', null, $userMessage['author_login']).'"><img class="avatar" src="'.$this->image_url.'avatar/'.$avPath.'" alt="'.$avName.'" /></a></dd>
+						<dd class="date">'.$userMessage['send_date'].'</dd>
+						<dd class="theme">'.$userMessage['header'].'</dd>
+						<dd class="message srv-msg">'.nl2br($userMessage['m_text']).'</dd>
+						'.$sIsRead.'
+					</dl>
+					<ul class="links">
+						<li><a href="'.Project::getRequest() -> createUrl('Messages', 'CorrespondenceWith').'/corr_user_id:'.$userMessage['author_id'].'" class="new-link">Переписка</a>  ( <span class="of-all-count">1</span> / 12)</li>
+						<li><a href="'.Project::getRequest() -> createUrl('Messages', 'SendMessage').'/message_action:reply/mess_id:'.$userMessage['id'].'">Написать сообщение</a></li>
+						<li><a href="#">Добавить в друзья</a></li>
+						<li><a onclick="return DelMessage('.$userMessage['messages_id'].', '.(int)$message['current_page'].', '.(int)$message['groupId'].', \''.$message['groupName'].'\');" href="javascript: void(0);" class="spam-link">Удалить</a></li>
+					</ul>
+				</li>';
+		}		
+		if (!$htmlMess) $htmlMess = "В данной группе нет писем";
+		$response -> block('cmod_messages', true, $htmlMess);
+		//$response -> block('titleGroupName', true, $message['groupName']);
+		//$response -> block('total_mesall', true, '( <span class="of-all-count">'.$message['messageCountAll']['new'].'</span> / '.$message['messageCountAll']['read'].' )');
+		//$response -> block('total_mes'.$message['groupId'], true, '( <span class="of-all-count">'.$message['messageCountGroup']['new'].'</span> / '.$message['messageCountGroup']['read'].' )');
+		//$response -> block('myMessagePager', true, $message['myMessagePager']); 
+		
+	}
+		
 	function returnCorrespondentPage($message){
 	    $response = Project::getAjaxResponse();
 	    $htmlMess=""; $i = 1;

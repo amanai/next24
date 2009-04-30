@@ -214,7 +214,41 @@ class MessagesController extends SiteController{
         $messageId = $messagesModel->save();
         return $messageId;
 	}
-	
+	public function GetAllFolderMessagesAction() {
+	    $messagesModel = new MessagesModel();
+	    $user = Project::getUser() -> getDbUser();
+	    $request = Project::getRequest();
+	    
+        // PAGER
+		$record_per_page = $this -> getParam("NUM_MESSAGES_ON_PAGE");
+		$pager_view = new SitePagerView();
+	    $record_count = $messagesModel->getCountMessagesToUser($user->id, $request->groupId, 1, -1);
+	    $pages_number = $pager_view->getPagesNumber($record_count, $record_per_page);
+	    $current_page_number = $request->current_page; // current page
+	    $current_page_number = ($current_page_number>=$pages_number)?$pages_number-1:$current_page_number;
+	    $debate_pager = $pager_view->show_ajax('Messages', 'GetFolderMessages', array("groupName"=>$request->groupName, "groupId"=>$request->groupId), $pages_number, $current_page_number);
+	    $message['myMessagePager'] = $debate_pager;
+	    $page_settings = array("record_per_page"=>$record_per_page, "current_page_number"=>$current_page_number+1);
+		// END PAGER
+		$aMessages = $messagesModel->getAllMessagesToUser($page_settings, $user->id, -1, 1, -1);
+	   // $aMessages = $messagesModel->getAllMessagesToUser($page_settings, $user->id, $request->groupId, 1, -1);
+	    //print_r($aMessages);
+    
+	 //   $message['aMessages'] = $aMessages;
+	 //   $message['groupId'] = (int)$request->groupId;
+	 //   $message['groupName'] = $request->groupName;
+	 //   $message['current_page'] = $request->current_page;
+	 //   $message['messageCountAll']['new'] = $messagesModel->getCountMessagesToUser($user->id, -1, 1, 0);
+	 //   $message['messageCountAll']['read'] = $messagesModel->getCountMessagesToUser($user->id, -1, 1, 1);
+	 //   $message['messageCountGroup']['new'] = $messagesModel->getCountMessagesToUser($user->id, -1, 1, 0);
+	 //   $message['messageCountGroup']['read'] = $messagesModel->getCountMessagesToUser($user->id, -1, 1, 1);
+//	    foreach ($aMessages as $userMessage){
+//	        $messagesModel->changeOneValue('messages', $userMessage['messages_id'], 'is_read', 1);
+//	    }   
+//	    $this -> _view -> returnAllFolderMessages($message);
+	     $this -> _view -> returnAllFolderMessages($aMessages);
+        $this -> _view -> ajax();			
+	}
 	// возвращает сообщений пользователя AJAX
 	public function GetFolderMessagesAction(){
 	    $messagesModel = new MessagesModel();
@@ -232,9 +266,10 @@ class MessagesController extends SiteController{
 	    $message['myMessagePager'] = $debate_pager;
 	    $page_settings = array("record_per_page"=>$record_per_page, "current_page_number"=>$current_page_number+1);
 		// END PAGER
+		
 	    $aMessages = $messagesModel->getAllMessagesToUser($page_settings, $user->id, $request->groupId, 1, -1);
 	    //print_r($aMessages);
-	    
+    
 	    $message['aMessages'] = $aMessages;
 	    $message['groupId'] = (int)$request->groupId;
 	    $message['groupName'] = $request->groupName;
