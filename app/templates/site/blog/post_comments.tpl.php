@@ -35,14 +35,16 @@
 							<h2><?php echo $this->post_title; ?></h2> 
 							<div class="post-content"> 
             					<?php 
-            					if ($this->user_avatar){
+            					//if ($this->user_avatar){
             					   $user_avatar = $this->user_avatar;
-            					   $avatar_path = ($user_avatar['sys_av_id'])?$user_avatar['sys_av_path']:$user_avatar['path']; 
+            					   $avator_path = ($user_avatar['sys_av_id'])?$user_avatar['sys_av_path']:$user_avatar['path']; 
+	    							if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no50.jpg';
+	    							else $avator_path = $this->image_url.'avatar/'.$avator_path;            					   
             					?>
             					   <div class="av_preview av_gallery right5">
-            					   <img style="margin: 5px;" alt="<?php echo $user_avatar['av_name'];?>" src="<?php echo $this->image_url."avatar/".$avatar_path; ?>"/>
+            					   <img style="margin: 5px;" alt="<?php echo $user_avatar['av_name'];?>" src="<?php echo $avator_path; ?>" style="width:50px;height:50px;"/>
             					   </div>
-            					<?php } ?>  							
+            					<?php //} ?>  							
 								<?php echo $this->full_text; ?>
 							</div> 
 							<!-- /post-content --> 
