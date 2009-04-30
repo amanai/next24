@@ -15,13 +15,14 @@
 	<tr>
 		<td valign="top">Раздел каталога</td>
 		<td>
-
+		<input type="hidden" name="blog_catalog" value="1" />
+<!-- 
 			<select style="width: 300px;" name="blog_catalog">
 				<?php foreach ($this -> catalog_list as $key=>$value){?>
 					<option value="<?php echo $value['id'];?>" <?php if ((int)$value['id'] === (int)$this -> blog_catalog_id) {echo 'selected';} ?>><?php echo $value['name'];?></option>
 				<?php } ?>
-			</select><br />
-			<span id="micro2">К какому разделу глобального каталога принадлежит.</span>
+			</select><br />	
+			<span id="micro2">К какому разделу глобального каталога принадлежит.</span>	 -->
 		</td>
 	</tr>
 	<tr>
@@ -57,14 +58,14 @@
 			<span id="micro2">Кто сможет смотреть посты в этом разделе.</span>
 		</td>
 	</tr>
-	
+<!-- 	
 	<tr>
 		<td valign="top">Код баннера</td>
 		<td>
             <textarea style="width: 300px; height:100px;" name="blog_banner_code"><?php echo $this->blog_banner_code; ?></textarea><br/>
 			<span id="micro2">Вы можете добавлять свои баннеры в посты.</span>
 		</td>
-	</tr>
+	</tr>	 -->
 	<tr>
 		<td colspan="2" align="right"><input type="submit" name="save" value="Сохранить" />&nbsp;&nbsp;&nbsp;<input type="submit" name="delete" value="Удалить" onclick="return confirm('Автоматически удалятся все записи раздела. Уверены?');" /></td>
 	</tr>

@@ -27,5 +27,8 @@ class BlogTagModel extends BaseModel{
 				return $rez;
 			}
 		}
+		public function addTags($tags) {
+			//foreach ($tags as $value)
+		}
 	}
 ?>
