@@ -45,10 +45,9 @@
 													echo '<i class="star-icon empty-star"></i>';
 												 }													
 												if ($this->user_id){
-    				           						echo '<a onclick=\'ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$this->news['news_id'], "imgUrl"=>$this -> image_url), "POST").', true);
-        				        					\' href="javascript: void(0);"><i '.$star_class.' id="imgstar'.$this->news['news_id'].'"></i></a>';												 			
+    				           						echo '<i id="imgstar'.$this->news['news_id'].'" '.$star_class.' onclick=\'if($(this).hasClass("full-star")) {$(this).removeClass("full-star"); $(this).addClass("empty-star");} else {$(this).removeClass("empty-star"); $(this).addClass("full-star");} ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$this->news['news_id'], "imgUrl"=>$imgUrl), "POST").', true);\'></i></a>';												 			
 												 } else { 
-												 	echo '<i '.$star_class.'></i>';												 												 	
+												 	echo '<i '.$star_class.' ></i>';												 												 	
 												}
 												//<img src="'.$this -> image_url.$starGif.'" id="imgstar'.$this->news['news_id'].'">
 												?>
@@ -115,7 +114,9 @@
     				   			<?php 
     		           				echo $this->ShowNewsListPreviewByNewsTreeFeedsIdNova($this->filterNewsTreeFeeds, $this->newsViewType, $this->user_id, $this->nShowRows, $this->page_settings, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
     		           				if ($this->shownow == "allnews"){
+    		           					echo ' <ul class="pages-list user-blog-view-pages clearfix">';
     			         				echo $this->news_tree_pager; 
+    			         				echo '</ul>';
     			       				}
     			       			?>								
 								</div>
@@ -144,48 +145,16 @@
     				 	 			<?php
     		          					echo $this->ShowNewsListPreviewByNewsTreeIdNova($newsTree['id'], $this->newsViewType, $this->user_id, $this->nShowRows, $this->page_settings, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
     		         	 				if ($this->shownow == "allnews"){
+    		         	 					echo ' <ul class="pages-list user-blog-view-pages clearfix">';
     			      	 					echo $this->news_tree_pager; 
+    			      	 					echo '</ul>';
     			      	 				}
     			      	 			?>
     							</div>
     						</div>    	   					
   
-  <!--    	   					
-							<div class="section">
-								<div class="title clearfix">
-									<h2><a href="#"><?php echo $this->ShowNewsTreeBreadCrumbByNewsTreeId($newsTree['id'], false); ?></a></h2>
-									<p>
-										<?php if ($this->shownow  != "allnews"){ ?> 
-											<a href="<?php echo $this->createUrl('News', 'News', null, false)."/shownow:allnews/filterNewsTree:".$newsTree['id']; ?>">
-												<?php echo $newsCount; ?> 
-												новостей
-											</a>
-										<?php } ?>
-										в этом разделе
-									</p>
-								</div>
-								<div class="holder clearfix">
-    				   			<?php 
-    		           				echo $this->ShowNewsListPreviewByNewsTreeId($newsTree['id'], $this->newsViewType, $this->user_id, $this->nShowRows, $this->page_settings, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews);
-    		           				if ($this->shownow == "allnews"){
-    			         				echo $this->news_tree_pager; 
-    			       				}
-    			       			?>								
-									<ul class="short-view">
-										<li></li>
-									</ul>
-									<div class="full-view">
-										<h3><a href="#">Что же в имени твоем! 3.0D</a><i class="star-icon empty-star"></i></h3>
-										<div class="breadcrumbs">
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
-										</div>
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a>
-										<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на ... </p>
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div>
-									</div>
-								</div>
-							</div>	-->
-							<!-- /section -->    	   					
+								<!--  Здесь вставка новостей  -->   
+								   					
     	   					<?php
     	           				}
 	           				}

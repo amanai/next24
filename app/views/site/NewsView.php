@@ -258,7 +258,7 @@ class NewsView extends BaseSiteView{
         
         $aNews = $newsModel -> getNewsByNewsTreeId($news_tree_id, $user_id, $isOnlySubscribeNewsTree, $isOnlyFavoriteNews, $page_settings, true, true, true);
         return $this -> ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows, $user_id);
-    }
+    }   
     public function ShowNewsListPreviewView( $newsViewType, $aNews, $nShowRows=4, $user_id){
         $newsUrl = Project::getRequest()->createUrl('News', 'News');
         $imgUrl = $this -> image_url;
@@ -346,17 +346,13 @@ class NewsView extends BaseSiteView{
         $newsUrl = Project::getRequest()->createUrl('News', 'News');
         $imgUrl = $this -> image_url;
         $countNews = count($aNews);
-		//print '<pre>';
-		///	print_r($aNews);
-		//print '</pre>';	
-     //   $htmlNewsListPreview = '<table>';
         if ($newsViewType == 'report'){ // report news list
         	if ($countNews > 0){
         		$countNews --;
         	}
         	$nRows = ($countNews>3)?3:$countNews;
         	$htmlNewsListPreview .= '<ul class="short-view">';
-            	for($i=0; $i<$nRows; $i++){
+            	for($i=1; $i<$nRows; $i++){
                 	if ($aNews[$i]['favorite_news_id']) {
                 		$star_class = 'class="star-icon full-star"'; 
                 	}
@@ -365,27 +361,32 @@ class NewsView extends BaseSiteView{
                 	}
                 	$htmlNewsListPreview .= '                    
     							<li><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'"><i class="icon this-icon"></i>'.$aNews[$i]['news_title'].'</a>';
-             //   	if ($user_id){
-              //      	$htmlNewsListPreview .= ' 
-    		//					<a onclick=\'
-        	//			        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$aNews[$i]['news_id'], "imgUrl"=>$imgUrl), "POST").', true);
-        	//			        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$aNews[$i]['news_id'].'"></a> ';
-             //   	}
-             
-                //	$htmlNewsListPreview .= ' 
-    			//				('.$aNews[$i]['pub_date'].')</li>
-                //	';
-                    $htmlNewsListPreview .= '<i '.$star_class.'></i>';
+                	if ($user_id){
+                		  $htmlNewsListPreview .= '<i id="imgstar'.$aNews[$i]['news_id'].'" '.$star_class.' onclick=\'if($(this).hasClass("full-star")) {$(this).removeClass("full-star"); $(this).addClass("empty-star");} else {$(this).removeClass("empty-star"); $(this).addClass("full-star");} ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$aNews[$i]['news_id'], "imgUrl"=>$imgUrl), "POST").', true);\'></i>';
+                	}
+                	else {
+                		 $htmlNewsListPreview .= '<i '.$star_class.'></i>';
+                	}
             		$htmlNewsListPreview .= '</li>';
             	}        		
         	$htmlNewsListPreview .= '</ul>';
         	if ($countNews > 0){
         		$news = array_shift($aNews);
-        	//	print '<pre>';
-        	//		print_r($news);
-        	//	print '</pre>';	
+        	    if ($news['favorite_news_id']) {
+                	$star_class = 'class="star-icon full-star"'; 
+                }
+                else {
+                	$star_class = 'class="star-icon empty-star"';
+                }
         		$htmlNewsListPreview .= '<div class="full-view">';
-        			$htmlNewsListPreview .= '<h3><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">'.$news['news_title'].'</a><i class="star-icon empty-star"></i></h3>';
+        			$htmlNewsListPreview .= '<h3><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">'.$news['news_title'].'</a>';
+        			if ($user_id){
+        				$htmlNewsListPreview .= '<i id="imgstar'.$news['news_id'].'" '.$star_class.' onclick=\'if($(this).hasClass("full-star")) {$(this).removeClass("full-star"); $(this).addClass("empty-star");} else {$(this).removeClass("empty-star"); $(this).addClass("full-star");} ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$news['news_id'], "imgUrl"=>$imgUrl), "POST").', true);\'></i>';
+        			}
+        			else {
+        				$htmlNewsListPreview .= '<i '.$star_class.'></i>';	
+        			}
+        			$htmlNewsListPreview .= '</h3>';
         			$htmlNewsListPreview .= '<div class="breadcrumbs">
         										▪ '.$this->ShowNewsTreeBreadCrumbByNewsTreeId($news['news_tree_id']).'
 											</div>';
@@ -396,31 +397,36 @@ class NewsView extends BaseSiteView{
         			}	
         		$htmlNewsListPreview .= '</div>';	
         	}	
-        }else{ // full news list
+        } else { // full news list
             if ($nShowRows) $nRows = ($countNews>$nShowRows)?$nShowRows:$countNews;
             else $nRows = $countNews;
             for($i=0; $i<$nRows; $i++){
-                if ($aNews[$i]['favorite_news_id']) $starGif = "star_on.gif"; else $starGif = "star_off.gif"; 
-                $htmlNewsListPreview .= '
-                    <tr>
-                        <td class="arh_x1">
-    						<h3><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a><span style="font-weight: normal;"> ';
-                if ($user_id){
-                    $htmlNewsListPreview .= '
-    						<a onclick=\'
-    				        ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$aNews[$i]['news_id'], "imgUrl"=>$imgUrl), "POST").', true);
-    				        \' href="javascript: void(0);"><img src="'.$imgUrl.$starGif.'" id="imgstar'.$aNews[$i]['news_id'].'"></a>';
+       	    if ($aNews[$i]['favorite_news_id']) {
+                	$star_class = 'class="star-icon full-star"'; 
                 }
-                $htmlNewsListPreview .= '
-    						 &nbsp; ('.$aNews[$i]['pub_date'].')</span></h3><br />
-    						'.$aNews[$i]['news_short_text'].'
-    					</td>
-    				</tr>';
+                else {
+                	$star_class = 'class="star-icon empty-star"';
+                }
+        		$htmlNewsListPreview .= '<div class="full-view">';
+        			$htmlNewsListPreview .= '<h3><a href="'.$newsUrl.'/news_id:'.$aNews[$i]['news_id'].'">'.$aNews[$i]['news_title'].'</a>';
+        			if ($user_id){
+        				$htmlNewsListPreview .= '<i id="imgstar'.$aNews[$i]['news_id'].'" '.$star_class.' onclick=\'if($(this).hasClass("full-star")) {$(this).removeClass("full-star"); $(this).addClass("empty-star");} else {$(this).removeClass("empty-star"); $(this).addClass("full-star");} ajax('.AjaxRequest::getJsonParam("News", "ChangeNewsFavorite", array("news_id"=>$aNews[$i]['news_id'], "imgUrl"=>$imgUrl), "POST").', true);\'></i>';
+        			}
+        			else {
+        				$htmlNewsListPreview .= '<i '.$star_class.'></i>';	
+        			}
+        			$htmlNewsListPreview .= '</h3>';
+        			$htmlNewsListPreview .= '<div class="breadcrumbs">
+        										▪ '.$this->ShowNewsTreeBreadCrumbByNewsTreeId($aNews[$i]['news_tree_id']).'
+											</div>';
+        		//	$htmlNewsListPreview .= '<a href="'.$newsUrl.'/news_id:'.$news['news_id'].'"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a>';
+        			$htmlNewsListPreview .= '<p>'.$aNews[$i]['news_short_text'].' ... </p>';
+        		//	if($countNews > 1) {
+        			$htmlNewsListPreview .= '<div class="more"><a href="'.$newsUrl.'/news_id:'.$news['news_id'].'">читать дальше</a> &rarr;</div>';
+        		//	}	//$aNews[$i]['pub_date']
+        		$htmlNewsListPreview .= '</div>';	
             }
         }
-    //    $htmlNewsListPreview .= '
-    //        </table>';
-        
         return $htmlNewsListPreview;
     }
     
