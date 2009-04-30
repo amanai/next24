@@ -166,7 +166,6 @@ class QuestionAnswerController extends SiteController {
 		$data['question_cat_list'] = $question_cat_model->loadAll();		
 		$id = (int)$request->getKeyByNumber(0);
 		if(!$request->submit) {
-			
 			$question_cat_model = new QuestionCatModel();
 			if($id > 0) {
 				$data['question'] = $question_model->loadQuestion($id);
@@ -188,7 +187,12 @@ class QuestionAnswerController extends SiteController {
 			if($id > 0) {
 				$data['question'] = $question_model->load($id);
 				if($question_model->user_id != Project::getUser()->getDbUser()->id) {
-					Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
+					if($request->desktop_question) {
+						Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
+					}
+					else { 
+						Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'List'));
+					}				
 				}
 			}	
 			
@@ -237,7 +241,12 @@ class QuestionAnswerController extends SiteController {
 					$question_tag_model->save();
 					$question_tag_model->clear();
 			}
-			Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
+			if($request->desktop_question) {
+				Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'UserQuestions'));
+			}
+			else { 
+				Project::getResponse()->redirect($request->createUrl('QuestionAnswer', 'List'));
+			}	
 		}
 	}
 	

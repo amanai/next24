@@ -41,7 +41,7 @@
 										<td class="input-field">
 											<input id="f2" type="text" value="<?=$q_list; ?>" name="tags" />										
 										</td>
-										<td class="button-field"><input type="submit" value="Спросить" /></td>
+										<td class="button-field"><input type="submit" name="submit" value="Спросить" /></td>
 									</tr>
 								</table>
 							</form>

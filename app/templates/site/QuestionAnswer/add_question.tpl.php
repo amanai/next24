@@ -9,6 +9,7 @@
 	<h1><?=$this->tab_manage_question_name?><i class="icon ask-icon"></i></h1>					
 	<?php if($this->current_user && $this->current_user->id > 0) { ?>
 		<form action="<?=$this->createUrl('QuestionAnswer', 'ManagedQuestion', array($this->question['id']))?>" method="post" class="ask-form">
+		<input type="hidden" name="desktop_question" value="1" />
 			<table>
 				<tr class="textarea-field">
 					<td colspan="5"><textarea name="question_text" rows="5" cols="20"><?=$this->question['q_text']?></textarea></td>
@@ -30,7 +31,7 @@
 					<td class="input-field">
 						<input id="f2" type="text" value="<?=$this->question_tag_list?>" name="tags" />
 					</td>
-					<td class="button-field"><input type="submit" value="Спросить" /></td>
+					<td class="button-field"><input type="submit" name="submit" value="Спросить" /></td>
 				</tr>
 			</table>
 		</form>				
