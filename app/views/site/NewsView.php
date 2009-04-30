@@ -352,7 +352,7 @@ class NewsView extends BaseSiteView{
         	}
         	$nRows = ($countNews>3)?3:$countNews;
         	$htmlNewsListPreview .= '<ul class="short-view">';
-            	for($i=1; $i<$nRows; $i++){
+            	for($i=1; $i<$nRows+1; $i++){
                 	if ($aNews[$i]['favorite_news_id']) {
                 		$star_class = 'class="star-icon full-star"'; 
                 	}
