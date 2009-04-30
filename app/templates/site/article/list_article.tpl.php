@@ -25,7 +25,7 @@
 							<h2><a href="<?=$this->createUrl('Article', 'ArticleView', array($item['id']))?>" rel="bookmark"><?=$item['title']?></a></h2>
 							<div class="breadcrumbs">
 								<?=$item['full_path']?>
-								▪ <a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » С рождеством!
+								▪ <a href="#">База</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » С рождеством!
 							</div>
 							<div class="post-content">
 								<p>
@@ -34,14 +34,15 @@
 								<div class="more"><a href="<?=$this->createUrl('Article', 'ArticleView', array($item['id']))?>">читать дальше</a> &rarr;</div>
 							</div>
 							<!-- /post-content -->
-							<div class="tag-list">
+						<!-- <div class="tag-list">
 								<i class="icon tags-list-icon"></i>
 								<ul>
 									<li><a href="#" rel="tag">apple</a>,</li>
 									<li><a href="#" rel="tag">mac</a>,</li>
 									<li><a href="#" rel="tag">pc</a></li>
 								</ul>
-							</div>
+							</div>	-->
+							<br />
 							<!-- /tag-list -->
 							<div class="post-meta"><div class="bg"><div class="bg">
 								<div class="voting vote-positive">
