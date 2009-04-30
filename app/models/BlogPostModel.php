@@ -3,7 +3,12 @@ class BlogPostModel extends BaseModel{
 		function __construct(){
 			parent::__construct('blog_post');
 		}
-		
+		function getTreeNameById($tree_id) {
+			$db = Project::getDatabase();
+			$sql = "SELECT name FROM ub_tree WHERE id = $tree_id";
+			$result = $db->selectCell($sql);
+			return $result;
+		}
 		function loadList($user_id, $request_user_id, $tree_id, $is_subscribed){
 			$isFriend = (int)Project::getUser() -> isFriend();
 			$sql = "SELECT " .
@@ -11,7 +16,8 @@ class BlogPostModel extends BaseModel{
 						" count(blog_comment.id) as comments_count, " .
 						" blog.user_id as user_id," .
 						" bc_tag.name as tag_name, " .
-						" bs.id as subscribe_id " .
+						" bs.id as subscribe_id, " .
+						" ubt.name" .
 					" FROM blog_post " .
 					" LEFT JOIN blog_comment ON blog_comment.blog_id = blog_post.id " .
 					" LEFT JOIN ub_tree ubt ON ubt.id = blog_post.ub_tree_id " .

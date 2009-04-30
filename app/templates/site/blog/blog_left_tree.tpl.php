@@ -18,7 +18,7 @@
 						} ?>
 					</a>
 				<? }?>			
-				<a class="with-icon-s" style="margin-left:0;padding-left:0;" href="<?php echo $this->createUrl('Blog', 'PostList', array($item['id']));?>"><? echo $item['name']; ?></a> (8)
+				<a class="with-icon-s" style="margin-left:0;padding-left:0;" href="<?php echo $this->createUrl('Blog', 'PostList', array($item['id']));?>"><? echo $item['name']; ?></a> <!-- (8)  -->
 			</li>
 	<? } ?>
 <? } ?>

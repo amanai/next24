@@ -28,7 +28,7 @@
 									<a href="<?php echo $item['comment_link'];?>" rel="bookmark"><?php echo $item['title']; ?></a>
 								</h2>
 								<div class="breadcrumbs">
-									▪ <a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » С рождеством!
+									▪ <a href="<?php echo $this->createUrl('Blog', 'PostList');?>"><?=$this->blog_info['title'];?></a> » <a href="<?php echo $this->createUrl('Blog', 'PostList');?>/<?=$item['id'];?>"><?=$item['name'];?></a> » <?php echo $item['title']; ?>
 								</div>
 								<div class="post-content">
 									<?php echo $item['small_text']; ?>

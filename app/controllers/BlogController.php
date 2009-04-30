@@ -95,7 +95,7 @@
 			$pager_view = new SitePagerView();
 			$info['post_list_pager'] = $pager_view -> show2($post_model -> getPager(), 'Blog', 'PostList', array($tree_id));
 			 
-			
+			$this->_view->assign('current_tree_name',$post_model->getTreeNameById($tree_id));
 			$this -> _view -> PostList($info);
 			$this -> _view -> parse();
 		}
