@@ -1,11 +1,17 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 <?php $request = Project::getRequest(); ?>
+<?php if($this->showed_user_profile['id'])  { ?>
+	<?php $this->tab_list = TabController::getOwnTabs(false,false,false,false,false,true,false,false,false,false); ?>
+	<?php include($this -> _include('../profile_line.tpl.php')); ?>	
+<? } ?>
 <!-- Форма просмотра закладки BookmarksViewAction -->
 				<div class="columns-page clearfix">
 					<div class="main"><div class="wrap">
+					<?php if(!$this->showed_user_profile['id'])  { ?>
 						<ul class="view-filter clearfix">
 							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 						</ul>
+					<? } ?>	
 						<!-- /view-filter -->
 						<div class="display-filter clearfix">
 							<div class="breadcrumbs">
@@ -38,6 +44,9 @@
 					</div></div>
 					<!-- /main -->
 					<div class="sidebar">
+					<?php if($this->showed_user_profile['id'])  { ?>
+						<?php include($this -> _include('panel_control.tpl.php')); ?>
+					<? } ?>	
 						<div class="navigation">
 							<div class="title">
 								<h2>Категории</h2>

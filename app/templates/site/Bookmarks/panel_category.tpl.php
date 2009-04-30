@@ -6,9 +6,9 @@
 				<li>
 					<i class="arrow-icon"></i>
 					<?php if(($this->action=='BookmarksMostVisit') || ($this->action=='BookmarksView') || ($this->action=='BookmarksList')) { ?>
-						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']),false)?>"><?=$item['name']?></a>				
+						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']))?>"><?=$item['name']?></a>				
 					<? } else { ?>
-						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksUser', array($item['id']),false)?>"><?=$item['name']?></a>
+						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksUser', array($item['id']))?>"><?=$item['name']?></a>
 					<? } ?>							
 					<ul class="nav-list">										
 			<? } ?>
@@ -17,9 +17,9 @@
 				<li>
 					<i class="arrow-icon"></i>
 					<?php if(($this->action=='BookmarksMostVisit') || ($this->action=='BookmarksView') || ($this->action=='BookmarksList')) { ?>
-						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']),false)?>"><?=$item['name']?></a>				
+						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']))?>"><?=$item['name']?></a>				
 					<? } else { ?>
-						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksUser', array($item['id']),false)?>"><?=$item['name']?></a>
+						<a href="<?=$this->createUrl('Bookmarks', 'BookmarksUser', array($item['id']))?>"><?=$item['name']?></a>
 					<? } ?>				
 				<ul class="nav-list">	
 			<? } else { ?>
@@ -28,9 +28,9 @@
 				<? } else { ?>	
 					<?if($v_count) {?>
 						<?php if(($this->action=='BookmarksMostVisit') || ($this->action=='BookmarksView') || ($this->action=='BookmarksList')) { ?>
-							<li><a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']),false)?>"><?=$item['name']?></a></li>					
+							<li><a href="<?=$this->createUrl('Bookmarks', 'BookmarksList', array($item['id']))?>"><?=$item['name']?></a></li>					
 						<? } else { ?>
-							<li><a href="<?=$this->createUrl('Bookmarks', 'BookmarksUser', array($item['id']),false)?>"><?=$item['name']?></a></li>
+							<li><a href="<?=$this->createUrl('Bookmarks', 'BookmarksUser', array($item['id']))?>"><?=$item['name']?></a></li>
 						<? } ?>
 					<? } ?>	
 				<? } ?>	

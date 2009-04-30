@@ -354,9 +354,12 @@ class BookmarksController extends SiteController {
     $v_request = Project::getRequest();
     $data = array();   
     $data['action'] = 'BookmarksCategorySaveMessage';
+    $v_category_id = ($p_category_id !== null) ? (int)$p_category_id : (int)$v_request -> getKeyByNumber(0);
+    $this->_get_catalogs($data, $v_category_id);
+    $this->_getSelectedCategory($data, $v_category_id);    
     //$this->_BaseSiteData($data);
-   
-    $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, true)); // Show tabs
+   $this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,true,false,false,false,false));
+   // $this->_view->assign('tab_list', TabController::getBookmarksTabs(false, false, false, false, true)); // Show tabs
     $this -> _view -> Bookmarks_CategoryEdit($data);
     $this -> _view -> parse();
   }
