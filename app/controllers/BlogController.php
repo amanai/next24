@@ -327,7 +327,8 @@
 			    return;
 			}
 			$post_model -> load($post_id);
-			
+			$this->_view->assign('current_tree_name',$post_model->getTreeNameById($post_model->ub_tree_id));
+			$this->_view->assign('post_id',$post_model->id);
 			$info['full_text'] = ($request_user_id !== $user_id ) ? $this -> PostPreprocess($post_model -> full_text, $user_id, $post_model -> ub_tree_id) : $post_model -> full_text;
 			$info['post_title'] = $post_model -> title;
 			$info['post_creation_date'] = $post_model -> creation_date;

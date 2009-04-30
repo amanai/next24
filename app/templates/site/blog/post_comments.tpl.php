@@ -27,7 +27,7 @@
 						<!-- /view-filter --> 
 						<div class="display-filter clearfix"> 
 							<div class="breadcrumbs"> 
-								▪ <a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » С рождеством!
+								▪ <a href="<?php echo $this->createUrl('Blog', 'PostList');?>"><?=$this->blog_info['title'];?></a> » <a href="<?php echo $this->createUrl('Blog', 'PostList');?>/<?=$this->post_id;?>"><?=$this->current_tree_name;?></a> » <?=$this->post_title; ?>
 							</div> 
 						</div> 
 						<!-- /display-filter --> 
@@ -115,11 +115,11 @@
 								</ul> 
 							</form> 
 							<ul class="nav-list"> 
-								<li><i class="arrow-icon"></i><a href="#">Авио</a></li> 
+							<!--  	<li><i class="arrow-icon"></i><a href="#">Авио</a></li> 
 								<li class="active"><i class="arrow-icon"></i><a href="#">Internet</a> 
-									<ul> 
+									<ul> -->
 										<?php require('blog_left_tree.tpl.php'); ?>
-										<li class="active"><a href="#">AUDI</a> (8)</li> 
+								<!--  		<li class="active"><a href="#">AUDI</a> (8)</li> 
 										<li><a href="#">Acura</a> (3)</li> 
 										<li><a href="#">BMW</a> (25)</li> 
 										<li><a href="#">Chrysler</a> (14)</li> 
@@ -133,7 +133,7 @@
 										<li><a href="#">Chrysler</a> (14)</li> 
 										<li><a href="#">Citroen</a> (28)</li> 
 										<li><a href="#" class="all-sections script-link"><span class="t">Все разделы</span></a> (57)</li> 
-									</ul> 
+									</ul>  -->
 								</li> 
 							</ul> 
 						</div> 
