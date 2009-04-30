@@ -162,6 +162,8 @@ class QuestionAnswerController extends SiteController {
 		$request = Project::getRequest();
 		$data = array();
 		$question_model = new QuestionModel();
+		$question_cat_model = new QuestionCatModel();
+		$data['question_cat_list'] = $question_cat_model->loadAll();		
 		$id = (int)$request->getKeyByNumber(0);
 		if(!$request->submit) {
 			
@@ -178,7 +180,8 @@ class QuestionAnswerController extends SiteController {
 			}
 			$data['question_cat'] = $question_cat_model->loadAll();
 			$this->BaseSiteData($data);
-			$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(false, false, false, false, true));
+			$this -> _view -> assign('tab_list', TabController::getOwnTabs(false,false,false,false,false,false,true,false,false,false));
+			//$this->_view->assign('tab_list', TabController::getQuestionAnswerTabs(false, false, false, false, true));
 			$this->_view->ManagedQuestion($data);
 			$this->_view->parse();
 		} else {
