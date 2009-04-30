@@ -219,6 +219,9 @@ class HomeView extends BaseSiteView{
     
     // PAGE
 	function Home(){
+		 $this->_js_files[]='jquery-ui.min.js';
+		 $this->_js_files[]='jquery.easywidgets.min.js';
+		 $this->_js_files[]='widgets.js';		
 	    $this->_js_files[]='blockUI.js';
 	  //  $this->_js_files[] = 'jquery-ui.js';
 	    $this->_js_files[]='ajax.js';
@@ -227,6 +230,9 @@ class HomeView extends BaseSiteView{
 		$this -> setTemplate(null, 'home.tpl.php');
 	}
 	function HomeBlank(){
+		 $this->_js_files[]='jquery-ui.min.js';
+		 $this->_js_files[]='jquery.easywidgets.min.js';
+		 $this->_js_files[]='widgets.js';
 	    $this->_js_files[]='blockUI.js';
 	  //  $this->_js_files[] = 'jquery-ui.js';
 	    $this->_js_files[]='ajax.js';

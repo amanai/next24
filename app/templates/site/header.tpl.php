@@ -5,16 +5,8 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />		
-		<link href="<?=$this->getBothCJ($this -> _css_files,'css');?>" type="text/css" rel="StyleSheet"/>
-		<script type="text/javascript" src="http://next24.ru/app/js/jquery.min.js"></script>
-		<script type="text/javascript" src="http://next24.ru/app/js/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="http://next24.ru/app/js/jquery.easywidgets.min.js"></script>
-		<script type="text/javascript" src="http://next24.home/app/js/dropdown.js"></script>
-		<?php $request = Project::getRequest(); ?>
-		<?php $currentController = $request->getCurrentControllerName(); ?>
-		<? if ($currentController!='Index') {?>
-			<script type="text/javascript" src="<?=$this->getBothCJ($this -> _js_files,'js');?>"></script>	
-		<? } ?>			
+		<link href="<?=$this->getBothCJ($this -> _css_files,'css');?>" type="text/css" rel="StyleSheet"/>		
+		<script type="text/javascript" src="<?=$this->getBothCJ($this -> _js_files,'js');?>"></script>			
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		<link id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
 		<!--[if lte IE 7]><link type="text/css" rel="stylesheet" href="/app/css/ie.css"  media="screen" /><![endif]-->
