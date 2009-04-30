@@ -34,15 +34,17 @@
 									<?php echo $item['small_text']; ?>
 								</div>
 								<!-- /post-content -->
+								<?php if($item['tag_name']) { ?>
 								<div class="tag-list">
-									<?php echo $item['tag_name']; ?>
 									<i class="icon tags-list-icon"></i>
 									<ul>
 										<li><a href="#" rel="tag">apple</a>,</li>
 										<li><a href="#" rel="tag">mac</a>,</li>
 										<li><a href="#" rel="tag">pc</a></li>
 									</ul>
+									<?php echo $item['tag_name']; ?>
 								</div>
+								<? } ?>
 								<!-- /tag-list -->
 								<div class="post-meta"><div class="bg"><div class="bg clearfix">
 									<div class="rate">

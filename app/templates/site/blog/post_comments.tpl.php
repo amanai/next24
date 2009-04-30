@@ -46,15 +46,17 @@
 								<?php echo $this->full_text; ?>
 							</div> 
 							<!-- /post-content --> 
+							<?php if($this->post_tag) { ?>
 							<div class="tag-list"> 
-								<?php echo $this->post_tag; ?>
 								<i class="icon tags-list-icon"></i> 
 								<ul> 
 									<li><a href="#" rel="tag">apple</a>,</li> 
 									<li><a href="#" rel="tag">mac</a>,</li> 
 									<li><a href="#" rel="tag">pc</a></li> 
 								</ul> 
+								<?php echo $this->post_tag; ?>
 							</div> 
+							<? } ?>
 							<!-- /tag-list --> 
 							<div class="post-meta"><div class="bg"><div class="bg clearfix"> 
 								<div class="voting vote-positive"> 
