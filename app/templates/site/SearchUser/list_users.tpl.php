@@ -19,8 +19,16 @@
 	?>
 		<li class="it clearfix">
 			<dl>
+			<?php 
+				$userModel = new UserModel();
+				$user_default_avatar = $userModel->getUserAvatar($item['id']);
+			?>
+			<?php $avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path']; 
+	    		if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no90.jpg';
+	    		else $avator_path = $this->image_url.'avatar/'.$avator_path;													
+			?>			
 				<dt><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>" class="with-icon-s"><i class="icon-s <?=$online_offline; ?>"></i><?=$item['first_name']; ?> <?=$item['last_name']; ?></a> [ <a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>"><?=$item['login']; ?></a> ]</dt>
-				<dd class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>"><img class="avatar" src="<?=$this->image_url.'avatar/no90.jpg';?>" alt="" /></a></dd>
+				<dd class="av"><a href="<?=$request->createUrl('Index','Index', null, $item['login']);?>"><img class="avatar" alt="<?php echo $user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></a></dd>
 				<dd>
 					<? if ($item['country_name'] != '') { echo $item['country_name'].','; } ?>
 					<?=$item['city_name'];?>, 

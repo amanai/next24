@@ -36,6 +36,7 @@
 								</div>
 								<a href="<?=$this->bookmark_row['url'];?>" title="<?=$this->bookmark_row['url'];?>" target="_blank"><?=$this->bookmark_row['url_cut'];?></a>
 							</div>
+							<br />
 							<?=$this->bookmark_row['description'];?>
 						</div>
 						<!-- /blog-post -->
