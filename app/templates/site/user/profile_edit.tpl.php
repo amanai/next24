@@ -51,6 +51,7 @@
 						<?=$this -> flash_messages; ?>
 							<fieldset class="alt"> 
 								<h2>Обязательные данные <i class="arrow-icon up-arrow"></i></h2> 
+								<div class="profile-data-filed">
 								<p class="field-help main-field-help"><span>Логин 
 									<strong><?=$this -> helper -> login;?></strong>							
 								</span> Чтобы изменить логин - обратитесь в <a href="#">службу поддержки</a></p> 
@@ -75,10 +76,11 @@
 									</li> 
 									<li class="field-help"><div>Если хотите изменить пароль - заполните эти поля. В обратном случае осавьте эти поля пустыми.<br />Пароль может содержать латинские буквы, цифры и спецсимволы и должен быть не короче 6 символов.</div></li> 								
 								</ul> 
-								
+								</div>
 							</fieldset> 
 							<fieldset class="alt"> 
 								<h2>Основная информация о себе <span class="more-inf">(+15 баллов рейтинга максимально, +1.5 NextMoney максимально)</span> <i class="arrow-icon up-arrow"></i></h2> 
+								<div class="profile-data-filed">
 								<ul class="clearfix"> 
 									<li class="field-it fl-l"> 
 										<div class="label"><label for="f4">Фамилия</label></div> 
@@ -230,9 +232,11 @@
 										</div> 
 									</li> 
 								</ul> 
+								</div>
 							</fieldset> 
 							<fieldset class="alt"> 						
 								<h2>Дополнительная информация о себе <span class="more-inf">(+4 балла рейтинга максимально, +1.5 NextMoney максимально)</span> <i class="arrow-icon up-arrow"></i></h2> 
+								<div class="profile-data-filed">
 								<ul class="clearfix"> 
 									<li class="field-it"> 
 										<div class="label"><label for="f21">О себе</label></div> 
@@ -265,6 +269,7 @@
 										</div> 
 									</li> 									
 								</ul> 
+								</div>
 							</fieldset> 
 							<div class="button">
 							<input type="submit" name="register" value="Сохранить профиль" /></div> 

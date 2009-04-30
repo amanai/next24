@@ -40,4 +40,14 @@ if($("a.frind-list-dropdown")) {
 		}
 	}); 	
 }
+if($("fieldset.alt")) {
+	$("i.up-arrow").click(function () {
+		if($(this).parent().parent().children("div.profile-data-filed").is(":hidden")) {
+			$(this).parent().parent().children("div.profile-data-filed").slideDown("slow");
+		}
+		else {
+			$(this).parent().parent().children("div.profile-data-filed").slideUp("slow");
+		}
+	}); 	
+}
 });	
