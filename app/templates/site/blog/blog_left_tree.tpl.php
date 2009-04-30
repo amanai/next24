@@ -8,7 +8,7 @@
 		<? // $item['level'];?>
 			<li>
 				<?php if ($this->blog_owner) {?>
-					<a class="with-icon-s" style="margin-bottom:10px; padding-right:0;margin-right:0;" href="<?php echo $this->createUrl('Blog', 'EditBranch', array($item['id']));?>"><i class="icon-s write-s-icon"></i></a>
+				<i class="arrow-icon"></i>	<a class="with-icon-s" style="margin-bottom:10px; padding-right:0;margin-right:0;" href="<?php echo $this->createUrl('Blog', 'EditBranch', array($item['id']));?>"><i class="icon-s write-s-icon"></i></a>
 				<?php }else{?>
 		 			<a href="<?php echo $this->createUrl('Blog', 'DoSubscribe', array("tree_id"=>$item['id'])); ?>" id="micro">
 				<?php if ($item['subscribe_id']){

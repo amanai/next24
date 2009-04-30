@@ -45,7 +45,11 @@
 						<?php } ?>						
 							<ul class="nav-list">
 							<?php foreach($this->photo_list as $key => $item){ ?>
-								<li><i class="arrow-icon"></i><a href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>"><?php echo $item['name'];?></a></li>
+								<li><i class="arrow-icon"></i><a href="<?php echo PhotoController::getPhotoUrl($item['id'], $item['login']);?>">				
+								<?php 
+									if(trim($item['name']))echo $item['name'];
+									else echo 'Без названия'; ?></a>
+								</li>
 							<? } ?>
 							</ul>
 						</div>

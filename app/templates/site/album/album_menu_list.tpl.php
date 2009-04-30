@@ -8,7 +8,9 @@
 			</a>
 			<?php }?>
 			<a <?php if ($this -> album_owner) {echo 'style="margin-left: 17px;"';}?> href="<?php echo PhotoController::getAlbumUrl($item['id'], $item['login']);?>">	
-				<?php echo $item['name'];?>
+				<?php 
+				if(trim($item['name']))echo $item['name'];
+				else echo 'Без названия'; ?>
 			</a>	
 		</li>
 	<?php } else { ?>
@@ -19,7 +21,9 @@
 				<i class="icon-s write-s-icon"></i>
 			</a>	
 			<?php }?>
-			<?php echo $item['name'];?>
+				<?php 
+				if(trim($item['name']))echo $item['name'];
+				else echo 'Без названия'; ?>
 		</li>	
 	<? } ?>
 <?php } ?>		
