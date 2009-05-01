@@ -2,24 +2,24 @@
 class DebateView extends BaseSiteView{
 	protected $_dir = 'debate';
 	
-	public function showUserAvator($userAvator, $imgUrl){
-
-	    echo '<div class="debate_avator">';
-	    if ($userAvator){
+	public function showUserAvator($userAvator, $imgUrl, $debate_user_id = null, $debate_user_login = null){
+		echo '<div class="avatar">';
+		echo '<a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debate_user_login).'">';
+		if ($userAvator['path'] && $userAvator['path']!='no.png'){
 	       $src = ($userAvator['path'])?$imgUrl.'avatar/'.$userAvator['path']:$imgUrl.'avatar/'.$userAvator['sys_path'];
 	       echo '<img src="'.$src.'" />';
-	   }else{
-	       echo '<img src="'.$imgUrl.'avatar/no.png" />';
-	   }
-	   echo '
-	   </div>
-	   <div class="block_d_ld_icons">
-			<a href="#"><img height="16" width="16" src="'.$this -> image_url.'d_ld_ico1.png"/></a>
-			<a href="#"><img height="16" width="16" src="'.$this -> image_url.'d_ld_ico2.png"/></a>
-			<a href="#"><img height="16" width="16" src="'.$this -> image_url.'d_ld_ico3.png"/></a>
-	   </div>
-	   <br /><br />	 
-	   ';
+	   	}else{
+	       echo '<img src="'.$imgUrl.'avatar/no90.jpg" />';
+	   	}
+	   	echo '<span class="member-name">'.$debate_user_login.'</span>';
+	   	echo '</a>';
+		echo '</div>'; 
+		echo '<ul class="controll clearfix"> 
+				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debate_user_login).'" title="Написать сообщение"><i class="icon mail-icon"></i></a></li> 
+				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debate_user_login).'" title="Статьи"><i class="icon mbook-icon"></i></a></li> 
+				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debate_user_login).'" title="Добавить"><i class="icon adduser-icon"></i></a></li> 
+				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debate_user_login).'" title="Комментарии"><i class="icon mcomm-icon"></i></a></li> 
+			</ul>'; 
 	}
 	
 	public function showQuestionAvator(){
@@ -161,10 +161,12 @@ class DebateView extends BaseSiteView{
 	}
 	
 	public function showTimer(){
-	    echo '
+		echo '<div class="time debati_time">Осталось <span id="timeLeft" class=""></span></div>';
+	 /*   echo '
 	    <div class="debati_time">
 	       Осталось <span id="timeLeft" class=""></span>
-        </div>';
+        </div>'; */
+		//<div class="time">Осталось <span>30</span> мин. <span>24</span> сек.</div>
 	}
 	
 
@@ -177,7 +179,6 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
-	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_theme_proposal.tpl.php');
 	}
 	
@@ -186,7 +187,6 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
-	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_vote_theme.tpl.php');
 	}
 	
@@ -195,7 +195,6 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
-	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_choose_second_user.tpl.php');
 	}
 	
@@ -204,7 +203,6 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
-	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_choose_helpers.tpl.php');
 	}
 	
@@ -213,7 +211,6 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
-	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_get_stakes.tpl.php');
 	}
 	
@@ -222,7 +219,6 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
-	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_chat.tpl.php');
 	}
 	
@@ -231,20 +227,17 @@ class DebateView extends BaseSiteView{
 	    $this->_js_files[]='blockUI.js';
 	    $this->_js_files[]='ajax.js';
 	    $this->_js_files[] = 'debate.js';
-	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_result.tpl.php');
 	}
 	
 	
 	function RulesPage(){
 	    //$this->_js_files[] = 'debate.js';
-	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_rules.tpl.php');
 	}
 	
 	function HistoryPage(){
 	    //$this->_js_files[] = 'debate.js';
-	    $this->_css_files[]='debate.css';
 	    $this -> setTemplate(null, 'debate_history.tpl.php');
 	}
 	
@@ -277,14 +270,17 @@ class DebateView extends BaseSiteView{
 	    $response = Project::getAjaxResponse();
         $lastThemeId = $message['lastThemeId'];
         $aNewThemes = $debateModel->getNewThemeById($lastThemeId);
-        
+ 		$userModel = new UserModel();	       
         foreach ($aNewThemes as $newTheme){
+			$user_default_avatar = $userModel->getUserAvatar($newTheme['user_id']);
+			$avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path']; 
+	    	if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no25.jpg';
+	    	else $avator_path = $this->image_url.'avatar/'.$avator_path;        	
             if ($message['isAdmin'] || $message['user_id'] == $newTheme['user_id']) {$delTheme = '<a href="'.Project::getRequest()->createUrl('Debate', 'DebateDelTheme').'/theme_id:'.$newTheme['debate_theme_id'].'" class="red">Удалить</a> ';} else $delTheme='';
-            $strTr = '
-                <tr id="cmod_tab2">
-        			<td style="text-align: left;">'.$delTheme.$newTheme['debate_theme_theme'].'</td>
-        			<td><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $newTheme['login']).'">'.$newTheme['login'].'</a></td>
-        		</tr>';
+			$strTr = '<tr>
+        				<td class="qv"><a href="#">'.$delTheme.$newTheme['debate_theme_theme'].'</a></td>
+        				<td class="av"><a class="avatar-link" href="'.Project::getRequest()->createUrl('User', 'Profile', null, $newTheme['login']).'"><img src="'.$avator_path.'" alt="" class="avatar" style="width:25px;height:25px;"/><span class="t">'.$newTheme['login'].'</span></a></td>
+        			  </tr>';
             $response -> append('themeTable', $strTr);
         }
 	}
@@ -295,31 +291,36 @@ class DebateView extends BaseSiteView{
         $lastThemeId = $message['lastThemeId'];
         $aThemes = $debateModel->getAllThemes("debate_theme.votes DESC");
         $isVoted = $debateModel->getThemeVoteByUserId($message['user_id']);
-        
-        $strTable = '
-        <table class="questions">
-		<tr>
-			<td style="text-align: left;"> <b>Тема</b></td>
-			<td> <b>Предложил</b></td>
-			<td> <b>Голосов</b></td>
-			<td> <b>Действия</b></td>
-		</tr>
-        ';
+        $strTable = '<table class="stat-table questions">
+						<thead>
+							<tr>
+								<th class="main-row">Тема</th>
+								<th>Предложил</th>
+								<th>Голосов</th>
+								<th>Действия</th>
+							</tr>
+						</thead>
+						<tbody>';
+        $userModel = new UserModel();       
         foreach ($aThemes as $theme){
             if ($message['user_id'] && !$isVoted && $message['user_id'] != $theme['user_id']){
-                $vote = '<a href="javascript: void(0);" onclick="vote_theme('.$theme['debate_theme_id'].', \'theme\');">голосовать</a>';
+                $vote = '<i class="big-icon vote-en-icon"></i><a href="javascript: void(0);" onclick="vote_theme('.$theme['debate_theme_id'].', \'theme\');">голосовать</a>';
             } 
-            else $vote='-';
-            $strTable .= '
-        		<tr id="cmod_tab2">
-        			<td style="text-align: left;">'.$theme['debate_theme_theme'].'</td>
-        			<td><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $theme['login']).'">'.$theme['login'].'</a></td>
-        			<td>'.(int)$theme['debate_theme_votes'].'</td>
-        			<td>'.$vote.'</td>
-        		</tr>
-		      ';
+            elseif ($message['user_id'] == $theme['user_id']) $vote='<span class="my-vote"><i class="big-icon vote-my-icon"></i>моя тема</span>';
+            else $vote='<span><i class="big-icon vote-ds-icon"></i>голос принят</span>';
+			$user_default_avatar = $userModel->getUserAvatar($theme['user_id']);
+			$avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path']; 
+	    	if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no25.jpg';
+	    	else $avator_path = $this->image_url.'avatar/'.$avator_path;             
+            $strTable .= '<tr>
+        					<td class="qv"><a href="#">'.$theme['debate_theme_theme'].'</a></td>
+        					<td class="av"><a class="avatar-link" href="'.Project::getRequest()->createUrl('User', 'Profile', null, $theme['login']).'"><img src="'.$avator_path.'" alt="" class="avatar" style="width:25px;height:25px;" /><span class="t">'.$theme['login'].'</span></a></td>
+        					<td class="an">'.(int)$theme['debate_theme_votes'].'</td>
+        					<td class="act">'.$vote.'</td>
+        				</tr>';
         }
-        $strTable .= '</table>';
+        $strTable .= '</tbody>
+        			</table>';
         $response -> block('themeDivTable', true, $strTable);
 	}
 	
@@ -338,6 +339,14 @@ class DebateView extends BaseSiteView{
 	             $response -> show('stake_amount');
 	         }
 	    } 
+	    $response -> block('stake_btn', '<tr class="place last"> 
+												<th></th> 
+													<td class="vl"> 
+														<div class="status"> 
+															<span class="st-ok"><i class="big-icon ok-icon"></i>Ставка сделана!</span> 
+														</div> 
+													</td> 
+												</tr>');
         $response -> block('stakeUserInfo', true, $strTable);
         $response -> block('stakeAmount', true, $message['stake_amount'].' nm');
 	}

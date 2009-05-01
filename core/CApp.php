@@ -45,7 +45,7 @@ class CApp {
 			$controller = new $controller_class;
 			$controller -> init($autorize -> getController(), $autorize -> getAction());
 			$action_function = $autorize -> getAction() -> name . 'Action';
-			setcookie('PHPSESSID',session_id(),null,null,Project::getUser() -> getDbUser() -> login.'.next24.home');
+			setcookie('PHPSESSID',session_id(),null,null,Project::getUser() -> getDbUser() -> login.'.next24.ru');
 			
 			$controller -> $action_function();
 			$this -> _request_complete = true;

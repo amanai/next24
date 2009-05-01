@@ -12,7 +12,6 @@
 							<input type="hidden" name="currEtap" id="currEtap" value="GetTheme" />
 							<input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 							<?php $this->showTimer(); ?>
-							<div class="time">Осталось <span>30</span> мин. <span>24</span> сек.</div>
 						</div>
 						<p>Вы можете предложить свою тему для дебатов. Если ваша тема победит, при последующем голосовании вы станете учасником дебатов.</p>
 						<p><span class="alert">ВНИМАНИЕ!</span> Если вы уверены, что сможете учавствовать в дебатах, то не стоит отправлять тему на конкурс. Прочитайте сначала <a href="<?php echo $this->createUrl('Debate', 'DebateRules') ?>">правила дебатов</a></p>
@@ -20,7 +19,7 @@
 						<form class="add-theme" action="#" method="get"><div class="bg"><div class="bg">
 							<table>
 								<tr>
-									<td class="input-field"><input type="text" name="theme" id="theme" value="Наклацайте название темы, котрую вы хотите предложить в этом поле" /></td>
+									<td class="input-field"><input type="text" name="theme" id="theme" value="Наберите название темы, котрую вы хотите предложить в этом поле" /></td>
 									<td class="input-button"><input type="button" name="addTheme" onclick="javascript:add_theme('theme');" value="Предожить свою тему" /></td>
 								</tr>
 							</table>
@@ -31,22 +30,27 @@
 					<h1><span>Тема дебатов:</span> ?</h1>
 					<div class="d-wrap clearfix">
 						<div class="d-content"><div class="inn">
-							<table class="stat-table" id="themeTable">
+							<table class="stat-table">
 								<thead>
 									<tr>
 										<th>Тема</th>
 										<th>Предложил</th>
 									</tr>
 								</thead>
-								<tbody>
-        						<?php $i=1; foreach ($this->aThemes as $theme){
+								<tbody id="themeTable">
+        						<?php $i=1; foreach ($this->aThemes as $theme){	
             						//if ($i/2 == 1){$tr_id = ""; $i=1;} else {$tr_id = "cmod_tab2"; $i++;}
             						$tr_id = "cmod_tab2";
             						if ($this->isAdmin || $this->user_id == $theme['user_id']) {$delTheme = '<a href="'.$this->createUrl('Debate', 'DebateDelTheme').'/theme_id:'.$theme['debate_theme_id'].'" class="red">Удалить</a> ';} else $delTheme='';
+										$userModel = new UserModel();
+										$user_default_avatar = $userModel->getUserAvatar($theme['user_id']);
+										$avator_path = ($user_default_avatar['sys_av_id'])?$user_default_avatar['sys_path']:$user_default_avatar['path']; 
+	    								if(!$avator_path || $avator_path == 'no.png') $avator_path = $this->image_url.'avatar/no25.jpg';
+	    								else $avator_path = $this->image_url.'avatar/'.$avator_path;					
            							echo '
         								<tr id="'.$tr_id.'">
         									<td class="qv"><a href="#">'.$delTheme.$theme['debate_theme_theme'].'</a></td>
-        									<td class="av"><a class="avatar-link" href="'.$this->createUrl('User', 'Profile', null, $theme['login']).'"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">'.$theme['login'].'</span></a></td>
+        									<td class="av"><a class="avatar-link" href="'.$this->createUrl('User', 'Profile', null, $theme['login']).'"><img src="'.$avator_path.'" alt="" class="avatar" style="width:25px;height:25px;"/><span class="t">'.$theme['login'].'</span></a></td>
         								</tr>';
         						} ?>									
 								</tbody>

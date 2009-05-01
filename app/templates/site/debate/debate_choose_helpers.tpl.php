@@ -10,7 +10,6 @@
 						<div class="title clearfix"> 
 							<div class="stage">Этап <strong>4</strong> из 7. Выбор помошников</div> 
 							<?php $this->showTimer(); ?>
-							<div class="time">Осталось <span>30</span> мин. <span>24</span> сек.</div> 
 						</div> 
 						<?php 
 							if ($this->isDebateUser){ 

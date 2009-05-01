@@ -348,8 +348,9 @@ class NewsView extends BaseSiteView{
         $countNews = count($aNews);
         if ($newsViewType == 'report'){ // report news list
         	if ($countNews > 0){
-        		$countNews --;
+        	//	$countNews --;
         	}
+        	if($countNews!=1) {
         	$nRows = ($countNews>3)?3:$countNews;
         	$htmlNewsListPreview .= '<ul class="short-view">';
             	for($i=1; $i<$nRows+1; $i++){
@@ -370,6 +371,7 @@ class NewsView extends BaseSiteView{
             		$htmlNewsListPreview .= '</li>';
             	}        		
         	$htmlNewsListPreview .= '</ul>';
+        	}
         	if ($countNews > 0){
         		$news = array_shift($aNews);
         	    if ($news['favorite_news_id']) {

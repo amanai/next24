@@ -748,7 +748,6 @@ if($user->id) {
     	    $user2 = $userModel->getUserById($debateNow['user_id_2']);
     	    $message['user2'] = $user2;
     	    $message['stake_amount'] = $debateNow['stake_amount'];
-    	    
     	    $this -> _view -> returnStakeSecondUser($message);
         	$this -> _view -> ajax();
 		}

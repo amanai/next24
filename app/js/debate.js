@@ -23,13 +23,16 @@ function vote_theme(theme_id, subject){
 function doStakeSecondUser(){
     var doStakeBtn = document.getElementById('doStakeBtn');
     var stakeAmount = document.getElementById('stake_amount');
+    var stakeAmountDone = document.getElementById('stakeAmount');
     if (doStakeBtn && stakeAmount && stakeAmount.value){
         ajax(
             {"url":"\/debate","type":"POST","async":true,"data":{"stake_amount":stakeAmount.value, "doStake":1},"dataType":"json"}, 
             true);
         stakeAmount.value = "";
-        $("#doStakeBtn").hide();
-        $("#stake_amount").hide();
+        stakeAmountDone.value = stakeAmount.value;
+      //  $("#doStakeBtn").hide();
+      //  $("#stake_amount").hide();
+        $("#stake_btn").html('<th></th><td class="vl"><div class="status"><span class="st-ok"><i class="big-icon ok-icon"></i>Ставка сделана!</span></div></td>');
         return true;
     }else{
         return false;
