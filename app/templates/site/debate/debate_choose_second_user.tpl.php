@@ -47,7 +47,7 @@
 			     								echo (int)$currentUser['nextmoney']." nm";
 			     							?>	
 			     							</span>	
-			     							<?if(intval($currentUser['nextmoney'])==0) { ?>								
+			     							<?if(abs($currentUser['nextmoney'])==0) { ?>								
 												<span class="alert">У вас не достаточно средств на счету. <a href="#">Пополнить</a></span>
 											<? } ?>	 
 										</td> 

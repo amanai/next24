@@ -29,10 +29,10 @@ function doStakeSecondUser(){
             {"url":"\/debate","type":"POST","async":true,"data":{"stake_amount":stakeAmount.value, "doStake":1},"dataType":"json"}, 
             true);
         stakeAmount.value = "";
-        stakeAmountDone.value = stakeAmount.value;
-      //  $("#doStakeBtn").hide();
-      //  $("#stake_amount").hide();
-        $("#stake_btn").html('<th></th><td class="vl"><div class="status"><span class="st-ok"><i class="big-icon ok-icon"></i>Ставка сделана!</span></div></td>');
+        //stakeAmountDone.value = stakeAmount.value;
+        $("#doStakeBtn").hide();
+        $("#stake_amount").hide();
+      //  $("#stake_btn").html('<th></th><td class="vl"><div class="status"><span class="st-ok"><i class="big-icon ok-icon"></i>Ставка сделана!</span></div></td>');
         return true;
     }else{
         return false;
