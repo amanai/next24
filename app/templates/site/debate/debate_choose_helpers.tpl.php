@@ -86,44 +86,63 @@
 								<li><strong>3</strong></li> 
 								<li><a href="#">4</a></li> 
 							</ul> 
-						</div></div> 
+						</div> 
 						<!-- /d-content --> 
 						<div class="member-info l-side"> 
 	   					<?php $this->showUserAvator($this->user1_avatar, $this -> image_url); ?>
-	   					
-	   					
-	   					<div id="helpersList1">
+	   					<dl id="helpersList1">
+	   						<dt>Помощники</dt> 
+	   						<?php if ($this->helper1_1) {?>
+	   							<dd><a href="<?=$this->createUrl('User', 'Profile', null, $this->helper1_1['login']); ?>"><?=$this->helper1_1['login']; ?></a></dd> 
+	   						<? } else { ?>
+	   							<dd>?</dd>
+	   						<? } ?>
+	   						<?php if ($this->helper1_2){ ?>
+	   							<dd><a href="<?=$this->createUrl('User', 'Profile', null, $this->helper1_2['login']);?>"><?=$this->helper1_2['login'];?></a></dd> 
+	   						<? } else { ?>
+	   							<dd>?</dd>
+	   						<? } ?>
+	   					</dl>	
 	   					<?php 
-	   						if ($this->helper1_1){
-	       						echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_1['login']).'">'.$this->helper1_1['login'].'</a></p>'; 
-	   						}else echo '<p>&nbsp;</p>';
-	   						if ($this->helper1_2){
-	       						echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_2['login']).'">'.$this->helper1_2['login'].'</a></p>'; 
-	   						}else echo '<p>&nbsp;</p>';
-	   					?>
-	   					
-	   					
-	   					</div>	   					
-							<dl> 
-								<dt>Помощники</dt> 
-								<dd><a href="#">fedor</a></dd> 
-								<dd>?</dd> 
-							</dl> 
+	   					//<div id="helpersList1">
+	   					//	if ($this->helper1_1){
+	       				//		echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_1['login']).'">'.$this->helper1_1['login'].'</a></p>'; 
+	   					//	}else echo '<p>&nbsp;</p>';
+	   					//	if ($this->helper1_2){
+	       				//		echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper1_2['login']).'">'.$this->helper1_2['login'].'</a></p>'; 
+	   					//	}else echo '<p>&nbsp;</p>';
+	   						//</div>
+	   					?>	   					
 						</div> 
 						<div class="member-info r-side"> 
 	   					<?php $this->showUserAvator($this->user2_avatar, $this -> image_url); ?>
+
+	   					<dl id="helpersList2">
+	   						<dt>Помощники</dt> 
+	   						<?php if ($this->helper2_1) {?>
+	   							<dd><a href="<?=$this->createUrl('User', 'Profile', null, $this->helper2_1['login']); ?>"><?=$this->helper2_1['login']; ?></a></dd> 
+	   						<? } else { ?>
+	   							<dd>?</dd>
+	   						<? } ?>
+	   						<?php if ($this->helper2_2){ ?>
+	   							<dd><a href="<?=$this->createUrl('User', 'Profile', null, $this->helper2_2['login']);?>"><?=$this->helper2_2['login'];?></a></dd> 
+	   						<? } else { ?>
+	   							<dd>?</dd>
+	   						<? } ?>
+	   					</dl>		   					
 	   					
 	   					
-	   					<div id="helpersList2">
 	   					<?php 
-	   						if ($this->helper2_1){
-	       						echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_1['login']).'">'.$this->helper2_1['login'].'</a></p>'; 
-	   						}else echo '<p>&nbsp;</p>';
-	   						if ($this->helper2_2){
-	       						echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_2['login']).'">'.$this->helper2_2['login'].'</a></p>'; 
-	  						}else echo '<p>&nbsp;</p>';
+	   					//<div id="helpersList2">
+	   					//	if ($this->helper2_1){
+	       				//		echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_1['login']).'">'.$this->helper2_1['login'].'</a></p>'; 
+	   					//	}else echo '<p>&nbsp;</p>';
+	   					//	if ($this->helper2_2){
+	       				//		echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_2['login']).'">'.$this->helper2_2['login'].'</a></p>'; 
+	  					//	}else echo '<p>&nbsp;</p>';
+	  					//</div>	
 	   					?>
-	   					</div>	   					
+	   						   					
 							<dl> 
 								<dt>Помощники</dt> 
 								<dd><a href="#">madvic</a></dd> 
@@ -131,9 +150,7 @@
 							</dl> 
 						</div> 
 					</div> 
-					<!-- /d-wrap --> 
-					
-					
+					<!-- /d-wrap --> 				
 				</div> 
 				<!-- /debate-page --> 
 <!-- /Главный блок, с вкладками (Контент) -->

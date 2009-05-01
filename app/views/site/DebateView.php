@@ -2,23 +2,24 @@
 class DebateView extends BaseSiteView{
 	protected $_dir = 'debate';
 	
-	public function showUserAvator($userAvator, $imgUrl, $debate_user_id = null, $debate_user_login = null){
+	public function showUserAvator($userAvator, $imgUrl){
+		$user = Project::getUser()->getDbUser()->getUserById($userAvator['user_id']);
 		echo '<div class="avatar">';
-		echo '<a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debate_user_login).'">';
+		echo '<a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $user['login']).'">';
 		if ($userAvator['path'] && $userAvator['path']!='no.png'){
 	       $src = ($userAvator['path'])?$imgUrl.'avatar/'.$userAvator['path']:$imgUrl.'avatar/'.$userAvator['sys_path'];
 	       echo '<img src="'.$src.'" />';
 	   	}else{
 	       echo '<img src="'.$imgUrl.'avatar/no90.jpg" />';
 	   	}
-	   	echo '<span class="member-name">'.$debate_user_login.'</span>';
+	   	echo '<span class="member-name">'.$user['login'].'</span>';
 	   	echo '</a>';
 		echo '</div>'; 
 		echo '<ul class="controll clearfix"> 
-				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debate_user_login).'" title="Написать сообщение"><i class="icon mail-icon"></i></a></li> 
-				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debate_user_login).'" title="Статьи"><i class="icon mbook-icon"></i></a></li> 
-				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debate_user_login).'" title="Добавить"><i class="icon adduser-icon"></i></a></li> 
-				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debate_user_login).'" title="Комментарии"><i class="icon mcomm-icon"></i></a></li> 
+				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $user['login']).'" title="Написать сообщение"><i class="icon mail-icon"></i></a></li> 
+				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $user['login']).'" title="Статьи"><i class="icon mbook-icon"></i></a></li> 
+				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $user['login']).'" title="Добавить"><i class="icon adduser-icon"></i></a></li> 
+				<li><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $user['login']).'" title="Комментарии"><i class="icon mcomm-icon"></i></a></li> 
 			</ul>'; 
 	}
 	

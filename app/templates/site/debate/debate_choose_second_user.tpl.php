@@ -90,7 +90,7 @@
 						</div></div> 
 						<!-- /d-content --> 
 						<div class="member-info l-side"> 
-	   						<?php $this->showUserAvator($this->user1_avatar, $this -> image_url, $this->debateUser1['id'], $this->debateUser1['login']); ?>
+	   						<?php $this->showUserAvator($this->user1_avatar, $this -> image_url); ?>
 						</div> 
 						<div class="member-info r-side"> 
 							<div class="avatar">
