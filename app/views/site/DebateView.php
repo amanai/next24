@@ -93,8 +93,8 @@ class DebateView extends BaseSiteView{
 	
 	public function showHelpersChat(){
 		echo '<h2>Чат с помошниками</h2> 
-				<div class="chat-entry ChatMessagesB_helpers" id="chat_messages_helpers"> 
-					<ul> 
+				<div class="chat-entry"> 
+					<ul class="ChatMessagesB_helpers" id="chat_messages_helpers"> 
 						<li class="clearfix"> 
 							<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
 							<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
@@ -132,8 +132,8 @@ class DebateView extends BaseSiteView{
 	
 	public function showUsersChat(){
 		echo '<h2>Чат пользоваелей</h2> 
-				<div class="chat-entry ChatMessagesB_helpers" id="chat_messages_users"> 
-					<ul> 
+				<div class="chat-entry"> 
+					<ul class="ChatMessagesB_helpers" id="chat_messages_users"> 
 						<li class="clearfix"> 
 							<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
 							<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 

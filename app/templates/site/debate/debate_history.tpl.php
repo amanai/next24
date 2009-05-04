@@ -1,20 +1,28 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
-<!-- Главный блок, с вкладками (Контент) -->
-	<div class="debate-page">
-		<input type="hidden" name="currEtap" id="currEtap" value="Results" />
-		<input type="hidden" name="refreshNow" id="refreshNow" value="0" />				
-		<ul class="view-filter clearfix">
-			<?php include($this -> _include('../tab_panel.tpl.php')); ?>
-		</ul>
-		<table  class="questions">
-			<tr>
-	   			<td><b>Время начала</b></td>
-	  			<td><b>Тема</b></td>
-	   			<td><b>1-й участник</b><br/>[помощники]</td>
-	   			<td><b>Количество голосов</b></td>
-	   			<td><b>2-й участник</b><br/>[помощники]</td>
-	   			<td><b>Количество голосов</b></td>
-			</tr>
+				<div class="debate-page"> 
+					<ul class="view-filter clearfix"> 
+						<?php include($this -> _include('../tab_panel.tpl.php')); ?>
+					</ul> 
+					<!-- /view-filter --> 
+					<div class="d-head"> 
+						<input type="hidden" name="currEtap" id="currEtap" value="Results" />
+						<input type="hidden" name="refreshNow" id="refreshNow" value="0" />	
+					</div> 
+					<!-- /d-head --> 
+					<div class="d-wrap clearfix"> 
+						<div class="d-content">
+						<table class="stat-table">
+							<thead>
+								<tr>
+									<th>Время начала</th>
+									<th>Тема</th>
+									<th>1-й участник<br/>[помощники]</th>
+									<th>Количество голосов</th>
+									<th>2-й участник<br/>[помощники]</th>
+									<th>Количество голосов</th>
+								</tr>
+							</thead>
+							<tbody>
 			<?php 
 			$userModel = new UserModel(); $i=1;
 			foreach ($this->aDebateHistory as $debateHistory){
@@ -45,7 +53,7 @@
 	         			}
 	    		echo ']
 	       			</td>
-	       			<td>'.$debateHistory['user1_vote'].'</td>
+	       			<td style="text-align:center;vertical-align:middle;">'.$debateHistory['user1_vote'].'</td>
 	       			<td>
 	           			<a href="'.$this->createUrl('User', 'Profile', null, $user2['login']).'">'.$user2['login'].'</a><br/>[';
 	         			if ($helper2_1){
@@ -62,13 +70,17 @@
 	         			}
 	    		echo ']
 	       			</td>
-	       			<td>'.$debateHistory['user2_vote'].'</td>
+	       			<td style="text-align:center;vertical-align:middle;">'.$debateHistory['user2_vote'].'</td>
 	    		</tr>';
-			} ?>	
-	</table>						
-	<ul class="short-pages-list">
-		<?php echo $this->debate_pager;  ?>
-	</ul>					
-</div>
+			} ?>								
+							</tbody>
+						</table>
+						<ul class="short-pages-list">
+							<?php echo $this->debate_pager;  ?>
+						</ul>							
+					</div></div> 
+					<!-- /end-view --> 
+				</div> 
+				<!-- /debate-page --> 
 <!-- /Главный блок, с вкладками (Контент) -->
 <?php include($this -> _include('../footer.tpl.php')); ?>
