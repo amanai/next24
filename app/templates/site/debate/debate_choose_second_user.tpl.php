@@ -44,10 +44,10 @@
 											<span class="nm no-nm"> 
 				     						<?php
 			    								 $currentUser = $this->currentUser;
-			     								echo (int)$currentUser['nextmoney']." nm";
+			     								echo $currentUser['nextmoney']." nm";
 			     							?>	
 			     							</span>	
-			     							<?if(abs($currentUser['nextmoney'])==0) { ?>								
+			     							<?if($currentUser['nextmoney']==0) { ?>								
 												<span class="alert">У вас не достаточно средств на счету. <a href="#">Пополнить</a></span>
 											<? } ?>	 
 										</td> 

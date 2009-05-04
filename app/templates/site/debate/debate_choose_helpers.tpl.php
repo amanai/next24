@@ -17,13 +17,13 @@
 					
 					
 					<?php 
-						if ($this->isDebateUser){ 
+				/*		if ($this->isDebateUser){ 
     						echo 'Вам необходимо выбрать себе 2-х помощников. Если вы не выберите себе помощников в течении отведенного времени, то они будут 
 									Назначены вам автоматически из числа изъявивших желание пользователей.';
 						}else{
     						echo 'Если вы хотите стать помощников одного из участников дебатов нажмите на кнопку «Я хочу быть помощником» с желаемым участником.
 							ВНИМАНИЕ. Перед тем, как нажимать на кнопку обязательно ознакомьтесь с обязанностями помощников.';
-						} ?>
+						} */ ?>
 					<br /><div id="brok"></div>		
 				
 								
@@ -31,9 +31,9 @@
 					<h1><span>Тема дебатов:</span> <?php echo $this->debateNow['theme']; ?></h1> 
 					<div class="d-wrap clearfix"> 
 						<div class="d-content">
+						<form name="frmCheckHelper" action="" method="post" id="centerTable">
 						<?php if ($this->isDebateUser){ ?>
 							<div class="inn clearfix"> 
-								<form name="frmCheckHelper" action="" method="post" id="centerTable">
 									<table class="stat-table">
 										<thead> 
 											<tr> 
@@ -61,7 +61,6 @@
 										}?>	
 									</tbody>
 								</table>
-							</form>
 						</div>															 						
 						<? } elseif ($this->user_id && !$this->helperTable){ ?>
 						<div class="inn"> 
@@ -80,12 +79,13 @@
 								<h2 class="status"><span class="st-ok" style="color:red;">Что бы принять участие в дебатах, необходимо <a href="<?=$this->createUrl('User', 'RegistrationForm');?>">зарегистрироваться</a></span></h2> 
 							</div>						
 						<? } ?>
-							<ul class="short-pages-list"> 
+					<!--  	<ul class="short-pages-list"> 
 								<li><a href="#">1</a></li> 
 								<li><a href="#">2</a></li> 
 								<li><strong>3</strong></li> 
 								<li><a href="#">4</a></li> 
-							</ul> 
+							</ul>   -->
+							</form>
 						</div> 
 						<!-- /d-content --> 
 						<div class="member-info l-side"> 
@@ -129,9 +129,7 @@
 	   						<? } else { ?>
 	   							<dd>?</dd>
 	   						<? } ?>
-	   					</dl>		   					
-	   					
-	   					
+	   					</dl>		   					   					
 	   					<?php 
 	   					//<div id="helpersList2">
 	   					//	if ($this->helper2_1){
@@ -141,13 +139,7 @@
 	       				//		echo '<p><a href="'.$this->createUrl('User', 'Profile', null, $this->helper2_2['login']).'">'.$this->helper2_2['login'].'</a></p>'; 
 	  					//	}else echo '<p>&nbsp;</p>';
 	  					//</div>	
-	   					?>
-	   						   					
-							<dl> 
-								<dt>Помощники</dt> 
-								<dd><a href="#">madvic</a></dd> 
-								<dd>?</dd> 
-							</dl> 
+	   					?>   						   					
 						</div> 
 					</div> 
 					<!-- /d-wrap --> 				

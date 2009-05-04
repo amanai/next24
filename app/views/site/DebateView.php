@@ -354,88 +354,181 @@ class DebateView extends BaseSiteView{
 	
 	function returnChooseHelpers($message){
 	    $response = Project::getAjaxResponse();
-	    $helperTable = $message['helperTable'];
-	    
+	    $helperTable = $message['helperTable'];    
 	    $isDebateUser = $message['isDebateUser'];
-	    $strTable = '<table  class="questions">';
 		if ($isDebateUser){
-		    $strTable .= '
-		      <tr>
-		          <td><b>Помощник</b></td>
-		          <td><b>Рейтинг</b></td>
-		          <td><b>Действия</b></td>
-		      </tr>
-		    ';
-		    foreach ($message['aDebateUserHelpers'] as $debateUserHelpers){
-		        $tr_id = "cmod_tab2";
-		        $strTable .= '
-		      <tr id="'.$tr_id.'">
-		          <td><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debateUserHelpers['login']).'">'.$debateUserHelpers['login'].'</a></td>
-		          <td>'.(int)$debateUserHelpers['rate'].'</td>
-		          <td>';
-		        if ($message['isDebateUserCanAddHelpers'] &&  
+			$strTable = '<div class="inn clearfix"> 
+									<table class="stat-table">
+										<thead> 
+											<tr> 
+												<th class="main-row">Помошник</th> 
+												<th>Голосов</th> 
+												<th>Действия</th> 
+											</tr> 
+										</thead>
+										<tbody>';
+			foreach ($message['aDebateUserHelpers'] as $debateUserHelpers){ 
+				$tr_id = "cmod_tab2";
+				$strTable .= '<tr id="'.$tr_id.'"> 
+								<td class="av"><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $debateUserHelpers['login']).'" class="avatar-link"><img src="assets/i/temp/avatar.s.jpg" alt="" class="avatar" /><span class="t">'.$debateUserHelpers['login'].'</span></a></td> 
+								<td class="an">'.(int)$debateUserHelpers['rate'].'</td>';
+				$strTable .= 	'<td class="act">';
+				if ($message['isDebateUserCanAddHelpers'] &&  
 		            $message['debateNow']['helper_id_'.$message['userNumber'].'_1'] != $debateUserHelpers['helper_id'] && 
 		            $message['debateNow']['helper_id_'.$message['userNumber'].'_2'] != $debateUserHelpers['helper_id'] ){ // т.е. не был еще выбран
-		            $strTable .= '<a href="'.Project::getRequest()->createUrl('Debate', 'Debate').'/check_helper:'.$debateUserHelpers['helper_id'].'">выбрать</a>';
+		            $strTable .= '<a href="'.Project::getRequest()->createUrl('Debate', 'Debate').'/check_helper:'.$debateUserHelpers['helper_id'].'"><i class="big-icon vote-en-icon"></i>Выбрать</a>';
 		        }else {
 		            $strTable .= '-';
 		        }
-		        $strTable .= '
-		          </td>
-		      </tr>
-		          ';
-		    }
-		}elseif ($message['user_id'] && !$helperTable){
-		    $strTable .= '
-    		<tr id="helper1tr">
-    			<td colspan="2"><div class="center"><input type="button" size=250 id="helper1btn" name="helper1" onclick="wantBeHelper(1);" value="Я хочу быть помощником участника '.$message['debateUser1']['login'].'" /></div></td>
-    		</tr><tr id="helper2tr">
-    			<td colspan="2"><div class="center"><input type="button" size=250 id="helper2dtn" name="helper2" onclick="wantBeHelper(2);" value="Я хочу быть помощником участника '.$message['debateUser2']['login'].'" /></div></td>
-    		</tr>
-		    ';
-		}elseif ($helperTable){
-		    $strTable .= '
-		    <tr>
-    			<td colspan="2"><div class="center" id=>Вы выбрали быть помощником у '.$helperTable['login'].'</div></td>
-    		</tr>
-		    ';
-		}elseif(!$message['user_id']){
-		    $strTable .= '
-		    <tr>
-    			<td colspan="2"><div class="center">Что бы принять участие в дебатах, необходимо зарегистрироваться</div></td>
-    		</tr>
-    		
-		    ';
-		}
-		$strTable .= '</table>';
-		$response -> block('centerTable', true, $strTable);
+		        $strTable .= '</td></tr>';				
+			}
+			$strTable .= '</tbody>
+						</table>
+						</div>';														 						
+	 } elseif ($message['user_id'] && !$helperTable){ 
+	 	$strTable .= '<div class="inn">
+	 					<ul class="helpers">
+	 						<li id="helper1tr"><a href="#"><i class="big-icon helpers-icon" id="helper1btn" onclick="wantBeHelper(1);"></i>Я хочу стать помошником <strong>'.$message['debateUser1']['login'].'</strong></a></li>
+	 						<li id="helper2tr"><a href="#"><i class="big-icon helpers-icon" id="helper2dtn" onclick="wantBeHelper(2);"></i>Я хочу стать помошником <strong>'.$message['debateUser2']['login'].'</strong></a></li>
+	 					</ul>
+	 				  </div>';
+	 } elseif ($helperTable){ 	
+		$strTable .= '<div class="in"> 
+						<h2 class="status"><span class="st-ok"><i class="big-icon ok-icon"></i>Вы выбрали быть помощником у '.$helperTable['login'].'</span></h2> 
+					</div>';					
+	 } elseif(!$message['user_id']) { 
+	 	$strTable .= '<div class="in"> 
+						<h2 class="status"><span class="st-ok" style="color:red;">Что бы принять участие в дебатах, необходимо <a href="'.Project::getRequest()->createUrl('User', 'RegistrationForm').'">зарегистрироваться</a></span></h2> 
+					</div>';					
+	 }	    
+	$response -> block('centerTable', true, $strTable);
 
-		$strHelpersList = '';
+		$strHelpersList = '<dt>Помощники</dt>';	
 		if ($message['helper1_1']){
-		    $strHelpersList .= '<p><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $message['helper1_1']['login']).'">'.$message['helper1_1']['login'].'</a></p>';
-		}else $strHelpersList .= '<p>&nbsp;</p>';
+		    $strHelpersList .= '<dd><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $message['helper1_1']['login']).'">'.$message['helper1_1']['login'].'</a></dd>';
+		}else $strHelpersList .= '<dd>?</dd>';
 		if ($message['helper1_2']){
-		    $strHelpersList .= '<p><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $message['helper1_2']['login']).'">'.$message['helper1_2']['login'].'</a></p>';
-		}else $strHelpersList .= '<p>&nbsp;</p>';
+		    $strHelpersList .= '<dd><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $message['helper1_2']['login']).'">'.$message['helper1_2']['login'].'</a></dd>';
+		}else $strHelpersList .= '<dd>?</dd>';
 		$response -> block('helpersList1', true, $strHelpersList);
 		
-		$strHelpersList = '';
+		$strHelpersList = '<dt>Помощники</dt>';
 		if ($message['helper2_1']){
-		    $strHelpersList .= '<p><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $message['helper2_1']['login']).'">'.$message['helper2_1']['login'].'</a></p>';
-		}else $strHelpersList .= '<p>&nbsp;</p>';
+		    $strHelpersList .= '<dd><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $message['helper2_1']['login']).'">'.$message['helper2_1']['login'].'</a></dd>';
+		}else $strHelpersList .= '<dd>?</dd>';
 		if ($message['helper2_2']){
-		    $strHelpersList .= '<p><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $message['helper2_2']['login']).'">'.$message['helper2_2']['login'].'</a></p>';
-		}else $strHelpersList .= '<p>&nbsp;</p>';
+		    $strHelpersList .= '<dd><a href="'.Project::getRequest()->createUrl('User', 'Profile', null, $message['helper2_2']['login']).'">'.$message['helper2_2']['login'].'</a></dd>';
+		}else $strHelpersList .= '<dd>?</dd>';
 		$response -> block('helpersList2', true, $strHelpersList);
 	}
 	
 	
 	function returnDoStakePage($message){
 	    $response = Project::getAjaxResponse();
+	    if($message['userNumber']) {
+	    	$strTable = '<form action="" method="post" name="stakesform">
+										<table class="alt"> 
+											<tr class="current"> 
+												<th>Ставки на Вас:</th> 
+												<td class="vl"> 
+													<span class="count">'.(int)$message['stakesCount'].'</span> 
+												</td> 
+											</tr> 
+											<tr class="current"> 
+												<th>На сумму:</th> 
+												<td class="vl"> 
+													<span class="nm no-nm">'.$message['stakesSum'].' nm</span> 
+												</td> 
+											</tr>';
+	    	if ($message['userNumber'] && $message['isReady']){ 
+	    		
+	    	}elseif ($message['userNumber']){
+	    		$strTable .= '<tr class="current last"> 
+								<td colspan="2" class="vl vl-center">
+									<input type="hidden" name="user_ready" value="Я готов к дебатам" />
+									<button class="ready-button" onclick="document.stakesform.submit();">Я готов к дебатам</button> 
+								</td> 
+							</tr>';
+	    	}
+			$strTable .= '</table>
+						</form>';
+		}elseif ($message['user_id']){	 
+	    	$currentUser = $message['currentUser'];
+		     if ($message['aUserStakes']){
+                $sum = 0;
+                foreach ($message['aUserStakes'] as $userStake){
+                    $sum += $userStake['stake_amount'];
+                }
+            }
+            //<span class="from">( <a href="#">petrovich</a> )</span>
+	    	$strTable = '<table> 
+							<tr class="current"> 
+								<th>Текущая ставка:</th> 
+								<td class="vl"> 
+									<span class="nm">'.$sum.' nm</span>  
+								</td> 
+							</tr> 
+							<tr class="current last"> 
+								<th>Всего ставок:</th> 
+								<td class="vl"> 
+									<span class="count">'.(int)$message['stakesCount'].'</span> 
+								</td> 
+							</tr> 
+							<tr class="place first"> 
+								<th> 
+									У вас на счету:
+								</th> 
+								<td class="vl"> 
+									<span class="nm no-nm">'.$currentUser['nextmoney'].' nm</span>';
+	    						if($currentUser['nextmoney']==0) {
+	    							$strTable .= '<span class="alert">У вас не достаточно средств на счету. <a href="#">Пополнить</a></span>'; 
+	    						} 
+						$strTable .= '</td> 
+							</tr> 
+							<tr class="place last"> 
+								<th> 
+									Сделать ставку:
+								</th> 
+								<td class="vl"> 
+									<fieldset> 
+										<div class="input-field"><input type="text" value="15" name="stake_amount" id="stake_amount" /> nm</div> 
+										<div class="button-field"> 
+											<button class="vote-button" id="doStake1" onclick="doStake(1);">Поставить на <strong>'.$message['debateUser1']['login'].'</strong></button> 
+											<button class="vote-button" id="doStake2" onclick="doStake(2);">Поставить на <strong>'.$message['debateUser2']['login'].'</strong></button>
+										</div> 
+									</fieldset>
+								</td> 
+							</tr>';
+							if ($this->aUserStakes){
+                			$strTable .= '
+                    		<tr class="place last">
+								<th> 
+									Ваши ставки:
+								</th> 
+            					<td class="vl">';
+                				$sum = 0;
+                				foreach ($this->aUserStakes as $userStake){
+                    				$sum += $userStake['stake_amount'];
+                    				$strTable .= '<b>'.$userStake['stake_amount'].'</b> nm на ';
+                   					if ($userStake['debate_user_id'] == $this->debateUser1['id']) $strTable .= $this->debateUser1['login'];
+                    				else $strTable .= $this->debateUser2['login'];
+                    				$strTable .= '<br/>';
+                				}
+            					$strTable .= '		     
+            								</td>
+            									</tr>';
+            								$strTable .= '
+                    							<tr class="place last">
+            										<th> Всего: </th>
+            										<td class="vl"><b>'.$sum.'</b> nm</td>
+            									</tr>';
+            				}
+            	$strTable .= '</table></form>';						
+		}	
 	    
-	    if($message['userNumber']){ $strTemp = 'Ставок на Вас:'; } else{ $strTemp = 'Всего ставок:';}
+	/*    if($message['userNumber']){ $strTemp = 'Ставок на Вас:'; } else{ $strTemp = 'Всего ставок:';}
 	    $strTable = '
-	    <form action="" method="POST">
+	    <form action="" method="post">
 	    <table class="questions">
 		<tr> 
 			<td colspan="3"><div class="center width_400"><b>Тема дебатов: '.$message['debateNow']['theme'].'</b></div></td>
@@ -509,7 +602,7 @@ class DebateView extends BaseSiteView{
             		</tr>';
             }
         }
-        $strTable .= '</table></form>';
+        $strTable .= '</table></form>'; */
 	    $response -> block('centerTable', true, $strTable);
 	}
 	
