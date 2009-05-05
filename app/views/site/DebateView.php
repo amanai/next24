@@ -34,8 +34,22 @@ class DebateView extends BaseSiteView{
 	}
 	
 	public function showMessageboxForDebateUsers($userNumber = 0, $isHide = 0){
-	    echo '
-	    <tr id="debate_MessageboxForDebateUsers">
+	    echo '<form>
+				<fieldset> 
+					<table> 
+						<tr id="debate_MessageboxForDebateUsers"> 
+							<td class="input-field"><textarea id="chat_text" name="chat_text" rows="5" cols="10"></textarea></td> 
+							<td class="input-button"> 
+								<input type="button" onclick="javascript:send_message(\'chat_text\', \'chat_messages\', '.$isHide.');" value="Сказать" />'; 
+	    						if ($userNumber){
+									echo '<input id="pause'.$userNumber.'" type="button" onclick="javascript:pauseSet(\'pause'.$userNumber.'\', '.$userNumber.');" value="Перерыв" />'; 
+	    						}
+					echo '</td> 
+						</tr> 
+					</table> 
+				</fieldset> 
+			</form>';	
+	    /*echo '<tr id="debate_MessageboxForDebateUsers">
 	        <td colspan="3">
 		      <table align="center">
 		       <tr>
@@ -54,9 +68,9 @@ class DebateView extends BaseSiteView{
     		  </table>
 			</td>
 		</tr>
-	    ';
+	    '; */
 	    if ($userNumber){
-	        echo '
+	        echo '<table style="text-align:center;">
 	        <tr id="pauseText1" style="display: none;">
 	           <td colspan="3">
 	           <div class="center">1-й участник просит паузу</div>
@@ -70,12 +84,12 @@ class DebateView extends BaseSiteView{
 	           <div class="center">Перерыв</div>
 	           </td>
 	        <tr>
-	        ';
+	        </table>';
 	    }
 	}
 	
 	public function showAllowSayHelpers($helper1, $helper2){
-	    echo '
+	    echo '<table>
 	    <tr>
 		    <td colspan="3"> 
 		       <div class="center">
@@ -88,26 +102,24 @@ class DebateView extends BaseSiteView{
 	    echo '
 			</td>
 		</tr>
-	    ';
+	    </table>';
 	}
 	
 	public function showHelpersChat(){
 		echo '<h2>Чат с помошниками</h2> 
 				<div class="chat-entry"> 
 					<ul class="ChatMessagesB_helpers" id="chat_messages_helpers"> 
-						<li class="clearfix"> 
-							<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-							<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-						</li> 
 					</ul> 
-					<fieldset> 
-						<table> 
-							<tr> 
-								<td class="input-field"><textarea id="chat_text_helpers" name="chat_text_helpers" cols="58" rows="1"></textarea></td> 
-								<td class="input-button"><input type="button" onclick="javascript:send_message(\'chat_text_helpers\', \'chat_messages_helpers\');" value="Сказать" /></td> 
-							</tr> 
-						</table> 
-					</fieldset> 
+					<form>
+						<fieldset> 
+							<table> 
+								<tr> 
+									<td class="input-field"><textarea id="chat_text_helpers" name="chat_text_helpers" rows="5" cols="10"></textarea></td> 
+									<td class="input-button"><input type="button" onclick="javascript:send_message(\'chat_text_helpers\', \'chat_messages_helpers\');" value="Сказать" /></td> 
+								</tr> 
+							</table> 
+						</fieldset> 
+					</form>
 				</div> 
 			<!-- /chat-entry -->';
 	/*    echo '
@@ -129,16 +141,28 @@ class DebateView extends BaseSiteView{
 		</tr>
 	    '; */
 	}
-	
+	public function showUserChatNoControl() {
+		echo '<h2>Чат пользоваелей</h2> 
+				<div class="chat-entry"> 
+					<ul class="ChatMessagesB_helpers" id="chat_messages_users"> 
+					</ul> 
+				</div>';		
+	}
 	public function showUsersChat(){
 		echo '<h2>Чат пользоваелей</h2> 
 				<div class="chat-entry"> 
 					<ul class="ChatMessagesB_helpers" id="chat_messages_users"> 
-						<li class="clearfix"> 
-							<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-							<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-						</li> 
 					</ul> 
+					<form>
+						<fieldset> 
+							<table> 
+								<tr> 
+									<td class="input-field"><textarea id="chat_text_users" name="chat_text_users" rows="5" cols="10"></textarea></td> 
+									<td class="input-button"><input type="button" onclick="javascript:send_message(\'chat_text_users\', \'chat_messages_users\');" value="Сказать" /></td> 
+								</tr> 
+							</table> 
+						</fieldset>
+					</form>	
 				</div>';
 									/*<fieldset> 
 											<table> 
@@ -159,14 +183,15 @@ class DebateView extends BaseSiteView{
 	}
 	
 	public function showUsersChatMessageBox(){
-		echo '<fieldset> 
+	/*	echo '<fieldset> 
 				<table> 
 					<tr> 
 						<td class="input-field"><textarea id="chat_text_users" name="chat_text_users" cols="58" rows="1"></textarea></td> 
 						<td class="input-button"><input type="button" onclick="javascript:send_message(\'chat_text_users\', \'chat_messages_users\');" value="Сказать" /></td> 
 					</tr> 
 				</table> 
-			</fieldset>';
+			</fieldset>'; */
+		
 	/*    echo '
 	    <tr>
 	        <td colspan="3">

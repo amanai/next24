@@ -21,10 +21,10 @@
 					?>
 					<!-- /d-head --> 
 					<h1><span>Тема дебатов:</span> <?php echo $this->debateNow['theme']; ?>
-					<br /><span id="pauseTitle" style="color:red;font-size:120%;">Перерыв !</span>
-					<br /><span id="pauseDescription" style="font-size:14px;">Дебаты прерваны на перерыв. Во время перерыва в окне дебатов могут оставлять свои сообщения помощники.</span>
+					<br /><span id="pauseTitle" style="color:red;font-size:120%;display:none;">Перерыв !</span>
+					<br /><span id="pauseDescription" style="font-size:14px;display:none;">Дебаты прерваны на перерыв. Во время перерыва в окне дебатов могут оставлять свои сообщения помощники.</span>
 					<br/>
-					<span id="pauseOffDescription" style="font-size:14px;">
+					<span id="pauseOffDescription" style="font-size:14px;display:none;">
 					<?php
 						if ($this->activeEtap['is_pause']){
     						echo '';
@@ -47,109 +47,54 @@
 					<div class="d-wrap clearfix"> 
 						<div class="d-content"> 
 							<div class="inn chat"> 
-							
-							
-							
-							
-							
-							
-         <!-- chat part  -->	   
-		<table class="questions">
-		<tr>
-			<td colspan="3"><div class="center width_400"><b>Тема дебатов: <?php echo $this->debateNow['theme']; ?></b></div></td>
-        </tr>
-		<tr>
-			<td align="left" colspan="3"><div class="center"><div class="ChatMessagesB" id="chat_messages"></div></div></td>
-	    </tr>
-	    <?php
-	    if ($this->activeEtap['is_pause']){ // PAUSE
-	        if ($this->userNumber){ // Debate User
-	            $this->showHelpersChat();
-	            
-	        }elseif($this->userIdFromHelper){ // Helper
-	            $this->showMessageboxForDebateUsers(0, 0);
-	            $this->showHelpersChat();
-	            
-	        }elseif($this->user_id){ // registred User
-    		    $this->showUsersChat();
-    		    $this->showUsersChatMessageBox();
-    		    
-    		}else{ // Guest (not registred user)
-    		    $this->showUsersChat();
-    		    
-    		}
-	        // STOP PAUSE
-	        
-	    }elseif ($this->userNumber){ // Debate User
-    		$this->showMessageboxForDebateUsers($this->userNumber, 0);
-    		if ($this->user_id == $this->debateUser1['id']){
-    		  $this->showAllowSayHelpers($this->helper1_1, $this->helper1_2);
-    		}else{
-    		  $this->showAllowSayHelpers($this->helper2_1, $this->helper2_2);
-    		}
-    		$this->showHelpersChat();
-    		
-		}elseif($this->userIdFromHelper){ // Helper
-		    $this->showMessageboxForDebateUsers($this->userNumber, 1);
-		    $this->showHelpersChat();
-		    
-		}elseif($this->user_id){ // registred User
-		    $this->showUsersChat();
-		    $this->showUsersChatMessageBox();
-		    
-		}else{ // Guest (not registred user)
-		    $this->showUsersChat();
-		    
-		}
-		?>
-		
-		</table>
-		<!-- / chat part  -->
-		
-		
-		
-									
-								<div class="chat-entry main-chat"> 
-									<ul> 
-										<li class="clearfix"> 
-											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-										</li> 
-										<li class="clearfix"> 
-											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-										</li> 
-										<li class="clearfix"> 
-											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-										</li> 
-										<li class="clearfix"> 
-											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-										</li> 
-										<li class="clearfix"> 
-											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-										</li> 
-										<li class="clearfix my-mess"> 
-											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-										</li> 
-										<li class="clearfix"> 
-											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-										</li> 
-										<li class="clearfix"> 
-											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-										</li> 
-										<li class="clearfix"> 
-											<div class="meta"><a href="#">fedor</a> <span class="date">[ 19.08.09 в 18:55 ]</span></div> 
-											<p>Но на последних снимках замечено множество других интересных образований, явно не природного происхождения</p> 
-										</li> 
+							<div class="chat-entry main-chat"> 
+									<ul class="ChatMessagesB" id="chat_messages"> 
 									</ul> 
+	    						<?php
+	    							if ($this->activeEtap['is_pause']){ // PAUSE      
+	        							if($this->userIdFromHelper){ // Helper
+	            							$this->showMessageboxForDebateUsers(0, 0);         
+	        							} // registred User
+	        						// STOP PAUSE    
+	    							}elseif ($this->userNumber){ // Debate User
+    									$this->showMessageboxForDebateUsers($this->userNumber, 0);		
+									}elseif($this->userIdFromHelper){ // Helper
+		    							$this->showMessageboxForDebateUsers($this->userNumber, 1);  
+									}?>									
 								</div> 
-								<!-- /chat-entry --> 
+								<!-- /chat-entry --> 									    
+	    						<?php
+	    							if ($this->activeEtap['is_pause']){ // PAUSE
+	        							if ($this->userNumber){ // Debate User
+	            							$this->showHelpersChat();       
+	        							}elseif($this->userIdFromHelper){ // Helper
+	            					//		$this->showMessageboxForDebateUsers(0, 0);
+	            							$this->showHelpersChat();           
+	        							}elseif($this->user_id){ // registred User
+    		    							$this->showUsersChat();
+    		   							//	 $this->showUsersChatMessageBox(); 		    
+    									}else{ // Guest (not registred user)
+    		    							$this->showUsersChat();		    
+    									}
+	        						// STOP PAUSE    
+	    							}elseif ($this->userNumber){ // Debate User
+    								//	$this->showMessageboxForDebateUsers($this->userNumber, 0);
+    									if ($this->user_id == $this->debateUser1['id']){
+    		  								$this->showAllowSayHelpers($this->helper1_1, $this->helper1_2);
+    									}else{
+    		  								$this->showAllowSayHelpers($this->helper2_1, $this->helper2_2);
+    									}
+    									$this->showHelpersChat();		
+									}elseif($this->userIdFromHelper){ // Helper
+		    						//	$this->showMessageboxForDebateUsers($this->userNumber, 1);
+		    							$this->showHelpersChat();    
+									}elseif($this->user_id){ // registred User
+		    							$this->showUsersChat();
+		    						//	$this->showUsersChatMessageBox();   
+									}else{ // Guest (not registred user)
+		    							$this->showUserChatNoControl();   
+									}?>
+								<!-- / chat part  -->
 							</div> 
 						</div> 
 						<!-- /d-content --> 
