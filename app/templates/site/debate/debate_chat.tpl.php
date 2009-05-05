@@ -8,7 +8,7 @@
 						<input type="hidden" name="currEtap" id="currEtap" value="Debates" />
 						<input type="hidden" name="refreshNow" id="refreshNow" value="0" />
 						<div class="title clearfix"> 
-							<div class="stage">Этап <strong>6</strong> из 7. Идет выбор второго участника дебатов</div> 
+							<div class="stage">Этап <strong>6</strong> из 7. Дебаты.</div> 
 							<?php $this->showTimer(); ?> 
 						</div> 
 						<p>Вы можете предложить свою тему для дебатов. Если ваша тема победит, при последующем голосовании вы станете учасником дебатов.</p> 
