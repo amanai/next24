@@ -1,9 +1,9 @@
 <?php include($this -> _include('../header.tpl.php')); ?>
 				<div class="debate-page"> 
 					<ul class="view-filter clearfix"> 
-						<li><strong>Активные дебаты<span></span></strong></li> 
+					<!-- 	<li><strong>Активные дебаты<span></span></strong></li> 
 						<li><a href="#">Завершенные дебаты</a></li> 
-						<li class="alt"><a href="#">Победители</a></li> 
+						<li class="alt"><a href="#">Победители</a></li> --> 
 						<?php include($this -> _include('../tab_panel.tpl.php')); ?>
 					</ul> 
 					<!-- /view-filter --> 
@@ -11,7 +11,8 @@
 						<input type="hidden" name="currEtap" id="currEtap" value="Results" />
 						<input type="hidden" name="refreshNow" id="refreshNow" value="0" />	
 						<div class="title clearfix"> 
-							<div class="stage">Этап <strong>7</strong> из 7.  Дебаты завершены!</div> 
+							<div class="stage">Этап <strong>7</strong> из 7.  Дебаты завершены!</div>
+							<?php $this->showTimer(); ?> 
 						</div> 
 						<p>
 						<?php
@@ -26,7 +27,6 @@
 							}
 						?>							
 						</p> 
-						<?php $this->showTimer(); ?>
 					</div> 
 					<!-- /d-head --> 
 					<div class="end-view"><div class="wrap"> 
@@ -35,7 +35,7 @@
                 if ($this->winnerUser){
                     if ($this->user_id == $this->winnerUser['id']){
                     	echo '<i class="big-icon win-icon"></i>';
-                	   	echo '<p class="end-info"><span>Вы победили в дебатах</span> '.$this->debateNow['theme'].'</p>';
+                	   	echo '<p class="end-info"><span>Вы победили в дебатах</span> '.$this->debateNow['theme'].'</p><h1 class="congratulations">Поздравляем!</h1>';
                     }else{
                         echo '<i class="big-icon lose-icon"><p class="end-info"> 
 								<span>В дебатах</span> 

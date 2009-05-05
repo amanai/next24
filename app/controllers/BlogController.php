@@ -61,9 +61,11 @@
 		}	
 		function PublicTagsListAction() {
 			$request = Project::getRequest();
-			$this -> _view -> assign('tab_list', TabController::getPublicBlogTabs(false, false, false, true));
-			$this -> _view -> PublicTagsList();
-			$this -> _view -> parse();			
+			$blog_tag_model = new BlogTagModel();
+			$this->_view->assign('tags',$blog_tag_model->loadList(1));
+			$this->_view->assign('tab_list', TabController::getPublicBlogTabs(false, false, false, true));
+			$this->_view->PublicTagsList();
+			$this->_view->parse();			
 		}						
 		function PostListAction(){
 			$request = Project::getRequest();

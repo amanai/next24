@@ -5,87 +5,10 @@
 							<?php include($this -> _include('../tab_panel.tpl.php')); ?> 
 						</ul> 
 						<!-- /view-filter --> 
-						<ul class="tag-cloud"> 
-							<li><a href="#" rel="tag" class="w1">adobe</a></li> 
-							<li><a href="#" rel="tag" class="w2">ajax</a></li> 
-							<li><a href="#" rel="tag" class="w4">android</a></li> 
-							<li><a href="#" rel="tag" class="w3">apple</a></li> 
-							<li><a href="#" rel="tag" class="w5">asus</a></li> 
-							<li><a href="#" rel="tag" class="w1">cms</a></li> 
-							<li><a href="#" rel="tag" class="w3">css</a></li> 
-							<li><a href="#" rel="tag" class="w5">digg</a></li> 
-							<li><a href="#" rel="tag" class="w2">facebook</a></li> 
-							<li><a href="#" rel="tag" class="w4">firefox</a></li> 
-							<li><a href="#" rel="tag" class="w1">flash</a></li> 
-							<li><a href="#" rel="tag" class="w3">gmail</a></li> 
-							<li><a href="#" rel="tag" class="w5">google</a></li> 
-							<li><a href="#" rel="tag" class="w2">html</a></li> 
-							<li><a href="#" rel="tag" class="w4">ibm</a></li> 
-							<li><a href="#" rel="tag" class="w1">icq</a></li> 
-							<li><a href="#" rel="tag" class="w3">intel</a></li> 
-							<li><a href="#" rel="tag" class="w5">internet</a></li> 
-							<li><a href="#" rel="tag" class="w2">explorer</a></li> 
-							<li><a href="#" rel="tag" class="w4">iphone</a></li> 
-							<li><a href="#" rel="tag" class="w1">adobe</a></li> 
-							<li><a href="#" rel="tag" class="w2">ajax</a></li> 
-							<li><a href="#" rel="tag" class="w4">android</a></li> 
-							<li><a href="#" rel="tag" class="w3">apple</a></li> 
-							<li><a href="#" rel="tag" class="w5">asus</a></li> 
-							<li><a href="#" rel="tag" class="w1">cms</a></li> 
-							<li><a href="#" rel="tag" class="w3">css</a></li> 
-							<li><a href="#" rel="tag" class="w5">digg</a></li> 
-							<li><a href="#" rel="tag" class="w2">facebook</a></li> 
-							<li><a href="#" rel="tag" class="w4">firefox</a></li> 
-							<li><a href="#" rel="tag" class="w1">flash</a></li> 
-							<li><a href="#" rel="tag" class="w3">gmail</a></li> 
-							<li><a href="#" rel="tag" class="w5">google</a></li> 
-							<li><a href="#" rel="tag" class="w2">html</a></li> 
-							<li><a href="#" rel="tag" class="w4">ibm</a></li> 
-							<li><a href="#" rel="tag" class="w3">apple</a></li> 
-							<li><a href="#" rel="tag" class="w5">asus</a></li> 
-							<li><a href="#" rel="tag" class="w5">internet</a></li> 
-							<li><a href="#" rel="tag" class="w2">explorer</a></li> 
-							<li><a href="#" rel="tag" class="w4">iphone</a></li> 
-							<li><a href="#" rel="tag" class="w1">adobe</a></li> 
-							<li><a href="#" rel="tag" class="w2">ajax</a></li> 
-							<li><a href="#" rel="tag" class="w4">android</a></li> 
-							<li><a href="#" rel="tag" class="w3">apple</a></li> 
-							<li><a href="#" rel="tag" class="w5">asus</a></li> 
-							<li><a href="#" rel="tag" class="w1">cms</a></li> 
-							<li><a href="#" rel="tag" class="w3">css</a></li> 
-							<li><a href="#" rel="tag" class="w5">digg</a></li> 
-							<li><a href="#" rel="tag" class="w2">facebook</a></li> 
-							<li><a href="#" rel="tag" class="w4">firefox</a></li> 
-							<li><a href="#" rel="tag" class="w1">cms</a></li> 
-							<li><a href="#" rel="tag" class="w3">css</a></li> 
-							<li><a href="#" rel="tag" class="w5">digg</a></li> 
-							<li><a href="#" rel="tag" class="w2">facebook</a></li> 
-							<li><a href="#" rel="tag" class="w4">firefox</a></li> 
-							<li><a href="#" rel="tag" class="w1">flash</a></li> 
-							<li><a href="#" rel="tag" class="w3">gmail</a></li> 
-							<li><a href="#" rel="tag" class="w1">icq</a></li> 
-							<li><a href="#" rel="tag" class="w3">intel</a></li> 
-							<li><a href="#" rel="tag" class="w5">internet</a></li> 
-							<li><a href="#" rel="tag" class="w2">explorer</a></li> 
-							<li><a href="#" rel="tag" class="w4">iphone</a></li> 
-							<li><a href="#" rel="tag" class="w1">adobe</a></li> 
-							<li><a href="#" rel="tag" class="w2">ajax</a></li> 
-							<li><a href="#" rel="tag" class="w4">android</a></li> 
-							<li><a href="#" rel="tag" class="w5">google</a></li> 
-							<li><a href="#" rel="tag" class="w2">html</a></li> 
-							<li><a href="#" rel="tag" class="w4">ibm</a></li> 
-							<li><a href="#" rel="tag" class="w1">icq</a></li> 
-							<li><a href="#" rel="tag" class="w3">intel</a></li> 
-							<li><a href="#" rel="tag" class="w1">flash</a></li> 
-							<li><a href="#" rel="tag" class="w3">gmail</a></li> 
-							<li><a href="#" rel="tag" class="w5">google</a></li> 
-							<li><a href="#" rel="tag" class="w2">html</a></li> 
-							<li><a href="#" rel="tag" class="w4">ibm</a></li> 
-							<li><a href="#" rel="tag" class="w1">icq</a></li> 
-							<li><a href="#" rel="tag" class="w3">intel</a></li> 
-							<li><a href="#" rel="tag" class="w5">internet</a></li> 
-							<li><a href="#" rel="tag" class="w2">explorer</a></li> 
-							<li><a href="#" rel="tag" class="w4">iphone</a></li> 
+						<ul class="tag-cloud">
+							<?php foreach ($this->tags as $value) { ?>
+								<li><a href="<?=$this->createUrl('Blog', 'PublicList', array('tag_id' => $value['id']))?>" rel="tag" class="w<?=rand(1,5);?>"><?=$value['name'];?></a></li> 
+							<? } ?> 
 						</ul> 
 						<!-- /tag-cloud --> 
 					</div></div> 
