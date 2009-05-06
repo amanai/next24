@@ -19,13 +19,7 @@
 								<i title="Показать фильтр" class="filter-link icon show-filter-icon"></i>
 							</div>
 							<ul class="nav-list">
-								<li><i class="arrow-icon"></i><a href="#" class="with-icon-s"><i class="icon-s write-s-icon"></i>Авио</a></li>
-								<li class="active"><i class="arrow-icon"></i><a href="#" class="with-icon-s"><i class="icon-s write-s-icon"></i>Internet</a>
-									<ul>
-										<?php require('blog_left_tree.tpl.php'); ?>
-										<li><a href="#" class="with-icon-s"><i class="icon-s write-s-icon"></i>Citroen</a> (28)</li>
-									</ul>
-								</li>
+								<?php require('blog_left_tree.tpl.php'); ?>
 							</ul>
 						</div>
 					</div>

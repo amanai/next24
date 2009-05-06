@@ -84,8 +84,8 @@
 								<li class="active"><i class="arrow-icon"></i><a href="#" class="with-icon-s"><i class="icon-s write-s-icon"></i>Internet</a>
 									<ul> -->
 										<?php require('blog_left_tree.tpl.php'); ?>
-								<!-- 	</ul> -->
-								</li>
+								<!-- 	</ul> 
+								</li>	-->
 							</ul>
 						</div>
 					</div>

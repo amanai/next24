@@ -137,8 +137,8 @@
 										<li><a href="#">Chrysler</a> (14)</li> 
 										<li><a href="#">Citroen</a> (28)</li> 
 										<li><a href="#" class="all-sections script-link"><span class="t">Все разделы</span></a> (57)</li> 
-									</ul>  -->
-								</li> 
+									</ul>  
+								</li> -->
 							</ul> 
 						</div> 
 					</div> 

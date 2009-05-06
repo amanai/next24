@@ -62,5 +62,13 @@ class BlogPostModel extends BaseModel{
 
 			return Project::getDatabase() -> selectRow($sql);
 		}
+		function getAllPosts() {
+			$sql = "SELECT * FROM blog_post ORDER BY creation_date DESC LIMIT ?d, ?d";
+			$result = Project::getDatabase() -> selectPage($this -> _countRecords, $sql, 
+																					$this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize() // limit params
+																					);
+			$this -> updatePagerAmount();
+			return $result;
+		}
 }
 ?>

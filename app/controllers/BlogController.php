@@ -7,7 +7,7 @@
 		const DEFAULT_POST_PER_PAGE = 2;
 		const DEFAULT_SUBSCRIBE_TAG = 'subscribe';
 		private $_is_subscribed_to_log = false;
-		
+	
 		function __construct($view_class = null){
 			if ($view_class === null){
 				$view_class = "BlogView";
@@ -43,6 +43,10 @@
 		}
 		function PublicListAction() {
 			$request = Project::getRequest();
+			$page_number = (int)$request -> getKeyByNumber(1);	
+			$post_model = new BlogPostModel;
+			$post_model -> setPager(new DbPager($page_number, $this -> getParam('post_per_page', self::DEFAULT_POST_PER_PAGE)));
+			$this->_view->assign('posts',$posts = $post_model->getAllPosts());		
 			$this -> _view -> assign('tab_list', TabController::getPublicBlogTabs(true, false, false, false));
 			$this -> _view -> PublicPostList();
 			$this -> _view -> parse();			
