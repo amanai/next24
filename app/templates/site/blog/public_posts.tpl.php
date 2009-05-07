@@ -14,9 +14,9 @@
 							</div> 
 						</div> 
 						<!-- /display-filter --> 
-						<div class="breadcrumbs main-breadcrumbs"> 
+					<!-- <div class="breadcrumbs main-breadcrumbs"> 
 							<a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » <strong>С рождеством!</strong> 
-						</div> 
+						</div> -->
 						<!-- /breadcrumbs --> 
 						<?php foreach ($this->posts as $value) { ?>
 						<?php $user = Project::getUser()->getDbUser()->getUserById($value['user_id']); ?>

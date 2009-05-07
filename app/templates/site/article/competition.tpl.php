@@ -30,7 +30,7 @@
 												<?endforeach;?>
 											</select>										
 										</td> 
-										<td class="button-field"><input type="submit" value="Предложить тему" /></td> 
+										<td class="button-field"><input type="submit" name="submit" value="Предложить тему" <?if($this->active == false) echo 'disabled="disabled"'; ?> /></td> 
 									</tr> 
 								</table> 
 							</form> 
@@ -43,7 +43,7 @@
 					</div></div> 
 					<!-- /main --> 
 					<div class="sidebar"> 
-						<? //if($this->competition_control == true) include($this -> _include('control_panel.tpl.php')); ?>
+						<?  include($this -> _include('control_panel.tpl.php')); ?>
 						<div class="navigation"> 
 							<div class="title"> 
 								<h2>Категории</h2> 

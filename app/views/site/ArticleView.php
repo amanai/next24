@@ -8,7 +8,8 @@ class ArticleView extends BaseSiteView {
 		$this->set($data);
 	}
 	
-/*	public function AddArticle($data) {
+/****************************************************************************************************/
+	public function AddArticle($data) {
 		$this->setTemplate(null, 'add_article.tpl.php');
 		$this->set($data);
 	}
@@ -36,7 +37,7 @@ class ArticleView extends BaseSiteView {
 		$this->setTemplate(null, 'list.tpl.php');
 		$this->set($data);
 	}
-*/	
+/************************************************************************************************/	
 	public function ViewArticle($data) {
 		$this->setTemplate(null, 'view_article.tpl.php');
 		$this->set($data);

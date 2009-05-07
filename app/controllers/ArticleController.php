@@ -84,7 +84,7 @@ class ArticleController extends SiteController {
 		}
 	}
 	
-/*	public function AddArticleAction() {
+	public function AddArticleAction() {
 		$request = Project::getRequest();
 		if(!$request->submit) {
 			$data = array();
@@ -168,7 +168,7 @@ class ArticleController extends SiteController {
 			$this->_view->AddArticle($data);
 			$this->_view->parse();
 		}
-	}*/
+	}
 	
 	// отображение самой статьи
 	public function ArticleViewAction() {
