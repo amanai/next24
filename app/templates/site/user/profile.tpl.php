@@ -23,8 +23,8 @@
 							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd>
 							<dd><?=$this->user_location;?></dd>
 							<dd>На сайте: <span class="date">12 дней</span></dd>
-							<dd>Настроение: <em>супер!</em> <?php  if ($this->user_profile['id']==$this->current_user->id){ ?><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a><? } ?></dd>
-							<dd>Статус: <em>хочу есть и пить</em> <?php  if ($this->user_profile['id']==$this->current_user->id){ ?><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a><? } ?></dd>
+							<dd>Настроение: <em><?=$this->user_profile['mood'];?></em> <?php  if ($this->user_profile['id']==$this->current_user->id){ ?><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a><? } ?></dd>
+							<dd>Статус: <em><?=$this->user_profile['status'];?></em> <?php  if ($this->user_profile['id']==$this->current_user->id){ ?><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a><? } ?></dd>
 						</dl>
 						<div class="about-info">
 							<div class="ttl"><strong>О себе</strong> <?php  if ($this->user_profile['id']==$this->current_user->id){ ?><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a><? } ?></div>

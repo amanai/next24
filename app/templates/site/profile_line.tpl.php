@@ -3,7 +3,7 @@
 				<ul class="view-filter clearfix">
 					<li><strong>
 					<?$name_usr = implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));
-					if(!trim($name_usr)) echo 'Нет имени';
+					if(!trim($name_usr)) echo $user['login'];
 					else echo $name_usr;?><span></span></strong></li>
 					<li><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>">Настройки профиля</a></li>
 				</ul>
@@ -26,8 +26,8 @@
 							<dd class="av"><img alt="<?php echo $user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd>
 							<dd>Украина, Киев</dd>
 							<dd>На сайте: <span class="date">12 дней</span></dd>
-							<dd>Настроение: <em>супер!</em> <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a></dd>
-							<dd>Статус: <em>хочу есть и пить</em> <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a></dd>
+							<dd>Настроение: <em><?=$user['mood'];?></em> <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a></dd>
+							<dd>Статус: <em><?=$user['status'];?></em> <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a></dd>
 						</dl>
 						<div class="about-info">
 							<div class="ttl"><strong>О себе</strong> <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a></div>
@@ -58,7 +58,7 @@
 					<h1><?
 					
 					$name_usr = implode(' ',array($user['last_name'],$user['first_name'],$user['middle_name']));
-					if(!trim($name_usr)) echo 'Нет имени';
+					if(!trim($name_usr)) echo $user['login'];
 					else echo $name_usr;?></h1> <span class="user-status"><span class="online"><?=$online?'online':'offline';?></span></span> 
 				</div> 
 				<div class="user-profile"> 
@@ -78,8 +78,8 @@
 							<dd class="av"><img alt="<?php echo $user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd> 
 							<dd>Украина, Киев</dd> 
 							<dd>На сайте: <span class="date">12 дней</span></dd> 
-							<dd>Настроение: <em>супер!</em></dd> 
-							<dd>Статус: <em>хочу есть и пить</em></dd> 
+							<dd>Настроение: <em><?=$user['mood'];?></em></dd> 
+							<dd>Статус: <em><?=$user['status'];?></em></dd> 
 						</dl> 
 						<div class="about-info"> 
 							<div class="ttl"><strong>О себе</strong></div> 

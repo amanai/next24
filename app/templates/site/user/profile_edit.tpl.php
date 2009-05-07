@@ -2,13 +2,15 @@
 <?php $user = Project::getUser()->getDbUser()->getUserById($this->current_user->id); ?>
 				<ul class="view-filter clearfix"> 
 					<li><a href="<?php echo $this -> createUrl('User', 'Profile');?>">
-					<?	if(!trim($this->user_name)) echo 'Нет имени';
+					<?	if(!trim($this->user_name)) echo $this->user_profile['login'];
 						else echo $this->user_name;?></a></li> 
 					<li><strong>Настройки профиля<span></span></strong></li> 
 				</ul> 
 				<!-- /view-filter --> 
 				<div class="user-profile"> 
 					<div class="clearfix"> 
+						<form action="<?=$this -> createUrl('User', 'Saveprofile'); ?>" method="post">
+						<input type="hidden" name="flash" value="true" />
 						<dl class="main-info"> 
 							<dt><span class="user-status"><span class="online">online</span></span> <strong>
 							<?	if(!trim($this->user_name)) echo 'Нет имени';
@@ -20,13 +22,13 @@
 							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd>
 							<dd><?=$this->user_location;?></dd> 
 							<dd>На сайте: <span class="date">12 дней</span></dd> 
-							<dd>Статус: <input type="text" value="Улетел на багамы" size="26" /><input type="submit" value="OK" /></dd> 
-							<dd>Настроение: <input type="text" value="Отличное" size="20" /><input type="submit" value="OK" /></dd> 
+							<dd>Статус: <input name="status" type="text" value="<?php echo $this -> helper -> status;?>" size="26" /><input type="submit" value="OK" /></dd> 
+							<dd>Настроение: <input name="mood" type="text" value="<?php echo $this -> helper -> mood;?>" size="20" /><input type="submit" value="OK" /></dd> 
 						</dl> 
 						<div class="about-info"> 
 							<div class="ttl"><strong>О себе</strong></div> 
 							<div class="cnt"> 
-								<textarea cols="20" rows="3"><?php echo $this -> helper -> about;?></textarea> 
+								<textarea cols="20" rows="3" name="about"><?php echo $this -> helper -> about;?></textarea> 
 								<input type="submit" value="OK" /> 
 							</div> 
 						</div> 
@@ -41,6 +43,7 @@
 								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a> 
 							</div> 
 						</div> 
+						</form>
 					</div> 
 				</div> 
 				<!-- /user-profile --> 
@@ -204,13 +207,13 @@
 									<li class="field-it fl-l no-cl"> 
 										<div class="label"><label for="f16">Skype</label></div> 
 										<div class="field f-smid"> 
-											<input type="text" name="skype" id="f16" value="" /> 
+											<input type="text" name="skype" id="f16" value="<?php echo $this -> helper -> skype;?>" /> 
 										</div> 
 									</li> 
 									<li class="field-it"> 
 										<div class="label"><label for="f17">IM</label></div> 
 										<div class="field f-smid"> 
-											<input type="text" name="im" id="f17" value="" /> 
+											<input type="text" name="im" id="f17" value="<?php echo $this -> helper -> im;?>" /> 
 										</div> 
 									</li> 
 									<li class="field-it fl-l"> 

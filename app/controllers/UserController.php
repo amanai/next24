@@ -368,6 +368,14 @@
 		public function SaveprofileAction(){
 			$this->checkOfficeAccess();
 		    $request = Project::getRequest();
+		    if($request->flash) {
+		    	$user_model = Project::getUser() -> getShowedUser();
+		    	if($request->mood) $user_model->mood = $request->mood;
+		    	if($request->status) $user_model->status = $request->status;
+		    	if($request->about) $user_model->about = $request->about;
+		    	$user_model->save();
+		    }
+		    else {
 			if ($this -> ValidateSaveAction() && $request->register){
 				$user_model = Project::getUser() -> getShowedUser();
 				
@@ -398,6 +406,8 @@
 				$user_model -> country_id = (int)$request -> country;
 				$user_model -> state_id = (int)$request -> state;
 				$user_model -> city_id = (int)$request -> city;
+				$user_model -> skype = $request -> skype;
+				$user_model -> im = $request -> im;
 				
 				// Setting params
 				$user_model->save();
@@ -422,7 +432,9 @@
 				if ($new_rate_nm['nm']-$old_rate_nm['nm'] != 0) $user_model -> changeUserMoney($user_model->id, 0, $new_rate_nm['nm']-$old_rate_nm['nm'], 'Изменение регистрационных данных');
 				$user_model -> changeUserRate($user_model->id, $new_rate_nm['rate']-$old_rate_nm['rate']);				
 			}
+		    }
 			$this -> ProfileEditAction();
+		    
 			/*
 			$this->model->load($this->view->userData['id']);
 			$this->model->set("email", $this->params['email']);
@@ -804,6 +816,6 @@
 				}
 			}
 			return true;
-		}		
+		}
 	}
 ?>
