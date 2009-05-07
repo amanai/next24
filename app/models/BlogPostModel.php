@@ -63,7 +63,12 @@ class BlogPostModel extends BaseModel{
 			return Project::getDatabase() -> selectRow($sql);
 		}
 		function getAllPosts() {
-			$sql = "SELECT * FROM blog_post ORDER BY creation_date DESC LIMIT ?d, ?d";
+			$sql = "SELECT t1.id as post_id,t1.title as post_title,t1.small_text,t1.full_text,t1.creation_date,t1.comments,t1.views,t2.name as catalog_name,t3.title as blog_name,t3.user_id,t4.name as tag_name FROM blog_post t1
+					INNER JOIN ub_tree t2 ON t1.ub_tree_id = t2.id
+					INNER JOIN blog t3 ON t2.blog_id = t3.id
+					LEFT JOIN bc_tag t4 ON t1.bc_tag_id = t4.id
+					ORDER BY t1.creation_date
+			 		DESC LIMIT ?d, ?d";
 			$result = Project::getDatabase() -> selectPage($this -> _countRecords, $sql, 
 																					$this -> _pager -> getStartLimit(), $this -> _pager -> getPageSize() // limit params
 																					);

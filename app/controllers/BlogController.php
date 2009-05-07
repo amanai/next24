@@ -4,7 +4,7 @@
  * Контроллер для работы с блогами
  */
 	class BlogController extends SiteController{
-		const DEFAULT_POST_PER_PAGE = 2;
+		const DEFAULT_POST_PER_PAGE = 5;
 		const DEFAULT_SUBSCRIBE_TAG = 'subscribe';
 		private $_is_subscribed_to_log = false;
 	
@@ -43,10 +43,18 @@
 		}
 		function PublicListAction() {
 			$request = Project::getRequest();
-			$page_number = (int)$request -> getKeyByNumber(1);	
+			$page_number = (int)$request -> getKeyByNumber(0);	
 			$post_model = new BlogPostModel;
+			$pager_view = new SitePagerView();
 			$post_model -> setPager(new DbPager($page_number, $this -> getParam('post_per_page', self::DEFAULT_POST_PER_PAGE)));
-			$this->_view->assign('posts',$posts = $post_model->getAllPosts());		
+			$this -> _view -> assign('post_list_pager',$pager_view -> show2($post_model -> getPager(), 'Blog', 'PublicList'));
+		//	$posts = $post_model->getAllPosts();
+		//	$blog_model = new BlogModel;	
+		//	foreach ($posts as $key => $value) {
+		//		$blog_model->loadByUserId($this -> id);
+		//		$posts[$key]['branch'] = $
+		//	}
+			$this->_view->assign('posts',$post_model->getAllPosts());				
 			$this -> _view -> assign('tab_list', TabController::getPublicBlogTabs(true, false, false, false));
 			$this -> _view -> PublicPostList();
 			$this -> _view -> parse();			
