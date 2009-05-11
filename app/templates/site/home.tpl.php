@@ -9,7 +9,7 @@
     						if(isset($request_keys['d'])) $d = $request_keys['d'];				
 						?>
 							<li <?if(!isset($d)) echo 'class="active"';?>> 							
-										<div class="dropdown dropdown-noactive"> 
+									<!--  <div class="dropdown dropdown-noactive"> 
 											<div class="d-head"> 
 												<span class="with-drop"><a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>">моя вкладка</a></span><i class="arrow-icon down-arrow"></i> 
 											</div> 
@@ -19,11 +19,24 @@
 													<li><a href="#">Удалить</a></li> 
 												</ul> 
 											</div> 
-										</div> 
+										</div>  -->
+										<a href="<?php echo $this->createUrl('Index', 'Index', null, false); ?>">моя вкладка</a>
 							</li> 
 							<?php if($this->desktops) { ?>
 							<?php foreach ($this->desktops as $key => $value) {?>
-							<li <?if(isset($d) && ($key==$d)) echo 'class="active"';?>><a href="<?php echo $this->createUrl('Index', 'Index', array('d' => $key), false); ?>"><?=$value;?></a></li>
+							<li <?if(isset($d) && ($key==$d)) echo 'class="active"';?>>
+								<div class="dropdown dropdown-noactive"> 
+									<div class="d-head"> 
+										<span class="with-drop"><a href="<?php echo $this->createUrl('Index', 'Index', array('d' => $key), false); ?>"><?=$value;?></a></span><i class="arrow-icon down-arrow"></i> 
+									</div> 
+									<div class="d-body"> 
+										<ul> 
+											<li><a href="#">Переименовать</a></li> 
+											<li><a href="#">Удалить</a></li> 
+										</ul> 
+									</div> 
+								</div> 							
+							</li>
 							<? } ?>
 							<? } ?>
 							<li class="add"><a href="<?php echo $this->createUrl('Index', 'addDesktop', null, false); ?>" title="Добавить"><i class="icon add-tab-icon"></i>+</a></li> 
