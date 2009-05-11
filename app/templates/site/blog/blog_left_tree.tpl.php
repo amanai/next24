@@ -1,6 +1,6 @@
 <?php  if (is_array($this->branch_list)) { ?>
 	<?php foreach($this->branch_list as $key => $item){ ?>
-		<? print '<pre>'; print_r($item); print '</pre>'; echo (int) $item['key']; ?>
+		<? //print '<pre>'; print_r($item); print '</pre>'; echo (int) $item['key']; ?>
 		<?php if($item['level'] > 1) {?>
 		<ul class="nav-list">
 		<? } ?>

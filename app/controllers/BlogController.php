@@ -48,12 +48,12 @@
 			$pager_view = new SitePagerView();
 			$post_model -> setPager(new DbPager($page_number, $this -> getParam('post_per_page', self::DEFAULT_POST_PER_PAGE)));
 			$this -> _view -> assign('post_list_pager',$pager_view -> show2($post_model -> getPager(), 'Blog', 'PublicList'));
-			$tree_model = new BlogTreeModel;
-			$tree_model->load(1);
+		//	$tree_model = new BlogTreeModel;
+		//	$tree_model->load(1);
 			//var_dump($tree_model);
-			print '<pre>';
-				print_r($tree_model);
-			print '</pre>';	
+		//	print '<pre>';
+		//		print_r($tree_model);
+		//	print '</pre>';	
 		//	$posts = $post_model->getAllPosts();
 		//	$blog_model = new BlogModel;	
 		//	foreach ($posts as $key => $value) {

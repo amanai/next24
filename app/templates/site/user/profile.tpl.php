@@ -22,7 +22,7 @@
 							?>
 							<dd class="av"><img alt="<?php echo $this->user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd>
 							<dd><?=$this->user_location;?></dd>
-							<dd>На сайте: <span class="date">12 дней</span></dd>
+						<!-- 	<dd>На сайте: <span class="date">12 дней</span></dd>   -->
 							<dd>Настроение: <em><?=$this->user_profile['mood'];?></em> <?php  if ($this->user_profile['id']==$this->current_user->id){ ?><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a><? } ?></dd>
 							<dd>Статус: <em><?=$this->user_profile['status'];?></em> <?php  if ($this->user_profile['id']==$this->current_user->id){ ?><a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a><? } ?></dd>
 						</dl>
@@ -39,8 +39,8 @@
 							<div class="cnt">
 								Профиль заполнен на:
 								<div class="rating-view">
-									<strong><?=$this->user_profile['rate']*10; ?>%</strong>
-									<div style="width:<?=$this->user_profile['rate']*10; ?>%;"></div>
+									<strong><?=(($user['rate']*10)-10);?>%</strong>
+									<div style="width:<?=(($user['rate']*10)-10);?>%;"></div>
 								</div>
 								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a>
 							</div>

@@ -11,6 +11,7 @@
 		<link id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon" />
 		<!--[if lte IE 7]><link type="text/css" rel="stylesheet" href="/app/css/ie.css"  media="screen" /><![endif]-->
 		<!--[if lte IE 6]><script language="javascript" type="text/javascript" src="/app/css/minmax.js"></script><![endif]-->
+		<meta name="Author" lang="ru" content="Мезрин Кирилл Михайлович" />
 	</head>
  
 		<div class="bone"> 

@@ -25,7 +25,7 @@
 							?>
 							<dd class="av"><img alt="<?php echo $user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd>
 							<dd>Украина, Киев</dd>
-							<dd>На сайте: <span class="date">12 дней</span></dd>
+					<!-- 		<dd>На сайте: <span class="date">12 дней</span></dd> -->
 							<dd>Настроение: <em><?=$user['mood'];?></em> <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a></dd>
 							<dd>Статус: <em><?=$user['status'];?></em> <a href="<?php echo $this -> createUrl('User', 'ProfileEdit');?>" class="script-link"><span class="t">изменить</span></a></dd>
 						</dl>
@@ -38,8 +38,8 @@
 							<div class="cnt">
 								Профиль заполнен на:
 								<div class="rating-view">
-									<strong><?=$user['rate']*10; ?>%</strong>
-									<div style="width:<?=$user['rate']*10; ?>%;"></div>
+									<strong><?=(($user['rate']*10)-10);?>%</strong>
+									<div style="width:<?=(($user['rate']*10)-10);?>%;"></div>
 								</div>
 								<a href="#" class="script-link"><span class="t">подробнее о рейтинге</span></a>
 							</div>
@@ -77,7 +77,7 @@
 							?>
 							<dd class="av"><img alt="<?php echo $user_default_avatar['av_name'];?>" src="<?php echo $avator_path;?>" /></dd> 
 							<dd>Украина, Киев</dd> 
-							<dd>На сайте: <span class="date">12 дней</span></dd> 
+					<!--  	<dd>На сайте: <span class="date">12 дней</span></dd>	--> 
 							<dd>Настроение: <em><?=$user['mood'];?></em></dd> 
 							<dd>Статус: <em><?=$user['status'];?></em></dd> 
 						</dl> 
