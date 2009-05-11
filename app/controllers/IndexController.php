@@ -83,17 +83,37 @@
             $this -> _view -> ajax();
 		}
 		public function addDesktopAction() {
-			//echo '!!!!!!!!!!!!!';
 			$v_request = Project::getRequest();
     		$v_session = Project::getSession();
-    		$request_keys = $v_request->getKeys();			
-			$userModel = new UserModel();
-			$desktops = unserialize($userModel->getDesktops());
-			//$desktops[] = $v_request['tab_name'];
-			$desktops[] = 'Новая вкладка';
-			$desktops = serialize($desktops);
-			$userModel->addDesktop($desktops);
-			Project::getResponse() -> redirect(Project::getRequest() -> createUrl("Index", "Index"));
+    		if($v_request->action == 'change') {
+    			$userModel = new UserModel();
+    			$desktops = unserialize($userModel->getDesktops());  
+    			$desktops[$v_request->d] = $v_request->vklad_name; 
+ 				$desktops = serialize($desktops);
+				$userModel->addDesktop($desktops);    			 			
+    		}
+    		elseif($v_request->action == 'del') {
+    			$userModel = new UserModel();
+    			$desktops = unserialize($userModel->getDesktops());
+    			unset($desktops[$v_request->d]);
+ 				$desktops = serialize($desktops);
+				$userModel->addDesktop($desktops);   			
+    		}
+    		else {
+    			$request_keys = $v_request->getKeys();			
+				$userModel = new UserModel();
+				$desktops = unserialize($userModel->getDesktops());
+				//$desktops[] = $v_request['tab_name'];
+				$desktops[] = 'Новая вкладка';
+				$desktops = serialize($desktops);
+				$userModel->addDesktop($desktops);
+    		}	
+    		if($v_request->d) {
+				Project::getResponse() -> redirect(Project::getRequest() -> createUrl("Index", "Index",array('d' => $v_request->d)));
+    		}
+    		else {
+    			Project::getResponse() -> redirect(Project::getRequest() -> createUrl("Index", "Index"));	
+    		}
 		}	
 	}
 ?>

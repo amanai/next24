@@ -31,8 +31,9 @@
 									</div> 
 									<div class="d-body"> 
 										<ul> 
-											<li><a href="#">Переименовать</a></li> 
-											<li><a href="#">Удалить</a></li> 
+											<li><a href="javascript: void(0);" onclick="document.vkladka<?=$key;?>.submit();">Переименовать</a>
+											<form name="vkladka<?=$key;?>" method="post" action="<?php echo $this->createUrl('Index', 'addDesktop', array('d' => $key, 'action' => 'change'), false); ?>"><input type="text" name="vklad_name" value="<?=$value;?>" /></form></li> 
+											<li><a href="<?php echo $this->createUrl('Index', 'addDesktop', array('d' => $key, 'action' => 'del'), false); ?>">Удалить</a></li> 
 										</ul> 
 									</div> 
 								</div> 							
