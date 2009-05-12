@@ -1,5 +1,5 @@
 <?php include($this -> _include('../header.tpl.php')); ?>	
-			<div class="columns-page clearfix"> 
+				<div class="columns-page clearfix"> 
 					<div class="main"><div class="wrap"> 
 						<ul class="view-filter clearfix"> 
 							<?php include($this -> _include('../tab_panel.tpl.php')); ?>
@@ -14,220 +14,73 @@
 							</div> 
 						</div> 
 						<!-- /display-filter --> 
-						<div class="blog-table"> 
-							<div class="section"> 
-								<div class="title clearfix"> 
-									<h2><a href="#">Авто</a></h2> 
-									<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#">2567 новостей</a> в этом разделе</p> 
-								</div> 
-								<div class="holder clearfix"> 
-									<ul class="short-view"> 
-										<li><a href="#"><i class="icon this-icon"></i>Противники повышения пошлин на иномарки устроили акции в Москве ...</a><i class="star-icon full-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Поставщик двигателей для GP2 Series оказался на грани банкротства</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Организаторы опубликовали календари чемпионатов FIA GT и FIA GT3</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Компания Mercedes-Benz отметила выпуск 1,5-миллионного E-Class</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Супер AUDI 6.0 D Q7</a></li> 
-									</ul> 
-									<div class="full-view"> 
-										<h3><a href="#">Если вы уверены, что сможете учавствовать в дебатах, то не стоит отправлять тему на конкурс.</a><i class="star-icon empty-star"></i></h3> 
-										<div class="breadcrumbs"> 
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
-										</div> 
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a> 
-										<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на ... </p> 
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div> 
-									</div> 
-								</div> 
+					<!-- <div class="breadcrumbs main-breadcrumbs"> 
+							<a href="#">Последние посты</a> » <a href="#">Праздники</a> » <a href="#">РождествоM</a> » <strong>С рождеством!</strong> 
+						</div> -->
+						<!-- /breadcrumbs --> 
+						<?php foreach ($this->posts as $value) { ?>
+						<?php $user = Project::getUser()->getDbUser()->getUserById($value['user_id']); ?>
+						<?php 
+						if($user['gender']) {
+							$class = 'user-icon';	
+						}
+						else {
+							$class = 'wuser-icon';
+						} 											
+						?>
+						<?php $online = Project::getUser()->getDbUser()->isUserOnline($value['user_id']); ?>
+						<div class="blog-post"> 
+							<h2><a href="#" rel="bookmark"><?=$value['post_title'];?></a></h2> 
+							<div class="breadcrumbs"> 
+								▪ <a href="#"><?=$value['blog_name'];?></a> » <a href="#"><?=$value['catalog_name'];?></a> » <?=$value['post_title'];?>
 							</div> 
-							<!-- /section --> 
-							<div class="section"> 
-								<div class="title clearfix"> 
-									<h2><a href="#">Авто</a></h2> 
-									<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#">2567 новостей</a> в этом разделе</p> 
-								</div> 
-								<div class="holder clearfix"> 
-									<ul class="short-view"> 
-										<li><a href="#"><i class="icon this-icon"></i>Противники повышения пошлин на иномарки устроили акции в Москве ...</a><i class="star-icon full-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Поставщик двигателей для GP2 Series оказался на грани банкротства Поставщик двигателей для GP2 Series оказался на грани банкротства</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Организаторы опубликовали календари чемпионатов FIA GT и FIA GT3</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Компания Mercedes-Benz отметила выпуск 1,5-миллионного E-Class</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Супер AUDI 6.0 D Q7</a></li> 
-									</ul> 
-									<div class="full-view"> 
-										<h3><a href="#">Что же в имени твоем! 3.0D</a><i class="star-icon empty-star"></i></h3> 
-										<div class="breadcrumbs"> 
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
-										</div> 
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a> 
-										<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на ... </p> 
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div> 
-									</div> 
-								</div> 
+							<div class="post-content"> 
+								<?=$value['full_text']; ?>
+								<div class="more"><a href="#">читать дальше</a> &rarr;</div> 
 							</div> 
-							<!-- /section --> 
-							<div class="section"> 
-								<div class="title clearfix"> 
-									<h2><a href="#">Авто</a></h2> 
-									<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#">2567 новостей</a> в этом разделе</p> 
-								</div> 
-								<div class="holder clearfix"> 
-									<ul class="short-view"> 
-										<li><a href="#"><i class="icon this-icon"></i>Противники повышения пошлин на иномарки устроили акции в Москве ...</a><i class="star-icon full-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Поставщик двигателей для GP2 Series оказался на грани банкротства</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Организаторы опубликовали календари чемпионатов FIA GT и FIA GT3</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Компания Mercedes-Benz отметила выпуск 1,5-миллионного E-Class</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Супер AUDI 6.0 D Q7</a></li> 
-									</ul> 
-									<div class="full-view"> 
-										<h3><a href="#">Что же в имени твоем! 3.0D</a><i class="star-icon empty-star"></i></h3> 
-										<div class="breadcrumbs"> 
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
-										</div> 
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a> 
-										<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на ... </p> 
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div> 
-									</div> 
-								</div> 
+							<!-- /post-content --> 
+							<div class="tag-list"> 
+								<i class="icon tags-list-icon"></i> 
+								<ul> 
+									<li><a href="#" rel="tag"><?=$value['tag_name']; ?></a>,</li> 
+								</ul> 
 							</div> 
-							<!-- /section --> 
-							<div class="section"> 
-								<div class="title clearfix"> 
-									<h2><a href="#">Авто</a></h2> 
-									<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#">2567 новостей</a> в этом разделе</p> 
+							<!-- /tag-list --> 
+							<div class="post-meta"><div class="bg"><div class="bg"> 
+								<div class="voting vote-positive"> 
+									99
+									<a href="#" class="vote_plus" title="нравится">+<span></span></a> 
+									<a href="#" class="vote_minus" title="не нравится">-<span></span></a> 
 								</div> 
-								<div class="holder clearfix"> 
-									<ul class="short-view"> 
-										<li><a href="#"><i class="icon this-icon"></i>Противники повышения пошлин на иномарки устроили акции в Москве ...</a><i class="star-icon full-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Поставщик двигателей для GP2 Series оказался на грани банкротства</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Организаторы опубликовали календари чемпионатов FIA GT и FIA GT3</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Компания Mercedes-Benz отметила выпуск 1,5-миллионного E-Class</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Супер AUDI 6.0 D Q7</a></li> 
-									</ul> 
-									<div class="full-view"> 
-										<h3><a href="#">Что же в имени твоем! 3.0D</a><i class="star-icon empty-star"></i></h3> 
-										<div class="breadcrumbs"> 
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
+								<ul> 
+									<li class="it ath"> 
+										<div class="dropdown"> 
+											<div class="d-head"> 
+												<a href="#" class="with-icon-s"><i class="icon-s <?=$class;?>"></i><?=$user['login'];?></a><i class="arrow-icon bid-arrow-icon"></i> 
+											</div> 
+											<div class="d-body"> 
+												<ul> 
+													<li><a href="#">Профиль пользователя</a></li> 
+													<li><a href="#">Добавить в друзья</a></li> 
+													<li><a href="#">Написать сообщение</a></li> 
+													<li><a href="#">Послать подарок</a></li> 
+												</ul> 
+											</div> 
 										</div> 
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a> 
-										<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на ... </p> 
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div> 
-									</div> 
-								</div> 
-							</div> 
-							<!-- /section --> 
-							<div class="section"> 
-								<div class="title clearfix"> 
-									<h2><a href="#">Авто</a></h2> 
-									<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#">2567 новостей</a> в этом разделе</p> 
-								</div> 
-								<div class="holder clearfix"> 
-									<ul class="short-view"> 
-										<li><a href="#"><i class="icon this-icon"></i>Противники повышения пошлин на иномарки устроили акции в Москве ...</a><i class="star-icon full-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Поставщик двигателей для GP2 Series оказался на грани банкротства</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Организаторы опубликовали календари чемпионатов FIA GT и FIA GT3</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Компания Mercedes-Benz отметила выпуск 1,5-миллионного E-Class</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Супер AUDI 6.0 D Q7</a></li> 
-									</ul> 
-									<div class="full-view"> 
-										<h3><a href="#">Что же в имени твоем! 3.0D</a><i class="star-icon empty-star"></i></h3> 
-										<div class="breadcrumbs"> 
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
-										</div> 
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a> 
-										<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на ... </p> 
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div> 
-									</div> 
-								</div> 
-							</div> 
-							<!-- /section --> 
-							<div class="section"> 
-								<div class="title clearfix"> 
-									<h2><a href="#">Авто</a></h2> 
-									<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#">2567 новостей</a> в этом разделе</p> 
-								</div> 
-								<div class="holder clearfix"> 
-									<ul class="short-view"> 
-										<li><a href="#"><i class="icon this-icon"></i>Противники повышения пошлин на иномарки устроили акции в Москве ...</a><i class="star-icon full-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Поставщик двигателей для GP2 Series оказался на грани банкротства</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Организаторы опубликовали календари чемпионатов FIA GT и FIA GT3</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Компания Mercedes-Benz отметила выпуск 1,5-миллионного E-Class</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Супер AUDI 6.0 D Q7</a></li> 
-									</ul> 
-									<div class="full-view"> 
-										<h3><a href="#">Что же в имени твоем! 3.0D</a><i class="star-icon empty-star"></i></h3> 
-										<div class="breadcrumbs"> 
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
-										</div> 
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a> 
-										<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на ... </p> 
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div> 
-									</div> 
-								</div> 
-							</div> 
-							<!-- /section --> 
-							<div class="section"> 
-								<div class="title clearfix"> 
-									<h2><a href="#">Авто</a></h2> 
-									<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#">2567 новостей</a> в этом разделе</p> 
-								</div> 
-								<div class="holder clearfix"> 
-									<ul class="short-view"> 
-										<li><a href="#"><i class="icon this-icon"></i>Противники повышения пошлин на иномарки устроили акции в Москве ...</a><i class="star-icon full-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Поставщик двигателей для GP2 Series оказался на грани банкротства</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Организаторы опубликовали календари чемпионатов FIA GT и FIA GT3</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Компания Mercedes-Benz отметила выпуск 1,5-миллионного E-Class</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Супер AUDI 6.0 D Q7</a></li> 
-									</ul> 
-									<div class="full-view"> 
-										<h3><a href="#">Что же в имени твоем! 3.0D</a><i class="star-icon empty-star"></i></h3> 
-										<div class="breadcrumbs"> 
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
-										</div> 
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a> 
-										<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на ... </p> 
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div> 
-									</div> 
-								</div> 
-							</div> 
-							<!-- /section --> 
-							<div class="section"> 
-								<div class="title clearfix"> 
-									<h2><a href="#">Авто</a></h2> 
-									<p><a href="#">157 категорий</a> <span class="spr">|</span> <a href="#">2567 новостей</a> в этом разделе</p> 
-								</div> 
-								<div class="holder clearfix"> 
-									<ul class="short-view"> 
-										<li><a href="#"><i class="icon this-icon"></i>Противники повышения пошлин на иномарки устроили акции в Москве ...</a><i class="star-icon full-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Поставщик двигателей для GP2 Series оказался на грани банкротства</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Организаторы опубликовали календари чемпионатов FIA GT и FIA GT3</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Компания Mercedes-Benz отметила выпуск 1,5-миллионного E-Class</a><i class="star-icon empty-star"></i></li> 
-										<li><a href="#"><i class="icon this-icon"></i>Супер AUDI 6.0 D Q7</a></li> 
-									</ul> 
-									<div class="full-view"> 
-										<h3><a href="#">Что же в имени твоем! 3.0D</a><i class="star-icon empty-star"></i></h3> 
-										<div class="breadcrumbs"> 
-											▪ <a href="#">Последние посты</a> » <a href="#">РождествоM</a> » С рождеством!
-										</div> 
-										<a href="#"><img src="assets/i/temp/temp.5.jpg" alt="Что же в имени твоем! 3.0D" /></a> 
-										<p>Если зайти сейчас на главный сайт компании — можно посмотреть веселый мультик на знакомую тему, так сказать, «пародию на ... </p> 
-										<div class="more"><a href="#">читать дальше</a> &rarr;</div> 
-									</div> 
-								</div> 
-							</div> 
-							<!-- /section --> 
+										<span class="user-status"><span class="online"><?=$online?'online':'offline';?></span><span class="nr"><? $nr = Project::getUser()->getDbUser()->getUserRateNMByRegistrationData($value['user_id']); echo $nr['rate']; ?> nr</span></span> 
+									</li> 
+									<li class="it date"><?=$value['creation_date'];?></li> 
+									<li class="it com"> 
+										<a href="#" class="with-icon-s"><i class="icon-s commets-icon"></i><?=$value['comments'];?> ответов</a> 
+									</li> 
+								</ul> 
+							</div></div></div> 
+							<!-- /post-meta --> 
 						</div> 
-						<!-- /display-table --> 
+						<!-- /blog-post --> 						
+						<? } ?>
 						<ul class="pages-list clearfix"> 
-							<li class="control"><span>« Назад</span> <a href="#">Вперед »</a></li> 
-							<li><strong>1</strong></li> 
-							<li><a href="#">2</a></li> 
-							<li><a href="#">3</a></li> 
-							<li><a href="#">4</a></li> 
-							<li><a href="#">5</a></li> 
-							<li><a href="#">6</a></li> 
-							<li><a href="#">7</a></li> 
-							<li>...</li> 
-							<li><a href="#">34</a></li> 
+							<?php echo $this -> post_list_pager;?>
 						</ul> 
 						<!-- /pages-list --> 
 					</div></div> 
