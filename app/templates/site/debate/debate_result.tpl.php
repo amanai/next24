@@ -63,8 +63,8 @@
 										<li><input type="radio" name="helper1" value="0" id="m13" /><label for="m13">Не помогал</label></li> 
 									</ul>                         
                         	  </li>';
-                    }
-                    if ($this->currentHelper2){
+                 //   }
+                //    if ($this->currentHelper2){
                         $tdNum ++;
                         echo '<li class="it last">
 								<a class="avatar-link" href="'.$this->createUrl('User', 'Profile', null, $this->currentHelper1['login']).'"><img class="avatar" alt="" src="assets/i/temp/avatar.s.jpg"/><span class="t">'.$this->currentHelper2['login'].'</span></a> 
