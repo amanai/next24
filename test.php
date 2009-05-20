@@ -6,5 +6,5 @@ if (!isset($_SESSION['ss'])) {
 	echo 'Setting value...<br>';
 }
 echo $_SESSION['ss'];
-
+//тест комита, а заодно русского языка в треке
 ?>
